@@ -1,0 +1,90 @@
+########################################################################
+# DocBook                                                              #
+# Copyright (c) 2012 Pierre Cassat                                     #
+# http://www.ateliers-pierrot.fr - contact@ateliers-pierrot.fr         #
+########################################################################
+
+# any environment variable beginning with `EMD_` will be fetched to the app
+#SetEnv EMD_TPL /GitHub_projects/docbook/template.html
+#SetEnv EMD_CHARSET iso-8859-11
+
+# allowing fancy indexing, sym-links and cgi execution
+Options +Indexes +FollowSymLinks +MultiViews +ExecCGI +Includes
+
+# enable the FancyIndexing and other config values
+IndexOptions FancyIndexing HTMLTable VersionSort IconsAreLinks IgnoreCase SuppressHTMLPreamble DescriptionWidth=* TrackModified XHTML SuppressRules SuppressColumnSorting
+
+# list of ignored files or dir in Apache auto-index
+IndexIgnore docbook.php wip* docbook_assets* .. 
+
+# setting the default DocBook markdown handler for each `.md` files
+# and the INCLUDES functionality
+AddType text/html .md .smd .shtml
+AddOutputFilter INCLUDES .smd .shtml
+AddHandler cgi-script .sh
+AddHandler MarkDown .md
+Action MarkDown /cgi-bin/apache_handler.sh virtual
+
+# redefinition of the default index, readme and header files
+DirectoryIndex INDEX.md
+HeaderName /docbook_assets/header.shtml
+ReadmeName /docbook_assets/readme.shtml
+
+# the rewrite URLs rules
+RewriteEngine On
+#RewriteBase /
+
+# setting the 404 error page
+ErrorDocument 404 /docbook.php?not_found
+
+# skip all this for the root (no request)
+RewriteRule "" - [skip=100]
+
+# skip all this if the file or the dir exists
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule "." - [skip=100]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule "." - [skip=100]
+
+# no access to anything beginning with a dot
+RewriteRule ^(.*/)?\.(.*)/ - [F]
+
+# special rule for `sitemap.xml` (one per dir)
+RewriteRule ^(.*)sitemap.xml /docbook.php?$1/sitemap
+
+# `docbook.php` will handle all requests
+RewriteRule ^(.*) /docbook.php?$1
+
+# images for fancy indexing
+AddIconByEncoding /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/compress.png x-compress x-gzip
+AddIconByType /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/picture.png assets/*
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/eye.png README
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/folder.png ^^DIRECTORY^^
+DefaultIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/help.png
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/book_previous.png . ..
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_acrobat.png *.pdf
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_text_width.png *.txt *.rtf *.md
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_word.png *.doc *.docx *.odt
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_excel.png *.xls *.xlsx
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_code.png *.js
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_code_red.png *.css
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/layout_link.png *.html *.htm *.phtml *.phtm
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_php.png .php
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/photo.png *.gif *.jpg *.jpeg *.png
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_flash.png .swf
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_database.png .sql
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/application_osx_terminal.png .bin .exe
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/application_osx_terminal.png .hqx
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/compress.png .tar
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/world.png .wrl .wrl.gz .vrml .vrm .iv
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/compress.png .Z .z .tgz .gz .zip
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_paint.png .ps .ai .eps
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_c.png .c
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white_code.png .pl .py
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/computer.png .for
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/connect.png .dvi
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/server_compressed.png .uu
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/script.png .conf .sh .shar .csh .ksh .tcl
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/page_white.png .tex
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/bomb.png core
+AddIcon /docbook_assets/vendor/famfamfam_silk_icons_v013/icons/film.png .flv

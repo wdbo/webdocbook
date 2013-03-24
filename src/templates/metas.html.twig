@@ -1,0 +1,21 @@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% if page.description is not empty %}
+    <meta name="description" content="{{ page.description }}">
+{% endif %}
+{% if page.authors|length > 0 %}
+    {% set author_str='' %}
+    {% for author in page.authors %}
+        {% set author_str=author_str ~ author.name %}
+        {% if author.url is not empty %}
+            {% set author_str=author_str ~ ' <' ~ author.url ~ '>' %}
+        {% elseif author.homepage is not empty %}
+            {% set author_str=author_str ~ ' <' ~ author.homepage ~ '>' %}
+        {% elseif author.email is not empty %}
+            {% set author_str=author_str ~ ' <' ~ author.email ~ '>' %}
+        {% endif %}
+        {% if loop.index < (loop.length-1) %}
+            {% set author_str=author_str ~ ', ' %}
+        {% endif %}
+    {% endfor %}
+    <meta name="author" content="{{ author_str }}">
+{% endif %}

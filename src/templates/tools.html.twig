@@ -1,0 +1,10 @@
+<small>
+    [<a href="{{ page.path|route('plain') }}" title="View plain text version of this page">plain text</a>]
+
+</small>
+<form class="form-search" method="get" action="{{ page.path|route('search') }}">
+    <div class="input-append">
+        <input type="text" class="input-small search-query searchField" name="s" title="You can build your search string with regular expressions" placeholder="search" value="{{ search_str|default('') }}">
+        <button type="submit" class="btn"><i class="dbicon-magnifier"></i></button>
+    </div>
+</form>

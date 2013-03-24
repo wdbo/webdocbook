@@ -1,0 +1,19 @@
+<div class="well well-small">
+
+<ul class="breadcrumb">
+    <li><a href="/">Home</a> <span class="divider">/</span></li>
+{% set routeroute='/' %}
+{% for route in breadcrumbs %}
+    {% if loop.index<loop.length %}
+        {% set routeroute=routeroute ~ route ~ '/' %}
+    <li><a href="{{ routeroute }}">{{ route }}</a> <span class="divider">/</span></li>
+    {% else %}
+    <li class="active">{{ route }}</li>
+    {% endif %}
+{% endfor %}
+    <li class="pull-right">
+{% include DB.getTemplate('tools') %}
+    </li>
+</ul>
+
+</div>

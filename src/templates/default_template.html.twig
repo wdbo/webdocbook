@@ -1,0 +1,60 @@
+{% extends DB.getTemplate('layout') %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block metas %}
+{% include 'metas.html.twig' %}
+{% endblock %}
+
+{% block body_attributes %}data-spy="scroll" data-target="#inpage_menu"{% endblock %}
+
+{% block body %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+{% include DB.getTemplate('navbar') %}
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+{% include 'ltie7_warning.html.twig' %}
+{% include DB.getTemplate('breadcrumbs') %}
+            <section>
+            {{ content|raw }}
+            </section>
+            <footer id="lastupdate" role="contentinfo">
+                <div class="well">
+                    <div class="pull-left muted">
+                        Last update of this content: <time datetime="{{ page.update.format('Y-m-d') }}" title="{{ page.update.format('c') }}">
+                        {{- page.update.format('M j, Y') -}}
+                        </time>.
+                    </div>
+                    <div class="pull-right">
+{% include DB.getTemplate('tools') %}
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ parent() }}
+<script src="{{ vendor_assets }}jquery.highlight.js"></script>
+<script src="{{ vendor_assets }}jquery.tablesorter.min.js"></script>
+<script>
+$(function() {
+    initTables();
+    initHighlighted('pre.code');
+    initTablesorter('table.tablesorter');
+//    initBacklinks();
+    getToHash();
+    initInpageNavigation();
+    activateMenuItem();
+    $('.tooltips').tooltip();
+    $('.searchField')
+        .bind('focus', function(){ $(this).stop().animate({width: 150}); })
+        .bind('blur', function(){ $(this).stop().animate({width: 90}); });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+
+            </section>
+            </div>
+            <div class="span1"></div>
+        </div>
+
+{% if content is not empty %}
+        <hr />
+        <div class="row-fluid">
+            <section>
+            {{ content|raw }}
+            </section>
+            <footer id="lastupdate" role="contentinfo">
+                <div class="well">
+                    <div class="pull-left muted">
+                        Last update of this content: <time datetime="{{ page.update.format('Y-m-d') }}" title="{{ page.update.format('c') }}">
+                        {{- page.update.format('M j, Y') -}}
+                        </time>.
+                    </div>
+                    <div class="pull-right">
+{% include DB.getTemplate('tools') %}
+                    </div>
+                </div>
+            </footer>
+        </div>
+{% endif %}
+    </div>
+</div>
+
+{% include DB.getTemplate('footer') %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ vendor_assets }}jquery/jquery.min.js"><\/script>')</script>
+<script>$.uiBackCompat = false;</script>
+<script src="{{ vendor_assets }}bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ assets }}scripts.js"></script>
+<script>
+$(function() {
+    addCSSValidatorLink('{{ assets }}styles.css');
+    addHTMLValidatorLink();
+});
+</script>
+<script src="{{ vendor_assets }}jquery.highlight.js"></script>
+<script src="{{ vendor_assets }}jquery.tablesorter/jquery.tablesorter.min.js"></script>
+<script>
+$(function() {
+    initTables();
+    initHighlighted('pre.code');
+    initTablesorter('table.tablesorter');
+//    initBacklinks();
+    getToHash();
+    initInpageNavigation();
+    activateMenuItem();
+    $('.tooltips').tooltip();
+
+    $('.searchField')
+        .bind('focus', function(){ $(this).stop().animate({width: 150}); })
+        .bind('blur', function(){ $(this).stop().animate({width: 90}); });
+
+    var indextable = $('#indextable table');
+    var head = indextable.find('tr:first');
+    var body = indextable.find('tr:not(:first)');
+    var new_head = $('<thead>').html(head);
+    var new_body = $('<tbody>').html(body);
+    indextable.html('').append(new_head).append(new_body);
+    initTablesorter('#indextable table', {headers:{0:{sorter:false}}});
+
+});
+</script>
+</body>
+</html>

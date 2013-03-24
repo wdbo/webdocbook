@@ -1,0 +1,41 @@
+{% extends DB.getTemplate('layout') %}
+
+{% block title %}Page not found{% endblock %}
+
+{% block metas %}
+    <meta name="robots" content="none">
+{% include DB.getTemplate('metas') %}
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ assets }}error_styles.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+{% include 'ltie7_warning.html.twig' %}
+
+        <div class="error-wrapper">
+            <header id="top" role="banner">
+            <hgroup>
+                <div class="page-header">
+                    <h1>Page not found <span>:(</span></h1>
+                </div>
+            </hgroup>
+            </header>
+
+            <div class="hero-unit">
+                <p>Sorry, but the page you were trying to view does not exist.</p>
+                <p>It looks like this was the result of either:</p>
+                <ul>
+                    <li>a mistyped address</li>
+                    <li>an out-of-date link</li>
+                </ul>
+            </div>
+        </div>
+
+{% include DB.getTemplate('footer') %}
+
+    </div> <!-- /container -->
+{% endblock %}
