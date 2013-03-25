@@ -1,22 +1,28 @@
-            <div class="container-fluid">
 
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                </button>
+<div class="container-fluid">
 
-                <a class="brand" href="/">{{ app.title }}</a>
+    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+    </button>
 
-                <div class="nav-collapse collapse">
-                    <div class="navbar-text pull-right"><small>
-                        <ul class="nav">
-                            <li class="active"><a href="#top" title="Reach the top ot this page">&uarr;&nbsp;Top</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Reach a section in this page">Inpage navigation <b class="caret"></b></a>
-                                <ul class="dropdown-menu" id="inpage_menu"></ul>
-                            </li>
-                            <li><a href="#footer" title="Reach the bottom of this page">Bottom&nbsp;&darr;</a></li>
-                        </ul>
-                    </small></div>
-                </div>
+    <a class="brand apicon" href="https://github.com/atelierspierrot/docbook" title="Follow sources of DocBook online: https://github.com/atelierspierrot/docbook">
+        <img src="{{ assets }}/bouton_plante-24.png" alt="sources" />
+    </a>
+    <a class="brand" href="/" title="Home of your DocBook">{{ app.title }}</a>
 
-            </div>
+{% if inpage_menu|default('true') != 'false' %}
+    <div class="nav-collapse collapse">
+        <div class="navbar-text pull-right"><small>
+            <ul class="nav" id="navbar_inner">
+                <li class="active"><a href="#top" title="Reach the top ot this page">&uarr;&nbsp;Top</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Reach a section in this page">Inpage navigation <b class="caret"></b></a>
+                    <ul class="dropdown-menu pull-right" id="inpage_menu"></ul>
+                </li>
+                <li><a href="#bottom" title="Reach the bottom of this page">Bottom&nbsp;&darr;</a></li>
+            </ul>
+        </small></div>
+    </div>
+{% endif %}
+
+</div>

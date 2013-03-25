@@ -1,0 +1,30 @@
+{% extends DB.getTemplate('layout') %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block html_header %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+{% include DB.getTemplate('navbar') %}
+        </div>
+    </div>
+
+    <div class="container-fluid">
+{% include 'ltie7_warning.html.twig' %}
+{% include DB.getTemplate('breadcrumbs') with {'page_tools': 'false'} %}
+        <h1>Index of <em>{{ title }}</em> <small>Folder map</small></h1>
+        <hr />
+        <div class="row-fluid">
+            <div class="span1"></div>
+            <div class="span10">
+            <section id="indextable">
+
+{% endblock %}
+
+{% block html_footer %}{% endblock %}

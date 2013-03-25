@@ -13,15 +13,17 @@ use DocBook\FrontController,
 
 /**
  */
-class PlainText extends AbstractPage
+class HtmlOnly extends AbstractPage
 {
 
-    public static $template_name = 'layout_empty_txt';
+    public static $template_name = 'layout_empty_html';
 
     public function parse()
     {
         $docbook = FrontController::getInstance();
-        return $docbook->getResponse()->flush(file_get_contents($this->getPath()));
+        $md_parser = $docbook->getMarkdownParser();
+        $content = file_get_contents($this->getPath());
+        return $md_parser->transform($content);
     }
 
 }

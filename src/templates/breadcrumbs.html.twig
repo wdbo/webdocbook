@@ -8,7 +8,7 @@
         {% set routeroute=routeroute ~ route ~ '/' %}
     <li><a href="{{ routeroute }}">{{ route }}</a> <span class="divider">/</span></li>
     {% else %}
-    <li class="active">{{ route }}</li>
+    <li class="active"><strong>{{ route }}</strong></li>
     {% endif %}
 {% endfor %}
     <li class="pull-right">

@@ -8,8 +8,9 @@
 
 namespace DocBook\Page;
 
-use DocBook\Abstracts\AbstractPage;
-use DocBook\Helper;
+use DocBook\FrontController,
+    DocBook\Abstracts\AbstractPage,
+    DocBook\Locator;
 
 /**
  */
@@ -20,11 +21,12 @@ class FooterOnly extends AbstractPage
 
     public function parse()
     {
-        $docbook = \DocBook\FrontController::getInstance();
+        $docbook = FrontController::getInstance();
         $path = $this->getPath();
         if (!empty($path)) {
-            $readme = Helper::findPathReadme($path);
+            $readme = Locator::findPathReadme($path);
             if (file_exists($readme)) {
+                $docbook->setInputFile($readme);
                 $md_parser = $docbook->getMarkdownParser();
                 $content = file_get_contents($readme);
                 return $md_parser->transform($content);

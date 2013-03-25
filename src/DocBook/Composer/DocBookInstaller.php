@@ -1,19 +1,18 @@
 <?php
 /**
- * CarteBlanche - PHP framework package - Installers package
- * Copyleft (c) 2013 Pierre Cassat and contributors
- * <www.ateliers-pierrot.fr> - <contact@ateliers-pierrot.fr>
- * License GPL-3.0 <http://www.opensource.org/licenses/gpl-3.0.html>
- * Sources <https://github.com/atelierspierrot/carte-blanche>
+ * PHP/Apache/Markdown DocBook
+ * @package 	DocBook
+ * @license   	GPL-v3
+ * @link      	https://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\Composer;
 
-use Composer\Composer;
-use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
-use Composer\Script\Event;
-use Composer\Util\Filesystem;
+use Composer\Composer,
+    Composer\IO\IOInterface,
+    Composer\Package\PackageInterface,
+    Composer\Script\Event,
+    Composer\Util\Filesystem;
 
 /**
  * The installer for the Apache Markdown handler

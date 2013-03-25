@@ -1,7 +1,12 @@
+{% if page_tools|default('true') != 'false' %}
 <small>
-    [<a href="{{ page.path|route('plain') }}" title="View plain text version of this page">plain text</a>]
-
+    [<a href="{{ page.path|route('download') }}" title="Download the Markdown version of this content">download</a>]
+    &nbsp;
+    [<a href="{{ page.path|route('htmlonly') }}" title="View plain &amp; isolated HTML version of this content">HTML only</a>]
+    &nbsp;
+    [<a href="{{ page.path|route('plain') }}" title="View plain text version of this content">plain text</a>]
 </small>
+{% endif %}
 <form class="form-search" method="get" action="{{ page.path|route('search') }}">
     <div class="input-append">
         <input type="text" class="input-small search-query searchField" name="s" title="You can build your search string with regular expressions" placeholder="search" value="{{ search_str|default('') }}">

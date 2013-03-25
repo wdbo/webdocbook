@@ -1,8 +1,11 @@
-/*
-DocBook Styles
-*/
+/**
+ * PHP/Apache/Markdown DocBook
+ * @package 	DocBook
+ * @license   	GPL-v3
+ * @link      	https://github.com/atelierspierrot/docbook
+ */
 
-html,body   {height: 100%;}
+html,body   {min-height: 100%;}
 body        {padding: 0;padding-top:40px;line-height: 24px;}
 #wrapper    {min-height: 74%;height: auto !important;height: 100%;margin: 0 auto -60px;padding: 40px 40px 80px 40px;}
 #footer     {height: 60px;background-color: #f5f5f5;padding: 20px 80px;}
@@ -16,11 +19,14 @@ body        {padding: 0;padding-top:40px;line-height: 24px;}
 }
       
 h1          {padding: 18px 0 12px 0;}
-h2          {padding: 12px 0 8px 0;}
-h3          {padding: 8px 0 4px 0;}
+h2          {padding: 12px 0 8px 0;color:#2380A0;}
+h3          {padding: 8px 0 4px 0;color:#2380A0;}
 h2:before   {content: "# ";}
 h3:before   {content: "## ";}
 h2,h3       {line-height: 1.4em;}
+h2 + h3     {padding-top: 0;}
+var         {text-indent: 0; background-color: #f9f9f9; border: 1px solid #D0D0D0;padding:0 .6em;}
+section     {padding: 0 20px;}
 
 .comment    {margin-top: 6px; font-style: italic; font-size: .96em;}
 .credits    {font-size:0.86em;margin:0;line-height: 1.8em; padding-bottom: 4px;}
@@ -28,12 +34,16 @@ h2,h3       {line-height: 1.4em;}
 .float-left {float: left;}
 .float-right {float: right;}
 .note       {font-size: .9em; color: #737373;font-style: italic;}
+a.apicon    {margin: 0; padding: 0;}
+a.apicon img{margin: 0; padding: 0;vertical-align: middle;}
 
 .footnotes  {font-size: .92em; margin: 2em 10em 0 1em; }
 .footnotes .credits  {text-align: left;font-size: .96em;text-indent:0;}
 a.footnote_link {color: #2380A0; font-weight: bold;}
 .footnotes li {margin-left: 1em;}
 
+ul#inpage_menu li a i { float: right; }
+.sidebar-nav { padding: 9px 0; }
 .breadcrumb { margin: 0; }
 form.form-search { float: right; margin: -2px 0 0 12px; }
 footer#lastupdate { margin-top: 32px; }

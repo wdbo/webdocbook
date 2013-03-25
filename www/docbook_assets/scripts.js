@@ -1,4 +1,9 @@
-/* Scripts for demo */
+/**
+ * PHP/Apache/Markdown DocBook
+ * @package 	DocBook
+ * @license   	GPL-v3
+ * @link      	https://github.com/atelierspierrot/docbook
+ */
 
 // Avoid `console` errors in browsers that lack a console.
 // https://github.com/h5bp/html5-boilerplate
@@ -51,6 +56,20 @@ function getUrlHash( _url )
     return hash;    
 }
 
+/*
+var te = "abcdef!abcdef\abcdef\"abcdef#abcdef$abcdef%abcdef&abcdef'abcdef(abcdef)abcdef*abcdef+abcdef,abcdef.abcdef/abcdef:abcdef;abcdef<abcdef=abcdef>abcdef?abcdef@abcdef[abcdef\abcdef]abcdef^abcdef`abcdef{abcdef|abcdef}abcdef~abcdef";
+console.debug(te);
+var escapedTe = escapeSelector(te);
+console.debug(escapedTe);
+*/
+function escapeSelector(str)
+{
+    var toEscape = "!\"#$%&'()\*+,.\/:;<=>?@[\\]^`{|}~";
+    var reg = new RegExp('['+toEscape+']|gw|kw', 'g')
+    var escapedStr = str.replace(reg, function(s){ return '\\\\'+s; });
+    return escapedStr;
+}
+ 
 // ---------------------------
 // Elements creations
 // ---------------------------
@@ -200,16 +219,78 @@ function initTablesorter( sel, opts )
 
 function initInpageNavigation()
 {
-    $('section h1, section h2,section h3,section h4,section h5,section h6').each(function(i,el){
+    var h_sel = 'section h2,section h3,section h4,section h5,section h6';
+    if ($('section h1').length>1) h_sel = 'section h1,'+h_sel;
+    $(h_sel).each(function(i,el){
         var _id = $(this).attr('id');
         if (!_id) {
             _id = uniqid();
             $(this).attr('id', _id);
         }
         var inpage_menu = $('ul#inpage_menu'),
+            a_ctt = $(this).html(),
             _li = $('<li>'),
-            _a = $('<a>', {'href':'#'+_id}).html( $(this).html() );
+            _a = $('<a>', {'href':'#'+_id});
+        switch ($(this)[0].tagName) {
+            case 'H1': a_ctt = a_ctt; break;
+            case 'H2': a_ctt = '&nbsp;&nbsp;# '+a_ctt; break;
+            case 'H3': a_ctt = '&nbsp;&nbsp;&nbsp;&nbsp;## '+a_ctt; break;
+            case 'H4': a_ctt = '&nbsp;&nbsp;&nbsp;&nbsp;### '+a_ctt; break;
+            case 'H5': a_ctt = '&nbsp;&nbsp;&nbsp;&nbsp;###- '+a_ctt; break;
+            case 'H6': a_ctt = '&nbsp;&nbsp;&nbsp;&nbsp;###-- '+a_ctt; break;
+        }
+        _a.html( a_ctt );
         inpage_menu.append( _li.append(_a) );
-        $('[data-spy="scroll"]').each(function(){ $(this).scrollspy('refresh') });
+        $('[data-spy="scroll"]').each(function(){
+            var $spy = $(this).scrollspy('refresh');
+        });
     });
+}
+
+function initSearchFiled()
+{
+    $('.searchField')
+        .bind('focus', function(){ $(this).stop().animate({width: 150}); })
+        .bind('blur', function(){ $(this).stop().animate({width: 90}); });
+}
+
+function initScrollTo()
+{
+    $.browser = {};
+    $.browser.chrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    $.browser.safari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+	$.browser.msie = /MSIE/.test(navigator.userAgent);
+	$.browser.mozilla = /Firefox/.test(navigator.userAgent);
+    $('a[href^="#"]').each(function(i,el){
+        $(this).juizScrollTo('slow');
+    });
+}
+
+function rebuildIndexTable()
+{
+    var indextable = $('#indextable table');
+    var head = indextable.find('tr:first');
+    var body = indextable.find('tr:not(:first)');
+    var new_head = $('<thead>').html(head);
+    var new_body = $('<tbody>').html(body);
+    indextable.html('').append(new_head).append(new_body);
+    initTablesorter('#indextable table', {headers:{0:{sorter:false}}});
+}
+
+function messagebox(url, title)
+{
+    var msgb = $('#messagebox');
+    $.get(url, function(data, textStatus, jqXHR){
+        if (data.body) {
+            msgb.find('.modal-body').html(data.body);
+        }
+        if (data.footer) {
+            msgb.find('.modal-footer').html(data.footer);
+        }
+        if (data.title) {
+            msgb.find('.modal-header h3').html(data.title);
+        }
+        msgb.modal('show');
+    });
+
 }

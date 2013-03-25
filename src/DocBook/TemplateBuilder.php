@@ -1,71 +1,65 @@
 <?php
 /**
- * CarteBlanche - PHP framework package
- * Copyleft (c) 2013 Pierre Cassat and contributors
- * <www.ateliers-pierrot.fr> - <contact@ateliers-pierrot.fr>
- * License GPL-3.0 <http://www.opensource.org/licenses/gpl-3.0.html>
- * Sources <https://github.com/atelierspierrot/carte-blanche>
+ * PHP/Apache/Markdown DocBook
+ * @package 	DocBook
+ * @license   	GPL-v3
+ * @link      	https://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
 
-use \Patterns\Interfaces\ViewInterface;
-use \DocBook\FrontController;
+use Patterns\Abstracts\AbstractView;
+
+use DocBook\FrontController,
+    DocBook\Locator,
+    DocBook\DocBookException;
 
 /**
  */
-class TemplateBuilder implements ViewInterface
+class TemplateBuilder extends AbstractView
 {
 
+    /**
+     * The TWIG template engine
+     */
     protected $twig;
-
-	/**
-	 * The view filename
-	 */
-	var $view=null;
-
-	/**
-	 * The parameters passed to the view (for parsing)
-	 */
-	var $params=array();
-
-	/**
-	 * The final rendering of the view
-	 */
-	var $output='';
 
 	/**
 	 * Constructor
 	 */
 	public function __construct()
 	{
-        $docbook = \DocBook\FrontController::getInstance();
+        $docbook = FrontController::getInstance();
         // template engine
         $loader = new \Twig_Loader_Filesystem( array(
-            $docbook->getPath('base_templates'),
-            $docbook->getPath('user_templates')
+            $docbook->getPath('user_templates'),
+            $docbook->getPath('base_templates')
         ) );
         $this->twig = new \Twig_Environment($loader, array(
             'cache'             => $docbook->getPath('cache'),
-            'charset'           => $docbook->getRegistry()->getConfig('html:charset', 'utf-8'),
+            'charset'           => $docbook->getRegistry()->get('html:charset', 'utf-8', 'docbook'),
             'debug'             => true,
         ));
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new \DocBook_Twig_Extension());
 	}
 	
+// ------------------
+// Process
+// ------------------
+
 	/**
      * Building of a view content by Twig
 	 *
 	 * @param string $view The view filename
 	 * @param array $params An array of the parameters passed for the view parsing
-	 * @throw Throw an Exception if the file view can't be found
 	 */
     public function render($view, array $params = array())
     {
-		$view_parameters = array_merge($this->getDefaultViewParams(), $params);
-	    $this->output = $this->twig->render($view, $view_parameters);
-		return $this->output;
+        $this->setView($view);
+		$this->setParams( array_merge($this->getDefaultViewParams(), $params) );
+	    $this->setOutput( $this->twig->render($this->getView(), $this->getParams()) );
+		return $this->getOutput();
     }
 
 	/**
@@ -73,25 +67,26 @@ class TemplateBuilder implements ViewInterface
 	 *
 	 * @param string $view The view filename
 	 * @param array $params An array of the parameters passed for the view parsing
-	 * @throw Throw an Exception if the file view can't be found
+	 * @throw Throws an DocBookRuntimeException if the file view can't be found
 	 */
     public function renderSafe($view, array $params = array())
     {
-		$view_file = $this->getTemplate( $view );
-		$view_parameters = array_merge($this->getDefaultViewParams(), $params);
-		if ($view_file) {
+        $this->setView( $this->getTemplate( $view ) );
+		$this->setParams( array_merge($this->getDefaultViewParams(), $params) );
+		if ($this->getView()) {
+		    $view_parameters = $this->getParams();
 			if (!empty($view_parameters))
 	      		extract($view_parameters, EXTR_OVERWRITE);
 			ob_start();
-			include $view_file;
-	    	$this->output = ob_get_contents();
+			include $this->getView();
+	    	$this->setOutput( ob_get_contents() );
   	  		ob_end_clean();
 		} else {
-      		throw new NotFoundException(
-      			sprintf('Template "%s" can\'t be found!', $view)
+      		throw new DocBookException(
+      			sprintf('Template "%s" can\'t be found!', $this->getView())
       		);
 		}
-		return $this->output;
+		return $this->getOutput();
     }
 
     /**
@@ -99,7 +94,7 @@ class TemplateBuilder implements ViewInterface
      */
     public function getDefaultViewParams()
     {
-        $docbook = \DocBook\FrontController::getInstance();
+        $docbook = FrontController::getInstance();
         return array(
             'DB'                => $docbook,
             'app_cfg'           => $docbook->getRegistry()->getConfig('html', array(), 'docbook'),
@@ -118,8 +113,8 @@ class TemplateBuilder implements ViewInterface
      */
     public function getTemplate($name)
     {
-        $docbook = \DocBook\FrontController::getInstance();
-		return $docbook->fallbackFinder($name);
+        $locator = new Locator;
+		return $locator->fallbackFinder($name);
     }
 
 }

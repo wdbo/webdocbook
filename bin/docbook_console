@@ -26,12 +26,7 @@ if (@file_exists($composerAutoLoader)) {
 // PROCESS
 // -----------------------------------
 
-// the arguments
-$argv = $_SERVER['argv'];
-$input_file = array_pop($argv);
-
 // the application 
-$main = \DocBook\FrontController::getInstance();
-if ($main) $main->setInputFile($input_file)->distribute();
+\DocBook\FrontController::getInstance()->distribute();
 
 // Endfile

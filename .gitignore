@@ -20,3 +20,4 @@ phpdoc/*
 src/vendor/*
 www/tmp/*
 composer.lock
+bin/emd_console

@@ -1,4 +1,4 @@
-{% extends DB.getTemplate('layout') %}
+{% extends DB.getTemplate('page_layout') %}
 
 {% block title %}Page not found{% endblock %}
 
@@ -11,7 +11,14 @@
     <link href="{{ assets }}error_styles.css" rel="stylesheet">
 {% endblock %}
 
+{% block body_attributes %}{% endblock %}
+
 {% block body %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+{% include DB.getTemplate('navbar') with {'inpage_menu': 'false'} %}
+        </div>
+    </div>
     <div class="container">
 
 {% include 'ltie7_warning.html.twig' %}
@@ -24,7 +31,10 @@
                 </div>
             </hgroup>
             </header>
-
+{% if message is not empty %}
+            <h3>Message received from the system</h3>
+            <blockquote><p class="text-info">{{ message }}</p></blockquote>
+{% endif %}
             <div class="hero-unit">
                 <p>Sorry, but the page you were trying to view does not exist.</p>
                 <p>It looks like this was the result of either:</p>
@@ -34,8 +44,6 @@
                 </ul>
             </div>
         </div>
-
-{% include DB.getTemplate('footer') %}
-
+        <hr />
     </div> <!-- /container -->
 {% endblock %}

@@ -8,6 +8,8 @@
 
 namespace DocBook\Abstracts;
 
+use DocBook\NotFoundException;
+
 /**
  */
 abstract class AbstractPage
@@ -16,7 +18,9 @@ abstract class AbstractPage
     public static $template_name = 'default';
     protected $path;
 
-    abstract public function parse();
+// ------------------
+// Construction
+// ------------------
 
     public function __construct($path = null)
     {
@@ -28,7 +32,13 @@ abstract class AbstractPage
     
     public function setPath($path)
     {
-        $this->path = $path;
+        if (file_exists($path)) {
+            $this->path = $path;
+        } else {
+            throw new NotFoundException(
+                sprintf('The requested page was not found (searching "%s")!', $path)
+            );
+        }
         return $this;
     }
 
@@ -36,6 +46,12 @@ abstract class AbstractPage
     {
         return $this->path;
     }
+
+// ------------------
+// Abstracts
+// ------------------
+
+    abstract public function parse();
 
 }
 

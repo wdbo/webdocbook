@@ -8,10 +8,15 @@
 
 namespace DocBook;
 
-use DocBook\Abstracts\AbstractFrontController;
-use DocBook\Abstracts\AbstractPage;
-use Markdown\Parser, \Markdown\ExtraParser;
-use Patterns\Commons\ConfigurationRegistry;
+use DocBook\Abstracts\AbstractFrontController,
+    DocBook\Abstracts\AbstractPage,
+    DocBook\Locator,
+    DocBook\NotFoundException,
+    DocBook\DocBookException,
+    DocBook\DocBookRuntimeException;
+
+use Markdown\Parser,
+    Markdown\ExtraParser;
 
 /**
  */
@@ -21,35 +26,34 @@ class FrontController extends AbstractFrontController
     const DOCBOOK_INTERFACE = 'docbook.php';
     const MARKDOWN_CONFIG = 'markdown.ini';
     const DOCBOOK_CONFIG = 'docbook.ini';
+    const APP_MANIFEST = 'composer.json';
+
+    const USER_DIR = 'user';
     const TEMPLATES_DIR = 'templates';
     const CONFIG_DIR = 'config';
 
     protected $params = array();
-    protected $headers = array();
     protected $input_file;
     protected $input_path;
-    protected $page_type = 'default';
+    protected $page_type;
 
     // dependences
-    protected $registry;
     protected $page_handler;
     protected $template_builder;
     protected $markdown_parser;
 
     protected function __construct()
     {
-        $this->registry = new ConfigurationRegistry();
+        parent::__construct();
+
         $src_dir = __DIR__.'/../';
         $base_dir = $src_dir.'../';
 
         $this
-            ->addPath('app_manifest', $base_dir.'composer.json')
+            ->addPath('app_manifest', $base_dir.self::APP_MANIFEST)
             ->addPath('base_dir_http', $base_dir.'www/')
             ->addPath('base_dir', $src_dir)
             ->addPath('root_dir', $base_dir);
-
-        Helper::ensureDirectoryExists($base_dir.'user/');
-        $this->addPath('user_dir', $base_dir.'user/');
 
         Helper::ensureDirectoryExists($base_dir.'tmp/');
         $this->addPath('tmp', $base_dir.'tmp/');
@@ -57,20 +61,25 @@ class FrontController extends AbstractFrontController
         Helper::ensureDirectoryExists($base_dir.'tmp/cache/');
         $this->addPath('cache', $base_dir.'tmp/cache/');
 
-        $this->addPath('base_templates', $src_dir.'templates/');
+        $this->addPath('base_templates', $src_dir.self::TEMPLATES_DIR);
 
-        Helper::ensureDirectoryExists($base_dir.'user/templates/');
-        $this->addPath('user_templates', $base_dir.'user/templates/');
+        Helper::ensureDirectoryExists($base_dir.self::USER_DIR);
+        $this->addPath('user_dir', $base_dir.self::USER_DIR);
+
+        Helper::ensureDirectoryExists($base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR);
+        $this->addPath('user_templates', $base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR);
     }
 
     protected function init()
     {
+        $locator = new Locator;
+        
         // the docbook config (required)
-        $docbook_cfgfile = $this->fallbackFinder(self::DOCBOOK_CONFIG, 'config');
+        $docbook_cfgfile = $locator->fallbackFinder(self::DOCBOOK_CONFIG, 'config');
         if (!empty($docbook_cfgfile)) {
             $this->registry->setConfig('docbook', parse_ini_file($docbook_cfgfile, true));
         } else {
-            throw new Exception(
+            throw new DocBookException(
                 sprintf('DocBook configuration file not found but is required (searching "%s")!', self::DOCBOOK_CONFIG)
             );
         }
@@ -79,51 +88,39 @@ class FrontController extends AbstractFrontController
         $this->registry->setConfig('manifest', json_decode(file_get_contents($this->getPath('app_manifest')), true));
 
         // the markdown config (not required)
-        $emd_cfgfile = $this->fallbackFinder(self::MARKDOWN_CONFIG, 'config');
+        $emd_cfgfile = $locator->fallbackFinder(self::MARKDOWN_CONFIG, 'config');
         if (!empty($emd_cfgfile)) {
             $this->registry->setConfig('emd', parse_ini_file($emd_cfgfile, true));
         }
 
-        // creating the Markdown parser
-        $emd_cfg = $this->registry->getConfig('emd', array());
-        foreach($emd_cfg as $name=>$val) {
-            @define($name, $val);
-        }
-        $this->setMarkdownParser(new ExtraParser);
-
         // creating the application default headers
         $charset = $this->registry->get('html:charset', 'utf-8', 'docbook');
         $content_type = $this->registry->get('html:content-type', 'text/html', 'docbook');
-        $this->addHeader('Content-type', $content_type.'; charset: '.$charset);
+        $this->response->addHeader('Content-type', $content_type.'; charset: '.$charset);
         $app_name = $this->registry->get('title', null, 'manifest');
         $app_version = $this->registry->get('version', null, 'manifest');
         $app_website = $this->registry->get('homepage', null, 'manifest');
-        $this->addHeader('Composed-by', $app_name.' '.$app_version.' ('.$app_website.')');
+        $this->response->addHeader('Composed-by', $app_name.' '.$app_version.' ('.$app_website.')');
         
         // the template builder
-        $this->setTemplateBuilder(new TemplateBuilder() );
+        $this->setTemplateBuilder(new TemplateBuilder);
 
         // some PHP configs
         @date_default_timezone_set( $this->registry->get('app:timezone', 'Europe/London', 'docbook') );
-
-        $this->setInputPath($_SERVER['REQUEST_URI']);
     }
 
     public function distribute($return = false)
     {
-        $input_file = $this->getInputFile();
-        if (empty($input_file)) {
-            $this->_parseQueryString();
-        }
-
-        $this->_createPageHandler($page_type);
-
-        // for dev        
-//        var_export($_GET);
-//        $this->debug();
-
+        $this->request->parseDocBookRequest();
+        $this->_createPageHandler($this->getPageType());
         $page = $this->getPage();
         $result = !empty($page) ? $page->parse() : '';
+
+        // for dev
+        if (!empty($_GET) && isset($_GET['dbg'])) {
+            $this->debug();
+        }
+
         if (true===$return) {
             return $result;
         } else {
@@ -131,15 +128,15 @@ class FrontController extends AbstractFrontController
         }
     }
     
-    public function notFound()
+    public function notFound($str = '')
     {
         $template = $this->getTemplate('not_found');
         if (!empty($template)) {
-            $full_content = $this->getTemplateBuilder()->render($template);
+            $full_content = $this->getTemplateBuilder()->render($template, array(
+                'message'=>$str
+            ));
         }
-        $this->_renderHeaders();
-        echo !empty($full_content) ? $full_content : 'Not found!';
-        exit(0);
+        $this->response->send(!empty($full_content) ? $full_content : 'Not found!');
     }
     
     public function display($content = '')
@@ -147,10 +144,10 @@ class FrontController extends AbstractFrontController
         $page = $this->getPage();
         $template = $this->getTemplate($page::$template_name);
 
-        $path = $this->getInputPath();
+        $path = $this->getInputFile();
         $breadcrumbs = array();
         if (!empty($path)) {
-            $parts = explode('/', $path);
+            $parts = explode('/', str_replace($this->getPath('base_dir_http'), '', $path));
             $breadcrumbs = array_filter($parts);
         }
 
@@ -167,7 +164,7 @@ class FrontController extends AbstractFrontController
             $file = $this->getInputFile();
             if (empty($file)) {
                 $path = $this->getInputPath();
-                $file = Helper::findPathReadme(rtrim($this->getPath('base_dir_http'), '/').'/'.trim($path, '/'));
+                $file = Locator::findPathReadme(rtrim($this->getPath('base_dir_http'), '/').'/'.trim($path, '/'));
             }
             $update_time = !empty($file) ? Helper::getDateTimeFromTimestamp(filemtime($file)) : null;
             $params = array(
@@ -175,15 +172,14 @@ class FrontController extends AbstractFrontController
                 'breadcrumbs'   => $breadcrumbs,
                 'content'       => $content,
                 'page'          => array(
+                    'name'      => basename($file),
                     'path'      => $file,
                     'update'    => $update_time
                 ),
             );
             $full_content = $this->getTemplateBuilder()->render($template, $params);
         }
-
-        $this->_renderHeaders();
-        echo !empty($full_content) ? $full_content : $content;
+        $this->response->send(!empty($full_content) ? $full_content : $content);
     }
 
 // ---------------------
@@ -197,7 +193,7 @@ class FrontController extends AbstractFrontController
             $this->registry->setConfig($name, $realpath, 'paths');
             return $this;
         } else {
-            throw new \RuntimeException(
+            throw new DocBookRuntimeException(
                 sprintf('Directory "%s" defined as an application path doesn\'t exist!', $value)
             );
         }
@@ -210,11 +206,7 @@ class FrontController extends AbstractFrontController
 
     public function setInputFile($path)
     {
-        if (file_exists($path)) {
-            $this->input_file = $path;
-        } else {
-            $this->uri = str_replace($this->getPath('base_dir_http'), '', $path);
-        }
+        $this->input_file = $path;
         return $this;
     }
 
@@ -225,7 +217,7 @@ class FrontController extends AbstractFrontController
 
     public function setInputPath($path)
     {
-        $this->input_path = str_replace(basename($this->getInputFile()), '', $path);
+        $this->input_path = $path;
         return $this;
     }
 
@@ -236,20 +228,7 @@ class FrontController extends AbstractFrontController
 
     public function setQueryString($uri)
     {
-        $real_uri = end(explode(self::DOCBOOK_INTERFACE, $uri));
-        $parsed = parse_url($real_uri);
-
-        if (!empty($parsed['query'])) {
-            parse_str($parsed['query'], $params);
-            $this->setParams($params);
-        }
-
-        if (!empty($parsed['path'])) {
-            $this->uri = $parsed['path'];
-        } elseif (empty($parsed['query'])) {
-            $this->uri = $real_uri;
-        }
-
+        $this->uri = $uri;
         return $this;
     }
     
@@ -280,33 +259,6 @@ class FrontController extends AbstractFrontController
         return isset($this->params[$name]) ? $this->params[$name] : null;
     }
 
-    public function setHeaders(array $params)
-    {
-        $this->headers = $params;
-        return $this;
-    }
-
-    public function addHeader($name, $value = null)
-    {
-        $this->headers[$name] = $value;
-        return $this;
-    }
-
-    public function getHeaders()
-    {
-        return $this->headers;
-    }
-
-    public function getHeader($name)
-    {
-        return isset($this->headers[$name]) ? $this->headers[$name] : null;
-    }
-
-    public function getRegistry()
-    {
-        return $this->registry;
-    }
-    
     public function setPageType($type)
     {
         $this->page_type = $type;
@@ -337,6 +289,14 @@ class FrontController extends AbstractFrontController
     
     public function getMarkdownParser()
     {
+        if (empty($this->markdown_parser)) {
+            // creating the Markdown parser
+            $emd_cfg = $this->registry->getConfig('emd', array());
+            foreach($emd_cfg as $name=>$val) {
+                @define($name, $val);
+            }
+            $this->setMarkdownParser(new ExtraParser);
+        }
         return $this->markdown_parser;
     }
 
@@ -357,61 +317,14 @@ class FrontController extends AbstractFrontController
     }
 
 // ---------------------
-// Fallback process
-// ---------------------
-
-    public function fallbackFinder($filename, $filetype = 'template')
-    {
-        $base_path = 'template'===$filetype ? self::TEMPLATES_DIR : self::CONFIG_DIR;
-        $file_path = rtrim($base_path, '/').'/'.$filename;
-        
-        // user first
-        $user_file_path = rtrim($this->getPath('user_dir'), '/').'/'.$file_path;
-        if (file_exists($user_file_path)) {
-            return $user_file_path;
-        }
-
-        // default
-        $def_file_path = rtrim($this->getPath('base_dir'), '/').'/'.$file_path;
-        if (file_exists($def_file_path)) {
-            return $def_file_path;
-        }
-
-        // else false        
-        return false;
-    }
-
-// ---------------------
 // Process
 // ---------------------
 
-    protected function _parseQueryString()
-    {
-        $uri = $this->getQueryString();
-        $parts = explode('/', $uri);
-        $parts = array_filter($parts);
-        $original_parts = $parts;
-
-        $file_path = rtrim($this->getPath('base_dir_http'), '/').'/'.implode('/', $parts);
-        while(!file_exists($file_path) && count($parts)>0) {
-            array_pop($parts);
-            $file_path = rtrim($this->getPath('base_dir_http'), '/').'/'.implode('/', $parts);
-        }
-
-        if (count($parts)>0) {
-            $this->setInputFile($file_path);
-        }
-
-        $diff = array_diff($original_parts, $parts);
-        if (!empty($diff) && count($diff)===1) {
-            $this->setPageType(array_shift($diff));
-        }
-    }
-    
     protected function _createPageHandler($type = null, $file = null)
     {
         $cfg = $this->registry->getConfig('page_types', array(), 'docbook');
-        $page_type = !is_null($type) ? $type : $this->getPageType();
+        $original_page_type = !is_null($type) ? $type : $this->getPageType();
+        $page_type = !empty($original_page_type) ? $original_page_type : 'default';
         $input_file = !is_null($file) ? $file : $this->getInputFile();
         if (empty($input_file)) {
             $input_path = $this->getInputPath();
@@ -420,22 +333,23 @@ class FrontController extends AbstractFrontController
             }
         }
 
-        if (array_key_exists($page_type, $cfg)) {
-            $_cls = 'DocBook\\Page\\'.ucfirst($cfg[$page_type]);
-            $this->setPage( new $_cls($input_file) );
+        $locator = new Locator;
+        $page_action_cls = $locator->getPageAction($page_type);
+        if ($page_action_cls) {
+            $this->setPage( new $page_action_cls($input_file) );
         } else {
-            $this->notFound();
+            if (!empty($original_page_type)) {
+                throw new NotFoundException(
+                    sprintf('The requested "%s" action was not found!', $original_page_type)
+                );
+            } else {
+                throw new NotFoundException(
+                    sprintf('The requested page was not found (searching "%s")!', $input_file)
+                );
+            }
         }
     }
 
-    protected function _renderHeaders()
-    {
-        if (headers_sent()) return;
-        foreach($this->getHeaders() as $name=>$val) {
-            header($name.': '.$val);
-        }
-    }
-    
 // ---------------------
 // Dev
 // ---------------------
