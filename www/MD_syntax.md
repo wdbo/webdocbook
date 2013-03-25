@@ -1,1 +1,1 @@
-/Applications/MAMP/htdocs/GitHub_projects/docbook/MD_syntax.md
+../MD_syntax.md

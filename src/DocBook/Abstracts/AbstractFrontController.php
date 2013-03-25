@@ -1,14 +1,15 @@
 <?php
 /**
  * PHP/Apache/Markdown DocBook
- * @package 	DocBook
- * @license   	GPL-v3
- * @link      	https://github.com/atelierspierrot/docbook
+ * @package     DocBook
+ * @license     GPL-v3
+ * @link        https://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\Abstracts;
 
-use DocBook\Abstracts\AbstractPage,
+use DocBook\Abstracts\AbstractController,
+    DocBook\Abstracts\AbstractPage,
     DocBook\Locator,
     DocBook\Response,
     DocBook\Request,
@@ -26,9 +27,13 @@ abstract class AbstractFrontController extends AbstractSingleton
 {
 
     // dependences
+    protected $routing = array();
+    protected $locator;
     protected $registry;
     protected $request;
     protected $response;
+    protected $controller;
+    protected $template_builder;
 
 // ------------------
 // Dependencies init
@@ -39,7 +44,8 @@ abstract class AbstractFrontController extends AbstractSingleton
         $this
             ->setRegistry(new ConfigurationRegistry)
             ->setResponse(new Response)
-            ->setRequest(new Request);
+            ->setRequest(new Request)
+            ->setLocator(new Locator);
     }
 
 // ------------------
@@ -55,6 +61,17 @@ abstract class AbstractFrontController extends AbstractSingleton
     public function getResponse()
     {
         return $this->response;
+    }
+
+    private function setLocator(Locator $locator)
+    {
+        $this->locator = $locator;
+        return $this;
+    }
+
+    public function getLocator()
+    {
+        return $this->locator;
     }
 
     private function setRequest(Request $request)
@@ -79,6 +96,28 @@ abstract class AbstractFrontController extends AbstractSingleton
         return $this->registry;
     }
 
+    public function setController(AbstractController $ctrl)
+    {
+        $this->controller = $ctrl;
+        return $this;
+    }
+
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    public function setTemplateBuilder(TemplateBuilder $builder)
+    {
+        $this->template_builder = $builder;
+        return $this;
+    }
+    
+    public function getTemplateBuilder()
+    {
+        return $this->template_builder;
+    }
+
 // ------------------
 // Abstracts
 // ------------------
@@ -87,20 +126,14 @@ abstract class AbstractFrontController extends AbstractSingleton
 
     abstract public function setInputFile($path);
     abstract public function getInputFile();
+    abstract public function setInputPath($path);
+    abstract public function getInputPath();
     abstract public function setQueryString($uri);
     abstract public function getQueryString();
-    abstract public function setParams(array $params);
-    abstract public function addParam($name, $value = null);
-    abstract public function getParams();
-    abstract public function getParam($name);
-    abstract public function setPage(AbstractPage $page);
-    abstract public function getPage();
-    abstract public function setPageType($type);
-    abstract public function getPageType();
+    abstract public function setAction($action);
+    abstract public function getAction();
     abstract public function setMarkdownParser(ExtraParser $parser);
     abstract public function getMarkdownParser();
-    abstract public function setTemplateBuilder(TemplateBuilder $builder);
-    abstract public function getTemplateBuilder();
 
 }
 

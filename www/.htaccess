@@ -21,9 +21,9 @@ IndexIgnore docbook.php wip* docbook_assets* ..
 # and the INCLUDES functionality
 AddType text/html .md .smd .shtml
 AddOutputFilter INCLUDES .smd .shtml
-AddHandler cgi-script .sh
+AddHandler cgi-script .php
 AddHandler MarkDown .md
-Action MarkDown /cgi-bin/apache_handler.sh virtual
+Action MarkDown /cgi-bin/docbook_cgi.php virtual
 
 # redefinition of the default index, readme and header files
 DirectoryIndex INDEX.md

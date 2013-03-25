@@ -32,9 +32,7 @@
     {%- if loop.index < (loop.length-1) %}, {% endif %}
 {% endfor %}
     under <a href="http://www.gnu.org/licenses/gpl-3.0.html" title="Read this license text online">GPL-3.0</a> license.
-{#
     <br />
-    <a href="#" onclick="messagebox('/credits', 'About DocBook');" title="See the full application credits, check for updates ...">About</a>
-#}
+    <a href="#" onclick="messagebox('{{ 'credits'|route(null, true) }}', 'About DocBook');" title="See the full application credits, check for updates ...">About</a>
     </div>
 </footer>

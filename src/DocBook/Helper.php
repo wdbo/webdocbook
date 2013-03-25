@@ -1,9 +1,9 @@
 <?php
 /**
  * PHP/Apache/Markdown DocBook
- * @package 	DocBook
- * @license   	GPL-v3
- * @link      	https://github.com/atelierspierrot/docbook
+ * @package     DocBook
+ * @license     GPL-v3
+ * @link        https://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
@@ -29,6 +29,17 @@ class Helper
                 str_replace('.md', '', $name)
             )
         );
+    }
+
+    public static function getBreadcrumbs($path = null)
+    {
+        $docbook = FrontController::getInstance();
+        $breadcrumbs = array();
+        if (!empty($path)) {
+            $parts = explode('/', str_replace($docbook->getPath('base_dir_http'), '', $path));
+            $breadcrumbs = array_filter($parts);
+        }
+        return $breadcrumbs;
     }
 
     public static function securedPath($path)
@@ -60,12 +71,12 @@ class Helper
         return $time;
     }
 
-    public static function getRoute($path, $type = null)
+    public static function getRoute($path, $type = null, $with_interface = false)
     {
         $route = $path;
         $docbook = FrontController::getInstance();
         $rel_path = str_replace($docbook->getPath('base_dir_http'), '', $path);
-        return '/'.trim($rel_path, '/').(!empty($type) ? '/'.$type : '');
+        return (true===$with_interface ? FrontController::DOCBOOK_INTERFACE.'?' : '/').trim($rel_path, '/').(!empty($type) ? '/'.$type : '');
     }
 
     /**
@@ -110,27 +121,27 @@ class Helper
         ) ? 'https' : 'http');
     }
     
-	/**
-	 * Launch a class's method fetching arguments
-	 *
-	 * @param string $_class The class name
-	 * @param string $_method The class method name
-	 * @param misc $args A set of arguments to fetch
-	 */
-	public static function fetchArguments($_class = null, $_method = null, $args = null)
-	{
-		if (empty($_class) || empty($_method)) return;
-		$args_def=array();
-		if (!empty($args)) {
-			$analyze = new ReflectionMethod($_class, $_method);
-			foreach($analyze->getParameters() as $_param) {
-				$arg_index = $_param->getName();
-				$args_def[$_param->getPosition()] = isset($args[$arg_index]) ?
-					$args[$arg_index] : ( $_param->isOptional() ? $_param->getDefaultValue() : null );
-			}
-		}
-		return call_user_func_array( array($_class, $_method), $args_def );
-	}
+    /**
+     * Launch a class's method fetching arguments
+     *
+     * @param string $_class The class name
+     * @param string $_method The class method name
+     * @param misc $args A set of arguments to fetch
+     */
+    public static function fetchArguments($_class = null, $_method = null, $args = null)
+    {
+        if (empty($_class) || empty($_method)) return;
+        $args_def=array();
+        if (!empty($args)) {
+            $analyze = new ReflectionMethod($_class, $_method);
+            foreach($analyze->getParameters() as $_param) {
+                $arg_index = $_param->getName();
+                $args_def[$_param->getPosition()] = isset($args[$arg_index]) ?
+                    $args[$arg_index] : ( $_param->isOptional() ? $_param->getDefaultValue() : null );
+            }
+        }
+        return call_user_func_array( array($_class, $_method), $args_def );
+    }
 
 }
 

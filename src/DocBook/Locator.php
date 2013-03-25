@@ -1,9 +1,9 @@
 <?php
 /**
  * PHP/Apache/Markdown DocBook
- * @package 	DocBook
- * @license   	GPL-v3
- * @link      	https://github.com/atelierspierrot/docbook
+ * @package     DocBook
+ * @license     GPL-v3
+ * @link        https://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
@@ -21,13 +21,32 @@ class Locator
         return file_exists($readme) ? $readme : null;
     }
 
-    public function getPageAction($action)
+    public function findController($route)
     {
-        $cfg = FrontController::getInstance()->getRegistry()->getConfig('page_types', array(), 'docbook');
-        if (array_key_exists($action, $cfg)) {
-            $_cls = 'DocBook\\Page\\'.ucfirst($cfg[$action]);
+        $cfg = FrontController::getInstance()->getRegistry()->getConfig('app', array(), 'docbook');
+        $def_ctrl = isset($cfg['default_controller']) ? $cfg['default_controller'] : 'default';
+        $def_act = isset($cfg['default_action']) ? $cfg['default_action'] : 'default';
+        $routes = FrontController::getInstance()->getRegistry()->getConfig('routes', array(), 'docbook');
+
+        $ctrl = $action = null;
+        if (array_key_exists($route, $routes)) {
+            $route_info = $routes[$route];
+            if (false===strpos($route_info, ':')) {
+                $ctrl = $def_ctrl;
+                $action = str_replace('Action', '', $route_info).'Action';
+            } else {
+                list($ctrl, $action) = split(':', $route_info);
+                $action = str_replace('Action', '', $action).'Action';
+            }
+        }
+
+        if (!empty($ctrl)) {
+            $_cls = 'DocBook\\Controller\\'.ucfirst($ctrl).'Controller';
             if (class_exists($_cls)) {
-                return $_cls;
+                return array(
+                    'controller_classname' => $_cls,
+                    'action' => $action
+                );
             }
         }
         return null;

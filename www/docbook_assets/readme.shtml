@@ -1,1 +1,1 @@
-<!--#include virtual="/cgi-bin/apache_handler.sh?footer" -->
+<!--#include virtual="/cgi-bin/docbook_cgi.php/footer" -->

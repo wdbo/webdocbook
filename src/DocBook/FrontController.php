@@ -1,9 +1,9 @@
 <?php
 /**
  * PHP/Apache/Markdown DocBook
- * @package 	DocBook
- * @license   	GPL-v3
- * @link      	https://github.com/atelierspierrot/docbook
+ * @package     DocBook
+ * @license     GPL-v3
+ * @link        https://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
@@ -32,14 +32,10 @@ class FrontController extends AbstractFrontController
     const TEMPLATES_DIR = 'templates';
     const CONFIG_DIR = 'config';
 
-    protected $params = array();
+    // dependences
     protected $input_file;
     protected $input_path;
-    protected $page_type;
-
-    // dependences
-    protected $page_handler;
-    protected $template_builder;
+    protected $action;
     protected $markdown_parser;
 
     protected function __construct()
@@ -72,10 +68,8 @@ class FrontController extends AbstractFrontController
 
     protected function init()
     {
-        $locator = new Locator;
-        
         // the docbook config (required)
-        $docbook_cfgfile = $locator->fallbackFinder(self::DOCBOOK_CONFIG, 'config');
+        $docbook_cfgfile = $this->locator->fallbackFinder(self::DOCBOOK_CONFIG, 'config');
         if (!empty($docbook_cfgfile)) {
             $this->registry->setConfig('docbook', parse_ini_file($docbook_cfgfile, true));
         } else {
@@ -88,7 +82,7 @@ class FrontController extends AbstractFrontController
         $this->registry->setConfig('manifest', json_decode(file_get_contents($this->getPath('app_manifest')), true));
 
         // the markdown config (not required)
-        $emd_cfgfile = $locator->fallbackFinder(self::MARKDOWN_CONFIG, 'config');
+        $emd_cfgfile = $this->locator->fallbackFinder(self::MARKDOWN_CONFIG, 'config');
         if (!empty($emd_cfgfile)) {
             $this->registry->setConfig('emd', parse_ini_file($emd_cfgfile, true));
         }
@@ -111,21 +105,45 @@ class FrontController extends AbstractFrontController
 
     public function distribute($return = false)
     {
-        $this->request->parseDocBookRequest();
-        $this->_createPageHandler($this->getPageType());
-        $page = $this->getPage();
-        $result = !empty($page) ? $page->parse() : '';
+        $routing = $this->request
+            ->parseDocBookRequest()
+            ->getDocBookRouting();
+
+        $input_file = $this->getInputFile();
+        if (empty($input_file)) {
+            $input_path = $this->getInputPath();
+            if (!empty($input_path)) {
+                $input_file = rtrim($this->getPath('base_dir_http'), '/').'/'.trim($input_path, '/');
+            }
+        }
+                
+        $result = null;
+        if (!empty($routing)) {
+            $ctrl_cls = $routing['controller_classname'];
+            $ctrl_obj = new $ctrl_cls();
+            $this->setController($ctrl_obj);
+            $result = Helper::fetchArguments(
+                $this->getController(), $routing['action'], array('path'=>$input_file)
+            );
+        }
+        if (empty($result) || !is_array($result) || count($result)!=2) {
+            $str = gettype($result);
+            if (is_array($result)) $str .= ' length '.count($result);
+            throw new DocBookRuntimeException(
+                sprintf('A controller action must return a two entries array like [ template file , content ]! Received %s from class "%s::%s()".',
+                $str, $routing['controller_classname'], $routing['action'])
+            );
+        } else {
+            $template = $result[0];
+            $content = $result[1];
+        }
 
         // for dev
         if (!empty($_GET) && isset($_GET['dbg'])) {
             $this->debug();
         }
 
-        if (true===$return) {
-            return $result;
-        } else {
-            $this->display($result);
-        }
+        $this->display($content, $template);
     }
     
     public function notFound($str = '')
@@ -139,18 +157,10 @@ class FrontController extends AbstractFrontController
         $this->response->send(!empty($full_content) ? $full_content : 'Not found!');
     }
     
-    public function display($content = '')
+    public function display($content = '', $template_name = null)
     {
-        $page = $this->getPage();
-        $template = $this->getTemplate($page::$template_name);
-
         $path = $this->getInputFile();
-        $breadcrumbs = array();
-        if (!empty($path)) {
-            $parts = explode('/', str_replace($this->getPath('base_dir_http'), '', $path));
-            $breadcrumbs = array_filter($parts);
-        }
-
+        $breadcrumbs = Helper::getBreadcrumbs($path);
         $title = Helper::buildPageTitle($this->getInputFile());
         if (empty($title)) {
             if (!empty($breadcrumbs)) {
@@ -160,6 +170,7 @@ class FrontController extends AbstractFrontController
             }
         }
 
+        $template = $this->getTemplate($template_name);
         if (!empty($template)) {
             $file = $this->getInputFile();
             if (empty($file)) {
@@ -178,6 +189,11 @@ class FrontController extends AbstractFrontController
                 ),
             );
             $full_content = $this->getTemplateBuilder()->render($template, $params);
+        }
+
+        if (Request::isAjax()) {
+            $this->response->setContentType('json');
+            $full_content = is_array($full_content) ? $full_content : array('body' => $full_content);
         }
         $this->response->send(!empty($full_content) ? $full_content : $content);
     }
@@ -237,50 +253,17 @@ class FrontController extends AbstractFrontController
         return $this->uri;
     }
     
-    public function setParams(array $params)
+    public function setAction($type)
     {
-        $this->params = $params;
+        $this->action = $type;
         return $this;
     }
 
-    public function addParam($name, $value = null)
+    public function getAction()
     {
-        $this->params[$name] = $value;
-        return $this;
-    }
-
-    public function getParams()
-    {
-        return $this->params;
-    }
-
-    public function getParam($name)
-    {
-        return isset($this->params[$name]) ? $this->params[$name] : null;
-    }
-
-    public function setPageType($type)
-    {
-        $this->page_type = $type;
-        return $this;
-    }
-
-    public function getPageType()
-    {
-        return $this->page_type;
+        return $this->action;
     }
     
-    public function setPage(AbstractPage $page)
-    {
-        $this->page_handler = $page;
-        return $this;
-    }
-
-    public function getPage()
-    {
-        return $this->page_handler;
-    }
-
     public function setMarkdownParser(ExtraParser $parser)
     {
         $this->markdown_parser = $parser;
@@ -300,54 +283,9 @@ class FrontController extends AbstractFrontController
         return $this->markdown_parser;
     }
 
-    public function setTemplateBuilder(TemplateBuilder $builder)
-    {
-        $this->template_builder = $builder;
-        return $this;
-    }
-    
-    public function getTemplateBuilder()
-    {
-        return $this->template_builder;
-    }
-
     public function getTemplate($name)
     {
         return $this->registry->get('templates:'.$name, null, 'docbook');
-    }
-
-// ---------------------
-// Process
-// ---------------------
-
-    protected function _createPageHandler($type = null, $file = null)
-    {
-        $cfg = $this->registry->getConfig('page_types', array(), 'docbook');
-        $original_page_type = !is_null($type) ? $type : $this->getPageType();
-        $page_type = !empty($original_page_type) ? $original_page_type : 'default';
-        $input_file = !is_null($file) ? $file : $this->getInputFile();
-        if (empty($input_file)) {
-            $input_path = $this->getInputPath();
-            if (!empty($input_path)) {
-                $input_file = rtrim($this->getPath('base_dir_http'), '/').'/'.trim($input_path, '/');
-            }
-        }
-
-        $locator = new Locator;
-        $page_action_cls = $locator->getPageAction($page_type);
-        if ($page_action_cls) {
-            $this->setPage( new $page_action_cls($input_file) );
-        } else {
-            if (!empty($original_page_type)) {
-                throw new NotFoundException(
-                    sprintf('The requested "%s" action was not found!', $original_page_type)
-                );
-            } else {
-                throw new NotFoundException(
-                    sprintf('The requested page was not found (searching "%s")!', $input_file)
-                );
-            }
-        }
     }
 
 // ---------------------
