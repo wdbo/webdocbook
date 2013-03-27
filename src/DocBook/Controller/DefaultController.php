@@ -155,6 +155,9 @@ class DefaultController extends AbstractController
 
     public static function getNewScanEntry(WebFileInfo $file)
     {
+        if (is_link($file->getFilename())) {
+            $file = new WebFileInfo(realpath($file->getFilename()));
+        }
         return array(
             'type'      =>$file->isDir() ? 'dir' : 'file',
             'path'      =>Helper::getSecuredRealpath($file->getRealPath()),
