@@ -266,17 +266,6 @@ function initScrollTo()
     });
 }
 
-function rebuildIndexTable()
-{
-    var indextable = $('#indextable table');
-    var head = indextable.find('tr:first');
-    var body = indextable.find('tr:not(:first)');
-    var new_head = $('<thead>').html(head);
-    var new_body = $('<tbody>').html(body);
-    indextable.html('').append(new_head).append(new_body);
-    initTablesorter('#indextable table', {headers:{0:{sorter:false}}});
-}
-
 function messagebox(url, title)
 {
     var msgb = $('#messagebox');

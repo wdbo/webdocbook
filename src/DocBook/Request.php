@@ -177,43 +177,49 @@ echo '<br />server_argv: '.var_export($server_argv,1);
 
         // first: request path from URL
         if (!empty($server_uri)) {
-            $parts = explode('/', $server_uri);
-            $parts = array_filter($parts);
-            $int_index = array_search(FrontController::DOCBOOK_INTERFACE, $parts);
-            if (!empty($int_index)) unset($parts[$int_index]);
-            $original_parts = $parts;
 
-            // classic case : XXX/YYY/...(/action)
-            $test_file = $locator->locateDocument(implode('/', $parts));
-            while(empty($test_file) && count($parts)>0) {
-                array_pop($parts);
-                $test_file = $locator->locateDocument(implode('/', $parts));
-            }
-            if (count($parts)>0) {
-                $file = $test_file;
-                $diff = array_diff($original_parts, $parts);
-                if (!empty($diff) && count($diff)===1) {
-                    $action = array_shift($diff);
-                }
+            // if '/action'
+            if ($ctrl = $locator->findController(trim($server_uri, '/'))) {
+                $action = trim($server_uri, '/');
             } else {
+                $parts = explode('/', $server_uri);
+                $parts = array_filter($parts);
+                $int_index = array_search(FrontController::DOCBOOK_INTERFACE, $parts);
+                if (!empty($int_index)) unset($parts[$int_index]);
+                $original_parts = $parts;
 
-                // case of a non-existing file : XXX/YYY/.../ZZZ.md(/action)
-                $parts = $original_parts;
-                $isMd = '.md'===substr(end($parts), -3);
-                while (true!==$isMd && count($parts)>0) {
+                // classic case : XXX/YYY/...(/action)
+                $test_file = $locator->locateDocument(implode('/', $parts));
+                while(empty($test_file) && count($parts)>0) {
                     array_pop($parts);
-                    $isMd = '.md'===substr(end($parts), -3);
+                    $test_file = $locator->locateDocument(implode('/', $parts));
                 }
-                if ($isMd && count($parts)>0) {
-                    $file = implode('/', $parts);
+                if (count($parts)>0) {
+                    $file = $test_file;
                     $diff = array_diff($original_parts, $parts);
                     if (!empty($diff) && count($diff)===1) {
                         $action = array_shift($diff);
                     }
+                } else {
+
+                    // case of a non-existing file : XXX/YYY/.../ZZZ.md(/action)
+                    $parts = $original_parts;
+                    $isMd = '.md'===substr(end($parts), -3);
+                    while (true!==$isMd && count($parts)>0) {
+                        array_pop($parts);
+                        $isMd = '.md'===substr(end($parts), -3);
+                    }
+                    if ($isMd && count($parts)>0) {
+                        $file = implode('/', $parts);
+                        $diff = array_diff($original_parts, $parts);
+                        if (!empty($diff) && count($diff)===1) {
+                            $action = array_shift($diff);
+                        }
+                    }
                 }
             }
         }
-
+/*
         // second: request from CLI
         if (empty($action)) {
             if (!empty($server_argv)) {
@@ -240,7 +246,7 @@ echo '<br />server_argv: '.var_export($server_argv,1);
                 }
             }
         }
-
+*/
         if (!empty($file)) {
             $docbook->setInputFile($file);
             if (file_exists($file)) {
@@ -269,7 +275,7 @@ exit('yo');
         if (empty($input_file)) {
             $input_path = $docbook->getInputPath();
             if (!empty($input_path)) {
-                $input_file = rtrim($docbook->getPath('base_dir_http'), '/').'/'.trim($input_path, '/');
+                $input_file = Helper::slashDirname($docbook->getPath('base_dir_http')).trim($input_path, '/');
             }
         }
 

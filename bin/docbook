@@ -1,9 +1,10 @@
+#!/usr/bin/env php
 <?php
 /**
  * PHP/Apache/Markdown DocBook
- * @package     DocBook
- * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @package 	DocBook
+ * @license   	GPL-v3
+ * @link      	https://github.com/atelierspierrot/docbook
  */
 
 // Show errors at least initially
@@ -25,7 +26,12 @@ if (@file_exists($composerAutoLoader)) {
 // PROCESS
 // -----------------------------------
 
+// the arguments
+$argv = $_SERVER['argv'];
+$input_file = array_pop($argv);
+
 // the application 
-\DocBook\FrontController::getInstance()->distribute();
+$main = \DocBook\FrontController::getInstance();
+if ($main) $main->setInputFile($input_file)->distribute();
 
 // Endfile

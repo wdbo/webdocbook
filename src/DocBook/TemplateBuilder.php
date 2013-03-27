@@ -100,8 +100,9 @@ class TemplateBuilder extends AbstractView
             'app_cfg'           => $docbook->getRegistry()->getConfig('html', array(), 'docbook'),
             'app'               => $docbook->getRegistry()->getConfig('app', array(), 'docbook'),
             'manifest'          => $docbook->getRegistry()->getConfig('manifest', array()),
-            'assets'            => '/docbook_assets/',
-            'vendor_assets'     => '/docbook_assets/vendor/',
+            'assets'            => '/'.FrontController::DOCBOOK_ASSETS.'/',
+            'vendor_assets'     => '/'.FrontController::DOCBOOK_ASSETS.'/vendor/',
+            'chapters'          => $docbook->getChapters(),
         );
     }
 

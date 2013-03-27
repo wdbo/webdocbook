@@ -9,6 +9,7 @@
 namespace DocBook\Controller;
 
 use DocBook\FrontController,
+    DocBook\Helper,
     DocBook\Locator,
     DocBook\Abstracts\AbstractController;
 
@@ -27,8 +28,38 @@ class DocBookController extends AbstractController
 
     public function creditsAction()
     {
+        return array('credits', 'YO', array('title'=>'About DocBook'));
+    }
 
-        return array('layout_empty_txt', 'YO');
+    public function docbookdocAction()
+    {
+        $path = Helper::slashDirname(FrontController::DOCBOOK_ASSETS)
+            .'USER_MANUAL.md';
+
+        $page_infos = array(
+            'name'      => 'USER_MANUAL.md',
+            'path'      => 'docbookdoc',
+            'update'    => Helper::getDateTimeFromTimestamp(filemtime($path))
+        );
+        $tpl_params = array(
+            'breadcrumbs' => array('DocBook user manual'),
+            'title' => 'User manual',
+            'page' => $page_infos,
+            'page_tools' => 'false'
+        );
+
+        $file_content = file_get_contents($path);
+        $md_parser = $this->docbook->getMarkdownParser();
+        $content = $this->docbook->display(
+            $md_parser->transform($file_content),
+            'content',
+            array(
+                'page'=>$page_infos,
+                'page_tools' => 'false'
+            )
+        );
+
+        return array('default', $content, $tpl_params);
     }
 
 }

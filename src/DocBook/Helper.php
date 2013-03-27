@@ -9,17 +9,28 @@
 namespace DocBook;
 
 use DocBook\DocBookException,
-    DocBook\DocBookRuntimeException;
+    DocBook\DocBookRuntimeException,
+    DocBook\FrontController;
 
 use \DateTime,
     \ReflectionMethod;
 
-use DocBook\FrontController;
+use WebFilesystem\WebFilesystem;
 
 /**
  */
 class Helper
 {
+
+    public static function getSlug($string)
+    {
+        return str_replace(array(' '), '_', strtolower($string));
+    }
+
+    public static function slashDirname($dirname)
+    {
+        return rtrim($dirname, '/ '.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+    }
 
     public static function buildPageTitle($filename)
     {
@@ -42,7 +53,7 @@ class Helper
         return $breadcrumbs;
     }
 
-    public static function securedPath($path)
+    public static function getSecuredRealpath($path)
     {
         $docbook = FrontController::getInstance();
         return str_replace($docbook->getPath('root_dir'), '/[***]', $path);
@@ -75,8 +86,38 @@ class Helper
     {
         $route = $path;
         $docbook = FrontController::getInstance();
+        $add_last_slash = file_exists($path) && is_dir($path);
         $rel_path = str_replace($docbook->getPath('base_dir_http'), '', $path);
-        return (true===$with_interface ? FrontController::DOCBOOK_INTERFACE.'?' : '/').trim($rel_path, '/').(!empty($type) ? '/'.$type : '');
+        return (true===$with_interface ? FrontController::DOCBOOK_INTERFACE.'?' : '/').trim($rel_path, '/')
+            .($add_last_slash ? '/' : '')
+            .(!empty($type) ? ($add_last_slash ? '' : '/').$type : '');
+    }
+
+    public static function getDirectorySize($path)
+    {
+        $docbook = FrontController::getInstance();
+        $tmp = self::slashDirname($docbook->getPath('tmp'));
+
+ 		$descriptorspec = array(
+			1 => array('pipe', 'w'),
+			2 => array('pipe', 'w'),
+		);
+		$pipes = array();
+        $command = '/usr/bin/du -cLak '.$path.' | grep total';
+		$resource = proc_open($command, $descriptorspec, $pipes);
+
+		$stdout = stream_get_contents($pipes[1]);
+		$stderr = stream_get_contents($pipes[2]);
+		foreach ($pipes as $pipe) {
+			fclose($pipe);
+		}
+
+		$status = trim(proc_close($resource));
+		if ($stdout && !$status) {
+		    $result = explode(' ', $stdout);
+            return WebFilesystem::getTransformedFilesize(1024*array_shift($result));
+		}
+		return 0;
     }
 
     /**

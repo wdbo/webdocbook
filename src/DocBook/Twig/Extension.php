@@ -19,7 +19,7 @@ class DocBook_Twig_Extension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('route', '\DocBook\Helper::getRoute'),
             new \Twig_SimpleFilter('relpath', '\DocBook\Helper::getRealPath'),
-            new \Twig_SimpleFilter('securedPath', '\DocBook\Helper::securedPath'),            
+            new \Twig_SimpleFilter('securedPath', '\DocBook\Helper::getSecuredRealpath'),            
         );
     }
 }

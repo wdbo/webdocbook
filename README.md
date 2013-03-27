@@ -14,7 +14,7 @@ DocBook is a simple application organized beyond a filesystem architecture of Ma
 Each file is a "page" and each sub-directory is a "section" of pages. The title of the files 
 or directories is used to be the title of the page or section.
 
-For each file, a set of dependances can be defined to overwrite the default value, that must 
+For each file, a set of dependences can be defined to overwrite the default value, that must 
 itself be defined at the project root directory. These files are, by default:
 
 -   `*.copyright.md`: a copyright, license or protection information for the file content,
@@ -63,6 +63,9 @@ For each file of your DocBook, the following URLs are available:
 
 ## Organization
 
+For more informations about how to use DocBook every day, browse the `/docbookdoc` URL of
+your installation to read the DocBook user manual. A link to this manual is always accessible
+in the header navigation bar.
 
 ### Special files
 
@@ -83,8 +86,7 @@ The default global architecture of your DocBook is:
     | user/
     | www/
 
--   `bin/` contains the Apache shell script which will handle all requests and the application 
-    installer/updater ;
+-   `bin/` contains the application installer/updater ;
 
 -   `src/` contains the PHP sources of the application and the template files ; to define a 
     new template, put your file here ; it must follow an architecture like:
@@ -110,37 +112,46 @@ The default global architecture of your DocBook is:
     this directory is not used in HTML pages*) ; it must follow an architecture like:
 
         | www/
-        | ---- assets/
+        | ---- docbook_assets/
         | ---- .htaccess
-        | ---- docbook.php
+        | ---- index.php
 
 **NOTE** - A `vendor/` sub-directory will be created by the application in both `src/` and 
-`www/` directories to store the vendor external packages used by DocBook ; do not modify them.
+`www/docbook_assets/` directories to store the vendor external packages used by DocBook ;
+do not modify them.
     
 
 ### Data files organization
 
 All your Markdown files, the real pages of your website, have to be stored in the `www/` 
-directory.
+directory or sub-directories.
+
+Any assets, image or other media file, that you want to include or use in your Markdown
+contents must be stores in an `assets/` sub-directory in the current directory. If you do
+not follow this rule, your file will not be accessible by Apache.
 
 By default, any file contained in a directory named `wip/` will not be displayed publicly 
 and will not be referenced in the sitemap neither in the index ; to view it, you will have 
 to manually write its URL (*see the [Routing](#url-routing) section of this document to 
 learn more about the application URLs'construction*). 
 
+Knowing that, a classic DocBook directory organization should be:
 
-### Configuration settings
+    | chapter-name/
+    | ------------- README.md           // the first file shown loading the directory
+    | ------------- assets/             // a directory containing your medias
+    | ------------- wip/                // a directory containing your work-in-progress contents
+    | ------------- PAGE.md             // a Markdown content file (page 1)
+    | ------------- OTHER-PAGE.md       // another Markdown content file (page 2)
+    | ------------- OTHER-PAGE.fr.md    // the french translation of page 2
+    | ------------- sub-chapter1/       // a sub-directory containing a sub-chapter
+    | ------------- sub-chapter2/       // a sub-directory containing another sub-chapter
 
-The list below shows the configuration entries available:
 
-| Variable               | Value type                                                |
-| ---------------------- | --------------------------------------------------------- |
-| EMD\_CHARSET           | A valid [Content-type][contentype] info                   | 
-| EMD\_CONSOLE\_OPTIONS  | A set of options passed to the console                    | 
-| EMD\_TPL               | The default template file used to generate pages views    | 
+### The DocBook chapters
 
-
-[contentype]: http://www.faqs.org/rfcs/rfc2616.html
+All your first depth directories (*directories contains directly in your DocBook root*) are
+considered as your chapters and are listed in the header navigation bar for quick access.
 
 
 ### Fallback system

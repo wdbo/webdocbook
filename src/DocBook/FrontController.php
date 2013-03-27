@@ -13,7 +13,8 @@ use DocBook\Abstracts\AbstractFrontController,
     DocBook\Locator,
     DocBook\NotFoundException,
     DocBook\DocBookException,
-    DocBook\DocBookRuntimeException;
+    DocBook\DocBookRuntimeException,
+    DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
 
 use Markdown\Parser,
     Markdown\ExtraParser;
@@ -23,7 +24,8 @@ use Markdown\Parser,
 class FrontController extends AbstractFrontController
 {
 
-    const DOCBOOK_INTERFACE = 'docbook.php';
+    const DOCBOOK_ASSETS = 'docbook_assets';
+    const DOCBOOK_INTERFACE = 'index.php';
     const MARKDOWN_CONFIG = 'markdown.ini';
     const DOCBOOK_CONFIG = 'docbook.ini';
     const APP_MANIFEST = 'composer.json';
@@ -31,6 +33,11 @@ class FrontController extends AbstractFrontController
     const USER_DIR = 'user';
     const TEMPLATES_DIR = 'templates';
     const CONFIG_DIR = 'config';
+
+    const README_FILE = 'README.md';
+    const INDEX_FILE = 'INDEX.md';
+    const ASSETS_DIR = 'assets';
+    const WIP_DIR = 'wip';
 
     // dependences
     protected $input_file;
@@ -113,7 +120,7 @@ class FrontController extends AbstractFrontController
         if (empty($input_file)) {
             $input_path = $this->getInputPath();
             if (!empty($input_path)) {
-                $input_file = rtrim($this->getPath('base_dir_http'), '/').'/'.trim($input_path, '/');
+                $input_file = Helper::slashDirname($this->getPath('base_dir_http')).trim($input_path, '/');
             }
         }
                 
@@ -126,16 +133,17 @@ class FrontController extends AbstractFrontController
                 $this->getController(), $routing['action'], array('path'=>$input_file)
             );
         }
-        if (empty($result) || !is_array($result) || count($result)!=2) {
+        if (empty($result) || !is_array($result) || (count($result)!=2 && count($result)!=3)) {
             $str = gettype($result);
             if (is_array($result)) $str .= ' length '.count($result);
             throw new DocBookRuntimeException(
-                sprintf('A controller action must return a two entries array like [ template file , content ]! Received %s from class "%s::%s()".',
+                sprintf('A controller action must return a two or three entries array like [ template file , content (, params) ]! Received %s from class "%s::%s()".',
                 $str, $routing['controller_classname'], $routing['action'])
             );
         } else {
             $template = $result[0];
             $content = $result[1];
+            $params = isset($result[2]) ? $result[2] : array();
         }
 
         // for dev
@@ -143,7 +151,7 @@ class FrontController extends AbstractFrontController
             $this->debug();
         }
 
-        $this->display($content, $template);
+        $this->display($content, $template, $params, true);
     }
     
     public function notFound($str = '')
@@ -157,45 +165,23 @@ class FrontController extends AbstractFrontController
         $this->response->send(!empty($full_content) ? $full_content : 'Not found!');
     }
     
-    public function display($content = '', $template_name = null)
+    public function display($content = '', $template_name = null, array $params = array(), $send = false)
     {
-        $path = $this->getInputFile();
-        $breadcrumbs = Helper::getBreadcrumbs($path);
-        $title = Helper::buildPageTitle($this->getInputFile());
-        if (empty($title)) {
-            if (!empty($breadcrumbs)) {
-                $title = Helper::buildPageTitle(end($breadcrumbs));
-            } else {
-                $title = 'Home';
-            }
-        }
-
         $template = $this->getTemplate($template_name);
-        if (!empty($template)) {
-            $file = $this->getInputFile();
-            if (empty($file)) {
-                $path = $this->getInputPath();
-                $file = Locator::findPathReadme(rtrim($this->getPath('base_dir_http'), '/').'/'.trim($path, '/'));
-            }
-            $update_time = !empty($file) ? Helper::getDateTimeFromTimestamp(filemtime($file)) : null;
-            $params = array(
-                'title'         => $title,
-                'breadcrumbs'   => $breadcrumbs,
-                'content'       => $content,
-                'page'          => array(
-                    'name'      => basename($file),
-                    'path'      => $file,
-                    'update'    => $update_time
-                ),
-            );
-            $full_content = $this->getTemplateBuilder()->render($template, $params);
-        }
+        $full_content = $this->getTemplateBuilder()->render($template, array_merge($params, array(
+            'content' => $content
+        )));
 
         if (Request::isAjax()) {
-            $this->response->setContentType('json');
-            $full_content = is_array($full_content) ? $full_content : array('body' => $full_content);
+            $this->response->setContentType('json', true);
+            $full_content = array_merge($params, array('body' => $full_content));
+            $full_content = json_encode($full_content);
         }
-        $this->response->send(!empty($full_content) ? $full_content : $content);
+        if ($send) {
+            $this->response->send(!empty($full_content) ? $full_content : $content);
+        } else {
+            return !empty($full_content) ? $full_content : $content;
+        }
     }
 
 // ---------------------
@@ -286,6 +272,23 @@ class FrontController extends AbstractFrontController
     public function getTemplate($name)
     {
         return $this->registry->get('templates:'.$name, null, 'docbook');
+    }
+
+    public function getChapters()
+    {
+        $www_http = $this->getPath('base_dir_http');
+        $dir = new DocBookRecursiveDirectoryIterator($www_http);
+        $paths = array();
+        foreach($dir as $file) {
+            if ($file->isDir()) {
+                $paths[] = array(
+                    'path'      =>Helper::getSecuredRealpath($file->getRealPath()),
+                    'route'     =>Helper::getRoute($file->getRealPath()),
+                    'name'      =>$file->getHumanReadableFilename(),
+                );
+            }
+        }
+        return $paths;
     }
 
 // ---------------------

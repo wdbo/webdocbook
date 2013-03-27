@@ -1,8 +1,7 @@
 Docbook : installation instructions
 ===================================
 
-**DocBook** is quite simple to install as long as you have access to the `root` user of
-your system.
+**DocBook** is quite simple to install as long as you can use Apache's `.htaccess` files.
 
 
 ## Requirements
@@ -24,13 +23,8 @@ As the package uses some internal Apache's features, you will need to:
 -   set up the rights of the apache-user of your system upon directories,
 -   define a new virtual-host in your system using the sample configuration below,
 -   define an `.htaccess` file in your directory root using the sample file below,
--   enables the following Apache modules (*see the [FAQ](#faq) section below fo an "how-to"*):
-    -   [mod_rewrite](http://httpd.apache.org/docs/2.2/en/mod/mod_rewrite.html)
-    -   [mod_autoindex](http://httpd.apache.org/docs/trunk/en/mod/mod_autoindex.html)
-    -   [mod_actions](http://httpd.apache.org/docs/trunk/en/mod/mod_actions.html)
-    -   [mod_mime](http://httpd.apache.org/docs/2.2/en/mod/mod_mime.html)
-    -   [mod_cgi](http://httpd.apache.org/docs/2.2/en/mod/mod_cgi.html)
-    -   [mod_include](http://httpd.apache.org/docs/2.2/mod/mod_include.html)
+-   enables the [mod_rewrite](http://httpd.apache.org/docs/2.2/en/mod/mod_rewrite.html) 
+    Apache module (*see the [FAQ](#faq) section below fo an "how-to"*)
 
 
 ## Installation step-by-step
@@ -61,7 +55,7 @@ For more infos about virtual hosts in Apache, how to define them and how to enab
 new domain see: <http://httpd.apache.org/docs/2.2/en/vhosts/>.
 
 To allow DocBook to work, you have to define a new virtual host defining a directory for
-web classic access to the `www/` directory and a CGI access to the `bin/` directory.
+web classic access to the `www/` directory.
 
 Depending on your system and your version of Apache, the virtual host definition may be added
 in the `/etc/apache2/httpd.conf` file or in a new file `/etc/apache/sites-available/your.domain`.
@@ -73,21 +67,12 @@ This is a classic DocBook virtual host configuration:
     <VirtualHost *:80>
         ServerAdmin your@email
         ServerName your.domain
-    
         DocumentRoot /your/document/root/path/www
         <Directory "/your/document/root/path/www">
             AllowOverride All
             Order allow,deny
             allow from all
         </Directory>
-    
-        ScriptAlias /cgi-bin/ /your/document/root/path/bin/
-        <Directory "/your/document/root/path/bin">
-            AllowOverride All
-            Order allow,deny
-            allow from all
-        </Directory>    
-
     </VirtualHost>
 
 After that you will need to restart Apache with a command like (*depending on your
@@ -95,9 +80,8 @@ system and your Apache's version*):
 
     ~$ sudo /etc/init.d/apache2 restart
 
-Some `.htaccess` files are included in the distribution so you may not have to worry about
-them. If you encountered errors when browsing to your installation, see the 
-[FAQ](#faq) section below.
+An `.htaccess` file is included in the distribution so you may not have to worry about it.
+If you encountered errors when browsing to your installation, see the [FAQ](#faq) section below.
 
 ### Test your new DocBook in a browser
 
@@ -182,8 +166,7 @@ the error message manually and set it full rights running [^2]:
     ~$ mkdir XXX && chmod 777 XXX
 
 
-[^1]: Some features requires Apache from version 2.0.23 but may not render an error with
-lower versions.
+[^1]: DocBook may works correctly with an Apache 1 version but we have not tested this case.
 [^2]: If your system refuses to set the CHMOD on 777, try to set it on 755 (*some hosting servers
 disallow using a chmod of 777*).
 

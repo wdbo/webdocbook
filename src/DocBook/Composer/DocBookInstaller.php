@@ -14,6 +14,8 @@ use Composer\Composer,
     Composer\Script\Event,
     Composer\Util\Filesystem;
 
+use DocBook\Helper;
+
 /**
  * The installer for the Apache Markdown handler
  *
@@ -37,8 +39,8 @@ class DocBookInstaller
         $vendorPath = strtr(realpath($vendorDir), '\\', '/');
         $appBasePath = str_replace($vendorDir, '', $vendorPath);
 
-        $handler_path = rtrim($vendorPath, '/').'/atelierspierrot/extended-markdown/cgi-scripts/emd_apacheHandler.sh';
-        $target_path = rtrim($appBasePath, '/').'/'.rtrim(self::DOCBOOK_BINDIR, '/').'/emd_apacheHandler.sh';
+        $handler_path = Helper::slashDirname($vendorPath).'atelierspierrot/extended-markdown/cgi-scripts/emd_apacheHandler.sh';
+        $target_path = Helper::slashDirname($appBasePath).Helper::slashDirname(self::DOCBOOK_BINDIR).'emd_apacheHandler.sh';
         if (file_exists($handler_path)) {
             if (file_exists($target_path)) {
                 unlink($target_path);

@@ -1,0 +1,50 @@
+
+<p class="text-center">
+    <span class="lead"><strong>{{ manifest.title }}</strong></span>
+    <br />{{ manifest.description }}
+    <br />Protected under <a href="http://www.gnu.org/licenses/gpl-3.0.html" title="Read this license text online">General Public Licence version 3.0</a>, some rights reserved.
+</p>
+
+<dl class="dl-horizontal">
+
+    <dt>version</dt>
+    <dd><a href="{{ manifest.homepage }}/tags" title="Check for updates">{{ manifest.version }}</a></dd>
+
+    <dt>package</dt>
+    <dd><a href="{{ manifest.homepage }}" title="See package sources">{{ manifest.name }}</a></dd>
+
+    <dt>author</dt>
+    <dd>
+{% for author in manifest.authors %}
+    {% set author_url='' %}
+    {% set url_title='View its webpage online' %}
+    {% if author.url is not empty %}
+        {% set author_url=author.url %}
+    {% elseif author.homepage is not empty %}
+        {% set author_url=author.homepage %}
+    {% elseif author.email is not empty %}
+        {% set author_url='mailto:' ~ author.email %}
+        {% set url_title='Contact this author' %}
+    {% endif %}
+    {%- if author_url is not empty -%}
+        <a href="{{ author_url }}" title="{{ url_title }}">
+    {%- endif -%}
+        {{- author.name -}}
+    {%- if author_url is not empty -%}
+        </a>
+    {%- endif -%}
+    {% if loop.length > 1 %} (<em>{{- author.role -}}</em>){%- endif -%}
+    {%- if loop.index < (loop.length-1) %}, {% endif %}
+{% endfor %}
+    </dd>
+
+    <dt>sources & updates</dt>
+    <dd><a href="{{ manifest.homepage }}" title="See online">{{ manifest.homepage }}</a></dd>
+
+    <dt>bug tracking</dt>
+    <dd><a href="{{ manifest.homepage }}/issues" title="See online">{{ manifest.homepage }}/issues</a></dd>
+
+    <dt>user doc</dt>
+    <dd><a href="{{ 'docbookdoc'|route }}" title="See online">{{ 'docbookdoc'|route }}</a></dd>
+
+</dl>

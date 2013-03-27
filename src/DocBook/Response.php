@@ -49,7 +49,7 @@ class Response extends AbstractResponse
     /**
      * Constructor : defines the current URL and gets the routes
      */
-    public function __construct( $content=null, $type=null )
+    public function __construct($content = null, $type = null)
     {
         if (!is_null($content)) $this->setBody( $content );
         $this->setContentType( $this->content_type );
@@ -58,10 +58,14 @@ class Response extends AbstractResponse
 
     /**
      */
-    public function setContentType( $type ) 
+    public function setContentType($type, $force = false) 
     {
-        if (array_key_exists($type, self::$content_types))
+        if (array_key_exists($type, self::$content_types)) {
             $this->content_type = self::$content_types[ $type ];
+            if ($force) {
+                $this->addHeader('Content-type', $this->content_type.'; charset='.strtoupper($this->charset));
+            }
+        }
     }
 
     public function redirect($url, $permanent = false)
