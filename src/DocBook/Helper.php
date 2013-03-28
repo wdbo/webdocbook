@@ -10,6 +10,7 @@ namespace DocBook;
 
 use DocBook\DocBookException,
     DocBook\DocBookRuntimeException,
+    DocBook\CommandNotFoundException,
     DocBook\FrontController;
 
 use \DateTime,
@@ -59,6 +60,12 @@ class Helper
         return str_replace($docbook->getPath('root_dir'), '/[***]', $path);
     }
 
+    public static function getRelativePath($path)
+    {
+        $docbook = FrontController::getInstance();
+        return str_replace($docbook->getPath('base_dir_http'), '', $path);
+    }
+
     public static function ensureDirectoryExists($directory)
     {
         if (!is_dir($directory)) {
@@ -86,9 +93,10 @@ class Helper
     {
         $route = $path;
         $docbook = FrontController::getInstance();
-        $add_last_slash = file_exists($path) && is_dir($path);
         $rel_path = str_replace($docbook->getPath('base_dir_http'), '', $path);
-        return (true===$with_interface ? FrontController::DOCBOOK_INTERFACE.'?' : '/').trim($rel_path, '/')
+        $add_last_slash = !empty($rel_path) && file_exists($path) && is_dir($path);
+        return (true===$with_interface ? FrontController::DOCBOOK_INTERFACE.'?' : !empty($rel_path) ? '/' : '')
+            .trim($rel_path, '/')
             .($add_last_slash ? '/' : '')
             .(!empty($type) ? ($add_last_slash ? '' : '/').$type : '');
     }
@@ -97,27 +105,31 @@ class Helper
     {
         $docbook = FrontController::getInstance();
         $tmp = self::slashDirname($docbook->getPath('tmp'));
+        $du_cmd = exec('which du');
+        if (empty($du_cmd)) {
+            throw new CommandNotFoundException('du');
+        }
 
- 		$descriptorspec = array(
-			1 => array('pipe', 'w'),
-			2 => array('pipe', 'w'),
-		);
-		$pipes = array();
-        $command = '/usr/bin/du -cLak '.$path.' | grep total';
-		$resource = proc_open($command, $descriptorspec, $pipes);
+        $descriptorspec = array(
+            1 => array('pipe', 'w'),
+            2 => array('pipe', 'w'),
+        );
+        $pipes = array();
+        $command = $du_cmd.' -cLak '.$path.' | grep total';
+        $resource = proc_open($command, $descriptorspec, $pipes);
 
-		$stdout = stream_get_contents($pipes[1]);
-		$stderr = stream_get_contents($pipes[2]);
-		foreach ($pipes as $pipe) {
-			fclose($pipe);
-		}
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        foreach ($pipes as $pipe) {
+            fclose($pipe);
+        }
 
-		$status = trim(proc_close($resource));
-		if ($stdout && !$status) {
-		    $result = explode(' ', $stdout);
+        $status = trim(proc_close($resource));
+        if ($stdout && !$status) {
+            $result = explode(' ', $stdout);
             return WebFilesystem::getTransformedFilesize(1024*array_shift($result));
-		}
-		return 0;
+        }
+        return 0;
     }
 
     /**
@@ -184,6 +196,62 @@ class Helper
         return call_user_func_array( array($_class, $_method), $args_def );
     }
 
+
+    public static function processDocBookSearch($regexp, $path = null)
+    {
+        $docbook = FrontController::getInstance();
+        if (is_null($path)) {
+            $path = '/';
+        }
+        $path = self::slashDirname($docbook->getPath('base_dir_http')).self::slashDirname($path);
+        $grep_cmd = exec('which grep');
+        if (empty($grep_cmd)) {
+            throw new CommandNotFoundException('grep');
+        }
+
+        $command = $grep_cmd.' -Rn -A 2 -B 2 --include="*.md" "'.$regexp.'" '.$path;
+
+        $descriptorspec = array(
+            1 => array('pipe', 'w'),
+            2 => array('pipe', 'w'),
+        );
+        $pipes = array();
+        $resource = proc_open($command, $descriptorspec, $pipes, $path);
+
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        foreach ($pipes as $pipe) {
+            fclose($pipe);
+        }
+
+        $status = trim(proc_close($resource));
+        if ($status) return null;
+
+        $result_files = explode("\n--", $stdout);
+        $result = array();
+        foreach($result_files as $stack) {
+            $filename = substr($stack, 0, strpos($stack, '-'));
+            $filepath = str_replace($path, '', $filename);
+            if (!isset($result[$filename])) {
+                $result[$filename] = array();
+            }
+            foreach(explode("\n", $stack) as $line) {
+                $filename_rest = substr($line, strlen($filename)+1);
+                $delim_dash = strpos($filename_rest, '-') ?: 10000;
+                $delim_column = strpos($filename_rest, ':') ?: 10000;
+                $delim = min($delim_dash, $delim_column);
+                $linenumber = substr($filename_rest, 0, $delim);
+                $linecontent = substr($filename_rest, $delim+1);
+                $result[$filename][] = array(
+                    'path'=>$filename,
+                    'line'=>$linenumber,
+                    'content'=>!empty($linecontent) ? $linecontent : '',
+                    'highlighted'=>$delim===$delim_column
+                );
+            }
+        }
+        return $result;
+    }
 
 
 }

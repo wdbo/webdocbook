@@ -92,8 +92,8 @@ class DocBookFile extends WebFileInfo
                 Helper::getDirectorySize($truefile->getPathname()) : WebFilesystem::getTransformedFilesize($truefile->getSize()),
             'mtime'     =>WebFilesystem::getDateTimeFromTimestamp($truefile->getMTime()),
             'description'=>'',
-            'next'      =>$this->findNext(),
-            'previous'  =>$this->findPrevious(),
+            'next'      =>$this->isDir() ? false : $this->findNext(),
+            'previous'  =>$this->isDir() ? false : $this->findPrevious(),
             'trans'     =>$this->isDir() ? array() : $this->findTranslations(),
             'dirpath'   =>dirname($this->getPathname()),
         );
@@ -135,8 +135,8 @@ class DocBookFile extends WebFileInfo
         return ($i && array_key_exists($i-1, $dir_table) && !is_dir($dir_table[$i-1])) ? $dir_table[$i-1] : null;
     }
     
-	public function getHumanReadableFilename()
-	{
+    public function getHumanReadableFilename()
+    {
         $docbook = FrontController::getInstance();
         if (
             Helper::slashDirname($this->getRealPath())===Helper::slashDirname($docbook->getPath('base_dir_http')) ||
@@ -144,8 +144,20 @@ class DocBookFile extends WebFileInfo
         ) {
             return 'Home';
         }
-		return parent::getHumanReadableFilename();
-	}
+        return parent::getHumanReadableFilename();
+    }
+
+    public function findReadme()
+    {
+        $readme = Helper::slashDirname($this->getRealPath()).FrontController::README_FILE;
+        return file_exists($readme) ? $readme : null;
+    }
+
+    public function findIndex()
+    {
+        $index = Helper::slashDirname($this->getRealPath()).FrontController::INDEX_FILE;
+        return file_exists($index) ? $index : null;
+    }
 
 }
 

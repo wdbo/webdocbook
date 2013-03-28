@@ -15,18 +15,6 @@ use DocBook\FrontController;
 class Locator
 {
 
-    public static function findPathReadme($path)
-    {
-        $readme = Helper::slashDirname($path).FrontController::README_FILE;
-        return file_exists($readme) ? $readme : null;
-    }
-
-    public static function findPathIndex($path)
-    {
-        $index = Helper::slashDirname($path).FrontController::INDEX_FILE;
-        return file_exists($index) ? $index : null;
-    }
-
     public function findController($route)
     {
         $cfg = FrontController::getInstance()->getRegistry()->getConfig('app', array(), 'docbook');

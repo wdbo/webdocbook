@@ -9,7 +9,7 @@
 {% endif %}
 <form class="form-search" method="get" action="{{ page.path|route('search') }}">
     <div class="input-append">
-        <input type="text" class="input-small search-query searchField" name="s" title="You can build your search string with regular expressions" placeholder="search" value="{{ search_str|default('') }}">
+        <input type="text" class="input-small search-query searchField" name="s" title="You can build your search string with regular expressions" placeholder="search" value="{{ search_str|default('') }}" tabindex="1" />
         <button type="submit" class="btn"><i class="icon-search"></i></button>
     </div>
 </form>

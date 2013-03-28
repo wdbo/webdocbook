@@ -70,31 +70,27 @@ class DefaultController extends AbstractController
     public function directoryAction($path)
     {
         $this->setPath($path);
+        $dbfile = new DocBookFile($this->getpath());
         $readme_content = $dir_content = '';
 
-        $index = Locator::findPathIndex($this->getPath());
+        $index = $dbfile->findIndex();
         if (file_exists($index)) {
             return $this->fileAction($index);
         }
 
-        $readme = Locator::findPathReadme($this->getPath());
+        $readme = $dbfile->findReadme();
         if (file_exists($readme)) {
-            $update_time = Helper::getDateTimeFromTimestamp(filemtime($readme));
             $this->docbook->setInputFile($readme);
+            $readme_dbfile = new DocBookFile($readme);
+            $file_content = file_get_contents($readme);
             $md_parser = $this->docbook->getMarkdownParser();
-            $content = file_get_contents($readme);
             $readme_content = $this->docbook->display(
-                $md_parser->transform($content), 
+                $md_parser->transform($file_content),
                 'content',
-                array('page'=>array(
-                    'name'      => basename($readme),
-                    'path'      => $readme,
-                    'update'    => $update_time
-                ))
+                array('page'=>$readme_dbfile->getDocBookStack())
             );
         }
 
-        $dbfile = new DocBookFile($this->getpath());
         $tpl_params = array(
             'page' => $dbfile->getDocBookStack(),
             'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
@@ -133,6 +129,28 @@ class DefaultController extends AbstractController
         $this->setPath($path);
         $this->docbook->getResponse()->download($path, 'text/plain');
         exit;
+    }
+
+    public function searchAction($path)
+    {
+        $this->setPath($path);
+        $search = $this->docbook->getRequest()->getGet('s');
+        if (empty($search)) return $this->indexAction($path);
+
+        $_s = Helper::processDocBookSearch($search, $this->getPath());
+
+        $dbfile = new DocBookFile($this->getpath());
+        $tpl_params = array(
+            'page' => $dbfile->getDocBookStack(),
+            'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
+            'title' => sprintf('Search for "%s"', $search)
+        );
+
+        $search_content = $this->docbook->display($_s, 'search', array(
+            'search_str' => $search,
+            'path' => Helper::buildPageTitle($this->getPath()),
+        ));
+        return array('default', $search_content, $tpl_params);
     }
 
 }
