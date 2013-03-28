@@ -18,16 +18,13 @@
     <tbody>
 {% for _path in content.dirscan %}
         <tr>
-            <td><a href="{{ _path.route }}" title="See this content"><img src="
-    {% if _path.type == 'file' %}
-                    {{- vendor_assets ~ 'famfamfam_silk_icons_v013/icons/page_white_text_width.png' -}}
-    {% else %}
-                    {{- vendor_assets ~ 'famfamfam_silk_icons_v013/icons/folder.png' -}}
-    {% endif %}" alt="{% if _path.type == 'file' %}file{% else %}dir{% endif %}" /></a></td>
+            <td><a href="{{ _path.path|route }}" title="See this content">
+                <i class="{% if _path.type == 'file' %}icon-file{% else %}icon-folder-open{% endif %}"></i>
+            </a></td>
             <td>
-                <a href="{{ _path.route }}" title="See this content">{{ _path.name }}</a>
-    {% for _trad, _route in _path.trads %}
-                &nbsp;[<a href="{{ _route }}" title="{{ _trad }} version of this content">{{ _trad }}</a>]
+                <a href="{{ _path.path|route }}" title="See this content">{{ _path.name }}</a>
+    {% for _trad, _route in _path.trans %}
+                &nbsp;[<a href="{{ _route|route }}" title="{{ _trad|upper }} version of this content">{{ _trad }}</a>]
     {% endfor %}
             </td>
             <td>{{ _path.mtime.format('M j, Y H:i:s') }}</td>
@@ -39,7 +36,7 @@
         <tr>
     {% set wippath = content.dirpath ~ '/wip' %}
             <td><a href="{{ wippath|route }}" title="See the work-in-progress of this chapter">
-                <img src="{{- vendor_assets ~ 'famfamfam_silk_icons_v013/icons/application_osx_terminal.png' -}}" alt="wip" />
+                <i class="icon-edit"></i>
             </a></td>
             <td colspan="4"><small><em>This folder has a "wip" section.</em></small></td>
         </tr>

@@ -2,6 +2,8 @@
     <div class="muted credits pull-left">
         This page is created with <a href="http://jquery.com/" title="See online: http://jquery.com/">jQuery</a>, <a href="http://twitter.github.com/bootstrap/index.html" title="See online: http://twitter.github.com/bootstrap/index.html">Bootstrap</a> and <a href="http://code.google.com/p/html5shiv/" title="See online: http://code.google.com/p/html5shiv/">HTML5shiv</a>.
         <br />
+        Icons by <a href="http://glyphicons.com/" title="See online: http://glyphicons.com/">Glyphicons</a>.
+        <br />
         This page is <a href="" title="Check now online" id="html_validation" data-insert-href="html_validation">HTML5</a> & <a href="" title="Check now online" id="css_validation" data-insert-href="css_validation" data-validation-argument="perso/styles.css">CSS3</a> valid.
     </div>
     <div class="muted credits pull-right text-right">
@@ -33,6 +35,8 @@
 {% endfor %}
     under <a href="http://www.gnu.org/licenses/gpl-3.0.html" title="Read this license text online">GPL-3.0</a> license.
     <br />
-    <a href="#" onclick="messagebox('{{ 'credits'|route }}', 'About DocBook');" title="See the full application credits, check for updates ...">About</a>
+    <a href="{{ 'docbookdoc'|route }}" title="Read the manual"><i class="icon-question-sign"></i>&nbsp;Manual</a>
+    &nbsp;|&nbsp;
+    <a href="#" onclick="messagebox('{{ 'credits'|route }}', 'About DocBook');" title="See the full application credits, check for updates ..."><i class="icon-info-sign"></i>&nbsp;About</a>
     </div>
 </footer>

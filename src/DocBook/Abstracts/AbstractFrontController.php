@@ -80,7 +80,7 @@ abstract class AbstractFrontController extends AbstractSingleton
         return $this;
     }
 
-    public function getResquest()
+    public function getRequest()
     {
         return $this->request;
     }

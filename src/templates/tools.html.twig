@@ -1,15 +1,15 @@
-{% if page_tools|default('true') != 'false' %}
-<small>
-    [<a href="{{ page.path|route('download') }}" title="Download the Markdown version of this content">download</a>]
-    &nbsp;
-    [<a href="{{ page.path|route('htmlonly') }}" title="View plain &amp; isolated HTML version of this content">HTML only</a>]
-    &nbsp;
-    [<a href="{{ page.path|route('plain') }}" title="View plain text version of this content">plain text</a>]
-</small>
+{% if page.previous is not empty %}
+<a href="{{ page.previous|route }}" title="See the previous page in this chapter"><i class="icon-chevron-left"></i>&nbsp;{{ page.previous|readableName }}</a>
+{% endif %}
+{% if page.previous is not empty and page.next is not empty %}
+&nbsp;|&nbsp;
+{% endif %}
+{% if page.next is not empty %}
+<a href="{{ page.next|route }}" title="See the next page in this chapter">{{ page.next|readableName }}&nbsp;<i class="icon-chevron-right"></i></a>
 {% endif %}
 <form class="form-search" method="get" action="{{ page.path|route('search') }}">
     <div class="input-append">
         <input type="text" class="input-small search-query searchField" name="s" title="You can build your search string with regular expressions" placeholder="search" value="{{ search_str|default('') }}">
-        <button type="submit" class="btn"><i class="dbicon-magnifier"></i></button>
+        <button type="submit" class="btn"><i class="icon-search"></i></button>
     </div>
 </form>

@@ -184,6 +184,8 @@ class Helper
         return call_user_func_array( array($_class, $_method), $args_def );
     }
 
+
+
 }
 
 // Endfile

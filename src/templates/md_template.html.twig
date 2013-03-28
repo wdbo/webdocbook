@@ -1,7 +1,30 @@
 
-            <section>
-            {{ content|raw }}
-            </section>
-            <footer id="lastupdate" role="contentinfo">
-{% include DB.getTemplate('page_tools') %}
-            </footer>
+<section class="section">
+    <footer>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <ul class="nav">
+                <li><a href="#"><abbr title="{{ page.path|securedPath }}"><strong>{{ page.name }}</strong></abbr></a></li>
+                <li class="divider-vertical"></li>
+                <li><a href="#" title="Last update of this content">
+                    <i class="icon-time"></i>
+                    {{ page.mtime.format('d-m-Y H:i:s') }}</a></li>
+                <li class="divider-vertical"></li>
+                <li><a href="{{ page.path|route('download') }}" title="Download the Markdown version of this content"><i class="icon-download"></i></a></li>
+                <li><a href="{{ page.path|route('htmlonly') }}" title="View plain &amp; isolated HTML version of this content"><i class="icon-book"></i></a></li>
+                <li><a href="{{ page.path|route('plain') }}" title="View plain text version of this content"><i class="icon-align-justify"></i></a></li>
+{% if page.trans is not empty %}
+                <li class="divider-vertical"></li>
+                <li><a href="#" title="Translations of this content"><i class="icon-flag"></i></a></li>
+    {% for _trad, _route in page.trans %}
+                <li><a href="{{ _route|route }}" title="{{ _trad|upper }} version of this content"><strong>{{ _trad|upper }}</strong></a></li>
+    {% endfor %}
+{% endif %}
+            </ul>
+        </div>
+    </div>
+    </footer>
+    <div class="content">
+        {{ content|raw }}
+    </div>
+</section>

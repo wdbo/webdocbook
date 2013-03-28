@@ -52,7 +52,16 @@ class Request
     public function __construct()
     {
         $this->url = Helper::currentUrl();
+
         $this->get = $_GET;
+        $server_uri = $_SERVER['REQUEST_URI'];
+        $server_query = $_SERVER['QUERY_STRING'];
+        $full_query_string = str_replace(array('?',$server_query), '', trim($server_uri, '/'));
+        parse_str($full_query_string, $full_query);
+        if (!empty($full_query)) {
+            $this->get = array_merge($this->get, $full_query);
+        }
+
         $this->post = $_POST;
         $this->session = $_SESSION;
         $this->cookies = $_COOKIE;
@@ -164,6 +173,7 @@ class Request
     {
         $server_pathtrans = $_SERVER['PATH_TRANSLATED'];
         $server_uri = $_SERVER['REQUEST_URI'];
+        $server_query = $_SERVER['QUERY_STRING'];
         $server_argv = $_SERVER['argv'];
         $docbook = FrontController::getInstance();
         $locator = new Locator;
@@ -172,17 +182,22 @@ class Request
 /*
 echo '<br />server_pathtrans: '.var_export($server_pathtrans,1);
 echo '<br />server_uri: '.var_export($server_uri,1);
+echo '<br />server_query: '.var_export($server_query,1);
 echo '<br />server_argv: '.var_export($server_argv,1);
 */
 
         // first: request path from URL
-        if (!empty($server_uri)) {
+        if (!empty($server_query)) {
+            $req = $server_query;
+            if ($req===FrontController::DOCBOOK_INTERFACE) {
+                $req = $server_uri;
+            }
 
             // if '/action'
-            if ($ctrl = $locator->findController(trim($server_uri, '/'))) {
-                $action = trim($server_uri, '/');
+            if ($ctrl = $locator->findController(trim($req, '/'))) {
+                $action = trim($req, '/');
             } else {
-                $parts = explode('/', $server_uri);
+                $parts = explode('/', $req);
                 $parts = array_filter($parts);
                 $int_index = array_search(FrontController::DOCBOOK_INTERFACE, $parts);
                 if (!empty($int_index)) unset($parts[$int_index]);
