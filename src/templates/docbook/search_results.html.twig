@@ -1,0 +1,25 @@
+<h1>Searching "<em>{{ search_str }}</em>" in path "<em>{{ path }}</em>"</h1>
+
+{% if content is empty %}
+<p>Your search sent no result ...</p>
+{% else %}
+<p>Results found in {{ content|length }} files.</p>
+<div class="search-results">
+    {% for file, entries in content %}
+    <dl class="dl-horizontal">
+        <dt>
+            <a href="{{ file|route }}" title="See this page">{{ file|relativePath }}</a>
+        </dt>
+        <dd><pre>
+{%- for entry in entries -%}
+    {%- if entry.line is not empty -%}
+<span{% if entry.highlighted is not empty %} class="alert-success"{% endif %}><small class="line-number"><strong>{{ entry.line }}</strong></small>{{- entry.content -}}</span><br />
+    {%- else -%}
+<br />
+    {%- endif -%}
+{%- endfor -%}
+        </pre></dd>
+    </dl>
+    {% endfor %}
+</div>
+{% endif %}
