@@ -10,8 +10,8 @@ namespace DocBook;
 
 use DocBook\DocBookException,
     DocBook\DocBookRuntimeException,
-    DocBook\CommandNotFoundException,
-    DocBook\FrontController;
+    DocBook\FrontController,
+    DocBook\System\Command;
 
 use \DateTime,
     \ReflectionMethod;
@@ -105,26 +105,12 @@ class Helper
     {
         $docbook = FrontController::getInstance();
         $tmp = self::slashDirname($docbook->getPath('tmp'));
-        $du_cmd = exec('which du');
-        if (empty($du_cmd)) {
-            throw new CommandNotFoundException('du');
-        }
 
-        $descriptorspec = array(
-            1 => array('pipe', 'w'),
-            2 => array('pipe', 'w'),
-        );
-        $pipes = array();
-        $command = $du_cmd.' -cLak '.$path.' | grep total';
-        $resource = proc_open($command, $descriptorspec, $pipes);
+        $du_cmd = Command::getCommandPath('du');
+        $grep_cmd = Command::getCommandPath('grep');
+        $command = $du_cmd.' -cLak '.$path.' | '.$grep_cmd.' total';
+        list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command);
 
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        foreach ($pipes as $pipe) {
-            fclose($pipe);
-        }
-
-        $status = trim(proc_close($resource));
         if ($stdout && !$status) {
             $result = explode(' ', $stdout);
             return WebFilesystem::getTransformedFilesize(1024*array_shift($result));
@@ -204,27 +190,11 @@ class Helper
             $path = '/';
         }
         $path = self::slashDirname($docbook->getPath('base_dir_http')).self::slashDirname($path);
-        $grep_cmd = exec('which grep');
-        if (empty($grep_cmd)) {
-            throw new CommandNotFoundException('grep');
-        }
 
+        $grep_cmd = Command::getCommandPath('grep');
         $command = $grep_cmd.' -Rn -A 2 -B 2 --include="*.md" "'.$regexp.'" '.$path;
+        list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command, $path);
 
-        $descriptorspec = array(
-            1 => array('pipe', 'w'),
-            2 => array('pipe', 'w'),
-        );
-        $pipes = array();
-        $resource = proc_open($command, $descriptorspec, $pipes, $path);
-
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        foreach ($pipes as $pipe) {
-            fclose($pipe);
-        }
-
-        $status = trim(proc_close($resource));
         if ($status) return null;
 
         $result_files = explode("\n--", $stdout);
@@ -253,6 +223,30 @@ class Helper
         return $result;
     }
 
+    public static function getFileLinesCount($path)
+    {
+        $docbook = FrontController::getInstance();
+
+        $wc_cmd = Command::getCommandPath('wc');
+        $command = $wc_cmd.' -l '.$path;
+        list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command, $path);
+
+        $lines = array_shift(explode(' ', trim($stdout)));
+        return !empty($lines) ? $lines : 0;
+    }
+
+    public static function getProfiler()
+    {
+        return array(
+            'date'              => new DateTime(),
+            'timezone'          => date_default_timezone_get(),
+			'php_uname'         => php_uname(),
+			'php_version'       => phpversion(),
+			'php_sapi_name'     => php_sapi_name(),
+			'apache_version'    => apache_get_version(),
+			'user_agent'        => $_SERVER['HTTP_USER_AGENT']
+        );
+    }
 
 }
 

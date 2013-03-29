@@ -169,7 +169,7 @@ class FrontController extends AbstractFrontController
     {
         $template = $this->getTemplate($template_name);
         $full_content = $this->getTemplateBuilder()->render($template, array_merge($params, array(
-            'content' => $content
+            'content' => $content,
         )));
 
         if (Request::isAjax()) {

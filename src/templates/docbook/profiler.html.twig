@@ -1,0 +1,19 @@
+{% set profiler = getProfiler %}
+
+{{profiler}}
+
+<div class="profiler">
+
+{{ profiler.date.format('D') }} {{ profiler.date.format('d M Y H:i:s') }} {{ profiler.timezone }} [<abbr title="{{ profiler.date.format('c') }}">ISO date</abbr>]
+
+Page generated in {{ profiler.execution_time }}  seconds
+
+PHP vers. {{ profiler.php_version }} ({{ profiler.php_sapi_name }})
+
+Webserver system : {{ profiler.apache_version }}
+
+Server OS : {{ profiler.php_uname }}
+
+Browser / Device : {{ profiler.user_agent }}
+
+</div>

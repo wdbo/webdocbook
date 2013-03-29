@@ -70,7 +70,7 @@ Automatic links:
 
     <http://example.com/>
         and
-    <address@email.com>`
+    <address@email.com>
 
 An hypertext link:
 
@@ -170,7 +170,7 @@ Like a footnote begining by a sharp
 
     [#Doe:2006]: John Doe. *Some Big Fancy Book*.  Vanity Press, 2006.
 
-### Glossary
+#### Glossary
 
     [^glossaryfootnote]: glossary: term (optional sort key)
         The actual definition belongs on a new line, and can continue on

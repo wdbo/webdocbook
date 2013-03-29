@@ -13,7 +13,8 @@ use DocBook\Abstracts\AbstractController,
     DocBook\Locator,
     DocBook\Response,
     DocBook\Request,
-    DocBook\TemplateBuilder;
+    DocBook\TemplateBuilder,
+    DocBook\System\Command;
 
 use Markdown\Parser,
     Markdown\ExtraParser;
@@ -34,6 +35,7 @@ abstract class AbstractFrontController extends AbstractSingleton
     protected $response;
     protected $controller;
     protected $template_builder;
+    protected $terminal;
 
 // ------------------
 // Dependencies init
@@ -45,12 +47,24 @@ abstract class AbstractFrontController extends AbstractSingleton
             ->setRegistry(new ConfigurationRegistry)
             ->setResponse(new Response)
             ->setRequest(new Request)
-            ->setLocator(new Locator);
+            ->setLocator(new Locator)
+            ->setTerminal(new Command);
     }
 
 // ------------------
 // Dependencies getters/setters
 // ------------------
+
+    private function setTerminal(Command $terminal)
+    {
+        $this->terminal = $terminal;
+        return $this;
+    }
+
+    public function getTerminal()
+    {
+        return $this->terminal;
+    }
 
     private function setResponse(Response $response)
     {

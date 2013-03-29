@@ -6,7 +6,7 @@
  * @link        https://github.com/atelierspierrot/docbook
  */
 
-namespace DocBook;
+namespace DocBook\System;
 
 use \RuntimeException;
 

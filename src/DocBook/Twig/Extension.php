@@ -21,9 +21,17 @@ class DocBook_Twig_Extension extends \Twig_Extension
             new \Twig_SimpleFilter('relpath', '\DocBook\Helper::getRealPath'),
             new \Twig_SimpleFilter('relativePath', '\DocBook\Helper::getRelativePath'),
             new \Twig_SimpleFilter('securedPath', '\DocBook\Helper::getSecuredRealpath'),            
-            new \Twig_SimpleFilter('readableName', '\DocBook\Helper::buildPageTitle'),            
+            new \Twig_SimpleFilter('readableName', '\DocBook\Helper::buildPageTitle'), 
         );
     }
+
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction('getProfiler', '\DocBook\Helper::getProfiler()'), 
+        );
+    }
+
 }
 
 // Endfile

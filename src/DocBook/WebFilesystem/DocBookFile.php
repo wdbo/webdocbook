@@ -96,6 +96,7 @@ class DocBookFile extends WebFileInfo
             'previous'  =>$this->isDir() ? false : $this->findPrevious(),
             'trans'     =>$this->isDir() ? array() : $this->findTranslations(),
             'dirpath'   =>dirname($this->getPathname()),
+            'lines_nb'  =>$this->isDir() ? null : Helper::getFileLinesCount($this->getRealPath()),
         );
     }
     
