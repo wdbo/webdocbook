@@ -25,13 +25,6 @@ class DocBook_Twig_Extension extends \Twig_Extension
         );
     }
 
-    public function getFunctions()
-    {
-        return array(
-            new \Twig_SimpleFunction('getProfiler', '\DocBook\Helper::getProfiler()'), 
-        );
-    }
-
 }
 
 // Endfile

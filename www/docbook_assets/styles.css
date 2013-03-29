@@ -70,6 +70,9 @@ form.form-search { float: right; margin: -2px 0 0 12px; }
 
 .search-results .line-number { padding-right: 12px;}
 
+.profiler-wrapper {clear:right; float:right; font-size: .8em; text-align: right;}
+.profiler {background-color:#FFF; border: 1px dotted #404040;padding: 8px;}
+
 /* tablesorter */
 table.tablesorter thead tr .header {
     background: url(/docbook_assets/vendor/jquery.tablesorter/blue/bg.gif) no-repeat center right;

@@ -168,9 +168,13 @@ class FrontController extends AbstractFrontController
     public function display($content = '', $template_name = null, array $params = array(), $send = false)
     {
         $template = $this->getTemplate($template_name);
-        $full_content = $this->getTemplateBuilder()->render($template, array_merge($params, array(
+        $full_params = array_merge($params, array(
             'content' => $content,
-        )));
+        ));
+        if ($template_name==='default') {
+            $full_params['profiler'] = Helper::getProfiler();
+        }
+        $full_content = $this->getTemplateBuilder()->render($template, $full_params);
 
         if (Request::isAjax()) {
             $this->response->setContentType('json', true);
