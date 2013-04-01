@@ -19,6 +19,10 @@ use DocBook\Abstracts\AbstractFrontController,
 use Markdown\Parser,
     Markdown\ExtraParser;
 
+use I18n\I18n,
+    I18n\Loader as I18n_Loader,
+    I18n\Twig\I18nExtension as I18n_Twig_Extension;
+
 /**
  */
 class FrontController extends AbstractFrontController
@@ -29,6 +33,7 @@ class FrontController extends AbstractFrontController
     const MARKDOWN_CONFIG = 'markdown.ini';
     const DOCBOOK_CONFIG = 'docbook.ini';
     const APP_MANIFEST = 'composer.json';
+    const APP_I18N = 'docbook_i18n.csv';
 
     const USER_DIR = 'user';
     const TEMPLATES_DIR = 'templates';
@@ -63,6 +68,9 @@ class FrontController extends AbstractFrontController
 
         Helper::ensureDirectoryExists($base_dir.'tmp/cache/');
         $this->addPath('cache', $base_dir.'tmp/cache/');
+
+        Helper::ensureDirectoryExists($base_dir.'tmp/i18n/');
+        $this->addPath('i18n', $base_dir.'tmp/i18n/');
 
         $this->addPath('base_templates', $src_dir.self::TEMPLATES_DIR);
 
@@ -108,6 +116,18 @@ class FrontController extends AbstractFrontController
 
         // some PHP configs
         @date_default_timezone_set( $this->registry->get('app:timezone', 'Europe/London', 'docbook') );
+        
+        // the internationalization
+        $i18n_loader = new I18n_Loader(array(
+            'language_directory' => $this->getPath('i18n'),
+            'language_strings_db_directory' =>
+                Helper::slashDirname($this->getPath('base_dir')).self::CONFIG_DIR,
+            'language_strings_db_filename' => self::APP_I18N,
+            'force_rebuild' => true,
+        ));
+        $translator = I18n::getInstance($i18n_loader);
+        $translator->setDefaultFromHttp();
+        $this->getTemplateBuilder()->getTwigEngine()->addExtension(new I18n_Twig_Extension($translator)); 
     }
 
     public function distribute($return = false)
@@ -154,24 +174,13 @@ class FrontController extends AbstractFrontController
         $this->display($content, $template, $params, true);
     }
     
-    public function notFound($str = '')
-    {
-        $template = $this->getTemplate('not_found');
-        if (!empty($template)) {
-            $full_content = $this->getTemplateBuilder()->render($template, array(
-                'message'=>$str
-            ));
-        }
-        $this->response->send(!empty($full_content) ? $full_content : 'Not found!');
-    }
-    
     public function display($content = '', $template_name = null, array $params = array(), $send = false)
     {
         $template = $this->getTemplate($template_name);
         $full_params = array_merge($params, array(
             'content' => $content,
         ));
-        if ($template_name==='default') {
+        if (in_array($template_name, array('default', 'not_found', 'forbidden'))) {
             $full_params['profiler'] = Helper::getProfiler();
         }
         $full_content = $this->getTemplateBuilder()->render($template, $full_params);

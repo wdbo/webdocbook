@@ -1,7 +1,7 @@
 <div class="well well-small">
 
 <ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="/">{{ 'Home'|translate }}</a> <span class="divider">/</span></li>
 {% set routeroute='/' %}
 {% for route in breadcrumbs %}
     {% if loop.index<loop.length %}

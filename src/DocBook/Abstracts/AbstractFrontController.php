@@ -55,6 +55,9 @@ abstract class AbstractFrontController extends AbstractSingleton
 // Dependencies getters/setters
 // ------------------
 
+    /**
+     * @access private
+     */
     private function setTerminal(Command $terminal)
     {
         $this->terminal = $terminal;
@@ -66,6 +69,9 @@ abstract class AbstractFrontController extends AbstractSingleton
         return $this->terminal;
     }
 
+    /**
+     * @access private
+     */
     private function setResponse(Response $response)
     {
         $this->response = $response;
@@ -77,6 +83,9 @@ abstract class AbstractFrontController extends AbstractSingleton
         return $this->response;
     }
 
+    /**
+     * @access private
+     */
     private function setLocator(Locator $locator)
     {
         $this->locator = $locator;
@@ -88,6 +97,9 @@ abstract class AbstractFrontController extends AbstractSingleton
         return $this->locator;
     }
 
+    /**
+     * @access private
+     */
     private function setRequest(Request $request)
     {
         $this->request = $request;
@@ -99,6 +111,9 @@ abstract class AbstractFrontController extends AbstractSingleton
         return $this->request;
     }
 
+    /**
+     * @access private
+     */
     private function setRegistry(ConfigurationRegistry $registry)
     {
         $this->registry = $registry;

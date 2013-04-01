@@ -52,7 +52,7 @@ class DefaultController extends AbstractController
             if (!empty($tpl_params['breadcrumbs'])) {
                 $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
             } else {
-                $tpl_params['title'] = 'Home';
+                $tpl_params['title'] = _T('Home');
             }
         }
 
@@ -101,7 +101,7 @@ class DefaultController extends AbstractController
             if (!empty($tpl_params['breadcrumbs'])) {
                 $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
             } else {
-                $tpl_params['title'] = 'Home';
+                $tpl_params['title'] = _T('Home');
             }
         }
         $dir_content = $this->docbook->display($dbfile->getDocBookScanStack(), 'dirindex');
@@ -143,7 +143,7 @@ class DefaultController extends AbstractController
         $tpl_params = array(
             'page' => $dbfile->getDocBookStack(),
             'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
-            'title' => sprintf('Search for "%s"', $search)
+            'title' => _T('Search for "%search_str%"', array('search_str'=>$search))
         );
 
         $search_content = $this->docbook->display($_s, 'search', array(

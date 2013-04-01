@@ -1,5 +1,5 @@
 
-<h1>Index of <em>{{ content.dirname }}</em> <small>Folder map</small></h1>
+<h1>{{ translate('index_of_title', {'path': content.dirname})|raw }}</h1>
 <hr />
 <div class="row-fluid">
     <div class="span1"></div>
@@ -8,37 +8,61 @@
     <table class="indextable">
     <thead>
         <tr>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Last update</th>
-            <th>Size</th>
-            <th>Description</th>
+            <th>{{ 'Type'|translate }}</th>
+            <th>{{ 'Name'|translate }}</th>
+            <th>{{ 'Last update'|translate }}</th>
+            <th>{{ 'Size'|translate }}</th>
+            <th>{{ 'Description'|translate }}</th>
         </tr>
     </thead>
     <tbody>
 {% for _path in content.dirscan %}
         <tr>
-            <td><a href="{{ _path.path|route }}" title="See this content">
-                <i class="{% if _path.type == 'file' %}icon-file{% else %}icon-folder-open{% endif %}"></i>
+            <td><a href="{{ _path.path|route }}" title="{{ 'See this content'|translate }}">
+                <i class="
+                {%- if _path.type == 'dir' -%}
+                    icon-folder-open
+                {%- elseif _path.type == 'img' -%}
+                    icon-picture
+                {%- elseif _path.type == 'md' -%}
+                    icon-file
+                {%- else -%}
+                    icon-fullscreen
+                {%- endif -%}
+                "></i>
             </a></td>
             <td>
-                <a href="{{ _path.path|route }}" title="See this content">{{ _path.name }}</a>
+                <a href="{{ _path.path|route }}" title="{{ 'See this content'|translate }}">{{ _path.name }}</a>
     {% for _trad, _route in _path.trans %}
-                &nbsp;[<a href="{{ _route|route }}" title="{{ _trad|upper }} version of this content">{{ _trad }}</a>]
+                &nbsp;[<a href="{{ _route|route }}" title="{{ translate('see_this_content_in_ln', {'ln': i18n.languageName(_trad)}) }}">{{ _trad }}</a>]
     {% endfor %}
             </td>
-            <td>{{ _path.mtime.format('M j, Y H:i:s') }}</td>
-            <td>{{ _path.size }}</td>
-            <td>{{ _path.description }}</td>
+            <td><small>{{ datify(_path.mtime) }}</small></td>
+            <td><small>{{ _path.size }}</small></td>
+            <td><small>
+    {%- if _path.type != 'dir' and _path.extension != 'md' -%}
+            {{ translate('file_type', {'type': _path.extension}) }}
+        {%- if _path.description is not empty -%}
+                &nbsp;-&nbsp;
+        {%- endif -%}
+    {%- endif -%}
+                {{ _path.description }}
+            </small></td>
         </tr>
 {% endfor %}
 {% if content.dir_has_wip %}
         <tr>
     {% set wippath = content.dirpath ~ '/wip' %}
-            <td><a href="{{ wippath|route }}" title="See the work-in-progress of this chapter">
+            <td><a href="{{ wippath|route }}" title="{{ 'See the work-in-progress of this chapter'|translate }}">
                 <i class="icon-edit"></i>
             </a></td>
-            <td colspan="4"><small><em>This folder has a "wip" section.</em></small></td>
+            <td colspan="4"><small><em>{{ 'This folder has a "wip" section.'|translate }}</em></small></td>
+        </tr>
+{% endif %}
+{% if content.dir_is_clone %}
+        <tr>
+            <td><i class="icon-calendar"></i></td>
+            <td colspan="4"><small><em>{{ 'This folder is a "GIT" clone of a remote repository.'|translate }}</em></small></td>
         </tr>
 {% endif %}
     </tbody>

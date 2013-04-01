@@ -1,19 +1,29 @@
-{% set profiler = getProfiler %}
-
-{{profiler}}
 
 <div class="profiler">
+    <p class="text-success">
+        <strong>PROFILER for request : <a href="{{ profiler.request }}" title="Test this request">{{ profiler.request }}</a></strong>
+    </p>
 
-{{ profiler.date.format('D') }} {{ profiler.date.format('d M Y H:i:s') }} {{ profiler.timezone }} [<abbr title="{{ profiler.date.format('c') }}">ISO date</abbr>]
+    <dl class="dl-horizontal">
 
-Page generated in {{ profiler.execution_time }}  seconds
+        <dt>app</dt>
+        <dd><strong>{{ manifest.name }} {{ manifest.version }}{% if profiler.git_clone %} - clone{% endif %}</strong></dd>
 
-PHP vers. {{ profiler.php_version }} ({{ profiler.php_sapi_name }})
+        <dt>date</dt>
+        <dd>{{ profiler.date.format('D') }} {{ profiler.date.format('d M Y H:i:s') }} {{ profiler.timezone }} [<abbr title="{{ profiler.date.format('c') }}">ISO date</abbr>]</dd>
 
-Webserver system : {{ profiler.apache_version }}
+        <dt>PHP vers.</dt>
+        <dd>{{ profiler.php_version }} ({{ profiler.php_sapi_name }})</dd>
 
-Server OS : {{ profiler.php_uname }}
+        <dt>Webserver system</dt>
+        <dd>{{ profiler.apache_version }}</dd>
 
-Browser / Device : {{ profiler.user_agent }}
+        <dt>Server OS</dt>
+        <dd>{{ profiler.php_uname }}</dd>
+
+        <dt>Browser / Device</dt>
+        <dd>{{ profiler.user_agent }}</dd>
+
+    </dl>
 
 </div>

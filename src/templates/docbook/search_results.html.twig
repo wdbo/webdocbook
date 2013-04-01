@@ -1,14 +1,12 @@
-<h1>Searching "<em>{{ search_str }}</em>" in path "<em>{{ path }}</em>"</h1>
+<h1>{{ translate('search_info', {'search_str': search_str, 'path': path})|raw }}</h1>
 
-{% if content is empty %}
-<p>Your search sent no result ...</p>
-{% else %}
-<p>Results found in {{ content|length }} files.</p>
+<p>{{ pluralize(['Your search sent no result ...','one_result_found','results_found'], content|length) }}</p>
+{% if content is not empty %}
 <div class="search-results">
     {% for file, entries in content %}
     <dl class="dl-horizontal">
         <dt>
-            <a href="{{ file|route }}" title="See this page">{{ file|relativePath }}</a>
+            <a href="{{ file|route }}" title="{{ 'See this page'|translate }}">{{ file|relativePath }}</a>
         </dt>
         <dd><pre>
 {%- for entry in entries -%}

@@ -5,7 +5,7 @@
     "description": "A simple CMS based on a filesystem of Markdown files.",
     "keywords": [ "cms", "markdown", "apache cms" ],
     "homepage": "https://github.com/atelierspierrot/docbook",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "license": "GPL-3.0",
     "authors": [{
             "name": "Pierre Cassat",
@@ -18,6 +18,7 @@
         "atelierspierrot/patterns": "dev-master",
         "atelierspierrot/webfilesystem": "dev-master",
         "atelierspierrot/extended-markdown": "dev-master",
+        "atelierspierrot/internationalization": "dev-master",
         "twig/twig": "1.*",
         "symfony/finder": "dev-master"
     },

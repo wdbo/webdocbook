@@ -1,0 +1,64 @@
+index;fr;en
+datetime_mask;%e %B %Y %H:%M:%S;%a %e %m %Y %H:%M:%S
+datetime_mask_icu;d LLLL Y HH:mm:ss;eee d MM Y HH:mm:ss
+test;Test en français;Test in english
+test_args;J'ai eu les arguments : « %arg1% » et « %arg2% »;I received arguments : « %arg1% » and « %arg2% »
+;Type;Type
+;Nom;Name
+;Dernière mise à jour;Last update
+;Taille;Size
+;Description;Description
+;Accueil;Home
+search_info;"Recherche de ""<em>%search_str%</em>"" sur le chemin ""<em>%path%</em>""";"Searching ""<em>%search_str%</em>"" in path ""<em>%path%</em>"""
+;"Recherche de ""%search_str%""";"Search for ""%search_str%"""
+;Votre recherche n'a retourné aucun résultat …;Your search sent no result ...
+results_found;Résultats trouvés dans %nb% fichiers.;Results found in %fnb% files.
+one_result_found;Résultats trouvés dans 1 fichier.;Results found in 1 file.
+;Voir la page;See this page
+;Interdit;Forbidden
+;Page non accessible;Page not accessible
+;Message système reçu;Message received from the system
+;Désolé mais il semble que vous n'ayez pas le droit d'accéder à la page demandée.;Sorry, but you don't have the right to access this page.
+;Cela peut être le résultat de :;It looks like this was the result of either:
+;une adresse mal écrite;a mistyped address
+;un espace à accès restreint;a restrictive area
+;Attention !;Warning!
+ie7_warning;"Vous utilisez un <strong>vieux</strong> navigateur. Veuillez <a href=""http://browsehappy.com/"">le mettre à jour</a> ou <a href=""http://www.google.com/chromeframe/?redirect=true"">activer Google Chrome Frame</a> pour une utilisation plus efficace.";"You are using an <strong>outdated</strong> browser. Please <a href=""http://browsehappy.com/"">upgrade your browser</a> or <a href=""http://www.google.com/chromeframe/?redirect=true"">activate Google Chrome Frame</a> to improve your experience."
+;lignes;lines
+;Traductions de ce contenu;Translations of this content
+ln_version_of_this_content;version %ln% de ce contenu;%ln% version of this content
+;Télécharger la version Markdown de ce contenu;Download the Markdown version of this content
+;Voir la version HTML seule de ce contenu;"View plain &amp; isolated HTML version of this content"
+;Voir la version brute de ce contenu;View plain text version of this content
+;Voir les sources de DocBook en ligne :;Follow sources of DocBook online:
+;Accueil de votre DocBook;Home of your DocBook
+;Navigation de page;Inpage navigation
+;Aller en haut de page;Reach the top ot this page
+;Haut de page;Page Top
+;Aller en bas de page;Reach the bottom of this page
+;Bas de page;Page Bottom
+;Aller à une section de la page;Reach a section in this page
+;Sections de la page;Page Sections
+;Lire le manuel utilisateur;Read the manual
+;Aide;Help
+;Voir ce chapitre;See this chapter
+;Page non trouvée;Page not found
+;Désolé mais la page que vous demandez n'existe pas.;Sorry, but the page you were trying to view does not exist.
+;un lien non à jour;an out-of-date link
+;Voir la page précédente de ce chapitre;See the previous page in this chapter
+;Voir la page suivante de ce chapitre;See the next page in this chapter
+;Vous pouvez construire vos chaînes de recherche en utilisant des expressions régulières;You can build your search string with regular expressions
+;Dernière mise à jour de ce contenu;Last update of this content
+;recherche;search
+;Lancer la recherche;Start the search
+;Voir le travail en cours dans ce chapitre;See the work-in-progress of this chapter
+;"Ce dossier a une section ""travail-en-cours"".";"This folder has a ""wip"" section."
+;"Ce dossier est un clone ""GIT"" d'un dépôt de référence.";"This folder is a ""GIT"" clone of a remote repository."
+index_of_title;Index de <em>%path%</em> <small>Plan de dossier</small>;Index of <em>%path%</em> <small>Folder map</small>
+file_type;fichier « %type% »;« %type% » file
+;Infos du fichier;File infos
+;Manuel utilisateur;User manual
+;Voir ce contenu;See this content
+;Dossier de médias (images …);Folder of assets (images, medias ...)
+;Le fichier 'read me' de ce dossier, texte d'introduction montré sur sa page d'accueil;The 'read me' file of this folder, introduction shown on its starting page
+see_this_content_in_ln;Voir ce contenu en %ln%;See this content in %ln%

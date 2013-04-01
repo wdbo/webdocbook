@@ -23,7 +23,12 @@ class DocBookController extends AbstractController
 
     public function notFoundAction($str = '')
     {
-        return array('not_found', $str);
+        return array('not_found', '', array('message'=>$str));
+    }
+
+    public function forbiddenAction($str = '')
+    {
+        return array('forbidden', '', array('message'=>$str));
     }
 
     public function creditsAction()
@@ -43,7 +48,7 @@ class DocBookController extends AbstractController
         );
         $tpl_params = array(
             'breadcrumbs' => array('DocBook user manual'),
-            'title' => 'User manual',
+            'title' => _T('User manual'),
             'page' => $page_infos,
             'page_tools' => 'false'
         );

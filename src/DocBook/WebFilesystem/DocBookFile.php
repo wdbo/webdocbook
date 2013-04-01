@@ -12,7 +12,8 @@ use DocBook\FrontController,
     DocBook\Helper;
 
 use WebFilesystem\WebFilesystem,
-    WebFilesystem\WebFileInfo;
+    WebFilesystem\WebFileInfo,
+    WebFilesystem\WebFilesystemIterator;
 
 use Symfony\Component\Finder\Finder;
 
@@ -73,7 +74,8 @@ class DocBookFile extends WebFileInfo
             'dirname'       => $this->getHumanReadableFilename(),
             'dirpath'       => $dir->getPath(),
             'dir_has_wip'   => $hasWip,
-            'dirscan'       => $paths
+            'dir_is_clone'  => Helper::isGitClone($dir->getPath()),
+            'dirscan'       => $paths,
         );
     }
     
@@ -85,19 +87,32 @@ class DocBookFile extends WebFileInfo
         }
         return array(
             'path'      =>$this->getRealPath(),
-            'type'      =>$this->isDir() ? 'dir' : 'file',
+            'type'      =>$this->getDocBookType(),
             'route'     =>Helper::getRoute($this->getRealPath()),
             'name'      =>$this->getHumanReadableFilename(),
             'size'      =>$truefile->isDir() ? 
                 Helper::getDirectorySize($truefile->getPathname()) : WebFilesystem::getTransformedFilesize($truefile->getSize()),
             'mtime'     =>WebFilesystem::getDateTimeFromTimestamp($truefile->getMTime()),
-            'description'=>'',
+            'description'=>$this->getDescription(),
             'next'      =>$this->isDir() ? false : $this->findNext(),
             'previous'  =>$this->isDir() ? false : $this->findPrevious(),
             'trans'     =>$this->isDir() ? array() : $this->findTranslations(),
             'dirpath'   =>dirname($this->getPathname()),
             'lines_nb'  =>$this->isDir() ? null : Helper::getFileLinesCount($this->getRealPath()),
+            'extension' =>$this->getExtension(),
         );
+    }
+    
+    public function getDocBookType()
+    {
+        if ($this->isDir()) {
+            return 'dir';
+        } elseif (WebFilesystem::isCommonImage($this->getFilename())) {
+            return 'img';
+        } elseif ('md'===$this->getExtension()) {
+            return 'md';
+        }
+        return 'file';
     }
     
     public function findTranslations()
@@ -125,7 +140,18 @@ class DocBookFile extends WebFileInfo
         $dir = new FilesystemIterator(dirname($this->getRealPath()), FilesystemIterator::CURRENT_AS_PATHNAME);
         $dir_table = iterator_to_array($dir, false);
         $i = array_search($this->getRealPath(), $dir_table);
-        return ($i && array_key_exists($i+1, $dir_table) && !is_dir($dir_table[$i+1])) ? $dir_table[$i+1] : null;
+        if (false!==$i) {
+            $j = $i+1;
+            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || Helper::isDotPath($dir_table[$j]))) {
+                while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || Helper::isDotPath($dir_table[$j]))) {
+                    $j = $j+1;
+                }
+            }
+            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && !is_dir($dir_table[$j]) && !Helper::isDotPath($dir_table[$j])) {
+                return $dir_table[$j];
+            }
+        }
+        return null;
     }
     
     public function findPrevious()
@@ -133,7 +159,18 @@ class DocBookFile extends WebFileInfo
         $dir = new FilesystemIterator(dirname($this->getRealPath()), FilesystemIterator::CURRENT_AS_PATHNAME);
         $dir_table = iterator_to_array($dir, false);
         $i = array_search($this->getRealPath(), $dir_table);
-        return ($i && array_key_exists($i-1, $dir_table) && !is_dir($dir_table[$i-1])) ? $dir_table[$i-1] : null;
+        if (false!==$i) {
+            $j = $i-1;
+            if ($j>=0 && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || Helper::isDotPath($dir_table[$j]))) {
+                while ($j>=0 && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || Helper::isDotPath($dir_table[$j]))) {
+                    $j = $j-1;
+                }
+            }
+            if ($j>=0 && array_key_exists($j, $dir_table) && !is_dir($dir_table[$j]) && !Helper::isDotPath($dir_table[$j])) {
+                return $dir_table[$j];
+            }
+        }
+        return null;
     }
     
     public function getHumanReadableFilename()
@@ -143,7 +180,7 @@ class DocBookFile extends WebFileInfo
             Helper::slashDirname($this->getRealPath())===Helper::slashDirname($docbook->getPath('base_dir_http')) ||
             Helper::slashDirname($this->getRealPath())==='/'
         ) {
-            return 'Home';
+            return _T('Home');
         }
         return parent::getHumanReadableFilename();
     }
@@ -158,6 +195,17 @@ class DocBookFile extends WebFileInfo
     {
         $index = Helper::slashDirname($this->getRealPath()).FrontController::INDEX_FILE;
         return file_exists($index) ? $index : null;
+    }
+
+    public function getDescription()
+    {
+        $docbook = FrontController::getInstance();
+        $name = strtolower($this->getBasename());
+        $cfg = $docbook->getRegistry()->get('descriptions', array(), 'docbook');
+        if (array_key_exists($name, $cfg)) {
+            return _T($cfg[$name]);
+        }
+        return '';
     }
 
 }

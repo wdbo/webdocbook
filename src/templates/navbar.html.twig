@@ -5,34 +5,34 @@
         <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
     </button>
 
-    <a class="brand apicon" href="https://github.com/atelierspierrot/docbook" title="Follow sources of DocBook online: https://github.com/atelierspierrot/docbook">
+    <a class="brand apicon" href="https://github.com/atelierspierrot/docbook" title="{{ 'Follow sources of DocBook online:'|translate }} https://github.com/atelierspierrot/docbook">
         <img src="{{ assets }}/bouton_plante-24.png" alt="sources" />
     </a>
-    <a class="brand" href="/" title="Home of your DocBook">{{ app.title }}</a>
+    <a class="brand" href="/" title="{{ 'Home of your DocBook'|translate }}">{{ app.title }}</a>
 
 {% if inpage_menu|default('true') != 'false' %}
     <div class="nav-collapse collapse">
-        <div class="navbar-text pull-right"><small>
+        <div class="navbar-text pull-right">
             <ul class="nav" id="navbar_inner">
-                <li><a href="#">Inpage navigation</a></li>
-                <li class="active"><a href="#top" title="Reach the top ot this page">
-                    <span class="visible-phone visible-tablet hidden-desktop">Page Top&nbsp;&uarr;</span>
+                <li><a href="#0">{{ 'Inpage navigation'|translate }}</a></li>
+                <li class="active"><a href="#top" title="{{ 'Reach the top ot this page'|translate }}">
+                    <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Top'|translate }}&nbsp;&uarr;</span>
                     <span class="hidden-phone hidden-tablet visible-desktop">&uarr;</span>
                 </a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Reach a section in this page">
-                    <span class="visible-phone visible-tablet hidden-desktop">Page Sections&nbsp;<b class="caret"></b></span>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{{ 'Reach a section in this page'|translate }}">
+                    <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Sections'|translate }}&nbsp;<b class="caret"></b></span>
                     <span class="hidden-phone hidden-tablet visible-desktop"><b class="caret"></b></span>
                     </a>
                     <ul class="dropdown-menu pull-right" id="inpage_menu"></ul>
                 </li>
-                <li><a href="#bottom" title="Reach the bottom of this page">
-                    <span class="visible-phone visible-tablet hidden-desktop">Page Bottom&nbsp;&darr;</span>
+                <li><a href="#bottom" title="{{ 'Reach the bottom of this page'|translate }}">
+                    <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Bottom'|translate }}&nbsp;&darr;</span>
                     <span class="hidden-phone hidden-tablet visible-desktop">&darr;</span>
                 </a></li>
-                <li><a href="{{ 'docbookdoc'|route }}" title="Read the manual">Help&nbsp;&otimes;</a></li>
+                <li><a href="{{ 'docbookdoc'|route }}" title="{{ 'Read the manual'|translate }}">{{ 'Help'|translate }}&nbsp;&otimes;</a></li>
             </ul>
-        </small></div>
+        </div>
     </div>
 {% endif %}
 
@@ -40,7 +40,7 @@
     <!-- global menu -->
     <ul class="nav">
     {% for _chapter in chapters %}
-        <li><a href="{{ _chapter.route }}" title="See this chapter">{{ _chapter.name }}</a></li>
+        <li><a href="{{ _chapter.route }}" title="{{ 'See this chapter'|translate }}">{{ _chapter.name }}</a></li>
     {% endfor %}
     </ul>
 {% endif %}

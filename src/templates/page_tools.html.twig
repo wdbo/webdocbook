@@ -2,7 +2,7 @@
     <div class="pull-left muted">
         <abbr title="{{ page.path|securedPath }}"><strong>{{ page.name }}</strong></abbr>
         &nbsp;|&nbsp;
-        Last update of this content
+        {{ 'Last update of this content'|translate }}
         <time datetime="{{ page.update.format('Y-m-d') }}" title="{{ page.update.format('c') }}">
             <strong>{{- page.update.format('M j, Y') -}}</strong>
         </time>

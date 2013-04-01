@@ -36,12 +36,12 @@
     under <a href="http://www.gnu.org/licenses/gpl-3.0.html" title="Read this license text online">GPL-3.0</a> license.
     <br />
 {% if profiler is not empty %}
-    <a href="#" id="profiler_handler" title="See page &amp; system infos"><i class="icon-globe"></i>&nbsp;Profiler</a>
+    <a href="#0" id="profiler_handler" title="See page &amp; system infos"><i class="icon-globe"></i>&nbsp;Profiler</a>
     &nbsp;|&nbsp;
 {% endif %}
     <a href="{{ 'docbookdoc'|route }}" title="Read the manual"><i class="icon-question-sign"></i>&nbsp;Manual</a>
     &nbsp;|&nbsp;
-    <a href="#" onclick="messagebox('{{ 'credits'|route }}', 'About DocBook');" title="See the full application credits, check for updates ..."><i class="icon-info-sign"></i>&nbsp;About</a>
+    <a href="#0" onclick="messagebox('{{ 'credits'|route }}', 'About DocBook');" title="See the full application credits, check for updates ..."><i class="icon-info-sign"></i>&nbsp;About</a>
     </div>
 {% if profiler is not empty %}
     <div id="profiler" class="profiler-wrapper">{% include DB.getTemplate('profiler') %}</div>

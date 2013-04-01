@@ -8,6 +8,7 @@
 ._*
 .DS_Store
 *~
+*~lock*
 Thumbs.db
 ehthumbs.db
 Icon
@@ -18,6 +19,11 @@ tmp/*
 dev/*
 phpdoc/*
 src/vendor/*
-www/tmp/*
 composer.lock
 bin/emd_console
+
+# the www
+www/!docbook_assets
+www/!.htaccess
+www/!index.php
+www/*

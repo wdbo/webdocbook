@@ -1,15 +1,15 @@
 {% if page.previous is not empty %}
-<a href="{{ page.previous|route }}" title="See the previous page in this chapter"><i class="icon-chevron-left"></i>&nbsp;{{ page.previous|readableName }}</a>
+<a href="{{ page.previous|route }}" title="{{ 'See the previous page in this chapter'|translate }}"><i class="icon-chevron-left"></i>&nbsp;{{ page.previous|readableName }}</a>
 {% endif %}
 {% if page.previous is not empty and page.next is not empty %}
 &nbsp;|&nbsp;
 {% endif %}
 {% if page.next is not empty %}
-<a href="{{ page.next|route }}" title="See the next page in this chapter">{{ page.next|readableName }}&nbsp;<i class="icon-chevron-right"></i></a>
+<a href="{{ page.next|route }}" title="{{ 'See the next page in this chapter'|translate }}">{{ page.next|readableName }}&nbsp;<i class="icon-chevron-right"></i></a>
 {% endif %}
 <form class="form-search" method="get" action="{{ page.path|route('search') }}">
     <div class="input-append">
-        <input type="text" class="input-small search-query searchField" name="s" title="You can build your search string with regular expressions" placeholder="search" value="{{ search_str|default('') }}" tabindex="1" />
-        <button type="submit" class="btn"><i class="icon-search"></i></button>
+        <input type="text" class="input-small search-query searchField" name="s" title="{{ 'You can build your search string with regular expressions'|translate }}" placeholder="{{ 'search'|translate }}" value="{{ search_str|default('') }}" tabindex="1" />
+        <button type="submit" class="btn" title="{{ 'Start the search'|translate }}"><i class="icon-search"></i></button>
     </div>
 </form>

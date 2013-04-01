@@ -28,7 +28,7 @@
 {% block html_footer %}
 </div>
 {% include DB.getTemplate('footer') %}
-<div id="messagebox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="messagebox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="messageboxLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close this modal box">×</button>
         <h3 id="messageboxLabel"></h3>
@@ -47,6 +47,8 @@
 $(function() {
     addCSSValidatorLink('{{ assets }}styles.css');
     addHTMLValidatorLink();
+    initHandler('profiler');
+    $('a[href="#0"]').on('click', function(){ return false; });
 });
 </script>
 {% endblock %}

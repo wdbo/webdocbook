@@ -119,6 +119,11 @@ class TemplateBuilder extends AbstractView
         return $locator->fallbackFinder($name);
     }
 
+    public function getTwigEngine()
+    {
+        return $this->twig;
+    }
+
 }
 
 // Endfile

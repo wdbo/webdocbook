@@ -19,7 +19,7 @@ class NotFoundException extends Exception
     public function __construct($message = '', $code = 0, Exception $previous = null)
     {
         $docbook = FrontController::getInstance();
-        return $docbook->notFound( $message );
+        $docbook->display('', 'not_found', array('message'=>$message), true);
     }
 
 }

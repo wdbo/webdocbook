@@ -119,6 +119,21 @@ class Helper
     }
 
     /**
+     * Parse an URL and returns its composition as an array, with the URI query if so
+     * @param string $url The URL to parse (required)
+     * @return array An array of the URL components
+     */
+    public static function parseUrl($url)
+    {
+        if (!strlen($url)) return;
+        $_urls = array_merge( @parse_url($url), array('params'=>array()) );
+        if (isset($_urls['query'])) {
+            parse_str($_urls['query'], $_urls['params']);
+        }
+        return $_urls;	
+    }
+    
+    /**
      * Get the current browser URL
      * @param bool $entities Protect '&' entities parsing them in '&amp;' ? (default is FALSE)
      * @param bool $base Do you want just the base URL, without any URI (default is FALSE)
@@ -189,10 +204,14 @@ class Helper
         if (is_null($path)) {
             $path = '/';
         }
-        $path = self::slashDirname($docbook->getPath('base_dir_http')).self::slashDirname($path);
+        $path = self::slashDirname($docbook->getPath('base_dir_http')).$path;
+        $is_dir = file_exists($path) && is_dir($path);
+        if ($is_dir) $path = self::slashDirname($path);
 
         $grep_cmd = Command::getCommandPath('grep');
-        $command = $grep_cmd.' -Rn -A 2 -B 2 --include="*.md" "'.$regexp.'" '.$path;
+        $command = $grep_cmd.' -rn -A 2 -B 2'
+            .($is_dir ? ' --include="*.md"' : '')
+            .' "'.$regexp.'" '.$path;
         list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command, $path);
 
         if ($status) return null;
@@ -200,13 +219,13 @@ class Helper
         $result_files = explode("\n--", $stdout);
         $result = array();
         foreach($result_files as $stack) {
-            $filename = substr($stack, 0, strpos($stack, '-'));
+            $filename = $is_dir ? substr($stack, 0, strpos($stack, '-')) : '';
             $filepath = str_replace($path, '', $filename);
             if (!isset($result[$filename])) {
                 $result[$filename] = array();
             }
             foreach(explode("\n", $stack) as $line) {
-                $filename_rest = substr($line, strlen($filename)+1);
+                $filename_rest = $is_dir ? substr($line, strlen($filename)+1) : $line;
                 $delim_dash = strpos($filename_rest, '-') ?: 10000;
                 $delim_column = strpos($filename_rest, ':') ?: 10000;
                 $delim = min($delim_dash, $delim_column);
@@ -237,6 +256,7 @@ class Helper
 
     public static function getProfiler()
     {
+        $docbook = FrontController::getInstance();
         return array(
             'date'              => new DateTime(),
             'timezone'          => date_default_timezone_get(),
@@ -244,8 +264,22 @@ class Helper
 			'php_version'       => phpversion(),
 			'php_sapi_name'     => php_sapi_name(),
 			'apache_version'    => apache_get_version(),
-			'user_agent'        => $_SERVER['HTTP_USER_AGENT']
+			'user_agent'        => $_SERVER['HTTP_USER_AGENT'],
+			'git_clone'         => self::isGitClone($docbook->getPath('root_dir')),
+//			'request'           => $_SERVER['REQUEST_URI'],
+			'request'           => self::currentUrl(),
         );
+    }
+
+    public static function isGitClone($path)
+    {
+        $dir_path = self::slashDirname($path).'.git';
+        return file_exists($dir_path) && is_dir($dir_path);
+    }
+
+    public static function isDotPath($path)
+    {
+        return '.'===substr(basename($path), 0, 1);
     }
 
 }
