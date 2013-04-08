@@ -10,6 +10,8 @@ namespace DocBook;
 
 use DocBook\FrontController;
 
+use Library\Helper\Directory as DirectoryHelper;
+
 /**
  */
 class Locator
@@ -51,7 +53,7 @@ class Locator
         if (file_exists($path)) {
             return $path;
         }
-        $file_path = Helper::slashDirname(FrontController::getInstance()->getPath('base_dir_http')).trim($path, '/');
+        $file_path = DirectoryHelper::slashDirname(FrontController::getInstance()->getPath('base_dir_http')).trim($path, '/');
         if (file_exists($file_path)) {
             return $file_path;
         }
@@ -67,16 +69,16 @@ class Locator
         $docbook = FrontController::getInstance();
 
         $base_path = 'template'===$filetype ? FrontController::TEMPLATES_DIR : FrontController::CONFIG_DIR;
-        $file_path = Helper::slashDirname($base_path).$filename;
+        $file_path = DirectoryHelper::slashDirname($base_path).$filename;
         
         // user first
-        $user_file_path = Helper::slashDirname($docbook->getPath('user_dir')).$file_path;
+        $user_file_path = DirectoryHelper::slashDirname($docbook->getPath('user_dir')).$file_path;
         if (file_exists($user_file_path)) {
             return $user_file_path;
         }
 
         // default
-        $def_file_path = Helper::slashDirname($docbook->getPath('base_dir')).$file_path;
+        $def_file_path = DirectoryHelper::slashDirname($docbook->getPath('base_dir')).$file_path;
         if (file_exists($def_file_path)) {
             return $def_file_path;
         }

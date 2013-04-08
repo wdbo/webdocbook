@@ -13,8 +13,9 @@ use DocBook\Abstracts\AbstractController,
     DocBook\Locator,
     DocBook\Response,
     DocBook\Request,
-    DocBook\TemplateBuilder,
-    DocBook\System\Command;
+    DocBook\TemplateBuilder;
+
+use Library\Command;
 
 use Markdown\Parser,
     Markdown\ExtraParser;

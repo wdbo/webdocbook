@@ -23,6 +23,8 @@ use I18n\I18n,
     I18n\Loader as I18n_Loader,
     I18n\Twig\I18nExtension as I18n_Twig_Extension;
 
+use Library\Helper\Directory as DirectoryHelper;
+
 /**
  */
 class FrontController extends AbstractFrontController
@@ -121,7 +123,7 @@ class FrontController extends AbstractFrontController
         $i18n_loader = new I18n_Loader(array(
             'language_directory' => $this->getPath('i18n'),
             'language_strings_db_directory' =>
-                Helper::slashDirname($this->getPath('base_dir')).self::CONFIG_DIR,
+                DirectoryHelper::slashDirname($this->getPath('base_dir')).self::CONFIG_DIR,
             'language_strings_db_filename' => self::APP_I18N,
             'force_rebuild' => true,
         ));
@@ -140,7 +142,7 @@ class FrontController extends AbstractFrontController
         if (empty($input_file)) {
             $input_path = $this->getInputPath();
             if (!empty($input_path)) {
-                $input_file = Helper::slashDirname($this->getPath('base_dir_http')).trim($input_path, '/');
+                $input_file = DirectoryHelper::slashDirname($this->getPath('base_dir_http')).trim($input_path, '/');
             }
         }
                 

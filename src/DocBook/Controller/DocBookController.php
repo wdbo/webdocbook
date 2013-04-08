@@ -13,6 +13,8 @@ use DocBook\FrontController,
     DocBook\Locator,
     DocBook\Abstracts\AbstractController;
 
+use Library\Helper\Directory as DirectoryHelper;
+
 use Markdown\Parser,
     Markdown\ExtraParser;
 
@@ -38,7 +40,7 @@ class DocBookController extends AbstractController
 
     public function docbookdocAction()
     {
-        $path = Helper::slashDirname(FrontController::DOCBOOK_ASSETS)
+        $path = DirectoryHelper::slashDirname(FrontController::DOCBOOK_ASSETS)
             .'USER_MANUAL.md';
 
         $page_infos = array(

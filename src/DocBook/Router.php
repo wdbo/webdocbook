@@ -13,6 +13,8 @@ use DocBook\FrontController,
 
 use Patterns\Interfaces\RouterInterface;
 
+use Library\Helper\Url as UrlHelper;
+
 /**
  */
 class Router
@@ -41,7 +43,7 @@ class Router
         if (!is_null($route)) {
             $this->setRoute($route);
         } else {
-            $this->setRoute(Helper::currentUrl());
+            $this->setRoute(UrlHelper::getRequestUrl());
         }
     }
 

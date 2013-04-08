@@ -17,6 +17,8 @@ use WebFilesystem\WebFilesystem,
 
 use Symfony\Component\Finder\Finder;
 
+use Library\Helper\Directory as DirectoryHelper;
+
 use \FilesystemIterator;
 
 /**
@@ -29,7 +31,7 @@ class DocBookFile extends WebFileInfo
     public function __construct($file_name)
     {
         $this->docbook = FrontController::getInstance();
-        $_root = Helper::slashDirname($this->docbook->getPath('base_dir_http'));
+        $_root = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
         parent::__construct($_root.str_replace($_root, '', $file_name));
         $this->setRootDir($this->docbook->getPath('base_dir_http'));
         $this->setWebPath( dirname($file_name) );
@@ -74,7 +76,7 @@ class DocBookFile extends WebFileInfo
             'dirname'       => $this->getHumanReadableFilename(),
             'dirpath'       => $dir->getPath(),
             'dir_has_wip'   => $hasWip,
-            'dir_is_clone'  => Helper::isGitClone($dir->getPath()),
+            'dir_is_clone'  => DirectoryHelper::isGitClone($dir->getPath()),
             'dirscan'       => $paths,
         );
     }
@@ -142,12 +144,12 @@ class DocBookFile extends WebFileInfo
         $i = array_search($this->getRealPath(), $dir_table);
         if (false!==$i) {
             $j = $i+1;
-            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || Helper::isDotPath($dir_table[$j]))) {
-                while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || Helper::isDotPath($dir_table[$j]))) {
+            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || DirectoryHelper::isDotPath($dir_table[$j]))) {
+                while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || DirectoryHelper::isDotPath($dir_table[$j]))) {
                     $j = $j+1;
                 }
             }
-            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && !is_dir($dir_table[$j]) && !Helper::isDotPath($dir_table[$j])) {
+            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && !is_dir($dir_table[$j]) && !DirectoryHelper::isDotPath($dir_table[$j])) {
                 return $dir_table[$j];
             }
         }
@@ -161,12 +163,12 @@ class DocBookFile extends WebFileInfo
         $i = array_search($this->getRealPath(), $dir_table);
         if (false!==$i) {
             $j = $i-1;
-            if ($j>=0 && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || Helper::isDotPath($dir_table[$j]))) {
-                while ($j>=0 && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || Helper::isDotPath($dir_table[$j]))) {
+            if ($j>=0 && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || DirectoryHelper::isDotPath($dir_table[$j]))) {
+                while ($j>=0 && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || DirectoryHelper::isDotPath($dir_table[$j]))) {
                     $j = $j-1;
                 }
             }
-            if ($j>=0 && array_key_exists($j, $dir_table) && !is_dir($dir_table[$j]) && !Helper::isDotPath($dir_table[$j])) {
+            if ($j>=0 && array_key_exists($j, $dir_table) && !is_dir($dir_table[$j]) && !DirectoryHelper::isDotPath($dir_table[$j])) {
                 return $dir_table[$j];
             }
         }
@@ -177,8 +179,8 @@ class DocBookFile extends WebFileInfo
     {
         $docbook = FrontController::getInstance();
         if (
-            Helper::slashDirname($this->getRealPath())===Helper::slashDirname($docbook->getPath('base_dir_http')) ||
-            Helper::slashDirname($this->getRealPath())==='/'
+            DirectoryHelper::slashDirname($this->getRealPath())===DirectoryHelper::slashDirname($docbook->getPath('base_dir_http')) ||
+            DirectoryHelper::slashDirname($this->getRealPath())==='/'
         ) {
             return _T('Home');
         }
@@ -187,13 +189,13 @@ class DocBookFile extends WebFileInfo
 
     public function findReadme()
     {
-        $readme = Helper::slashDirname($this->getRealPath()).FrontController::README_FILE;
+        $readme = DirectoryHelper::slashDirname($this->getRealPath()).FrontController::README_FILE;
         return file_exists($readme) ? $readme : null;
     }
 
     public function findIndex()
     {
-        $index = Helper::slashDirname($this->getRealPath()).FrontController::INDEX_FILE;
+        $index = DirectoryHelper::slashDirname($this->getRealPath()).FrontController::INDEX_FILE;
         return file_exists($index) ? $index : null;
     }
 

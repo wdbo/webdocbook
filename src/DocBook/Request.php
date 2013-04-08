@@ -12,6 +12,9 @@ use DocBook\FrontController,
     DocBook\Helper,
     DocBook\NotFoundException;
 
+use Library\Helper\Directory as DirectoryHelper,
+    Library\Helper\Url as UrlHelper;
+
 /**
  */
 class Request
@@ -51,7 +54,7 @@ class Request
      */
     public function __construct()
     {
-        $this->url = Helper::currentUrl();
+        $this->url = UrlHelper::getRequestUrl();
 
         $this->get = $_GET;
         $server_uri = $_SERVER['REQUEST_URI'];
@@ -290,7 +293,7 @@ exit('yo');
         if (empty($input_file)) {
             $input_path = $docbook->getInputPath();
             if (!empty($input_path)) {
-                $input_file = Helper::slashDirname($docbook->getPath('base_dir_http')).trim($input_path, '/');
+                $input_file = DirectoryHelper::slashDirname($docbook->getPath('base_dir_http')).trim($input_path, '/');
             }
         }
 
