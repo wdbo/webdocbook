@@ -2,7 +2,7 @@ Docbook : a simple Markdown CMS
 ===============================
 
 **DocBook** is a simple PHP tool to build rich HTML views from Markdown files following a 
-filesystem architecture. It embedded some classic website features like a search in contents,
+filesystem architecture. It embeds some classic website features like a search in contents,
 some RSS feeds generation or translations switching.
 
 **DocBook** builds a "like-a-book" interactive website from simple Markdown files.

@@ -24,7 +24,7 @@ As the package uses some internal Apache's features, you will need to:
 -   define a new virtual-host in your system using the sample configuration below,
 -   define an `.htaccess` file in your directory root using the sample file below,
 -   enables the [mod_rewrite](http://httpd.apache.org/docs/2.2/en/mod/mod_rewrite.html) 
-    Apache module (*see the [FAQ](#faq) section below fo an "how-to"*)
+    Apache module (*see the [FAQ](#faq) section below for an "how-to"*)
 
 
 ## Installation step-by-step
@@ -37,11 +37,11 @@ You have three ways to get a copy of the sources:
 
         ~$ git clone git://github.com/atelierspierrot/docbook.git your/path/to/docbook
 
--   get an archive from GitHub, untar it in your wanted directory
+-   get an archive from GitHub, untar it in your target directory
 
 -   download a tag version of the sources, see <https://github.com/atelierspierrot/docbook/tags>.
 
-For each stable version of DocBook, a new tag will be created named **vX.Y.Z**, if you prefer
+For each stable version of DocBook, a new tag may exist named **vX.Y.Z**, if you prefer
 use a download version rather than a Git clone, use a tag preferably.
 
 When available, any tag named like **vX.Y.Z-outofthebox** is a full and already installed 
@@ -137,8 +137,8 @@ Once you have enabled all required modules, restart Apache running:
 ### Error: nothing seems to work but I got no error message
 
 If you see the default page of Apache, just check that the `www/.htaccess` exists. If not,
-make a copy of the `src/www_htaccess.dist.txt` to `www/.htaccess` and reload the page in
-your browser.
+make a copy of the `src/config/www_htaccess.dist.txt` to `www/.htaccess` and reload the 
+page in your browser.
 
 ### Error: "Internal Server Error"
 
@@ -159,7 +159,7 @@ virtual host's domain name, try the following:
 
 ### Error: "An error occured while trying to create directory 'XXX'!"
 
-This message means that DocBook tries to create a new directory but has not enaugh rights to
+This message means that DocBook tries to create a new directory but has not enough rights to
 do so in your system. To correct this error, just creates the `XXX` directory mentionned in
 the error message manually and set it full rights running [^2]:
 

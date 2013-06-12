@@ -14,8 +14,8 @@
 - faire un "sitemap.xml" (redirigé via Apache)
 - navigation: previous / next / head / menu des pages et sous-répertoires
 - DONE: interface riche avec Bootstrap (HTML5)
-- outil de recherche (?)
-- gestion des traductions avec extension ".LN.md"
+- DONE: outil de recherche (?)
+- DONE: gestion des traductions avec extension ".LN.md"
 - DONE: FancyIndexing des contenus (icônes ? - icônes de Bootstrap)
 - "TOC" globale
 - fichiers globaux (utilisés par défaut pour toutes les pages si non redéfinis) : copyright info, authors list, aside, changelog

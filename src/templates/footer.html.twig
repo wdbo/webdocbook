@@ -30,8 +30,8 @@
     {%- if author_url is not empty -%}
         </a>
     {%- endif -%}
-    {% if loop.length > 1 %} (<em>{{- author.role -}}</em>){%- endif -%}
-    {%- if loop.index < (loop.length-1) %}, {% endif %}
+    {% if loop.length > 1 and author.role is not empty %} (<em>{{- author.role -}}</em>){%- endif -%}
+    {%- if loop.index < (loop.length) %}, {% endif %}
 {% endfor %}
     under <a href="http://www.gnu.org/licenses/gpl-3.0.html" title="Read this license text online">GPL-3.0</a> license.
     <br />
