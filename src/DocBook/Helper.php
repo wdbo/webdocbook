@@ -207,8 +207,30 @@ class Helper
 			'apache_version'    => apache_get_version(),
 			'user_agent'        => $_SERVER['HTTP_USER_AGENT'],
 			'git_clone'         => DirectoryHelper::isGitClone($docbook->getPath('root_dir')),
-//			'request'           => $_SERVER['REQUEST_URI'],
 			'request'           => UrlHelper::getRequestUrl(),
+        );
+    }
+
+    public static function isTranslationFile($path)
+    {
+        $parts = explode('.', basename($path));
+        return count($parts)===3 && strlen($parts[1])===2 && $parts[2]==='md';
+    }
+
+    public static function isFileValid($file_path)
+    {
+        $name = basename($file_path);
+        return (
+            $name!==FrontController::DOCBOOK_INTERFACE && 
+            $name!==FrontController::README_FILE
+        );
+    }
+    
+    public static function isDirValid($file_path)
+    {
+        $name = basename($file_path);
+        return (
+            $name!==FrontController::DOCBOOK_ASSETS
         );
     }
 

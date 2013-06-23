@@ -8,7 +8,8 @@
 
 namespace DocBook\WebFilesystem;
 
-use DocBook\FrontController;
+use DocBook\FrontController,
+    DocBook\Helper;
 
 use WebFilesystem\FilesystemIterator,
     WebFilesystem\WebRecursiveDirectoryIterator;
@@ -28,6 +29,7 @@ class DocBookRecursiveDirectoryIterator extends WebRecursiveDirectoryIterator
 
     public static function fileValidation($file_path)
     {
+        return Helper::isFileValid($file_path);
         $name = basename($file_path);
         return (
             $name!==FrontController::DOCBOOK_INTERFACE && 
@@ -37,6 +39,7 @@ class DocBookRecursiveDirectoryIterator extends WebRecursiveDirectoryIterator
     
     public static function dirValidation($file_path)
     {
+        return Helper::isDirValid($file_path);
         $name = basename($file_path);
         return (
             $name!==FrontController::DOCBOOK_ASSETS

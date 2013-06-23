@@ -143,12 +143,18 @@ class DocBookFile extends WebFileInfo
         $i = array_search($this->getRealPath(), $dir_table);
         if (false!==$i) {
             $j = $i+1;
-            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || DirectoryHelper::isDotPath($dir_table[$j]))) {
-                while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || DirectoryHelper::isDotPath($dir_table[$j]))) {
-                    $j = $j+1;
-                }
+            while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
+                (is_dir($dir_table[$j]) && !Helper::isDirValid($dir_table[$j])) || 
+                !Helper::isFileValid($dir_table[$j]) || 
+                DirectoryHelper::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
+            )) {
+                $j = $j+1;
             }
-            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && !is_dir($dir_table[$j]) && !DirectoryHelper::isDotPath($dir_table[$j])) {
+            if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
+                    (is_dir($dir_table[$j]) && Helper::isDirValid($dir_table[$j])) ||
+                    (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j])) 
+                ) && !DirectoryHelper::isDotPath($dir_table[$j])
+            ) {
                 return $dir_table[$j];
             }
         }
@@ -162,12 +168,18 @@ class DocBookFile extends WebFileInfo
         $i = array_search($this->getRealPath(), $dir_table);
         if (false!==$i) {
             $j = $i-1;
-            if ($j>=0 && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || DirectoryHelper::isDotPath($dir_table[$j]))) {
-                while ($j>=0 && array_key_exists($j, $dir_table) && (is_dir($dir_table[$j]) || DirectoryHelper::isDotPath($dir_table[$j]))) {
-                    $j = $j-1;
-                }
+            while ($j>=0 && array_key_exists($j, $dir_table) && (
+                (is_dir($dir_table[$j]) && !Helper::isDirValid($dir_table[$j])) || 
+                !Helper::isFileValid($dir_table[$j]) || 
+                DirectoryHelper::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
+            )) {
+                $j = $j-1;
             }
-            if ($j>=0 && array_key_exists($j, $dir_table) && !is_dir($dir_table[$j]) && !DirectoryHelper::isDotPath($dir_table[$j])) {
+            if ($j>=0 && array_key_exists($j, $dir_table) && (
+                    (is_dir($dir_table[$j]) && Helper::isDirValid($dir_table[$j])) ||
+                    (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j])) 
+                ) && !DirectoryHelper::isDotPath($dir_table[$j])
+            ) {
                 return $dir_table[$j];
             }
         }
