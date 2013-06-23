@@ -58,7 +58,7 @@ class DocBookController extends AbstractController
         $file_content = file_get_contents($path);
         $md_parser = $this->docbook->getMarkdownParser();
         $content = $this->docbook->display(
-            $md_parser->transform($file_content),
+            $md_parser->transformString($file_content)->getBody(),
             'content',
             array(
                 'page'=>$page_infos,

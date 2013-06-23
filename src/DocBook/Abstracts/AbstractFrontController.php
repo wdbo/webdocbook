@@ -17,8 +17,7 @@ use DocBook\Abstracts\AbstractController,
 
 use Library\Command;
 
-use Markdown\Parser,
-    Markdown\ExtraParser;
+use MarkdownExtended\MarkdownExtended;
 
 use Patterns\Abstracts\AbstractSingleton,
     Patterns\Commons\ConfigurationRegistry;
@@ -162,7 +161,7 @@ abstract class AbstractFrontController extends AbstractSingleton
     abstract public function getQueryString();
     abstract public function setAction($action);
     abstract public function getAction();
-    abstract public function setMarkdownParser(ExtraParser $parser);
+    abstract public function setMarkdownParser(MarkdownExtended $parser);
     abstract public function getMarkdownParser();
 
 }

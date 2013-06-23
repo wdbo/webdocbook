@@ -13,9 +13,8 @@ use DocBook\FrontController,
 
 use WebFilesystem\WebFilesystem,
     WebFilesystem\WebFileInfo,
-    WebFilesystem\WebFilesystemIterator;
-
-use Symfony\Component\Finder\Finder;
+    WebFilesystem\WebFilesystemIterator,
+    WebFilesystem\Finder;
 
 use Library\Helper\Directory as DirectoryHelper;
 

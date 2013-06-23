@@ -21,8 +21,6 @@ use Markdown\Parser,
 use WebFilesystem\WebFilesystem,
     WebFilesystem\WebFileInfo;
 
-use Symfony\Component\Finder\Finder;
-
 /**
  */
 class DefaultController extends AbstractController
@@ -56,10 +54,9 @@ class DefaultController extends AbstractController
             }
         }
 
-        $file_content = file_get_contents($this->getPath());
         $md_parser = $this->docbook->getMarkdownParser();
         $content = $this->docbook->display(
-            $md_parser->transform($file_content),
+            $md_parser->transformSource($this->getPath())->getBody(),
             'content',
             array('page'=>$dbfile->getDocBookStack())
         );
@@ -82,10 +79,9 @@ class DefaultController extends AbstractController
         if (file_exists($readme)) {
             $this->docbook->setInputFile($readme);
             $readme_dbfile = new DocBookFile($readme);
-            $file_content = file_get_contents($readme);
             $md_parser = $this->docbook->getMarkdownParser();
             $readme_content = $this->docbook->display(
-                $md_parser->transform($file_content),
+                $md_parser->transformSource($readme)->getBody(),
                 'content',
                 array('page'=>$readme_dbfile->getDocBookStack())
             );
@@ -113,8 +109,9 @@ class DefaultController extends AbstractController
     {
         $this->setPath($path);
         $md_parser = $this->docbook->getMarkdownParser();
-        $content = file_get_contents($this->getPath());
-        return array('layout_empty_html', $md_parser->transform($content));
+        return array('layout_empty_html', 
+            $md_parser->transformSource($this->getPath())->getBody()
+        );
     }
 
     public function plainTextAction($path)

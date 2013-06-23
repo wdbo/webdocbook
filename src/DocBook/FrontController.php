@@ -16,8 +16,7 @@ use DocBook\Abstracts\AbstractFrontController,
     DocBook\DocBookRuntimeException,
     DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
 
-use Markdown\Parser,
-    Markdown\ExtraParser;
+use MarkdownExtended\MarkdownExtended;
 
 use I18n\I18n,
     I18n\Loader as I18n_Loader,
@@ -265,7 +264,7 @@ class FrontController extends AbstractFrontController
         return $this->action;
     }
     
-    public function setMarkdownParser(ExtraParser $parser)
+    public function setMarkdownParser(MarkdownExtended $parser)
     {
         $this->markdown_parser = $parser;
         return $this;
@@ -276,10 +275,7 @@ class FrontController extends AbstractFrontController
         if (empty($this->markdown_parser)) {
             // creating the Markdown parser
             $emd_cfg = $this->registry->getConfig('emd', array());
-            foreach($emd_cfg as $name=>$val) {
-                @define($name, $val);
-            }
-            $this->setMarkdownParser(new ExtraParser);
+            $this->setMarkdownParser(MarkdownExtended::create($emd_cfg));
         }
         return $this->markdown_parser;
     }

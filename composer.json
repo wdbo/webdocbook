@@ -1,11 +1,11 @@
 {
     "name": "atelierspierrot/docbook",
     "title": "DocBook",
-    "type": "cms",
+    "type": "library",
     "description": "A simple CMS based on a filesystem of Markdown files.",
     "keywords": [ "cms", "markdown", "apache cms" ],
-    "homepage": "https://github.com/atelierspierrot/docbook",
-    "version": "1.2.1",
+    "homepage": "http://github.com/atelierspierrot/docbook",
+    "version": "1.3.0",
     "license": "GPL-3.0",
     "authors": [
         {
@@ -24,10 +24,9 @@
         "atelierspierrot/patterns": "dev-master",
         "atelierspierrot/library": "dev-master",
         "atelierspierrot/webfilesystem": "dev-master",
-        "atelierspierrot/extended-markdown": "dev-master",
+        "atelierspierrot/markdown-extended": "dev-master",
         "atelierspierrot/internationalization": "dev-master",
-        "twig/twig": "1.*",
-        "symfony/finder": "dev-master"
+        "twig/twig": "1.*"
     },
     "require-dev": {
         "sami/sami": "dev-master"
@@ -36,9 +35,12 @@
         "DocBook": "src",
         "DocBook_": "src"
     } },
-    "bin": [ "bin/docbook_console" ],
     "config": {
-        "vendor-dir": "src/vendor",
-        "bin-dir": "bin"
+        "vendor-dir": "src/vendor"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.3.*"
+        }
     }
 }

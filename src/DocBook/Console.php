@@ -554,7 +554,7 @@ EOT;
         if (!empty($md_content)) {
             self::info( "Parsing Mardkown content", false );
             $_emd = $this->getEmdInstance();
-            if ($md_output = $_emd->transform( $md_content )) {
+            if ($md_output = $_emd->transformString( $md_content )->getBody()) {
                 self::info("OK [strlen: ".strlen($md_output)."]");
                 if (!empty($this->template)) {
                     if (empty($this->template_content))
@@ -581,7 +581,7 @@ EOT;
         if (!empty($md_content)) {
             self::info( "Extracting Mardkown metadata", false );
             $_emd = $this->getEmdInstance();
-            if ($md_output = $_emd->transform( $md_content )) {
+            if ($md_output = $_emd->transformString( $md_content )->getBody()) {
                 $metadata = $_emd->get('metadata');
                 self::info("OK [entries: ".count($metadata)."]");
                 $md_output = '';
