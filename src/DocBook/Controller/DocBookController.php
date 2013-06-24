@@ -57,12 +57,14 @@ class DocBookController extends AbstractController
 
         $file_content = file_get_contents($path);
         $md_parser = $this->docbook->getMarkdownParser();
+        $md_content = $md_parser->transformString($file_content);
         $content = $this->docbook->display(
-            $md_parser->transformString($file_content)->getBody(),
+            $md_content->getBody(),
             'content',
             array(
                 'page'=>$page_infos,
-                'page_tools' => 'false'
+                'page_tools' => 'false',
+                'page_notes' => $md_content->getNotesHtml()
             )
         );
 

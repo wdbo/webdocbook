@@ -38,3 +38,10 @@
         {{ content|raw }}
     </div>
 </section>
+
+{% if page_notes is not empty %}
+    <div class="footnotes well well-small">
+    <span class="label label-info">{{ 'Document notes'|translate }}</span>
+    {{ page_notes|raw }}
+    </div>
+{% endif %}

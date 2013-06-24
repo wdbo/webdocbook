@@ -55,10 +55,14 @@ class DefaultController extends AbstractController
         }
 
         $md_parser = $this->docbook->getMarkdownParser();
+        $md_content = $md_parser->transformSource($this->getPath());
         $content = $this->docbook->display(
-            $md_parser->transformSource($this->getPath())->getBody(),
+            $md_content->getBody(),
             'content',
-            array('page'=>$dbfile->getDocBookStack())
+            array(
+                'page'=>$dbfile->getDocBookStack(),
+                'page_notes'=>$md_content->getNotesHtml()
+            )
         );
 
         return array('default', $content, $tpl_params);
@@ -80,10 +84,14 @@ class DefaultController extends AbstractController
             $this->docbook->setInputFile($readme);
             $readme_dbfile = new DocBookFile($readme);
             $md_parser = $this->docbook->getMarkdownParser();
+            $md_content = $md_parser->transformSource($readme);
             $readme_content = $this->docbook->display(
-                $md_parser->transformSource($readme)->getBody(),
+                $md_content->getBody(),
                 'content',
-                array('page'=>$readme_dbfile->getDocBookStack())
+                array(
+                    'page'=>$readme_dbfile->getDocBookStack(),
+                    'page_notes'=>$md_content->getNotesHtml()
+                )
             );
         }
 
@@ -109,8 +117,9 @@ class DefaultController extends AbstractController
     {
         $this->setPath($path);
         $md_parser = $this->docbook->getMarkdownParser();
+        $md_content = $md_parser->transformSource($this->getPath());
         return array('layout_empty_html', 
-            $md_parser->transformSource($this->getPath())->getBody()
+            $md_content->getBody() . $md_content->getNotesHtml()
         );
     }
 
