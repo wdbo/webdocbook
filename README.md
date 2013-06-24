@@ -24,7 +24,7 @@ itself be defined at the project root directory. These files are, by default:
 
 ### Markdown syntax
 
-The Markdown syntax used by DocBook follows the [Extended Markdown](https://github.com/atelierspierrot/extended-markdown)
+The Markdown syntax used by DocBook follows the [Markdown Extended](https://github.com/atelierspierrot/markdown-extended)
 rules. They are inherited from:
 
 -   the original [John Gruber's syntax](http://daringfireball.net/projects/markdown/syntax),

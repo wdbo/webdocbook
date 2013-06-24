@@ -9,9 +9,9 @@ Docbook : installation instructions
 To allow DocBook to work on your webserver, you need the following environment:
 
 -   a webserver running a Linux/UNIX operating system,
--   your requests must be handled by [Apache 2](http://httpd.apache.org/) or higher
-    (or at least, `.htaccess` files must be activated)[^1]
--   [PHP 5.3](http://php.net/) or higher.
+-   your requests must be handled by [Apache 2](http://httpd.apache.org/)
+    (or, at least, `.htaccess` files must be activated)[^1]
+-   [PHP 5.3.0](http://php.net/) or higher.
 
 If you have not downloaded an "**out-of-the-box**" version of DocBook, you will need to manually
 build your installation. To do so, you need to install [Composer](http://getcomposer.org/)
@@ -31,7 +31,13 @@ As the package uses some internal Apache's features, you will need to:
 
 ### Get a copy of the sources
 
-You have three ways to get a copy of the sources:
+You have four ways to get a copy of the sources:
+
+-   create a project via Composer:
+
+        ~$ php path/to/composer.phar create-project atelierspierrot/docbook path/to/your/new/docbook dev-master --no-dev
+
+    you can select a specific version replacing `dev-master` by the version number 
 
 -   make a clone of the [GitHub repository](https://github.com/atelierspierrot/docbook):
 
@@ -59,7 +65,7 @@ web classic access to the `www/` directory.
 
 Depending on your system and your version of Apache, the virtual host definition may be added
 in the `/etc/apache2/httpd.conf` file or in a new file `/etc/apache/sites-available/your.domain`.
-In this second case, after defining your host, you will need to enables it and restart the
+In this second case, after defining your host, you will need to enable it and restart the
 Apache server on your system. See the [FAQ](#faq) section below for more infos.
 
 This is a classic DocBook virtual host configuration:
