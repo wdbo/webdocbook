@@ -2,5 +2,9 @@
 <html>
 <body>
 {{ content|raw }}
+{% if page_notes is not empty %}
+    <hr />
+    {{ page_notes|raw }}
+{% endif %}
 </body>
 </html>

@@ -27,7 +27,7 @@ src/vendor/*
 composer.lock
 
 # the www
-www/!docbook_assets
-www/!.htaccess
-www/!index.php
+!www/docbook_assets
+!www/.htaccess
+!www/index.php
 www/*

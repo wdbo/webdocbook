@@ -8,6 +8,7 @@
     {% block metas %}{% endblock %}
     <link href="{{ vendor_assets }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ assets }}styles.css" rel="stylesheet">
+    <link href="{{ assets }}styles_print.css" rel="stylesheet" media="print">
     <link href="{{ vendor_assets }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="{{ vendor_assets }}famfamfam_silk_icons_v013/silk_icons_sprite.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -28,9 +29,9 @@
 {% block html_footer %}
 </div>
 {% include DB.getTemplate('footer') %}
-<div id="messagebox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="messageboxLabel" aria-hidden="true">
+<div id="messagebox" class="modal hide fade hidden-printer" tabindex="-1" role="dialog" aria-labelledby="messageboxLabel" aria-hidden="true">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close this modal box">×</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="{{ 'Close this modal box'|translate }}">×</button>
         <h3 id="messageboxLabel"></h3>
     </div>
     <div class="modal-body"></div>
@@ -44,6 +45,9 @@
 <script src="{{ assets }}scripts.js"></script>
 {% block scripts %}
 <script>
+JS_STRS = {
+    tablesorter_th: "{{ 'Sort entries by this column value'|translate }}"
+};
 $(function() {
     addCSSValidatorLink('{{ assets }}styles.css');
     addHTMLValidatorLink();

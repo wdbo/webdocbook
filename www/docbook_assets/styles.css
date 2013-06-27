@@ -10,6 +10,10 @@ body        {padding: 0;padding-top:40px;line-height: 24px;}
 #wrapper    {min-height: 74%;height: auto !important;height: 100%;margin: 0 auto -60px;padding: 40px 40px 80px 40px;}
 #footer     {height: 70px;background-color: #f5f5f5;padding: 20px 80px;}
 
+/* hide "visible-printer" class */
+.hidden-printer { display: inherit !important; }
+.visible-printer { display: none; }
+
 /* Large desktop */
 @media (min-width: 1200px) {
 }

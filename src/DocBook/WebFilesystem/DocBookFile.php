@@ -71,11 +71,25 @@ class DocBookFile extends WebFileInfo
             }
         }
 
+        $dir_is_clone = DirectoryHelper::isGitClone($dir->getPath());
+        $remote = null;
+        if ($dir_is_clone) {
+            $git_config = Helper::getGitConfig($dir->getPath());
+            if (
+                !empty($git_config) &&
+                isset($git_config['remote origin']) &&
+                isset($git_config['remote origin']['url'])
+            ) {
+                $remote = $git_config['remote origin']['url'];
+            }
+        }
+
         return array(
             'dirname'       => $this->getHumanReadableFilename(),
             'dirpath'       => $dir->getPath(),
             'dir_has_wip'   => $hasWip,
-            'dir_is_clone'  => DirectoryHelper::isGitClone($dir->getPath()),
+            'dir_is_clone'  => $dir_is_clone,
+            'clone_remote'  => $remote,
             'dirscan'       => $paths,
         );
     }
@@ -84,10 +98,16 @@ class DocBookFile extends WebFileInfo
     {
         $truefile = $this;
         if (is_link($this->getFilename())) {
-            $truefile = new WebFileInfo(realpath($this->getFilename()));
+/*
+            $infos = pathinfo($this->getRealpath());
+            $truefile = new WebFileInfo(
+                DirectoryHelper::slashDirname($infos['dirname']) . $infos['basename']
+            );
+*/
+            $truefile = new WebFileInfo(realpath($this->getLinkTarget()));
         }
         return array(
-            'path'      =>$this->getRealPath(),
+            'path'      =>$truefile->getRealPath(),
             'type'      =>$this->getDocBookType(),
             'route'     =>Helper::getRoute($this->getRealPath()),
             'name'      =>$this->getHumanReadableFilename(),

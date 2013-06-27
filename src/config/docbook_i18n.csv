@@ -62,3 +62,19 @@ file_type;fichier « %type% »;« %type% » file
 ;Dossier de médias (images …);Folder of assets (images, medias ...)
 ;Le fichier 'read me' de ce dossier, texte d'introduction montré sur sa page d'accueil;The 'read me' file of this folder, introduction shown on its starting page
 see_this_content_in_ln;Voir ce contenu en %ln%;See this content in %ln%
+;Voir le dépôt distant :;See distant repository:
+;Notes du document;Document notes
+;URL originale de cette page sur l'Internet;Original URL of this page on the internet
+link_mask_title;Voir en ligne %%;See online %%
+mailto_mask_title;Contacter %%;Contact %%
+fn_link_title;Voir la note %%;See footnote %%
+fn_backlink_title;Retour au contenu;Return to content
+fng_link_title;Voir l'entrée du glossaire %%;See glossary entry %%
+fng_backlink_title;Retour au contenu;Return to content
+fnc_link_title;Voir la référence bibliographique %%;See bibliography reference %%
+fnc_backlink_title;Retour au contenu;Return to content
+;Trier les entrées selon cette colonne;Sort entries by this column value
+;Fermer cette fenêtre modale;Close this modal box
+;Télécharger ce contenu;Download this content
+;Version HTML de ce contenu;HTML version of this content
+;Version texte brut de ce contenu;Plain text version of this content

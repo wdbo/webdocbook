@@ -234,6 +234,22 @@ class Helper
         );
     }
 
+    public static function getGitConfig($repo_path)
+    {
+        if (DirectoryHelper::isGitClone($repo_path)) {
+            $repo_config_file = DirectoryHelper::slashDirname($repo_path) .
+                DirectoryHelper::slashDirname('.git') .
+                'config';
+            if (file_exists($repo_config_file)) {
+                try {
+                    $config = parse_ini_file($repo_config_file, true);
+                    return $config;
+                } catch (\Exception $e) {}
+            }
+        }
+        return null;
+    }
+
 }
 
 // Endfile

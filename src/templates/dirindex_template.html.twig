@@ -61,7 +61,13 @@
 {% endif %}
 {% if content.dir_is_clone %}
         <tr>
+    {% if content.clone_remote is not empty %}
+            <td><a href="{{ content.clone_remote }}" title="{{ 'See distant repository:'|translate }} {{ content.clone_remote }}">
+                <i class="icon-calendar"></i>
+            </a></td>
+    {% else %}
             <td><i class="icon-calendar"></i></td>
+    {% endif %}
             <td colspan="4"><small><em>{{ 'This folder is a "GIT" clone of a remote repository.'|translate }}</em></small></td>
         </tr>
 {% endif %}

@@ -1,0 +1,15 @@
+/**
+ * PHP/Apache/Markdown DocBook
+ * @package     DocBook
+ * @license     GPL-v3
+ * @link        https://github.com/atelierspierrot/docbook
+ */
+
+#wrapper    {margin: 0;padding: 0;}
+section.section .content { border: 0; }
+.muted.credits { font-size: .8em; }
+
+/* show "visible-printer" class | hide "hidden-printer" class */
+.hidden-printer { display: none !important; }
+.visible-printer { display: inherit !important; }
+

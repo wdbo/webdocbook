@@ -61,7 +61,7 @@ class DefaultController extends AbstractController
             'content',
             array(
                 'page'=>$dbfile->getDocBookStack(),
-                'page_notes'=>$md_content->getNotesHtml()
+                'page_notes'=>$md_content->getNotesToString()
             )
         );
 
@@ -90,7 +90,7 @@ class DefaultController extends AbstractController
                 'content',
                 array(
                     'page'=>$readme_dbfile->getDocBookStack(),
-                    'page_notes'=>$md_content->getNotesHtml()
+                    'page_notes'=>$md_content->getNotesToString()
                 )
             );
         }
@@ -119,7 +119,8 @@ class DefaultController extends AbstractController
         $md_parser = $this->docbook->getMarkdownParser();
         $md_content = $md_parser->transformSource($this->getPath());
         return array('layout_empty_html', 
-            $md_content->getBody() . $md_content->getNotesHtml()
+            $md_content->getBody(),
+            array('page_notes'=>$md_content->getNotesToString())
         );
     }
 

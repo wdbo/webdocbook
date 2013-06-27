@@ -274,8 +274,18 @@ class FrontController extends AbstractFrontController
     {
         if (empty($this->markdown_parser)) {
             // creating the Markdown parser
-            $emd_cfg = $this->registry->getConfig('emd', array());
-            $this->setMarkdownParser(MarkdownExtended::create($emd_cfg));
+            $emd_config = $this->registry->getConfig('emd', array());
+            if (empty($emd_config)) $emd_config = array();
+            $translator = I18n::getInstance();
+            $emd_config_strs = array(
+                'link_mask_title', 'mailto_mask_title', 'fn_link_title',
+                'fn_backlink_title', 'fng_link_title', 'fng_backlink_title',
+                'fnc_link_title', 'fnc_backlink_title'
+            );
+            foreach ($emd_config_strs as $_str) {
+                $emd_config[$_str] = $translator->translate($_str);
+            }
+            $this->setMarkdownParser(MarkdownExtended::create($emd_config));
         }
         return $this->markdown_parser;
     }

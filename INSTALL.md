@@ -13,7 +13,7 @@ To allow DocBook to work on your webserver, you need the following environment:
     (or, at least, `.htaccess` files must be activated)[^1]
 -   [PHP 5.3.0](http://php.net/) or higher.
 
-If you have not downloaded an "**out-of-the-box**" version of DocBook, you will need to manually
+If you had not downloaded an "**out-of-the-box**" version of DocBook, you will need to manually
 build your installation. To do so, you need to install [Composer](http://getcomposer.org/)
 on your system.
 
@@ -35,7 +35,7 @@ You have four ways to get a copy of the sources:
 
 -   create a project via Composer:
 
-        ~$ php path/to/composer.phar create-project atelierspierrot/docbook path/to/your/new/docbook dev-master --no-dev
+        ~$ php path/to/composer.phar create-project atelierspierrot/docbook your/path/to/docbook dev-master --no-dev
 
     you can select a specific version replacing `dev-master` by the version number 
 
@@ -47,7 +47,7 @@ You have four ways to get a copy of the sources:
 
 -   download a tag version of the sources, see <https://github.com/atelierspierrot/docbook/tags>.
 
-For each stable version of DocBook, a new tag may exist named **vX.Y.Z**, if you prefer
+For each stable version of DocBook, a new tag may exist named **vX.Y.Z**, if you prefer to
 use a download version rather than a Git clone, use a tag preferably.
 
 When available, any tag named like **vX.Y.Z-outofthebox** is a full and already installed 

@@ -64,7 +64,7 @@ class DocBookController extends AbstractController
             array(
                 'page'=>$page_infos,
                 'page_tools' => 'false',
-                'page_notes' => $md_content->getNotesHtml()
+                'page_notes' => $md_content->getNotesToString()
             )
         );
 

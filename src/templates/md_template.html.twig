@@ -24,12 +24,26 @@
         {% endfor %}
     {% endif %}
             </ul>
-            <ul class="nav pull-right">
-                <li class="divider-vertical"></li>
-                <li><a href="{{ page.path|route('download') }}" title="{{ 'Download the Markdown version of this content'|translate }}"><i class="icon-download"></i></a></li>
-                <li><a href="{{ page.path|route('htmlonly') }}" title="{{ 'View plain &amp; isolated HTML version of this content'|translate }}"><i class="icon-book"></i></a></li>
-                <li><a href="{{ page.path|route('plain') }}" title="{{ 'View plain text version of this content'|translate }}"><i class="icon-align-justify"></i></a></li>
-            </ul>
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="divider-vertical"></li>
+                    <li><a href="{{ page.path|route('download') }}" title="{{ 'Download the Markdown version of this content'|translate }}">
+                        <span class="visible-phone visible-tablet hidden-desktop"><i class="icon-download"></i>&nbsp;{{ 'Download this content'|translate }}</span>
+                        <span class="hidden-phone hidden-tablet visible-desktop"><i class="icon-download"></i></span>
+                    </a></li>
+                    <li><a href="{{ page.path|route('htmlonly') }}" title="{{ 'View plain &amp; isolated HTML version of this content'|translate }}">
+                        <span class="visible-phone visible-tablet hidden-desktop"><i class="icon-book"></i>&nbsp;{{ 'HTML version of this content'|translate }}</span>
+                        <span class="hidden-phone hidden-tablet visible-desktop"><i class="icon-book"></i></span>
+                    </a></li>
+                    <li><a href="{{ page.path|route('plain') }}" title="{{ 'View plain text version of this content'|translate }}">
+                        <span class="visible-phone visible-tablet hidden-desktop"><i class="icon-align-justify"></i>&nbsp;{{ 'Plain text version of this content'|translate }}</span>
+                        <span class="hidden-phone hidden-tablet visible-desktop"><i class="icon-align-justify"></i></span>
+                    </a></li>
+                </ul>
+            </div>
         </div>
     </div>
     </footer>

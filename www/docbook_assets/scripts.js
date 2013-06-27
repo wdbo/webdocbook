@@ -212,7 +212,7 @@ function initHighlighted( sel )
 function initTablesorter( sel, opts )
 {
     $(sel).find('th').each(function(i,v){
-        $(this).attr('title', 'Sort entries by this column value');
+        $(this).attr('title', JS_STRS.tablesorter_th);
     });
     $(sel).addClass('tablesorter').tablesorter(opts || null);
 }
