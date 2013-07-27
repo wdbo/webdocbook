@@ -35,7 +35,7 @@ class DocBookController extends AbstractController
 
     public function creditsAction()
     {
-        return array('credits', 'YO', array('title'=>'About DocBook'));
+        return array('credits', '', array('title'=>'About DocBook'));
     }
 
     public function docbookdocAction()

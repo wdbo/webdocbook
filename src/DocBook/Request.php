@@ -13,154 +13,30 @@ use DocBook\FrontController,
     DocBook\NotFoundException;
 
 use Library\Helper\Directory as DirectoryHelper,
-    Library\Helper\Url as UrlHelper;
+    Library\HttpFundamental\Request as BaseRequest;
 
 /**
  */
-class Request
+class Request extends BaseRequest
 {
 
     protected $routing = array();
-
-    /**
-     * The URL to work on
-     *
-     * @see current_url()
-     */
-    var $url;
-
-    /**
-     * The GET arguments
-     */
-    var $get;
-
-    /**
-     * The POST arguments
-     */
-    var $post;
-
-    /**
-     * The current user SESSION
-     */
-    var $session;
-
-    /**
-     * The current user COOKIES
-     */
-    var $cookies;
 
     /**
      * Constructor : defines the current URL and gets the routes
      */
     public function __construct()
     {
-        $this->url = UrlHelper::getRequestUrl();
-
-        $this->get = $_GET;
+        parent::guessFromCurrent();
         $server_uri = $_SERVER['REQUEST_URI'];
         $server_query = $_SERVER['QUERY_STRING'];
         $full_query_string = str_replace(array('?',$server_query), '', trim($server_uri, '/'));
         parse_str($full_query_string, $full_query);
         if (!empty($full_query)) {
-            $this->get = array_merge($this->get, $full_query);
+            $this->setArguments(array_merge($this->getArguments(), $full_query));
         }
-
-        $this->post = $_POST;
-        $this->session = $_SESSION;
-        $this->cookies = $_COOKIE;
     }
 
-    /**
-     * Get the value of a specific argument from current parsed URL
-     *
-     * @param string $param The parameter name if so, or 'args' to get all parameters values
-     * @param const $flags The PHP flags used with htmlentities() (default is ENT_QUOTES)
-     * @param string $encoding The encoding used with htmlentities() (default is UTF-8)
-     * @return string The cleaned value
-     */
-    public function cleanArg($arg_value, $flags = ENT_QUOTES, $encoding = 'UTF-8') 
-    {
-        if (is_string($arg_value)) {
-            $result = stripslashes( htmlentities($arg_value, $flags, $encoding) );
-        } elseif (is_array($arg_value)) {
-            $result = array();
-            foreach($arg_value as $arg=>$value) {
-                $result[$arg] = $this->cleanArg($value, $flags, $encoding);
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Get the value of a specific argument from current parsed URL
-     *
-     * @param string $param The parameter name if so, or 'args' to get all parameters values
-     * @param misc $default The default value sent if the argument is not setted
-     * @param bool $clean Clean the argument before return ? (default is true)
-     * @param const $flags The PHP flags used with htmlentities() (default is ENT_QUOTES)
-     * @param string $encoding The encoding used with htmlentities() (default is UTF-8)
-     * @return string The value retrieved, $default otherwise
-     */
-    public function getGet($param = null, $default = false, $clean = true, $clean_flags = ENT_QUOTES, $clean_encoding = 'UTF-8') 
-    {
-        if (!empty($this->get) && isset($this->get[$param])) {
-            return true===$clean ? $this->cleanArg($this->get[$param], $clean_flags, $clean_encoding) : $this->get[$param];
-        }
-        return $default;
-    }
-
-    /**
-     * Get the value of a specific argument from current posted values with request
-     *
-     * @param string $param The parameter name if so, or 'args' to get all parameters values
-     * @param misc $default The default value sent if the argument is not setted
-     * @param bool $clean Clean the argument before return ? (default is true)
-     * @param const $flags The PHP flags used with htmlentities() (default is ENT_QUOTES)
-     * @param string $encoding The encoding used with htmlentities() (default is UTF-8)
-     * @return string The value retrieved, $default otherwise
-     */
-    public function getPost($param = null, $default = false, $clean = true, $clean_flags = ENT_QUOTES, $clean_encoding = 'UTF-8' ) 
-    {
-        if (!empty($this->post) && isset($this->post[$param])) {
-            return true===$clean ? $this->cleanArg($this->post[$param], $clean_flags, $clean_encoding) : $this->post[$param];
-        }
-        return $default;
-    }
-
-    /**
-     * Get the value of a specific argument value from current parsed URL
-     *
-     * @param string $param The parameter name if so, or 'args' to get all parameters values
-     * @param misc $default The default value sent if the argument is not setted
-     * @return string The value retrieved, $default otherwise
-     */
-    public function getParam($param = null, $default = false) 
-    {
-        $post = $this->getPost($param);
-        if (!empty($post)) return $post;
-
-        $get = $this->getGet($param);
-        if (!empty($get)) return $get;
-
-        return $default;
-    }
-
-    /**
-     * Check if the request is sent by command line interface
-     *
-     * @return boolean TRUE if it is so ...
-     */
-    public function isCli() 
-    {
-        return (php_sapi_name() == 'cli');
-    }
-
-    public static function isAjax()
-    {
-        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-            (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'));
-    }
-    
     public function setRouting(array $routing)
     {
         $this->routing = $routing;

@@ -1,15 +1,21 @@
 # Docbook : ROADMAP
 
+This file is the "ROADMAP" of the application : it lists all features wanted. Each line 
+begining by "DONE" is a feature already developed. Other lines are still TO BE developed.
+
+This file is written in French.
+
 
 ## Liens utiles
 
 <http://fletcherpenney.net/multimarkdown/cms/>
+
 <http://httpd.apache.org/docs/2.2/fr/mod/mod_autoindex.html>
 
 
 ## Spécifications
 
-- "INDEX.md" comme vrai index
+- DONE: "INDEX.md" comme vrai index
 - DONE: "README.md" comme texte de l'index listing
 - faire un "sitemap.xml" (redirigé via Apache)
 - navigation: previous / next / head / menu des pages et sous-répertoires
@@ -28,12 +34,12 @@
 
 - DONE: setup en htaccess ou virtual host
 - DONE: package seul avec dépendances via Composer et Bower
-- pouvoir gérer les pages via un GIT
-- DONE: système de cache ?
+- DONE: pouvoir gérer les pages via un GIT => faire la doc
+- DONE: système de cache ? => cache de Twig
 - toutes les variables de config définissables dans "htaccess"
 
 
 ## Idées construction pages
 
-- <http://docs.xfce.org/xfce/thunar/bulk-renamer/start> : boîte à outils dont les liens n'apparaissent qu'onMouseOver, sympa
+- <http://docs.xfce.org/xfce/thunar/bulk-renamer/start> : boîte à outils dont les liens n'apparaissent qu'au MouseOver, sympa
 

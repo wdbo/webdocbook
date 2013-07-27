@@ -189,7 +189,7 @@ class FrontController extends AbstractFrontController
         if (Request::isAjax()) {
             $this->response->setContentType('json', true);
             $full_content = array_merge($params, array('body' => $full_content));
-            $full_content = json_encode($full_content);
+            $full_content = $full_content;
         }
         if ($send) {
             $this->response->send(!empty($full_content) ? $full_content : $content);
