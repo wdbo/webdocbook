@@ -64,7 +64,7 @@ echo '<br />server_uri: '.var_export($server_uri,1);
 echo '<br />server_query: '.var_export($server_query,1);
 echo '<br />server_argv: '.var_export($server_argv,1);
 */
-
+ 
         // first: request path from URL
         if (!empty($server_query)) {
             $req = $server_query;
@@ -149,12 +149,20 @@ echo '<br />server_argv: '.var_export($server_argv,1);
         } else {
             $docbook->setInputPath('/');
         }
+        
+        // if GET args
+        if (!empty($action) && substr($action, 0, 1)==='?') {
+            parse_str(substr($action, 1), $args);
+            $docbook->setQuery($args);
+            $action = null;
+        }
         $docbook->setAction(!empty($action) ? $action : 'default');
 
 /*
 echo '<br />file: '.var_export($docbook->getInputFile(),1);
 echo '<br />path: '.var_export($docbook->getInputPath(),1);
 echo '<br />action: '.var_export($docbook->getAction(),1);
+echo '<br />arguments: '.var_export($docbook->getQuery(),1);
 exit('yo');
 */
         return $this;

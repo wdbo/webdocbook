@@ -33,6 +33,11 @@ class DocBookController extends AbstractController
         return array('forbidden', '', array('message'=>$str));
     }
 
+    public function errorAction($str = '')
+    {
+        return array('error', '', array('message'=>$str));
+    }
+
     public function creditsAction()
     {
         return array('credits', '', array('title'=>'About DocBook'));

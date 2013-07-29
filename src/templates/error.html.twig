@@ -1,0 +1,48 @@
+{% extends DB.getTemplate('page_layout') %}
+
+{% block title %}{{ 'Error'|translate }}{% endblock %}
+
+{% block metas %}
+    <meta name="robots" content="none">
+{% include DB.getTemplate('metas') %}
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ assets }}error_styles.css" rel="stylesheet">
+{% endblock %}
+
+{% block body_attributes %}{% endblock %}
+
+{% block body %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+{% include DB.getTemplate('navbar') with {'inpage_menu': 'false'} %}
+        </div>
+    </div>
+    <div class="container">
+{% include DB.getTemplate('ltie7_warning') %}
+        <div class="error-wrapper">
+            <header id="top" role="banner">
+            <hgroup>
+                <div class="page-header">
+                    <h1>{{ 'Error'|translate }} <span>:(</span></h1>
+                </div>
+            </hgroup>
+            </header>
+{% if message is not empty %}
+            <h3>{{ 'Message received from the system'|translate }}</h3>
+            <blockquote><p class="text-info">{{ message }}</p></blockquote>
+{% endif %}
+            <div class="hero-unit">
+                <p>{{ 'Sorry, but the page you were trying to load causes an error (internal server error).'|translate }}</p>
+                <p>{{ 'It looks like this was the result of either:'|translate }}</p>
+                <ul>
+                    <li>{{ 'a mistyped address'|translate }}</li>
+                    <li>{{ 'an out-of-date link'|translate }}</li>
+                    <li>{{ 'a typo in the code'|translate }}</li>
+                </ul>
+            </div>
+        </div>
+        <hr />
+    </div> <!-- /container -->
+{% endblock %}

@@ -1,8 +1,8 @@
 /**
  * PHP/Apache/Markdown DocBook
- * @package 	DocBook
- * @license   	GPL-v3
- * @link      	https://github.com/atelierspierrot/docbook
+ * @package     DocBook
+ * @license     GPL-v3
+ * @link        https://github.com/atelierspierrot/docbook
  */
 
 // Avoid `console` errors in browsers that lack a console.
@@ -259,8 +259,8 @@ function initScrollTo()
     $.browser = {};
     $.browser.chrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     $.browser.safari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-	$.browser.msie = /MSIE/.test(navigator.userAgent);
-	$.browser.mozilla = /Firefox/.test(navigator.userAgent);
+    $.browser.msie = /MSIE/.test(navigator.userAgent);
+    $.browser.mozilla = /Firefox/.test(navigator.userAgent);
     $('a[href^="#"]').each(function(i,el){
         $(this).juizScrollTo('slow');
     });
@@ -269,7 +269,11 @@ function initScrollTo()
 function messagebox(url, title)
 {
     var msgb = $('#messagebox');
-    $.get(url, function(data, textStatus, jqXHR){
+    $.ajax({
+        url: url,
+        method: 'GET',
+        dataType: 'json'
+    }).done(function(data, textStatus, jqXHR) {
         if (data.body) {
             msgb.find('.modal-body').html(data.body);
         }
@@ -282,4 +286,29 @@ function messagebox(url, title)
         msgb.modal('show');
     });
 
+}
+
+function initTranslator()
+{
+    $('#language-selector').hide();
+    $('#language-info').show();
+    return false;
+}
+
+function showTranslator()
+{
+    $('#language-info').hide();
+    $('#language-selector').show();
+/*
+    $('body').on("click", function(event) {
+        if (
+            $(event.target).parents().index($('#language-selector')) == -1 &&
+            $(event.target).parents().index($('#language-info')) == -1
+        ){
+            initTranslator();
+            $(this).off(event);
+        }
+    });
+*/
+    return false;
 }

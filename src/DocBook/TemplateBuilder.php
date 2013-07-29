@@ -26,15 +26,19 @@ class TemplateBuilder extends AbstractView
 
     /**
      * Constructor
+     * 
+     * The TWIG template engine is designed to first search the templates in the `user/templates/`
+     * directory if it exists.
      */
     public function __construct()
     {
         $docbook = FrontController::getInstance();
         // template engine
-        $loader = new \Twig_Loader_Filesystem( array(
-            $docbook->getPath('user_templates'),
-            $docbook->getPath('base_templates')
-        ) );
+        $templates_dirs = array();
+        $user_templates = $docbook->getPath('user_templates');
+        if (!empty($user_templates)) $templates_dirs[] = $user_templates;
+        $templates_dirs[] = $docbook->getPath('base_templates');
+        $loader = new \Twig_Loader_Filesystem($templates_dirs);
         $this->twig = new \Twig_Environment($loader, array(
             'cache'             => $docbook->getPath('cache'),
             'charset'           => $docbook->getRegistry()->get('html:charset', 'utf-8', 'docbook'),
@@ -99,6 +103,7 @@ class TemplateBuilder extends AbstractView
             'DB'                => $docbook,
             'app_cfg'           => $docbook->getRegistry()->getConfig('html', array(), 'docbook'),
             'app'               => $docbook->getRegistry()->getConfig('app', array(), 'docbook'),
+            'langs'             => $docbook->getRegistry()->getConfig('languages', array(), 'docbook'),
             'manifest'          => $docbook->getRegistry()->getConfig('manifest', array()),
             'assets'            => '/'.FrontController::DOCBOOK_ASSETS.'/',
             'vendor_assets'     => '/'.FrontController::DOCBOOK_ASSETS.'/vendor/',

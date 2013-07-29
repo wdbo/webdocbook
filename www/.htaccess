@@ -24,6 +24,7 @@ RewriteRule ^(.*)sitemap.xml index.php?$1/sitemap
 # setting the 404 error page
 ErrorDocument 404 /index.php?not_found
 ErrorDocument 403 /index.php?forbidden
+ErrorDocument 500 /index.php?error
 
 # skip all this if the file or the dir exists
 RewriteCond %{REQUEST_FILENAME} -f

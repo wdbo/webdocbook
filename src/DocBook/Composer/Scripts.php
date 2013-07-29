@@ -1,9 +1,9 @@
 <?php
 /**
  * PHP/Apache/Markdown DocBook
- * @package 	DocBook
- * @license   	GPL-v3
- * @link      	https://github.com/atelierspierrot/docbook
+ * @package     DocBook
+ * @license     GPL-v3
+ * @link        https://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\Composer;
@@ -30,23 +30,25 @@ class Scripts
      */
     public static function remove($path)
     {
-        $_ds = DIRECTORY_SEPARATOR;
-        if (file_exists($path)) {
-            if (is_file($path)) {
+        if (file_exists($path) && is_dir($path)) {
+            if (!is_dir($path) || is_link($path)) {
                 return unlink($path);
             }
-            $iterator = new \DirectoryIterator($path);
+            $ok = true;
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($path), 
+                \RecursiveIteratorIterator::SELF_FIRST | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS
+            );
             foreach($iterator as $item) {
-                if (!in_array($item, array('.', '..'))) {
-                    $fullpath = rtrim($path, '/') . $_ds . $item;
-                    if (is_file($fullpath)) {
-                        unlink($fullpath);
-                    } else {
-                        self::remove($fullpath);
-                    }
+                if ($item->isDir()) {
+                    $ok = self::remove($item);
+                } else {
+                    $ok = unlink($item);
                 }
-            } 
-            return rmdir($path);
+            }
+            if ($ok) rmdir($path);
+            clearstatcache();
+            return true;
         }
         return false;
     }

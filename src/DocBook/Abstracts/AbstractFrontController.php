@@ -157,8 +157,8 @@ abstract class AbstractFrontController extends AbstractSingleton
     abstract public function getInputFile();
     abstract public function setInputPath($path);
     abstract public function getInputPath();
-    abstract public function setQueryString($uri);
-    abstract public function getQueryString();
+    abstract public function setQuery(array $uri);
+    abstract public function getQuery();
     abstract public function setAction($action);
     abstract public function getAction();
     abstract public function setMarkdownParser(MarkdownExtended $parser);

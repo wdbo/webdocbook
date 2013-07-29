@@ -53,6 +53,7 @@ class FrontController extends AbstractFrontController
 
     protected function __construct()
     {
+        session_start();
         parent::__construct();
 
         $src_dir = __DIR__.'/../';
@@ -75,11 +76,11 @@ class FrontController extends AbstractFrontController
 
         $this->addPath('base_templates', $src_dir.self::TEMPLATES_DIR);
 
-        Helper::ensureDirectoryExists($base_dir.self::USER_DIR);
-        $this->addPath('user_dir', $base_dir.self::USER_DIR);
-
-        Helper::ensureDirectoryExists($base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR);
-        $this->addPath('user_templates', $base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR);
+        if (file_exists($base_dir.self::USER_DIR)) {
+            $this->addPath('user_dir', $base_dir.self::USER_DIR);
+            if (file_exists($base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR))
+                $this->addPath('user_templates', $base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR);
+        }
     }
 
     protected function init()
@@ -110,7 +111,11 @@ class FrontController extends AbstractFrontController
         $app_name = $this->registry->get('title', null, 'manifest');
         $app_version = $this->registry->get('version', null, 'manifest');
         $app_website = $this->registry->get('homepage', null, 'manifest');
-        $this->response->addHeader('Composed-by', $app_name.' '.$app_version.' ('.$app_website.')');
+        
+        // expose app ?
+        $expose_docbook = $this->registry->get('app:expose_docbook', true, 'docbook');
+        if (true===$expose_docbook || 'true'===$expose_docbook || '1'===$expose_docbook)
+            $this->response->addHeader('Composed-by', $app_name.' '.$app_version.' ('.$app_website.')');
         
         // the template builder
         $this->setTemplateBuilder(new TemplateBuilder);
@@ -119,23 +124,40 @@ class FrontController extends AbstractFrontController
         @date_default_timezone_set( $this->registry->get('app:timezone', 'Europe/London', 'docbook') );
         
         // the internationalization
+        $langs = $this->registry->get('languages:langs', array('en'=>'English'), 'docbook');
         $i18n_loader = new I18n_Loader(array(
             'language_directory' => $this->getPath('i18n'),
             'language_strings_db_directory' =>
                 DirectoryHelper::slashDirname($this->getPath('base_dir')).self::CONFIG_DIR,
             'language_strings_db_filename' => self::APP_I18N,
             'force_rebuild' => true,
+            'available_languages' => array_combine(array_keys($langs), array_keys($langs)),
         ));
         $translator = I18n::getInstance($i18n_loader);
-        $translator->setDefaultFromHttp();
+
+        // language
+        $def_ln = $this->registry->get('languages:default', 'auto', 'docbook');
+        if (!empty($def_ln) && $def_ln==='auto') {
+            $translator->setDefaultFromHttp();
+            $def_ln = $this->registry->get('languages:fallback_language', 'en', 'docbook');
+        }
+        $trans_ln = $translator->getLanguage();
+        if (empty($trans_ln)) {
+            $translator->setLanguage($def_ln);
+        }
+
         $this->getTemplateBuilder()->getTwigEngine()->addExtension(new I18n_Twig_Extension($translator)); 
     }
 
     public function distribute($return = false)
     {
+        $this->processSessionValues();
+        
         $routing = $this->request
             ->parseDocBookRequest()
             ->getDocBookRouting();
+
+        $this->processQueryArguments();
 
         $input_file = $this->getInputFile();
         if (empty($input_file)) {
@@ -199,6 +221,50 @@ class FrontController extends AbstractFrontController
     }
 
 // ---------------------
+// User settings
+// ---------------------
+
+    protected function processQueryArguments()
+    {
+        $args = $this->getQuery();
+        if (!empty($args)) $this->parseUserSettings($args);
+    }
+    
+    protected function processSessionValues()
+    {
+        if (!empty($_SESSION)) $this->parseUserSettings($_SESSION);
+    }
+    
+    protected function parseUserSettings(array $args)
+    {
+        if (!empty($args)) {
+            foreach ($args as $param=>$value) {
+                
+                if ($param==='lang') {
+                    $langs = $this->registry->get('languages:langs', array('en'=>'English'), 'docbook');
+/*
+echo '<br />';
+var_export($value);
+var_export($langs);
+*/
+                    if (array_key_exists($value, $langs)) {
+                        i18n::getInstance()->setLanguage($value);
+                        $true_language = i18n::getInstance()->getLanguage();
+//var_export($true_language);
+                        if (!isset($_SESSION['lang']) || $_SESSION['lang']!==$true_language) {
+                            $_SESSION['lang'] = $true_language;
+                        }
+                    }
+                }
+                
+            }
+        }
+
+//var_export($args);
+//exit('yo');
+    }
+
+// ---------------------
 // Setters / Getters
 // ---------------------
 
@@ -242,13 +308,13 @@ class FrontController extends AbstractFrontController
         return $this->input_path;
     }
 
-    public function setQueryString($uri)
+    public function setQuery(array $uri)
     {
         $this->uri = $uri;
         return $this;
     }
     
-    public function getQueryString()
+    public function getQuery()
     {
         return $this->uri;
     }

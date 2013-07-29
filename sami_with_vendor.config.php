@@ -18,16 +18,15 @@ use Symfony\Component\Finder\Finder;
 $iterator = Finder::create()
     ->files()
     ->name('*.php')
-    ->exclude('vendor')
     ->exclude('templates')
     ->exclude('config')
     ->in(__DIR__.'/src')
 ;
 
 $options = array(
-    'title'                => 'DocBook',
+    'title'                => 'DocBook (vendor included)',
     'build_dir'            => __DIR__.'/phpdoc',
-    'cache_dir'            => __DIR__.'/../tmp/cache/docbook',
+    'cache_dir'            => __DIR__.'/../tmp/cache/docbook_with_vendor',
     'default_opened_level' => 1,
 );
 

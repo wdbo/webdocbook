@@ -31,6 +31,11 @@
                     <span class="hidden-phone hidden-tablet visible-desktop">&darr;</span>
                 </a></li>
                 <li><a href="{{ 'docbookdoc'|route }}" title="{{ 'Read the manual'|translate }}">{{ 'Help'|translate }}&nbsp;&otimes;</a></li>
+    {% if langs.langs is not empty and langs.langs|length > 1 %}
+                <li>
+                {% include DB.getTemplate('lang_selector') %}
+                </li>
+    {% endif %}
             </ul>
         </div>
     </div>
