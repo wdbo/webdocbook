@@ -30,7 +30,7 @@
                     <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Bottom'|translate }}&nbsp;&darr;</span>
                     <span class="hidden-phone hidden-tablet visible-desktop">&darr;</span>
                 </a></li>
-                <li><a href="{{ 'docbookdoc'|route }}" title="{{ 'Read the manual'|translate }}">{{ 'Help'|translate }}&nbsp;&otimes;</a></li>
+                <li><a href="{{ 'docbookdoc'|route }}" title="{{ 'Read the manual'|translate }}">{{ 'Help'|translate }}&nbsp;<b class="icon-question-sign icon-white"></b></a></li>
     {% if langs.langs is not empty and langs.langs|length > 1 %}
                 <li>
                 {% include DB.getTemplate('lang_selector') %}

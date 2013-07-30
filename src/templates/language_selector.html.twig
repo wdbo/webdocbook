@@ -1,5 +1,5 @@
 
-<a id="language-info" href="#" onclick="return showTranslator();" title="{{ 'Change language'|translate }}">{{ i18n.getLanguageName(i18n.locale) }}&nbsp;<i class="icon-globe icon-white"></i></a>
+<a id="language-info" href="#" onclick="return showTranslator();" title="{{ 'Change language'|translate }}">{{ i18n.getLanguageName(i18n.locale)|capitalize }}&nbsp;<i class="icon-globe icon-white"></i></a>
 
 <div id="language-selector">
     <div class="btn-group" id="language-selector" title="{{ 'Click outside to close the language selector'|translate }}">
@@ -8,7 +8,16 @@
         </button>
         <ul class="dropdown-menu">
     {% for code,name in langs.langs %}
-            <li><a tabindex="-1" href="?lang={{ code }}">{{ name }}</a></li>
+            <li><a tabindex="-1" href="?lang={{ code }}" title="{% if code==i18n.locale %}
+                {{- 'Language selected'|translate -}}
+    {% else %}
+                {{- 'Choose this language'|translate -}}
+    {% endif %}">
+    {% if code==i18n.locale %}
+                <b class="icon-flag"></b>
+    {% endif %}
+            {{ name }}
+            </a></li>
     {% endfor %}
         </ul>
     </div>

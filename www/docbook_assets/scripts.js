@@ -299,9 +299,11 @@ function showTranslator()
 {
     $('#language-info').hide();
     $('#language-selector').show();
-/*
+
     $('body').on("click", function(event) {
         if (
+            event.target.id !== 'language-selector' &&
+            event.target.id !== 'language-info' &&
             $(event.target).parents().index($('#language-selector')) == -1 &&
             $(event.target).parents().index($('#language-info')) == -1
         ){
@@ -309,6 +311,6 @@ function showTranslator()
             $(this).off(event);
         }
     });
-*/
+
     return false;
 }

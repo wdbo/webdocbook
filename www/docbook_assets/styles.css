@@ -65,7 +65,6 @@ a.footnote_link {color: #2380A0; font-weight: bold;}
 ul#inpage_menu li a i { float: right; }
 .sidebar-nav { padding: 9px 0; }
 .breadcrumb { margin: 0; }
-form.form-search { float: right; margin: -2px 0 0 12px; }
 
 #footer .pull-left { max-width: 50%; }
 #footer .pull-right { max-width: 50%; }
@@ -78,6 +77,11 @@ form.form-search { float: right; margin: -2px 0 0 12px; }
 
 .profiler-wrapper {clear:right; float:right; font-size: .8em; max-width: 65%;}
 .profiler {background-color:#FFF; border: 1px dotted #404040;padding: 8px;}
+
+/* search field */
+form.form-search { float: right; margin: -2px 0 0 12px; position: relative; }
+form.form-search input.searchFieldDeletable { width: 150px; padding-left: 24px; }
+form.form-search span#delete-search { position: absolute; display: block; top: 8px; left: 6px; z-index: 100; cursor: pointer; }
 
 /* tablesorter */
 table.tablesorter thead tr .header {

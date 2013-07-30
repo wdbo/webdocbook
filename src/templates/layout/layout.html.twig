@@ -54,6 +54,10 @@ $(function() {
     initHandler('profiler');
     $('a[href="#0"]').on('click', function(){ return false; });
     initTranslator();
+    $('#delete-search').click(function() {
+        $('input.searchField').val('');
+        $('button#form-search-submit').trigger('click');
+    });
 });
 </script>
 {% endblock %}
