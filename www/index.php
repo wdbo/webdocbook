@@ -22,6 +22,9 @@ if (@file_exists($composerAutoLoader)) {
     ." (see: <a href=\"http://getcomposer.org/doc/00-intro.md#using-composer\">http://getcomposer.org/doc/00-intro.md#using-composer</a>)!");
 }
 
+// uncomment in dev mode
+define('DOCBOOK_MODE', 'dev');
+
 // the application 
 \DocBook\FrontController::getInstance()->distribute();
 

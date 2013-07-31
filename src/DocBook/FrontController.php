@@ -125,15 +125,18 @@ class FrontController extends AbstractFrontController
         
         // the internationalization
         $langs = $this->registry->get('languages:langs', array('en'=>'English'), 'docbook');
-        $i18n_loader = new I18n_Loader(array(
+        $i18n_loader_opts = array(
             'language_directory' => $this->getPath('i18n'),
             'language_strings_db_directory' =>
                 DirectoryHelper::slashDirname($this->getPath('base_dir')).self::CONFIG_DIR,
             'language_strings_db_filename' => self::APP_I18N,
             'force_rebuild' => true,
             'available_languages' => array_combine(array_keys($langs), array_keys($langs)),
-        ));
-        $translator = I18n::getInstance($i18n_loader);
+        );
+        if (defined('DOCBOOK_MODE') && DOCBOOK_MODE==='dev') {
+            $i18n_loader_opts['show_untranslated'] = true;
+        }
+        $translator = I18n::getInstance(new I18n_Loader($i18n_loader_opts));
 
         // language
         $def_ln = $this->registry->get('languages:default', 'auto', 'docbook');
