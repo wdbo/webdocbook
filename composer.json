@@ -3,9 +3,9 @@
     "title": "DocBook",
     "type": "library",
     "description": "Simple CMS PHP app to build rich HTML5 views from a Markdown contents filesystem.",
-    "keywords": [ "cms", "markdown", "apache cms" ],
+    "keywords": [ "cms", "markdown" ],
     "homepage": "http://github.com/atelierspierrot/docbook",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "license": "GPL-3.0",
     "authors": [
         {

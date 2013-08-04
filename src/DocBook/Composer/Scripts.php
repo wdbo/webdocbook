@@ -40,6 +40,9 @@ class Scripts
                 \RecursiveIteratorIterator::SELF_FIRST | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS
             );
             foreach($iterator as $item) {
+                if (in_array($item->getFilename(), array('.', '..'))) {
+                    continue;
+                }
                 if ($item->isDir()) {
                     $ok = self::remove($item);
                 } else {
