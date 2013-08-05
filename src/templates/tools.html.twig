@@ -8,9 +8,13 @@
 <a href="{{ page.next|route }}" title="{{ 'See the next page in this chapter'|translate }}">{{ page.next|readableName }}&nbsp;<i class="icon-chevron-right"></i></a>
 {% endif %}
 <form class="form-search" method="get" action="{{ page.path|route('search') }}">
-    {% if search_str is not empty %}<span class="icon-remove-circle" id="delete-search" title="{{ 'Clear the search field'|translate }}"></span>{% endif %}
+    {% if search_str is not empty %}<span class="icon-remove-circle" id="delete-search" title="{{ 'Clear the search field'|translate }}" onclick="updateClass(this, 'icon-indicator', 'icon-remove-circle')"></span>{% endif %}
     <div class="input-append">
         <input type="text" class="input-small search-query searchField {% if search_str is not empty %}searchFieldDeletable{% endif %}" name="s" title="{{ 'You can build your search string with regular expressions'|translate }}" placeholder="{{ 'search'|translate }}" value="{{ search_str|default('') }}" tabindex="1" />
-        <button id="form-search-submit" type="submit" class="btn" title="{{ 'Start the search'|translate }}"><i class="icon-search"></i></button>
+        <button id="form-search-submit" type="submit" class="btn" title="{% if search_str is not empty %}
+            {{- 'Update current search'|translate -}}
+        {% else %}
+            {{- 'Start the search'|translate -}}
+        {% endif %}"><i class="icon-search"></i></button>
     </div>
 </form>

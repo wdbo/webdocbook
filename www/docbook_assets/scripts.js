@@ -314,3 +314,13 @@ function showTranslator()
 
     return false;
 }
+
+function updateClass(_el, _class, _class_toRemove)
+{
+    if (_class_toRemove!==undefined && _class_toRemove!==null) {
+        $(_el).removeClass(_class_toRemove);
+    }
+    if (_class!==undefined && _class!==null) {
+        $(_el).addClass(_class);
+    }
+}

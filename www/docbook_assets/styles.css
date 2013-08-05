@@ -83,15 +83,18 @@ form.form-search { float: right; margin: -2px 0 0 12px; position: relative; }
 form.form-search input.searchFieldDeletable { width: 150px; padding-left: 24px; }
 form.form-search span#delete-search { position: absolute; display: block; top: 8px; left: 6px; z-index: 100; cursor: pointer; }
 
+/* indicator icon */
+.icon-indicator { background-image: url("indicator.gif"); background-position: top left; width: 16px; height: 16px; line-height: 16px; margin-top: 0; }
+
 /* tablesorter */
 table.tablesorter thead tr .header {
-    background: url(/docbook_assets/vendor/jquery.tablesorter/blue/bg.gif) no-repeat center right;
+    background: url("/docbook_assets/vendor/jquery.tablesorter/blue/bg.gif") no-repeat center right;
     cursor: pointer;}
 table.tablesorter thead tr .headerSortUp {
-    background: url(/docbook_assets/vendor/jquery.tablesorter/blue/asc.gif) no-repeat center right;
+    background: url("/docbook_assets/vendor/jquery.tablesorter/blue/asc.gif") no-repeat center right;
 }
 table.tablesorter thead tr .headerSortDown {
-    background: url(/docbook_assets/vendor/jquery.tablesorter/blue/desc.gif) no-repeat center right;
+    background: url("/docbook_assets/vendor/jquery.tablesorter/blue/desc.gif") no-repeat center right;
 }
 
 /* highlight */
