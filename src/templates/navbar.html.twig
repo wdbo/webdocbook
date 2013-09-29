@@ -10,10 +10,10 @@
     </a>
     <a class="brand" href="/" title="{{ 'Home of your DocBook'|translate }}">{{ app.title }}</a>
 
-{% if inpage_menu|default('true') != 'false' %}
     <div class="nav-collapse collapse">
         <div class="navbar-text pull-right">
             <ul class="nav" id="navbar_inner">
+{% if inpage_menu|default('true') != 'false' %}
                 <li><a href="#0">{{ 'Inpage navigation'|translate }}</a></li>
                 <li class="active"><a href="#top" title="{{ 'Reach the top ot this page'|translate }}">
                     <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Top'|translate }}&nbsp;&uarr;</span>
@@ -30,16 +30,16 @@
                     <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Bottom'|translate }}&nbsp;&darr;</span>
                     <span class="hidden-phone hidden-tablet visible-desktop">&darr;</span>
                 </a></li>
+{% endif %}
                 <li><a href="{{ 'docbookdoc'|route }}" title="{{ 'Read the manual'|translate }}">{{ 'Help'|translate }}&nbsp;<b class="icon-question-sign icon-white"></b></a></li>
-    {% if langs.langs is not empty and langs.langs|length > 1 %}
+{% if langs.langs is not empty and langs.langs|length > 1 %}
                 <li>
                 {% include DB.getTemplate('lang_selector') %}
                 </li>
-    {% endif %}
+{% endif %}
             </ul>
         </div>
     </div>
-{% endif %}
 
 {% if chapters is not empty %}
     <!-- global menu -->

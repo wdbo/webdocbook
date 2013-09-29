@@ -3,24 +3,25 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\Controller;
 
-use DocBook\FrontController,
-    DocBook\Helper,
-    DocBook\Locator,
-    DocBook\Abstracts\AbstractController;
+use \DocBook\FrontController,
+    \DocBook\Helper,
+    \DocBook\Locator,
+    \DocBook\Abstracts\AbstractController;
 
-use Library\Helper\Directory as DirectoryHelper;
+use \Library\Helper\Directory as DirectoryHelper;
 
-use Markdown\Parser,
-    Markdown\ExtraParser;
+use \Markdown\Parser,
+    \Markdown\ExtraParser;
 
 /**
  */
-class DocBookController extends AbstractController
+class DocBookController
+    extends AbstractController
 {
 
     public function notFoundAction($str = '')

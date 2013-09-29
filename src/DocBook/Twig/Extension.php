@@ -3,7 +3,7 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 class DocBook_Twig_Extension extends \Twig_Extension

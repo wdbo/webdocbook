@@ -3,27 +3,30 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\WebFilesystem;
 
-use DocBook\FrontController,
-    DocBook\Helper;
+use \DocBook\FrontController,
+    \DocBook\Helper;
 
-use WebFilesystem\WebFilesystem,
-    WebFilesystem\WebFileInfo,
-    WebFilesystem\WebFilesystemIterator,
-    WebFilesystem\Finder;
+use \WebFilesystem\WebFilesystem,
+    \WebFilesystem\WebFileInfo,
+    \WebFilesystem\WebFilesystemIterator,
+    \WebFilesystem\Finder;
 
-use Library\Helper\Directory as DirectoryHelper;
+use \Library\Helper\Directory as DirectoryHelper;
 
 use \FilesystemIterator;
 
 /**
  */
-class DocBookFile extends WebFileInfo
+class DocBookFile
+    extends WebFileInfo
 {
+
+    protected $is_root_link = false;
 
     protected $docbook;
 
@@ -31,22 +34,65 @@ class DocBookFile extends WebFileInfo
     {
         $this->docbook = FrontController::getInstance();
         $_root = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
-        parent::__construct($_root.str_replace($_root, '', $file_name));
-        $this->setRootDir($this->docbook->getPath('base_dir_http'));
-        $this->setWebPath( dirname($file_name) );
+        if (substr_count($file_name, $_root)>0) {
+            $realpath = $_root.str_replace($_root, '', $file_name);
+            parent::__construct($realpath);
+            $this->setRootDir($_root);
+            $this->setWebPath(dirname($file_name));
+            if (is_link($realpath)) {
+                $this->setIsRootLink(true);
+            }
+        } else {
+            parent::__construct($file_name);
+            $this->setRootDir(dirname($file_name));
+            $this->setWebPath($_root.$this->docbook->getInputPath());
+        }
     }
 
+    public function setIsRootLink($is_it = false)
+    {
+        $this->is_root_link = $is_it;
+        return $this;
+    }
+
+    public function getIsRootLink()
+    {
+        return $this->is_root_link;
+    }
+
+    public function isRootLink()
+    {
+        return true===$this->getIsRootLink();
+    }
+
+    public function getDocBookPath()
+    {
+        $filepath = $this->getRealPath();
+        if ($this->isLink() || $this->isRootLink()) {
+            $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+        }
+        return $filepath;
+    }
+    
     public function getDocBookScanStack()
     {
         $dir = new DocBookRecursiveDirectoryIterator($this->getRealPath());
         $hasWip = false;
         $paths = $known_filenames = array();
-        foreach($dir as $file) {
+        foreach ($dir as $file) {
             $filename = $lang = null;
             if ($file->isDir() && $file->getBasename()===FrontController::WIP_DIR) {
                 $hasWip = true;
             } else {
-                if ($file->isFile()) {
+                if ($file->isLink()) {
+                    $filename_real = basename($file->getRealPath());
+                    if (strpos($filename_real, '.')!==false) {
+                        $filename_parts = explode('.', $filename_real);
+                        $filename = array_shift($filename_parts);
+                        $lang = array_shift($filename_parts);
+                        if ($lang==='md') $lang = null;
+                    }
+                } elseif ($file->isFile()) {
                     $filename_parts = explode('.', $file->getBasename());
                     $filename = array_shift($filename_parts);
                     $lang = array_shift($filename_parts);
@@ -60,9 +106,12 @@ class DocBookFile extends WebFileInfo
                     $original = $paths[$filename];
                     $dbfile = new DocBookFile($file);
                     $paths[$filename] = $dbfile->getDocBookStack();
-                    $paths[$filename]['trads'] = $original['trads'];
+                    $paths[$filename]['trads'] = isset($original['trads']) ? $original['trads'] : array();
                 } else {
                     $dbfile = new DocBookFile($file);
+                    if ($this->isDir() && $this->isLink()) {
+                        $dbfile->setIsRootLink(true);
+                    }
                     $paths[$filename] = $dbfile->getDocBookStack();
                     if (!empty($lang)) {
                         $paths[$filename]['trads'][$lang] = Helper::getRoute($file->getRealPath());
@@ -97,17 +146,28 @@ class DocBookFile extends WebFileInfo
     public function getDocBookStack()
     {
         $truefile = $this;
-        if (is_link($this->getFilename())) {
-/*
-            $infos = pathinfo($this->getRealpath());
-            $truefile = new WebFileInfo(
-                DirectoryHelper::slashDirname($infos['dirname']) . $infos['basename']
-            );
-*/
-            $truefile = new WebFileInfo(realpath($this->getLinkTarget()));
+        $filepath = $truefile->getRealPath();
+        if ($this->isLink() || $this->isRootLink()) {
+            if ($this->isLink()) {
+                try {
+                    $rp_tmp = realpath($this->getLinkTarget());
+                } catch (\Exception $e) {}
+                if (empty($rp_tmp)) {
+                    $rp_tmp = $this->getRealPath();
+                }
+                $truefile = new WebFileInfo($rp_tmp);
+            } elseif ($this->isRootLink()) {
+                try {
+                    $rp_tmp = @readlink($this->getPathname());
+                } catch (\Exception $e) {}
+                if (empty($rp_tmp)) {
+                    $rp_tmp = $this->getRealPath();
+                }
+                $truefile = new WebFileInfo($rp_tmp);
+            }
         }
         return array(
-            'path'      =>$truefile->getRealPath(),
+            'path'      =>$this->getDocBookPath(),
             'type'      =>$this->getDocBookType(),
             'route'     =>Helper::getRoute($this->getRealPath()),
             'name'      =>$this->getHumanReadableFilename(),
@@ -138,11 +198,15 @@ class DocBookFile extends WebFileInfo
     
     public function findTranslations()
     {
+        $filepath = $this->getPathname();
+        if ($this->isLink() || $this->isRootLink()) {
+            $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+        }
         $parts = explode('.', $this->getBasename());
         $finder = Finder::create()
             ->files()
             ->name(array_shift($parts).'*.md')
-            ->in(dirname($this->getPathname()))
+            ->in(dirname(realpath($filepath)))
             ->depth('0');
         $trads = array();
         foreach($finder->getIterator() as $_file) {
@@ -158,7 +222,13 @@ class DocBookFile extends WebFileInfo
 
     public function findNext()
     {
-        $dir = new FilesystemIterator(dirname($this->getRealPath()), FilesystemIterator::CURRENT_AS_PATHNAME);
+        $filepath = $this->getPathname();
+        if ($this->isLink() || $this->isRootLink()) {
+            $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+        }
+        $dir_realpath = dirname(realpath($filepath));
+        $dir_targetpath = dirname($filepath);
+        $dir = new FilesystemIterator($dir_realpath, FilesystemIterator::CURRENT_AS_PATHNAME);
         $dir_table = iterator_to_array($dir, false);
         $i = array_search($this->getRealPath(), $dir_table);
         if (false!==$i) {
@@ -175,7 +245,7 @@ class DocBookFile extends WebFileInfo
                     (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j])) 
                 ) && !DirectoryHelper::isDotPath($dir_table[$j])
             ) {
-                return $dir_table[$j];
+                return str_replace($dir_realpath, $dir_targetpath, $dir_table[$j]);
             }
         }
         return null;
@@ -183,7 +253,13 @@ class DocBookFile extends WebFileInfo
     
     public function findPrevious()
     {
-        $dir = new FilesystemIterator(dirname($this->getRealPath()), FilesystemIterator::CURRENT_AS_PATHNAME);
+        $filepath = $this->getPathname();
+        if ($this->isLink() || $this->isRootLink()) {
+            $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+        }
+        $dir_realpath = dirname(realpath($filepath));
+        $dir_targetpath = dirname($filepath);
+        $dir = new FilesystemIterator($dir_realpath, FilesystemIterator::CURRENT_AS_PATHNAME);
         $dir_table = iterator_to_array($dir, false);
         $i = array_search($this->getRealPath(), $dir_table);
         if (false!==$i) {
@@ -200,7 +276,7 @@ class DocBookFile extends WebFileInfo
                     (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j])) 
                 ) && !DirectoryHelper::isDotPath($dir_table[$j])
             ) {
-                return $dir_table[$j];
+                return str_replace($dir_realpath, $dir_targetpath, $dir_table[$j]);
             }
         }
         return null;

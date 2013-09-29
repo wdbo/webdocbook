@@ -2,7 +2,7 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 // Avoid `console` errors in browsers that lack a console.

@@ -3,21 +3,22 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
 
-use DocBook\FrontController,
-    DocBook\Helper,
-    DocBook\NotFoundException;
+use \DocBook\FrontController,
+    \DocBook\Helper,
+    \DocBook\NotFoundException;
 
-use Library\Helper\Directory as DirectoryHelper,
-    Library\HttpFundamental\Request as BaseRequest;
+use \Library\Helper\Directory as DirectoryHelper,
+    \Library\HttpFundamental\Request as BaseRequest;
 
 /**
  */
-class Request extends BaseRequest
+class Request
+    extends BaseRequest
 {
 
     protected $routing = array();
@@ -50,10 +51,10 @@ class Request extends BaseRequest
 
     public function parseDocBookRequest()
     {
-        $server_pathtrans = $_SERVER['PATH_TRANSLATED'];
+        $server_pathtrans = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;
         $server_uri = $_SERVER['REQUEST_URI'];
         $server_query = $_SERVER['QUERY_STRING'];
-        $server_argv = $_SERVER['argv'];
+        $server_argv = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
         $docbook = FrontController::getInstance();
         $locator = new Locator;
         $file = $path = $action = null;

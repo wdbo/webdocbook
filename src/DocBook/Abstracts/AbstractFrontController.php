@@ -3,28 +3,29 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\Abstracts;
 
-use DocBook\Abstracts\AbstractController,
-    DocBook\Abstracts\AbstractPage,
-    DocBook\Locator,
-    DocBook\Response,
-    DocBook\Request,
-    DocBook\TemplateBuilder;
+use \DocBook\Abstracts\AbstractController,
+    \DocBook\Abstracts\AbstractPage,
+    \DocBook\Locator,
+    \DocBook\Response,
+    \DocBook\Request,
+    \DocBook\TemplateBuilder;
 
-use Library\Command;
+use \Library\Command;
 
-use MarkdownExtended\MarkdownExtended;
+use \MarkdownExtended\MarkdownExtended;
 
-use Patterns\Abstracts\AbstractSingleton,
-    Patterns\Commons\ConfigurationRegistry;
+use \Patterns\Abstracts\AbstractSingleton,
+    \Patterns\Commons\ConfigurationRegistry;
 
 /**
  */
-abstract class AbstractFrontController extends AbstractSingleton
+abstract class AbstractFrontController
+    extends AbstractSingleton
 {
 
     // dependences

@@ -3,23 +3,23 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
 
-use DocBook\DocBookException,
-    DocBook\DocBookRuntimeException,
-    DocBook\FrontController;
+use \DocBook\DocBookException,
+    \DocBook\DocBookRuntimeException,
+    \DocBook\FrontController;
 
-use Library\Command,
-    Library\Helper\Directory as DirectoryHelper,
-    Library\Helper\Url as UrlHelper;
+use \Library\Command,
+    \Library\Helper\Directory as DirectoryHelper,
+    \Library\Helper\Url as UrlHelper;
 
 use \DateTime,
     \ReflectionMethod;
 
-use WebFilesystem\WebFilesystem;
+use \WebFilesystem\WebFilesystem;
 
 /**
  */

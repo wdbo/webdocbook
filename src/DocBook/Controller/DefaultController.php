@@ -3,27 +3,28 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\Controller;
 
-use DocBook\FrontController,
-    DocBook\Helper,
-    DocBook\Locator,
-    DocBook\Abstracts\AbstractController,
-    DocBook\WebFilesystem\DocBookFile,
-    DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
+use \DocBook\FrontController,
+    \DocBook\Helper,
+    \DocBook\Locator,
+    \DocBook\Abstracts\AbstractController,
+    \DocBook\WebFilesystem\DocBookFile,
+    \DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
 
-use Markdown\Parser,
-    Markdown\ExtraParser;
+use \Markdown\Parser,
+    \Markdown\ExtraParser;
 
-use WebFilesystem\WebFilesystem,
-    WebFilesystem\WebFileInfo;
+use \WebFilesystem\WebFilesystem,
+    \WebFilesystem\WebFileInfo;
 
 /**
  */
-class DefaultController extends AbstractController
+class DefaultController
+    extends AbstractController
 {
 
     public function indexAction($path)
@@ -93,11 +94,14 @@ class DefaultController extends AbstractController
                     'page_notes'=>$md_content->getNotesToString()
                 )
             );
+
+
         }
 
         $tpl_params = array(
             'page' => $dbfile->getDocBookStack(),
             'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
+            'inpage_menu' => !empty($readme_content) ? 'true' : 'false'
         );
 
         $tpl_params['title'] = Helper::buildPageTitle($this->getPath());

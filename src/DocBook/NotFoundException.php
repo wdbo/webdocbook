@@ -9,7 +9,7 @@
 namespace DocBook;
 
 use \Exception;
-use DocBook\FrontController;
+use \DocBook\FrontController;
 
 /**
  */

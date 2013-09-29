@@ -3,24 +3,37 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\WebFilesystem;
 
-use DocBook\FrontController,
-    DocBook\Helper;
+use \DocBook\FrontController,
+    \DocBook\Helper;
 
-use WebFilesystem\FilesystemIterator,
-    WebFilesystem\WebRecursiveDirectoryIterator;
+use \Library\Helper\Directory as DirectoryHelper;
+
+use \WebFilesystem\FilesystemIterator,
+    \WebFilesystem\WebRecursiveDirectoryIterator;
 
 /**
  */
-class DocBookRecursiveDirectoryIterator extends WebRecursiveDirectoryIterator
+class DocBookRecursiveDirectoryIterator
+    extends WebRecursiveDirectoryIterator
 {
 
+    /**
+     * New flag to make `current()` returns a `DocBookFile` object
+     *
+     * It is part of the default object's flags
+     */
+    const CURRENT_AS_DOCBOOKFILE    = 0x00000040;
+
+    /**
+     * Default flags are : WebFilesystemIterator::KEY_AS_PATHNAME | self::CURRENT_AS_DOCBOOKFILE | WebFilesystemIterator::SKIP_DOTTED
+     */
     public function __construct(
-        $path, $flags = 16432,
+        $path, $flags = 16448,
         $file_validation_callback = "DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator::fileValidation",
         $directory_validation_callback = "DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator::dirValidation"
     ) {
@@ -44,6 +57,19 @@ class DocBookRecursiveDirectoryIterator extends WebRecursiveDirectoryIterator
         return (
             $name!==FrontController::DOCBOOK_ASSETS
         );
+    }
+
+	/**
+     * @return mixed
+	 */
+    public function current()
+    {
+        if ($this->getFlags() & self::CURRENT_AS_DOCBOOKFILE) {
+            return new DocBookFile(
+                DirectoryHelper::slashDirname($this->original_path).$this->getFilename()
+            );
+        }
+        return parent::current();
     }
 
 }

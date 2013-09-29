@@ -14,7 +14,8 @@ use \Markdown\Parser, \Markdown\ExtraParser;
 
 /**
  */
-class InstallController extends AbstractFrontController
+class InstallController
+    extends AbstractFrontController
 {
 
 

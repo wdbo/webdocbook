@@ -3,15 +3,15 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
 
-use Patterns\Abstracts\AbstractResponse;
-use Library\HttpFundamental\Response as BaseResponse;
+use \Patterns\Abstracts\AbstractResponse;
+use \Library\HttpFundamental\Response as BaseResponse;
 
-use DocBook\Request;
+use \DocBook\Request;
 
 /**
  * The global response class
@@ -20,7 +20,8 @@ use DocBook\Request;
  *
  * @author      Piero Wbmstr <piero.wbmstr@gmail.com>
  */
-class Response extends BaseResponse
+class Response
+    extends BaseResponse
 {
 
     /**

@@ -8,7 +8,8 @@
 
 namespace DocBook;
 
-use \Markdown\Parser, \Markdown\ExtraParser;
+use \Markdown\Parser,
+    \Markdown\ExtraParser;
 
 /**
  * To use this command line interface, just run:

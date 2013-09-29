@@ -3,30 +3,31 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
 
-use DocBook\Abstracts\AbstractFrontController,
-    DocBook\Abstracts\AbstractPage,
-    DocBook\Locator,
-    DocBook\NotFoundException,
-    DocBook\DocBookException,
-    DocBook\DocBookRuntimeException,
-    DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
+use \DocBook\Abstracts\AbstractFrontController,
+    \DocBook\Abstracts\AbstractPage,
+    \DocBook\Locator,
+    \DocBook\NotFoundException,
+    \DocBook\DocBookException,
+    \DocBook\DocBookRuntimeException,
+    \DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
 
-use MarkdownExtended\MarkdownExtended;
+use \MarkdownExtended\MarkdownExtended;
 
-use I18n\I18n,
-    I18n\Loader as I18n_Loader,
-    I18n\Twig\I18nExtension as I18n_Twig_Extension;
+use \I18n\I18n,
+    \I18n\Loader as I18n_Loader,
+    \I18n\Twig\I18nExtension as I18n_Twig_Extension;
 
-use Library\Helper\Directory as DirectoryHelper;
+use \Library\Helper\Directory as DirectoryHelper;
 
 /**
  */
-class FrontController extends AbstractFrontController
+class FrontController
+    extends AbstractFrontController
 {
 
     const DOCBOOK_ASSETS = 'docbook_assets';
@@ -48,6 +49,7 @@ class FrontController extends AbstractFrontController
     // dependences
     protected $input_file;
     protected $input_path;
+    protected $uri;
     protected $action;
     protected $markdown_parser;
 
@@ -169,7 +171,6 @@ class FrontController extends AbstractFrontController
                 $input_file = DirectoryHelper::slashDirname($this->getPath('base_dir_http')).trim($input_path, '/');
             }
         }
-                
         $result = null;
         if (!empty($routing)) {
             $ctrl_cls = $routing['controller_classname'];
@@ -373,7 +374,7 @@ var_export($langs);
             if ($file->isDir()) {
                 $paths[] = array(
                     'path'      =>Helper::getSecuredRealpath($file->getRealPath()),
-                    'route'     =>Helper::getRoute($file->getRealPath()),
+                    'route'     =>Helper::getRoute($file->getDocBookPath()),
                     'name'      =>$file->getHumanReadableFilename(),
                 );
             }

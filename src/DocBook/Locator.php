@@ -3,14 +3,14 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
 
-use DocBook\FrontController;
+use \DocBook\FrontController;
 
-use Library\Helper\Directory as DirectoryHelper;
+use \Library\Helper\Directory as DirectoryHelper;
 
 /**
  */

@@ -3,21 +3,22 @@
  * PHP/Apache/Markdown DocBook
  * @package     DocBook
  * @license     GPL-v3
- * @link        https://github.com/atelierspierrot/docbook
+ * @link        http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
 
-use DocBook\FrontController,
-    DocBook\Helper;
+use \DocBook\FrontController,
+    \DocBook\Helper;
 
-use Patterns\Interfaces\RouterInterface;
+use \Patterns\Interfaces\RouterInterface;
 
-use Library\Helper\Url as UrlHelper;
+use \Library\Helper\Url as UrlHelper;
 
 /**
  */
 class Router
+    implements RouterInterface
 {
 
     protected $route;
