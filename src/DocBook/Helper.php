@@ -204,7 +204,7 @@ class Helper
 			'php_uname'         => php_uname(),
 			'php_version'       => phpversion(),
 			'php_sapi_name'     => php_sapi_name(),
-			'apache_version'    => apache_get_version(),
+			'apache_version'    => function_exists('apache_get_version') ? apache_get_version() : '?',
 			'user_agent'        => $_SERVER['HTTP_USER_AGENT'],
 			'git_clone'         => DirectoryHelper::isGitClone($docbook->getPath('root_dir')),
 			'request'           => UrlHelper::getRequestUrl(),
