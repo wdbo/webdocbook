@@ -1,9 +1,12 @@
 
-<a id="language-info" href="#" onclick="return showTranslator();" title="{{ 'Change application language'|translate }}">{{ i18n.getLanguageName(i18n.locale)|capitalize }}&nbsp;<i class="icon-globe icon-white"></i></a>
+<a id="language-info" href="#" class="notooltip" onclick="return showTranslator();" title="{{ 'Change application language'|translate }}">
+    <span class="visible-xs hidden-sm visible-md visible-lg">{{ i18n.getLanguageName(i18n.locale)|capitalize }}&nbsp;{{ icon('language_selector')|raw }}</span>
+    <span class="hidden-xs visible-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-globe"></span></span>
+</a>
 
 <div id="language-selector">
     <div class="btn-group" id="language-selector" title="{{ 'Click outside to close the language selector'|translate }}">
-        <button class="btn btn-small btn-info dropdown-toggle" data-toggle="dropdown">
+        <button class="btn btn-sm btn-info dropdown-toggle navbar-btn" data-toggle="dropdown">
         {{ 'Language'|translate }}&nbsp;<span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
@@ -14,7 +17,7 @@
                 {{- 'Choose this language'|translate -}}
     {% endif %}">
     {% if code==i18n.locale %}
-                <b class="icon-flag"></b>
+                <span class="glyphicon glyphicon-flag"></span>
     {% endif %}
             {{ name }}
             </a></li>

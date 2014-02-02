@@ -1,9 +1,11 @@
 <?php
 /**
- * PHP/Apache/Markdown DocBook
+ * PHP / Markdown Extended : DocBook
+ * @author      Pierre Cassat & contributors
  * @package     DocBook
+ * @copyleft    Les Ateliers Pierrot <ateliers-pierrot.fr>
  * @license     GPL-v3
- * @link        http://github.com/atelierspierrot/docbook
+ * @sources     http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
@@ -60,13 +62,12 @@ class Request
         $file = $path = $action = null;
         $args = array();
 
-/*
+/*/
 echo '<br />server_pathtrans: '.var_export($server_pathtrans,1);
 echo '<br />server_uri: '.var_export($server_uri,1);
 echo '<br />server_query: '.var_export($server_query,1);
 echo '<br />server_argv: '.var_export($server_argv,1);
-*/
- 
+//*/ 
         // first: request path from URL
         if (!empty($server_query)) {
             $req = $server_query;
@@ -154,22 +155,22 @@ echo '<br />server_argv: '.var_export($server_argv,1);
         
 //echo '<br />intermediate action: '.var_export($action,1);
         // if GET args in action
-        if (!empty($action) && substr($action, 0, 1)==='?') {
-            $action = substr($action, 1);
-            parse_str($action, $action_str_args);
+        if (!empty($action) && strpos($action, '?')!==false) {
+            $action_new = substr($action, 0, strpos($action, '?'));
+            $action_args = substr($action, strpos($action, '?')+1);
+            parse_str($action_args, $action_str_args);
             if (!empty($action_str_args)) {
                 $args = array_merge($args, $action_str_args);
             }
-            $action = null;
+            $action = $action_new;
         } 
-/*
+
         // if PHP GET args
         if (!empty($_GET)) {
             $args = array_merge($args, $_GET);
         }
-*/
+
         // if GET args from diff( uri-query )
-//echo '<br />diif?: '.var_export(substr_count($server_uri, $server_query),1);
         if (0<substr_count($server_uri, $server_query)) {
             $uri_diff = trim(str_replace($server_query, '', $server_uri), '/');
             if (!empty($uri_diff)) {
@@ -191,7 +192,8 @@ echo '<br />file: '.var_export($docbook->getInputFile(),1);
 echo '<br />path: '.var_export($docbook->getInputPath(),1);
 echo '<br />action: '.var_export($docbook->getAction(),1);
 echo '<br />arguments: '.var_export($docbook->getQuery(),1);
-//exit('yo');
+var_dump($this);
+exit('yo');
 */
         return $this;
     }

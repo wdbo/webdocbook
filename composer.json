@@ -12,10 +12,6 @@
             "name": "Les Ateliers Pierrot & contributors",
             "email": "contact@ateliers-pierrot.fr",
             "homepage": "http://www.ateliers-pierrot.fr/"
-        },{
-            "name": "Pierre Cassat",
-            "email": "piwi@ateliers-pierrot.fr",
-            "homepage": "http://github.com/pierowbmstr"
         }
     ],
     "require": {

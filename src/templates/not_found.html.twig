@@ -29,11 +29,7 @@
                 </div>
             </hgroup>
             </header>
-{% if message is not empty %}
-            <h3>{{ 'Message received from the system'|translate }}</h3>
-            <blockquote><p class="text-info">{{ message }}</p></blockquote>
-{% endif %}
-            <div class="hero-unit">
+            <div class="jumbotron">
                 <p>{{ 'Sorry, but the page you were trying to view does not exist.'|translate }}</p>
                 <p>{{ 'It looks like this was the result of either:'|translate }}</p>
                 <ul>
@@ -41,6 +37,10 @@
                     <li>{{ 'an out-of-date link'|translate }}</li>
                 </ul>
             </div>
+{% if message is not empty %}
+            <h3>{{ 'Message received from the system'|translate }}</h3>
+            <blockquote><p class="text-info">{{ message }}</p></blockquote>
+{% endif %}
         </div>
         <hr />
     </div> <!-- /container -->

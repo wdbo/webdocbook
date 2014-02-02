@@ -55,7 +55,7 @@ Inspired by http://www.creativejuiz.fr/blog/tutoriels/mise-jour-jquery-effet-smo
 	};
  
 	// appel de la fonction sur toutes les ancres !
-	$('a').juizScrollTo('slow');
+//	$('a').juizScrollTo('slow');
  
 	// fonction de slide au chargement
 	function trigger_click_for_slide() {

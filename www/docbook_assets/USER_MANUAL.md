@@ -1,12 +1,12 @@
 Docbook : user manual
-===================================
+=====================
 
 An every day manual on how to use **DocBook** and **Markdown**.
 
 
 ## About DocBook
 
-#### Organization
+### Organization
 
 A classic DocBook directory organization should be:
 
@@ -28,7 +28,7 @@ A classic DocBook directory organization should be:
     | ------------------ WorkInProgress-page.md
     | ------------------ ...  
 
-#### DocBook pages structure
+### DocBook pages structure
 
 Each page of DocBook has a top menu that, in most cases depending on your device, will stay
 static at the top of your window. It contains the global menu of your first hierarchy chapters
@@ -43,50 +43,50 @@ Clicking on a page's link will let you visualize the content of the page.
 ## About Markdown
 
 
-#### Titles
+### Titles
 
     # my title level 1
     ### my title level 3
 
-#### Paragraphs
+### Paragraphs
 
 Just pass a blank line ...
 
-#### Pre-formatted
+### Pre-formatted blocks
 
 Begin lines with 4 spaces (example this block)
 
         pre formed content
 
-#### Blockquotes and citations
+### Blockquotes and citations
 
 Begin lines by '>'
 
     > my citation
 
-#### Horizontal rule
+### Horizontal rules
 
 3 or more hyphens, asterisks or underscores on a line
 
     ----
 
-#### Bold text
+### Bold emphasis
 
     **bolded content**
         or
     __bolded content__
 
-#### Italic text
+### Italic emphasis
 
     *italic content*
         or
     _italic content_
 
-#### A code span
+### Code spans
 
     `function()`
 
-#### Links
+### Links
 
 Automatic links:
 
@@ -104,7 +104,7 @@ A referenced hypertext link:
         and after the paragraph, anywhere in the document
     [myid]: http://example.com/ "Optional link title"
 
-#### Images
+### Images
 
 An embedded image:
 
@@ -116,7 +116,7 @@ A referrenced embedded image:
         and after the paragraph, anywhere in the document
     [myimageid]: http://upload.wikimedia.org/wikipedia/commons/7/70/Example.png "Optional image title"
 
-#### A list
+### Lists
 
 Begin each entry by an asterisk, a plus or an hyphen followed by 3 spaces
 
@@ -128,7 +128,7 @@ For an ordered list, begin each entry by a number followed by a dot and 3 spaces
     1.   first item
     1.   second item
 
-#### Fenced code block
+### Fenced code block
 
 A line of tildes (at least 3)
 
@@ -136,7 +136,7 @@ A line of tildes (at least 3)
     My code here
     ~~~~
 
-#### Table:
+### Tables
 
     | First Header  | Second Header |
     | ------------- | ------------: |
@@ -157,7 +157,7 @@ or (not constant spaces) :
     | Cell | Cell |
     | Cell | Cell |
 
-#### Definition
+### Definitions
 
     Term 1
     :   This is a definition with two paragraphs. Lorem ipsum 
@@ -170,17 +170,17 @@ or (not constant spaces) :
     :   Second definition for term 1, also wrapped in a paragraph
         because of the blank line preceding it.
 
-#### Footnote
+### Abbreviations
+
+    *[HTML]: Hyper Text Markup Language
+
+### Footnotes
 
     That's some text with a footnote.[^1]
 
     [^1]: And that's the footnote.
 
-#### Abbreviation
-
-    *[HTML]: Hyper Text Markup Language
-
-#### Citations
+### Citations
 
 Like a footnote begining by a sharp
 
@@ -192,7 +192,7 @@ Like a footnote begining by a sharp
 
     [#Doe:2006]: John Doe. *Some Big Fancy Book*.  Vanity Press, 2006.
 
-#### Glossary
+### Glossary
 
     [^glossaryfootnote]: glossary: term (optional sort key)
         The actual definition belongs on a new line, and can continue on

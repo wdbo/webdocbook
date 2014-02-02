@@ -1,0 +1,58 @@
+
+<section class="section">
+{% if page_tools|default('true') != 'false' %}
+    <footer>
+    <div class="navbar navbar-default navbar-inner">
+    
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mdtemplate-pagetools">
+                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a href="#0" class="navbar-brand">
+                <abbr title="{{ 'File name:'|translate }} {{ page.name }} - {{ page.path|securedPath }}">
+                    <strong>{{ icon(page.type)|raw }}&nbsp;{{ page.name }}</strong>
+                </abbr>
+            </a>
+        </div>
+
+        <div class="navbar-collapse collapse" id="mdtemplate-pagetools">
+            <ul class="nav navbar-nav">
+                <li class="divider-vertical hidden-xs hidden-sm"></li>
+                <li><a href="#0" title="{{ 'File size'|translate }}">
+                    <span class="glyphicon glyphicon-picture glyphicon-black"></span>
+                    {{ width }} x {{ height }} pixels
+                </a></li>
+                <li><a href="#0" title="{{ 'File infos'|translate }}">
+                    <span class="glyphicon glyphicon-tasks glyphicon-black"></span>
+                    {{ page.size }}
+                </a></li>
+                <li><a href="#0" title="{{ 'Last update of this content'|translate }}">
+                    <span class="glyphicon glyphicon-time glyphicon-black"></span>
+                    {{ page.mtime.format('d-m-Y H:i:s') }}</a></li>
+    {% if page.trans is not empty %}
+                <li><a href="#0" title="{{ 'Translations of this content'|translate }}"><span class="glyphicon glyphicon-flag glyphicon-black"></span></a></li>
+        {% for _trad, _route in page.trans %}
+                <li><a href="{{ _route|route }}" title="{{ translate('see_this_content_in_ln', {'ln': i18n.languageName(_trad)}) }}"><strong>{{ _trad|upper }}</strong></a></li>
+        {% endfor %}
+    {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="divider-vertical hidden-xs hidden-sm"></li>
+                <li><a href="{{ page.path|route('download') }}" title="{{ 'Download this file'|translate }}">
+                    <span class="visible-xs hidden-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-download glyphicon-black"></span>&nbsp;{{ 'Download this file'|translate }}</span>
+                    <span class="hidden-xs visible-sm visible-md visible-lg"><span class="glyphicon glyphicon-download glyphicon-black"></span></span>
+                </a></li>
+                <li><a href="{{ page.path|route('plain') }}" title="{{ 'View original version of this document'|translate }}">
+                    <span class="visible-xs hidden-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-align-justify glyphicon-black"></span>&nbsp;{{ 'Original version of this document'|translate }}</span>
+                    <span class="hidden-xs visible-sm visible-md visible-lg"><span class="glyphicon glyphicon-fullscreen glyphicon-black"></span></span>
+                </a></li>
+            </ul>
+        </div>
+    </div>
+    </footer>
+{% endif %}
+    <div class="content content-embed">
+        <img src="{{ content|raw }}" width="{{ width }}" height="{{ height }}" />
+    </div>
+</section>
+</div>

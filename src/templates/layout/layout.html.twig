@@ -5,11 +5,18 @@
 <head>
     <meta charset="{{ app_cfg.charset }}">
     <title>{% block title %}{% endblock %} - {{ manifest.title }}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {% block metas %}{% endblock %}
-    <link href="{{ vendor_assets }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ assets }}icons/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ assets }}icons/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" href="{{ assets }}icons/docbook-144.png" sizes="144x144">
+    <link rel="apple-touch-icon-precomposed" href="{{ assets }}icons/docbook-114.png" sizes="114x114">
+    <link rel="apple-touch-icon-precomposed" href="{{ assets }}icons/docbook-72.png" sizes="72x72">
+    <link rel="apple-touch-icon-precomposed" href="{{ assets }}icons/docbook-57.png">
+    <link href="{{ vendor_assets }}bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ vendor_assets }}bootstrap3/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="{{ assets }}styles.css" rel="stylesheet">
     <link href="{{ assets }}styles_print.css" rel="stylesheet" media="print">
-    <link href="{{ vendor_assets }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="{{ vendor_assets }}famfamfam_silk_icons_v013/silk_icons_sprite.css" rel="stylesheet">
     <!--[if lt IE 9]>
         <script src="{{ vendor_assets }}html5shiv/html5shiv.js"></script>
@@ -29,35 +36,52 @@
 {% block html_footer %}
 </div>
 {% include DB.getTemplate('footer') %}
-<div id="messagebox" class="modal hide fade hidden-printer" tabindex="-1" role="dialog" aria-labelledby="messageboxLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="{{ 'Close this modal box'|translate }}">×</button>
-        <h3 id="messageboxLabel"></h3>
+<div id="messagebox" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageboxLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="{{ 'Close this modal box'|translate }}">×</button>
+                <h4 class="modal-title" id="messageboxLabel"></h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
     </div>
-    <div class="modal-body"></div>
-    <div class="modal-footer"></div>
 </div>
 <a id="bottom"></a>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="{{ vendor_assets }}jquery/jquery.min.js"><\/script>')</script>
 <script>$.uiBackCompat = false;</script>
-<script src="{{ vendor_assets }}bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ vendor_assets }}bootstrap3/js/bootstrap.min.js"></script>
 <script src="{{ assets }}scripts.js"></script>
 {% block scripts %}
 <script>
 JS_STRS = {
     tablesorter_th: "{{ 'Sort entries by this column value'|translate }}"
 };
+console.log('ping console test');
 $(function() {
+    // validation links in footer
     addCSSValidatorLink('{{ assets }}styles.css');
     addHTMLValidatorLink();
+    // navbar size
+    initNavbar();
+    // profiler in footer
     initHandler('profiler');
+    // any link with href=#0 does nothing ...
     $('a[href="#0"]').on('click', function(){ return false; });
+    // translations
     initTranslator();
+    // delete button in filled search field
     $('#delete-search').click(function() {
         $('input.searchField').val('');
         $('button#form-search-submit').trigger('click');
     });
+    // all links have tooltips except class=notooltip
+    $('a,.tooltip').not('.notooltip').tooltip();
+    $('input[data-toggle=tooltip],button[data-toggle=tooltip]').tooltip();
+    // popover tool
+    $('.popover-link').tooltip('destroy').popover();
 });
 </script>
 {% endblock %}

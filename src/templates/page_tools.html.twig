@@ -1,5 +1,5 @@
 <div class="well">
-    <div class="pull-left muted">
+    <div class="pull-left text-muted">
         <abbr title="{{ page.path|securedPath }}"><strong>{{ page.name }}</strong></abbr>
         &nbsp;|&nbsp;
         {{ 'Last update of this content'|translate }}
@@ -8,7 +8,7 @@
         </time>
         at <strong>{{- page.update.format('H:i') -}}</strong>
     </div>
-    <div class="pull-right hidden-printer">
+    <div class="pull-right hidden-print">
 {% include DB.getTemplate('tools') %}
     </div>
 </div>

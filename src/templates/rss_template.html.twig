@@ -1,0 +1,51 @@
+<rss version="2.0" 
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+>
+<channel xml:lang="{{ app_cfg.language }}">
+
+    <title>{{ manifest.title }}</title>
+    <link>{{ ''|absoluteRoute }}</link>
+    <description>{{ page.description }}</description>
+    <language>{{ app_cfg.language }}</language>
+	
+{% if page is not empty %}
+    <item xml:lang="{{ app_cfg.language }}">
+        <title>{{ page.name }}</title>
+        <link>{{ page.path|absoluteRoute }}</link>
+        <guid isPermaLink="true">{{ page.path|absoluteRoute }}</guid>
+        <dc:date>{{ page.mtime.format('Y-m-d') }}T{{ page.mtime.format('H:i:s') }}Z</dc:date>
+        {% if page.type|default('default') != 'image' %}
+        <dc:format>text/html</dc:format>
+        {% else %}
+        <dc:format>image/{{ page.extension|default('html') }}</dc:format>
+        {% endif %}
+        <dc:language>{{ page.language|default(app_cfg.language) }}</dc:language>
+        <description>{{ page.content|rssEncode }}</description>
+    </item>
+{% endif %}
+
+{% if contents.dirscan is not empty %}
+    {% for _path in contents.dirscan %}
+    <item xml:lang="{{ app_cfg.language }}">
+        <title>{{ _path.name }}</title>
+        <link>{{ _path.path|absoluteRoute }}</link>
+        <guid isPermaLink="true">{{ _path.path|absoluteRoute }}</guid>
+        <dc:date>{{ _path.mtime.format('Y-m-d') }}T{{ _path.mtime.format('H:i:s') }}Z</dc:date>
+        {% if _path.type != 'image' %}
+        <dc:format>text/html</dc:format>
+        {% else %}
+        <dc:format>image/{{ _path.extension }}</dc:format>
+        {% endif %}
+        <dc:language>{{ app_cfg.language }}</dc:language>
+        <description>{{ _path.content|rssEncode }}</description>
+        {% if _path.type == 'image' %}
+        <enclosure url="{{ _path.path|absoluteRoute }}" length="{{ _path.plainsize }}" type="image/{{ _path.extension }}" />
+        {% endif %}
+    </item>
+    {% endfor %}
+{% endif %}
+
+</channel>
+</rss>

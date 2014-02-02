@@ -1,19 +1,22 @@
-<div class="well well-small hidden-printer">
+<div class="well-breadcrumb hidden-print clearfix">
 
-<ul class="breadcrumb">
-    <li><a href="/">{{ 'Home'|translate }}</a> <span class="divider">/</span></li>
-{% set routeroute='/' %}
-{% for route in breadcrumbs %}
-    {% if loop.index<loop.length %}
-        {% set routeroute=routeroute ~ route ~ '/' %}
-    <li><a href="{{ routeroute }}">{{ route }}</a> <span class="divider">/</span></li>
-    {% else %}
-    <li class="active"><strong>{{ route }}</strong></li>
-    {% endif %}
-{% endfor %}
-    <li class="pull-right">
+    <div class="pull-left">
+        <ul class="breadcrumb">
+            <li><a href="/">{{ 'Home'|translate }}</a></li>
+        {% set routeroute='/' %}
+        {% for route in breadcrumbs %}
+            {% if loop.index<loop.length %}
+                {% set routeroute=routeroute ~ route ~ '/' %}
+            <li><a href="{{ routeroute }}">{{ route }}</a></li>
+            {% else %}
+            <li class="active"><strong>{{ icon(page.type)|raw }}&nbsp;{{ route }}</strong></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div class="pull-right breadcrumb-right">
 {% include DB.getTemplate('tools') %}
-    </li>
-</ul>
+    </div>
 
 </div>

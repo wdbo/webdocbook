@@ -27,8 +27,7 @@ ErrorDocument 403 /index.php?forbidden
 ErrorDocument 500 /index.php?error
 
 # skip all this if the file or the dir exists
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteCond %{REQUEST_URI} !.*\.md
+RewriteCond %{REQUEST_URI} ^(.*)docbook_assets/(.*)
 RewriteRule "." - [skip=100]
 
 RewriteCond %{REQUEST_FILENAME} -d

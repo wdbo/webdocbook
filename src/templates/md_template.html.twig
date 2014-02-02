@@ -1,61 +1,163 @@
+{% if page_title|default('false') != 'false' %}
+<div class="page-header">
+    <h1>{{ title|default(page.name) }}</h1>
+</div>
+{% endif %}
 
 <section class="section">
 {% if page_tools|default('true') != 'false' %}
     <footer>
-    <div class="navbar">
-        <div class="navbar-inner">
-            <ul class="nav">
-                <li><a href="#0"><abbr title="{{ page.path|securedPath }}"><strong>{{ page.name }}</strong></abbr></a></li>
-                <li class="divider-vertical"></li>
+    <div class="navbar navbar-default navbar-inner">
+    
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mdtemplate-pagetools">
+                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a href="#0" class="navbar-brand">
+                <abbr title="{{ 'File name:'|translate }} {{ page.name }} - {{ page.path|securedPath }}">
+                    <strong>{{ icon(page.type)|raw }}&nbsp;{{ page.name }}</strong>
+                </abbr>
+            </a>
+        </div>
+
+        <div class="navbar-collapse collapse" id="mdtemplate-pagetools">
+            <ul class="nav navbar-nav">
+                <li class="divider-vertical hidden-xs hidden-sm"></li>
                 <li><a href="#0" title="{{ 'File infos'|translate }}">
-                    <i class="icon-tasks"></i>
+                    <span class="glyphicon glyphicon-tasks glyphicon-black"></span>
                     {{ page.size }}
     {%- if page.lines_nb is not empty -%}
                      &nbsp;-&nbsp;{{ page.lines_nb }} {{ 'lines'|translate }}
     {%- endif -%}
                 </a></li>
                 <li><a href="#0" title="{{ 'Last update of this content'|translate }}">
-                    <i class="icon-time"></i>
+                    <span class="glyphicon glyphicon-time glyphicon-black"></span>
                     {{ page.mtime.format('d-m-Y H:i:s') }}</a></li>
     {% if page.trans is not empty %}
-                <li><a href="#0" title="{{ 'Translations of this content'|translate }}"><i class="icon-flag"></i></a></li>
+                <li><a href="#0" title="{{ 'Translations of this content'|translate }}"><span class="glyphicon glyphicon-flag glyphicon-black"></span></a></li>
         {% for _trad, _route in page.trans %}
                 <li><a href="{{ _route|route }}" title="{{ translate('see_this_content_in_ln', {'ln': i18n.languageName(_trad)}) }}"><strong>{{ _trad|upper }}</strong></a></li>
         {% endfor %}
     {% endif %}
             </ul>
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-            </button>
-            <div class="nav-collapse collapse">
-                <ul class="nav pull-right">
-                    <li class="divider-vertical"></li>
-                    <li><a href="{{ page.path|route('download') }}" title="{{ 'Download the Markdown version of this content'|translate }}">
-                        <span class="visible-phone visible-tablet hidden-desktop"><i class="icon-download"></i>&nbsp;{{ 'Download this content'|translate }}</span>
-                        <span class="hidden-phone hidden-tablet visible-desktop"><i class="icon-download"></i></span>
-                    </a></li>
-                    <li><a href="{{ page.path|route('htmlonly') }}" title="{{ 'View plain &amp; isolated HTML version of this content'|translate }}">
-                        <span class="visible-phone visible-tablet hidden-desktop"><i class="icon-book"></i>&nbsp;{{ 'HTML version of this content'|translate }}</span>
-                        <span class="hidden-phone hidden-tablet visible-desktop"><i class="icon-book"></i></span>
-                    </a></li>
-                    <li><a href="{{ page.path|route('plain') }}" title="{{ 'View plain text version of this content'|translate }}">
-                        <span class="visible-phone visible-tablet hidden-desktop"><i class="icon-align-justify"></i>&nbsp;{{ 'Plain text version of this content'|translate }}</span>
-                        <span class="hidden-phone hidden-tablet visible-desktop"><i class="icon-align-justify"></i></span>
-                    </a></li>
-                </ul>
-            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="divider-vertical hidden-xs hidden-sm"></li>
+                <li><a href="{{ page.path|route('download') }}" title="{{ 'Download the Markdown version of this content'|translate }}">
+                    <span class="visible-xs hidden-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-download glyphicon-black"></span>&nbsp;{{ 'Download this content'|translate }}</span>
+                    <span class="hidden-xs visible-sm visible-md visible-lg"><span class="glyphicon glyphicon-download glyphicon-black"></span></span>
+                </a></li>
+                <li><a href="{{ page.path|route('htmlonly') }}" title="{{ 'View plain &amp; isolated HTML version of this content'|translate }}">
+                    <span class="visible-xs hidden-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-book glyphicon-black"></span>&nbsp;{{ 'HTML version of this content'|translate }}</span>
+                    <span class="hidden-xs visible-sm visible-md visible-lg"><span class="glyphicon glyphicon-book glyphicon-black"></span></span>
+                </a></li>
+                <li><a href="{{ page.path|route('plain') }}" title="{{ 'View plain text version of this content'|translate }}">
+                    <span class="visible-xs hidden-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-align-justify glyphicon-black"></span>&nbsp;{{ 'Plain text version of this content'|translate }}</span>
+                    <span class="hidden-xs visible-sm visible-md visible-lg"><span class="glyphicon glyphicon-align-justify glyphicon-black"></span></span>
+                </a></li>
+            </ul>
         </div>
     </div>
     </footer>
 {% endif %}
     <div class="content">
+
+        {% if toc %}
+        <aside id="page_menu">
+            <div class="bs-sidebar hidden-print pull-left navbar-section" role="complementary">
+                {{ toc|raw }}
+            </div>
+        </aside>  
+        {% endif %}
+
         {{ content|raw }}
     </div>
+
 </section>
 
+<br class="clearfix" />
+<ul class="nav nav-pills">
+    <li>
+        <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this content - %url%', {'url': route(page.path, 'rss')}) }}">
+            <span class="glyphicon glyphicon-bookmark"></span>&nbsp;<small><em>{{ 'Subscribe to RSS feed of this content'|translate }}</em></small>
+        </a>
+    </li>
+</ul>
+
+<div class="panel-group accordion-group footnotes" id="notes_accordion">
 {% if page_notes is not empty %}
-    <div class="footnotes well well-small">
-    <span class="label label-info">{{ 'Document notes'|translate }}</span>
-    {{ page_notes|raw }}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="noscrollto" title="{{ 'Show/Hide this content'|translate }}" data-toggle="collapse" data-parent="#notes_accordion" href="#page_notes">
+                {{ 'Document notes'|translate }}
+                </a>
+            </h4>
+        </div>
+        <div id="page_notes" class="panel-collapse collapse in">
+            <div class="panel-body">
+                {{ page_notes|raw }}
+            </div>
+        </div>
     </div>
 {% endif %}
+{% if page_glossary is not empty %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="noscrollto" title="{{ 'Show/Hide this content'|translate }}" data-toggle="collapse" data-parent="#notes_accordion" href="#page_glossary">
+                {{ 'Document glossary'|translate }}
+                </a>
+            </h4>
+        </div>
+        <div id="page_glossary" class="panel-collapse collapse">
+            <div class="panel-body">
+            <ol>
+{% for i,c in page_glossary %}
+                <li id="{{ c.note-id }}">{{ c.text|raw }}</li>
+{% endfor %}
+            </ol>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if page_citations is not empty %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="noscrollto" title="{{ 'Show/Hide this content'|translate }}" data-toggle="collapse" data-parent="#notes_accordion" href="#page_citations">
+                {{ 'Document citations'|translate }}
+                </a>
+            </h4>
+        </div>
+        <div id="page_citations" class="panel-collapse collapse">
+            <div class="panel-body">
+            <ol>
+{% for i,c in page_citations %}
+                <li id="{{ c.note-id }}">{{ c.text|raw }}</li>
+{% endfor %}
+            </ol>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if page_footnotes is not empty %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="noscrollto" title="{{ 'Show/Hide this content'|translate }}" data-toggle="collapse" data-parent="#notes_accordion" href="#page_footnotes">
+                {{ 'Other footnotes'|translate }}
+                </a>
+            </h4>
+        </div>
+        <div id="page_footnotes" class="panel-collapse collapse">
+            <div class="panel-body">
+            <ol>
+{% for i,c in page_footnotes %}
+                <li id="{{ c.note-id }}">{{ c.text|raw }}</li>
+{% endfor %}
+            </ol>
+            </div>
+        </div>
+    </div>
+{% endif %}
+</div>

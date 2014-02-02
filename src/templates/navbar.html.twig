@@ -1,53 +1,74 @@
+<div class="navbar navbar-inverse navbar-fixed-top hidden-print" role="navigation" id="header-navigation">
 
-<div class="container-fluid  hidden-printer">
-
-    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-    </button>
-
-    <a class="brand apicon" href="https://github.com/atelierspierrot/docbook" title="{{ 'Follow sources of DocBook online:'|translate }} https://github.com/atelierspierrot/docbook">
-        <img src="{{ assets }}/bouton_plante-24.png" alt="sources" />
-    </a>
-    <a class="brand" href="/" title="{{ 'Home of your DocBook'|translate }}">{{ app.title }}</a>
-
-    <div class="nav-collapse collapse">
-        <div class="navbar-text pull-right">
-            <ul class="nav" id="navbar_inner">
-{% if inpage_menu|default('true') != 'false' %}
-                <li><a href="#0">{{ 'Inpage navigation'|translate }}</a></li>
-                <li class="active"><a href="#top" title="{{ 'Reach the top ot this page'|translate }}">
-                    <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Top'|translate }}&nbsp;&uarr;</span>
-                    <span class="hidden-phone hidden-tablet visible-desktop">&uarr;</span>
-                </a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{{ 'Reach a section in this page'|translate }}">
-                    <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Sections'|translate }}&nbsp;<b class="caret"></b></span>
-                    <span class="hidden-phone hidden-tablet visible-desktop"><b class="caret"></b></span>
-                    </a>
-                    <ul class="dropdown-menu pull-right" id="inpage_menu"></ul>
-                </li>
-                <li><a href="#bottom" title="{{ 'Reach the bottom of this page'|translate }}">
-                    <span class="visible-phone visible-tablet hidden-desktop">{{ 'Page Bottom'|translate }}&nbsp;&darr;</span>
-                    <span class="hidden-phone hidden-tablet visible-desktop">&darr;</span>
-                </a></li>
-{% endif %}
-                <li><a href="{{ 'docbookdoc'|route }}" title="{{ 'Read the manual'|translate }}">{{ 'Help'|translate }}&nbsp;<b class="icon-question-sign icon-white"></b></a></li>
-{% if langs.langs is not empty and langs.langs|length > 1 %}
-                <li>
-                {% include DB.getTemplate('lang_selector') %}
-                </li>
-{% endif %}
-            </ul>
-        </div>
+    <div class="navbar-header" id="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-inner">
+            <span class="sr-only">{{ 'Toggle navigation'|translate }}</span>
+            <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+        </button>
+        <button type="button" class="navbar-toggle navbar-btn" data-toggle="collapse" data-target="#navbar-searchbox">
+            <span class="sr-only">{{ 'search'|translate }}</span>            
+            <span class="glyphicon glyphicon-search glyphicon-white"></span>
+        </button>
+        <a class="navbar-brand apicon popover-link" href="#"
+            title="{{ manifest.title }} {{ manifest.version }}"
+            data-toggle="popover"
+            data-placement="bottom"
+            data-html="true"
+            data-content="{{ translate('sources_update_block', {'url': manifest.homepage, 'version': manifest.version})|rssEncode }}"
+        >
+            <img src="{{ assets }}/icons/docbook-24-white.png" alt="sources">
+        </a>
+        <a class="navbar-brand notooltip" href="/" title="{{ 'back_to_homepage'|translate }}">{{ app.title }}</a>
     </div>
 
+    <div class="navbar-collapse collapse" id="navbar-inner">
+
 {% if chapters is not empty %}
-    <!-- global menu -->
-    <ul class="nav">
-    {% for _chapter in chapters %}
-        <li><a href="{{ _chapter.route }}" title="{{ 'See this chapter'|translate }}">{{ _chapter.name }}</a></li>
-    {% endfor %}
-    </ul>
+        <!-- global menu -->
+        <div class="navbar-overflow">
+            <ul class="nav navbar-nav navbar-left">
+            {% for _chapter in chapters %}
+                <li><a href="{{ _chapter.route }}" class="notooltip" title="{{ 'See this chapter'|translate }}">{{ _chapter.name }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
 {% endif %}
+
+        <ul class="nav navbar-nav navbar-right" id="navbar-inner-list">
+{% if inpage_menu|default('true') != 'false' %}
+            <li class="hidden-xs hidden-sm"><a href="#0">{{ 'Inpage navigation'|translate }}</a></li>
+            <li class="active"><a href="#top" class="notooltip" title="{{ 'Reach the top ot this page'|translate }}">
+                <span class="visible-xs hidden-sm hidden-md hidden-lg">{{ 'Page Top'|translate }}&nbsp;&uarr;</span>
+                <span class="hidden-xs visible-sm visible-md visible-lg">&uarr;</span>
+            </a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle notooltip" data-toggle="dropdown" title="{{ 'Reach a section in this page'|translate }}">
+                <span class="visible-xs hidden-sm hidden-md hidden-lg">{{ 'Page Sections'|translate }}&nbsp;<span class="caret"></span></span>
+                <span class="hidden-xs visible-sm visible-md visible-lg"><span class="caret"></span></span>
+                </a>
+                <ul class="dropdown-menu pull-right" id="inpage_menu"></ul>
+            </li>
+            <li><a href="#bottom" class="notooltip" title="{{ 'Reach the bottom of this page'|translate }}">
+                <span class="visible-xs hidden-sm hidden-md hidden-lg">{{ 'Page Bottom'|translate }}&nbsp;&darr;</span>
+                <span class="hidden-xs visible-sm visible-md visible-lg">&darr;</span>
+            </a></li>
+{% endif %}
+            <li><a href="{{ 'docbookdoc'|route }}" class="notooltip" title="{{ 'Read the manual'|translate }}">
+                <span class="visible-xs hidden-sm visible-md visible-lg">{{ 'Help'|translate }}&nbsp;{{ icon('user_manual')|raw }}</span>
+                <span class="hidden-xs visible-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-question-sign"></span></span>
+            </a></li>
+{% if langs.langs is not empty and langs.langs|length > 1 %}
+            <li>
+            {% include DB.getTemplate('lang_selector') %}
+            </li>
+{% endif %}
+        </ul>
+    </div>
+
+    <div class="visible-xs">
+        <div class="navbar-collapse collapse" id="navbar-searchbox">
+{% include DB.getTemplate('searchbox_mobile') %}
+        </div>
+    </div>
 
 </div>

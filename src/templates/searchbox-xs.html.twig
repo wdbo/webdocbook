@@ -1,0 +1,12 @@
+<form class="form-inline form-search-xs" method="get" action="{{ page.path|route('search') }}">
+    <div class="input-group">
+        <input type="text" class="form-control search-query {% if search_str is not empty %}searchFieldDeletable{% endif %}" data-toggle="tooltip" name="s" title="{{ 'You can build your search string with regular expressions'|translate }}" placeholder="{{ 'search'|translate }}" value="{{ search_str|default('') }}" tabindex="1" />
+        <span class="input-group-btn">
+            <button id="form-search-submit" type="submit" class="btn btn-default" data-toggle="tooltip" title="{% if search_str is not empty %}
+                {{- 'Update current search'|translate -}}
+            {% else %}
+                {{- 'Start the search'|translate -}}
+            {% endif %}"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+    </div>
+</form>

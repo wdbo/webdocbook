@@ -1,0 +1,81 @@
+<div class="page-header">
+    <h1>
+        {{ title|default(manifest.title) }}
+        <small>{{ manifest.name }} {{ manifest.version }}{% if profiler.git_clone %} - clone{% endif %}</small>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
+    <div class="col-xs-12 col-sm-10 col-md-10  col-lg-10">
+    <section>
+    <div class="content">
+
+        {% if toc %}
+        <aside id="page_menu">
+            <div class="bs-sidebar hidden-print pull-left navbar-section" role="complementary">
+                {{ toc|raw }}
+            </div>
+        </aside>  
+        {% endif %}
+
+        {{ content|raw }}
+    </div>
+    </section>
+    </div>
+    <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
+    <div class="col-xs-12 col-sm-10 col-md-10  col-lg-10">
+    <section>
+    <form action="" method="post" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="docbook_app_title" class="col-sm-2 control-label">{{ 'Title'|translate }}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control"
+                    id="docbook_app_title" name="docbook_app_title"
+                    placeholder="{{ 'Application title'|translate }}"
+                    value="{% if config.docbook.app.title is not empty %}{{ config.docbook.app.title }}{% endif %}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="docbook_languages_default" class="col-sm-2 control-label">{{ 'Default language'|translate }}</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="docbook_languages_default" name="docbook_languages_default">
+
+{% if config.docbook.languages.default is not empty and config.docbook.languages.default != 'auto' %}
+    {% set def = config.docbook.languages.default %}
+{% else %}
+    {% set def = config.docbook.languages.fallback_language %}
+{% endif %}
+
+{% for ln in config.docbook.languages.langs %}                
+                    <option value="{{ ln }}"{% if ln == def %} selected="selected"{% endif %}>{{ config.docbook.languages.langs.ln|default(ln) }}</option>
+{% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" class="btn btn-primary" value="{{ 'Submit'|translate }}">
+                <input type="reset" class="btn btn-default" value="{{ 'Cancel'|translate }}">
+            </div>
+        </div>
+    </form>
+
+
+<!--
+{% for i,item in config %}
+{{i}}
+{{dump(item)}}
+{% endfor %}
+-->
+
+    </section>
+    </div>
+    <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
+</div>
+<hr />

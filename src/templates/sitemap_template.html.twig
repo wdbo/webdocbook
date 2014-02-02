@@ -1,0 +1,30 @@
+{% macro urlitem(path, changefreq, priority) %}
+   <url>
+      <loc>{{ path.path|absoluteRoute }}</loc>
+      <lastmod>{{ datify(path.mtime, 'Y-M-d') }}</lastmod>
+      <changefreq>{{ changefreq }}</changefreq>
+      <priority>{{ priority }}</priority>
+   </url>
+{% endmacro %}
+{% import _self as macros %}
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+{%- if page is not empty -%}
+    {{- macros.urlitem(page, 'weekly', '1.0') -}}
+{%- endif -%}
+
+{%- for _path in contents.dirscan -%}
+    {%- if _path.type == 'directory' -%}
+        {{- macros.urlitem(_path, 'weekly', '0.9') -}}
+    {%- elseif _path.type == 'image' -%}
+        {{- macros.urlitem(_path, 'monthly', '0.7') -}}
+    {%- elseif _path.type == 'markdown' -%}
+        {{- macros.urlitem(_path, 'monthly', '0.8') -}}
+    {%- else -%}
+        {{- macros.urlitem(_path, 'monthly', '0.8') -}}
+    {%- endif -%}
+{%- endfor -%}
+
+</urlset>

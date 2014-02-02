@@ -31,7 +31,7 @@ ln_version_of_this_content;version %ln% de ce contenu;%ln% version of this conte
 ;Voir la version HTML seule de ce contenu;"View plain &amp; isolated HTML version of this content"
 ;Voir la version brute de ce contenu;View plain text version of this content
 ;Voir les sources de DocBook en ligne :;Follow sources of DocBook online:
-;Accueil de votre DocBook;Home of your DocBook
+back_to_homepage;Retour à l'accueil;Back to homepage
 ;Navigation de page;Inpage navigation
 ;Aller en haut de page;Reach the top ot this page
 ;Haut de page;Page Top
@@ -64,6 +64,9 @@ file_type;fichier « %type% »;« %type% » file
 see_this_content_in_ln;Voir ce contenu en %ln%;See this content in %ln%
 ;Voir le dépôt distant :;See distant repository:
 ;Notes du document;Document notes
+;Citations du document;Document citations
+;Glossaire du document;Document glossary
+;Autres notes du document;Other footnotes
 ;URL originale de cette page sur l'Internet;Original URL of this page on the internet
 link_mask_title;Voir en ligne %%;See online %%
 mailto_mask_title;Contacter %%;Contact %%
@@ -80,7 +83,35 @@ fnc_backlink_title;Retour au contenu;Return to content
 ;Version texte brut de ce contenu;Plain text version of this content
 ;Vider le champ de recherche;Clear the search field
 ;Changer la langue de l'application;Change application language
-;Cliquez en dehors du sélécteur pour le fermer;Click outside to close the language selector
+;Cliquez en dehors du sélecteur pour le fermer;Click outside to close the language selector
 ;Langue;Language
 ;Langue actuelle;Language selected
 ;Choisir cette langue;Choose this language
+;Navigation;Toggle navigation
+;Nom du fichier :;File name:
+toc_title;Table des matières;Table of contents
+permalink_mask_title;Copier l'URL comme un lien permanent vers ce titre: %%;Copy this link as a permanent link to this title: %%
+toc_item_title;Voir ce chapitre;Reach this section
+toc_backlink_title;Cliquez pour revenir au sommaire;Click to go back to table of contents
+sources_update_block;"Voir les sources de DocBook en ligne : <a href=""%url%"">%url%</a>";"Follow sources of DocBook online: <a href=""%url%"">%url%</a>"
+;S'abonner au fli RSS de ce chapitre;Subscribe to RSS feed of this chapter
+;S'abonner au fli RSS de ce chapitre - %url%;Subscribe to RSS feed of this chapter - %url%
+;S'abonner au fli RSS de ce DocBook;Subscribe to RSS feed of this DocBook
+;S'abonner au fli RSS de ce DocBook - %url%;Subscribe to RSS feed of this DocBook - %url%
+;S'abonner au fli RSS de ce contenu;Subscribe to RSS feed of this content
+;S'abonner au fli RSS de ce contenu - %url%;Subscribe to RSS feed of this content - %url%
+;Télécharger ce fichier;Download this file
+;Voir la version originale de ce document;View original version of this document
+;Version originale de ce document;Original version of this document
+see_content_markdown;Voir ce contenu Markdown;See this markdown content
+see_content_image;Voir cette image;See this image
+see_content_document;Voir ce document;See this document
+see_content_file;Voir ce fichier;See this file
+see_content_directory;Voir le contenu du dossier;See this directory contents
+;Montrer/Cacher ce contenu;Show/Hide this content
+;Administration;Administration
+;Titre;Title
+;Titre de l'application;Application title
+;Langue par défaut;Default language
+;Soumettre;Submit
+;Annuler;Cancel

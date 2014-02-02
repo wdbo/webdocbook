@@ -1,9 +1,11 @@
 <?php
 /**
- * PHP/Apache/Markdown DocBook
+ * PHP / Markdown Extended : DocBook
+ * @author      Pierre Cassat & contributors
  * @package     DocBook
+ * @copyleft    Les Ateliers Pierrot <ateliers-pierrot.fr>
  * @license     GPL-v3
- * @link        http://github.com/atelierspierrot/docbook
+ * @sources     http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook\Composer;

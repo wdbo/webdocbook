@@ -1,11 +1,17 @@
-
-<h1>{{ translate('index_of_title', {'path': content.dirname})|raw }}</h1>
-<hr />
-<div class="row-fluid">
-    <div class="span1"></div>
-    <div class="span10">
+{% if page.route is empty or page.route == '/' %}
+    {% set accueil = true %}
+{% else %}
+    {% set accueil = false %}
+{% endif %}
+<div class="page-header">
+    <h1>{{ translate('index_of_title', {'path': page.name})|raw }}</h1>
+</div>
+<div class="row">
+    <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
+    <div class="col-xs-12 col-sm-10 col-md-10  col-lg-10">
     <section>
-    <table class="indextable">
+    <div class="table-responsive">
+    <table class="indextable table table-striped table-hover">
     <thead>
         <tr>
             <th>{{ 'Type'|translate }}</th>
@@ -16,31 +22,21 @@
         </tr>
     </thead>
     <tbody>
-{% for _path in content.dirscan %}
-        <tr>
-            <td><a href="{{ _path.path|route }}" title="{{ 'See this content'|translate }}">
-                <i class="
-                {%- if _path.type == 'dir' -%}
-                    icon-folder-open
-                {%- elseif _path.type == 'img' -%}
-                    icon-picture
-                {%- elseif _path.type == 'md' -%}
-                    icon-file
-                {%- else -%}
-                    icon-fullscreen
-                {%- endif -%}
-                "></i>
+{% for _path in dirscan.dirscan %}
+        <tr{% if accueil == false %} class="{{ _path.type }}"{% endif %}>
+            <td data-type="{{ _path.type }}"><a href="{{ _path.path|route }}" title="{{ translate('see_content_'~_path.type) }}">
+                {{- icon(_path.type, 'glyphicon-black')|raw -}}
             </a></td>
-            <td>
+            <td data-type="{{ _path.name }}">
                 <a href="{{ _path.path|route }}" title="{{ 'See this content'|translate }}">{{ _path.name }}</a>
     {% for _trad, _route in _path.trans %}
                 &nbsp;[<a href="{{ _route|route }}" title="{{ translate('see_this_content_in_ln', {'ln': i18n.languageName(_trad)}) }}">{{ _trad }}</a>]
     {% endfor %}
             </td>
-            <td><small>{{ datify(_path.mtime) }}</small></td>
-            <td><small>{{ _path.size }}</small></td>
-            <td><small>
-    {%- if _path.type != 'dir' and _path.extension != 'md' -%}
+            <td data-type="{{ datify(_path.mtime, 'A') }}"><small>{{ datify(_path.mtime) }}</small></td>
+            <td data-type="{{ _path.plainsize }}"><small>{{ _path.size }}</small></td>
+            <td data-type="{{ _path.extension }}"><small>
+    {%- if _path.type != 'directory' and _path.extension != 'md' -%}
             {{ translate('file_type', {'type': _path.extension}) }}
         {%- if _path.description is not empty -%}
                 &nbsp;-&nbsp;
@@ -50,31 +46,45 @@
             </small></td>
         </tr>
 {% endfor %}
-{% if content.dir_has_wip %}
-        <tr>
-    {% set wippath = content.dirpath ~ '/wip' %}
-            <td><a href="{{ wippath|route }}" title="{{ 'See the work-in-progress of this chapter'|translate }}">
-                <i class="icon-edit"></i>
-            </a></td>
-            <td colspan="4"><small><em>{{ 'This folder has a "wip" section.'|translate }}</em></small></td>
-        </tr>
-{% endif %}
-{% if content.dir_is_clone %}
-        <tr>
-    {% if content.clone_remote is not empty %}
-            <td><a href="{{ content.clone_remote }}" title="{{ 'See distant repository:'|translate }} {{ content.clone_remote }}">
-                <i class="icon-calendar"></i>
-            </a></td>
-    {% else %}
-            <td><i class="icon-calendar"></i></td>
-    {% endif %}
-            <td colspan="4"><small><em>{{ 'This folder is a "GIT" clone of a remote repository.'|translate }}</em></small></td>
-        </tr>
-{% endif %}
     </tbody>
     </table>
+    </div>
+
+    <ul class="nav nav-pills">
+        <li>
+{% if page.route is empty or page.route == '/' %}
+            <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this DocBook - %url%', {'url': route(page.path, 'rss')}) }}">
+                <span class="glyphicon glyphicon-bookmark"></span>&nbsp;<small><em>{{ 'Subscribe to RSS feed of this DocBook'|translate }}</em></small>
+            </a>
+{% else %}
+            <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this chapter - %url%', {'url': route(page.path, 'rss')}) }}">
+                <span class="glyphicon glyphicon-bookmark"></span>&nbsp;<small><em>{{ 'Subscribe to RSS feed of this chapter'|translate }}</em></small>
+            </a>
+{% endif %}
+        </li>
+{% if dirscan.dir_has_wip %}
+    {% set wippath = dirscan.dirpath ~ '/wip' %}
+        <li>
+            <a href="{{ wippath|route }}" title="{{ 'See the work-in-progress of this chapter'|translate }}">
+                <span class="glyphicon glyphicon-edit"></span>&nbsp;<small><em>{{ 'This folder has a "wip" section.'|translate }}</em></small>
+            </a>
+        </li>
+{% endif %}
+{% if dirscan.dir_is_clone %}
+        <li>
+    {% if dirscan.clone_remote is not empty %}
+            <a href="{{ dirscan.clone_remote }}" title="{{ 'See distant repository:'|translate }} {{ dirscan.clone_remote }}">
+    {% endif %}
+                <span class="glyphicon glyphicon-calendar"></span>&nbsp;<small><em>{{ 'This folder is a "GIT" clone of a remote repository.'|translate }}</em></small>
+    {% if dirscan.clone_remote is not empty %}
+            </a>
+    {% endif %}
+        </li>
+{% endif %}
+    </ul>
+
     </section>
     </div>
-    <div class="span1"></div>
+    <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
 </div>
 <hr />

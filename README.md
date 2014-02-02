@@ -181,14 +181,19 @@ download it, use it or distribute it as long as you stay in the license conditio
 
 -   [Bootstrap](http://twitter.github.io/bootstrap/), a responsive front-end framework, 
     released under [Apache license v2](http://www.apache.org/licenses/LICENSE-2.0),
+    written by [Mark Otto](http://twitter.com/mdo) & [Jacob Thornton](http://twitter.com/fat),    
 -   [Twig](http://twig.sensiolabs.org/), a template engine for PHP, 
     released under [BSD license](http://opensource.org/licenses/BSD-3-Clause),
+    written by [Fabien Potencier](https://connect.sensiolabs.com/api/alternates/4aed4f5d-e0cb-4320-902f-885fddaa7d15),
 -   [jQuery](http://jquery.com/), an open-source javascript library, 
     released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
+    written by [John Resig](http://ejohn.org/) & the [jQuery Foundation and other contributors](http://jquery.org/),
 -   [HTML5shiv](http://code.google.com/p/html5shiv/), an old browsers HTML5 explainer, 
     released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
+    written by [Albert Farkas](http://twitter.com/afarkas), [John David Dalton](http://twitter.com/jdalton), 
+    [Jonathan Neal](http://twitter.com/jon_neal) & [Remy Sharp](http://twitter.com/rem).
 
-**DocBook** is based on some of our other packages:
+**DocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
 
 -   [PHP Patterns](http://github.com/atelierspierrot/patterns)
 -   [PHP Library](http://github.com/atelierspierrot/library)
@@ -198,7 +203,7 @@ download it, use it or distribute it as long as you stay in the license conditio
 
 
 ----
-**Copyleft (c) 2008-2013 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (c) 2008-2014 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 

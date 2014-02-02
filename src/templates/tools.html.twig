@@ -1,20 +1,23 @@
-{% if page.previous is not empty %}
-<a href="{{ page.previous|route }}" title="{{ 'See the previous page in this chapter'|translate }}"><i class="icon-chevron-left"></i>&nbsp;{{ page.previous|readableName }}</a>
+<div class="pager-wrapper">
+    <ul class="pager">
+{% if page.route is not empty and page.route != '/' %}
+    {% if page.previous is not empty %}
+        <li>
+            <a href="{{ page.previous.path|route }}" title="{{ 'See the previous page in this chapter'|translate }}">
+                <span class="glyphicon glyphicon-chevron-left"></span>&nbsp;{{ page.previous.name|readableName }}&nbsp;{{ icon(page.previous.type, 'glyphicon-grey')|raw }}
+            </a>
+        </li>
+    {% endif %}
+    {% if page.next is not empty %}
+        <li>
+            <a href="{{ page.next.path|route }}" title="{{ 'See the next page in this chapter'|translate }}">
+                {{ icon(page.next.type, 'glyphicon-grey')|raw }}&nbsp;{{ page.next.name|readableName }}&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </li>
+    {% endif %}
 {% endif %}
-{% if page.previous is not empty and page.next is not empty %}
-&nbsp;|&nbsp;
-{% endif %}
-{% if page.next is not empty %}
-<a href="{{ page.next|route }}" title="{{ 'See the next page in this chapter'|translate }}">{{ page.next|readableName }}&nbsp;<i class="icon-chevron-right"></i></a>
-{% endif %}
-<form class="form-search" method="get" action="{{ page.path|route('search') }}">
-    {% if search_str is not empty %}<span class="icon-remove-circle" id="delete-search" title="{{ 'Clear the search field'|translate }}" onclick="updateClass(this, 'icon-indicator', 'icon-remove-circle')"></span>{% endif %}
-    <div class="input-append">
-        <input type="text" class="input-small search-query searchField {% if search_str is not empty %}searchFieldDeletable{% endif %}" name="s" title="{{ 'You can build your search string with regular expressions'|translate }}" placeholder="{{ 'search'|translate }}" value="{{ search_str|default('') }}" tabindex="1" />
-        <button id="form-search-submit" type="submit" class="btn" title="{% if search_str is not empty %}
-            {{- 'Update current search'|translate -}}
-        {% else %}
-            {{- 'Start the search'|translate -}}
-        {% endif %}"><i class="icon-search"></i></button>
-    </div>
-</form>
+        <li class="hidden-xs">
+            {% include DB.getTemplate('searchbox') %}
+        </li>
+    </ul>
+</div>

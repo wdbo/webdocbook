@@ -19,3 +19,7 @@
     {% endfor %}
     <meta name="author" content="{{ author_str }}">
 {% endif %}
+
+{% if page is not empty and page.path is not empty %}
+<link rel="alternate" type="application/rss+xml" title="{{ 'Subscribe to RSS feed of this chapter'|translate }}" href="{{ route(page.path, 'rss') }}" />
+{% endif %}

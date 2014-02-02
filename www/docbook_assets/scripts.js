@@ -1,8 +1,10 @@
 /**
- * PHP/Apache/Markdown DocBook
+ * PHP / Markdown Extended : DocBook
+ * @author      Pierre Cassat & contributors
  * @package     DocBook
+ * @copyleft    Les Ateliers Pierrot <ateliers-pierrot.fr>
  * @license     GPL-v3
- * @link        http://github.com/atelierspierrot/docbook
+ * @sources     http://github.com/atelierspierrot/docbook
  */
 
 // Avoid `console` errors in browsers that lack a console.
@@ -70,6 +72,16 @@ function escapeSelector(str)
     return escapedStr;
 }
  
+function updateClass(_el, _class, _class_toRemove)
+{
+    if (_class_toRemove!==undefined && _class_toRemove!==null) {
+        $(_el).removeClass(_class_toRemove);
+    }
+    if (_class!==undefined && _class!==null) {
+        $(_el).addClass(_class);
+    }
+}
+
 // ---------------------------
 // Elements creations
 // ---------------------------
@@ -112,6 +124,17 @@ function getNewDefinitionItem( str, title, href )
 // Page tools
 // ---------------------------
 
+function initNavbar()
+{
+    var elt_navbar = $('#header-navigation'),
+        elt_container = $('#wrapper .container:first'),
+        gap = 40;
+    $(elt_container).css('margin-top', ($(elt_navbar).innerHeight()-gap)+'px');
+    $( window ).resize(function() {
+        $(elt_container).css('margin-top', $(elt_navbar).innerHeight()+'px');
+    });
+}
+
 function initHandler( _name )
 {
     var elt_handler = $('#'+_name+'_handler'),
@@ -146,6 +169,7 @@ function activateMenuItem()
     });
 }
 
+// soft scroll on arrival
 function getToHash()
 {
     var _hash = window.location.hash;
@@ -158,11 +182,11 @@ function getToHash()
     }
 }
 
+// 
 function updateBacklinks()
 {
     $('#short_menu').html( $('#navigation_menu').html() );
 }
-
 function initBacklinks()
 {
     $('#short_navigation').hide();
@@ -199,10 +223,7 @@ function addHTMLValidatorLink( url )
     $('#footer a#html_validation').attr('href', 'http://html5.validator.nu/?showimagereport=yes&showsource=yes&doc='+encodeURIComponent(url));
 }
 
-function initTables()
-{
-    $('table').addClass('table table-striped table-hover');
-}
+// TABLES
 
 function initHighlighted( sel )
 {
@@ -217,6 +238,9 @@ function initTablesorter( sel, opts )
     $(sel).addClass('tablesorter').tablesorter(opts || null);
 }
 
+// PAGE TOOLS
+
+// build dropdown page menu in header
 function initInpageNavigation()
 {
     var h_sel = 'section h2,section h3,section h4,section h5,section h6';
@@ -228,7 +252,7 @@ function initInpageNavigation()
             $(this).attr('id', _id);
         }
         var inpage_menu = $('ul#inpage_menu'),
-            a_ctt = $(this).html(),
+            a_ctt = $(this).text(),
             _li = $('<li>'),
             _a = $('<a>', {'href':'#'+_id});
         switch ($(this)[0].tagName) {
@@ -247,13 +271,16 @@ function initInpageNavigation()
     });
 }
 
-function initSearchFiled()
+// switch size of search field
+function initSearchField()
 {
-    $('.searchField')
-        .bind('focus', function(){ $(this).stop().animate({width: 150}); })
-        .bind('blur', function(){ $(this).stop().animate({width: 90}); });
+    var _sel = $('.searchField'),
+        _origin = $(_sel).width();
+    _sel.bind('focus', function(){ $(this).stop().animate({width: '100%'}); })
+        .bind('blur', function(){ $(this).stop().animate({width: /*_origin*/'75px'}); });
 }
 
+// soft scrolling
 function initScrollTo()
 {
     $.browser = {};
@@ -261,11 +288,14 @@ function initScrollTo()
     $.browser.safari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
     $.browser.msie = /MSIE/.test(navigator.userAgent);
     $.browser.mozilla = /Firefox/.test(navigator.userAgent);
-    $('a[href^="#"]').each(function(i,el){
+    $('a[href^="#"]').not(".noscrollto").each(function(i,el){
         $(this).juizScrollTo('slow');
     });
 }
 
+// MODAL BOX
+
+// ajax loader must return a json with: body,footer,title
 function messagebox(url, title)
 {
     var msgb = $('#messagebox');
@@ -281,20 +311,20 @@ function messagebox(url, title)
             msgb.find('.modal-footer').html(data.footer);
         }
         if (data.title) {
-            msgb.find('.modal-header h3').html(data.title);
+            msgb.find('.modal-header h4').html(data.title);
         }
         msgb.modal('show');
     });
 
 }
 
+// TRANSLATE SELECTOR SWITCHER
 function initTranslator()
 {
     $('#language-selector').hide();
     $('#language-info').show();
     return false;
 }
-
 function showTranslator()
 {
     $('#language-info').hide();
@@ -313,14 +343,4 @@ function showTranslator()
     });
 
     return false;
-}
-
-function updateClass(_el, _class, _class_toRemove)
-{
-    if (_class_toRemove!==undefined && _class_toRemove!==null) {
-        $(_el).removeClass(_class_toRemove);
-    }
-    if (_class!==undefined && _class!==null) {
-        $(_el).addClass(_class);
-    }
 }

@@ -1,9 +1,11 @@
 <?php
 /**
- * PHP/Apache/Markdown DocBook
+ * PHP / Markdown Extended : DocBook
+ * @author      Pierre Cassat & contributors
  * @package     DocBook
+ * @copyleft    Les Ateliers Pierrot <ateliers-pierrot.fr>
  * @license     GPL-v3
- * @link        http://github.com/atelierspierrot/docbook
+ * @sources     http://github.com/atelierspierrot/docbook
  */
 
 namespace DocBook;
@@ -14,6 +16,7 @@ use \DocBook\DocBookException,
 
 use \Library\Command,
     \Library\Helper\Directory as DirectoryHelper,
+    \Library\Helper\Text as TextHelper,
     \Library\Helper\Url as UrlHelper;
 
 use \DateTime,
@@ -25,6 +28,12 @@ use \WebFilesystem\WebFilesystem;
  */
 class Helper
 {
+
+    public static function log($message, $level = 'debug', array $context = array(), $logname = null)
+    {
+        FrontController::getInstance()->log($message, $level, $context, $logname);
+    }
+
 
     public static function getSlug($string)
     {
@@ -62,6 +71,20 @@ class Helper
     {
         $docbook = FrontController::getInstance();
         return str_replace($docbook->getPath('base_dir_http'), '', $path);
+    }
+
+    public static function getAbsolutePath($path)
+    {
+        $docbook = FrontController::getInstance();
+        return $docbook->getPath('base_dir_http').str_replace($docbook->getPath('base_dir_http'), '', $path);
+    }
+
+    public static function getAbsoluteRoute($path)
+    {
+        $url = UrlHelper::parse(UrlHelper::getRequestUrl());
+        $url['path'] = self::getRelativePath(self::getRoute($path));
+        $url['params'] = array();
+        return UrlHelper::build($url);
     }
 
     public static function ensureDirectoryExists($directory)
@@ -111,7 +134,8 @@ class Helper
 
         if ($stdout && !$status) {
             $result = explode(' ', $stdout);
-            return WebFilesystem::getTransformedFilesize(1024*array_shift($result));
+            return (1024*array_shift($result));
+//            return WebFilesystem::getTransformedFilesize(1024*array_shift($result));
         }
         return 0;
     }
@@ -153,6 +177,7 @@ class Helper
         $command = $grep_cmd.' -rn -A 2 -B 2'
             .($is_dir ? ' --include="*.md"' : '')
             .' "'.$regexp.'" '.$path;
+        self::log('Running command: '.$command);
         list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command, $path);
 
         if ($status) return null;
@@ -179,6 +204,14 @@ class Helper
                     'highlighted'=>$delim===$delim_column
                 );
             }
+        }
+        if (!empty($result)) {
+            foreach ($result as $_ind=>$_val) {
+                if (!is_string($_ind)) {
+                    unset($result[$_ind]);
+                }
+            }
+            $result = array_filter($result);
         }
         return $result;
     }
@@ -248,6 +281,59 @@ class Helper
             }
         }
         return null;
+    }
+
+    public static function rssEncode($str, $cut = 800)
+    {
+        $str = preg_replace(',<h1(.*)</h1>,i', '', $str);
+        $str = TextHelper::cut($str, $cut);
+        return $str;
+    }
+
+    public static function getFlatDirscans($dirscan, $order_by_date = false)
+    {
+        $new_dirscan = $dirscan;
+        if (isset($dirscan['dirscan']) && !empty($dirscan['dirscan']) && is_array($dirscan['dirscan'])) {
+            foreach ($dirscan['dirscan'] as $i=>$val) {
+                if (isset($val['dirscan']) && !empty($val['dirscan']) && is_array($val['dirscan'])) {
+                    $sub_dirscan = $val['dirscan'];
+                    self::getFlatDirscans($sub_dirscan);
+                    self::_addDirscan($new_dirscan, $sub_dirscan);
+                }
+            }
+        }
+
+        if ($order_by_date) {
+            usort($new_dirscan['dirscan'], "self::_cmpDirscan");
+        }
+
+        return $new_dirscan;
+    }
+
+    protected static function _addDirscan(&$dirscan, array $add)
+    {
+        foreach ($add as $index=>$val) {
+            $_ind = isset($dirscan['dirscan'][$index]) ? $index.uniqid() : $index;
+            $dirscan['dirscan'][$_ind] = $val;
+        }
+    }
+
+    protected static function _cmpDirscan($a, $b)
+    {
+        return strcmp($a['mtime']->getTimestamp(), $b['mtime']->getTimestamp());
+    }
+
+    public static function getIcon($type = null, $class = '')
+    {
+        if (!empty($type)) {
+            $docbook = FrontController::getInstance();
+            $icons = $docbook->getRegistry()->get('icons', array(), 'docbook');
+            return '<span class="glyphicon glyphicon-'
+                .(isset($icons[$type]) ? $icons[$type] : $icons['default'])
+                .(!empty($class) ? ' '.$class : '')
+                .'"></span>';
+        }
+        return '';
     }
 
 }
