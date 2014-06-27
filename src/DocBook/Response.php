@@ -20,7 +20,7 @@ use \DocBook\Request;
  *
  * This is the global response of the application
  *
- * @author      Piero Wbmstr <piero.wbmstr@gmail.com>
+ * @author      Piero Wbmstr <me@e-piwi.fr>
  */
 class Response
     extends BaseResponse
