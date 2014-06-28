@@ -35,7 +35,7 @@ themselves be defined at the project root directory. These files are, by default
 
 ### Markdown syntax
 
-The Markdown syntax used by DocBook follows the [Markdown Extended](https://github.com/atelierspierrot/markdown-extended)
+The Markdown syntax used by DocBook follows the [Markdown Extended](https://github.com/piwi/markdown-extended)
 rules. They are inherited from:
 
 -   the original [John Gruber's syntax](http://daringfireball.net/projects/markdown/syntax),
@@ -198,7 +198,7 @@ download it, use it or distribute it as long as you stay in the license conditio
 -   [PHP Patterns](http://github.com/atelierspierrot/patterns)
 -   [PHP Library](http://github.com/atelierspierrot/library)
 -   [PHP Web Filesystem](http://github.com/atelierspierrot/webfilesystem)
--   [PHP Markdown Extended](http://github.com/atelierspierrot/markdown-extended)
+-   [PHP Markdown Extended](http://github.com/piwi/markdown-extended)
 -   [PHP Internationalization](http://github.com/atelierspierrot/internationalization)
 
 
