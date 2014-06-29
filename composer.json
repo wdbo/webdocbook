@@ -20,7 +20,7 @@
         "atelierspierrot/patterns": "dev-master",
         "atelierspierrot/library": "dev-master",
         "atelierspierrot/webfilesystem": "dev-wip",
-        "atelierspierrot/markdown-extended": "dev-master",
+        "piwi/markdown-extended": "dev-master",
         "atelierspierrot/internationalization": "dev-master",
         "twig/twig": "1.*"
     },
