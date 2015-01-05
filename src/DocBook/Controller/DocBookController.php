@@ -69,7 +69,7 @@ class DocBookController
         $md_content = $md_parser->transformString($file_content);
         $output_bag = $md_parser->get('OutputFormatBag');
         $menu = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormater());
+            ->getToc($md_content, $output_bag->getFormatter());
         $content = $this->docbook->display(
             $md_content->getBody(),
             'content',
@@ -109,7 +109,7 @@ class DocBookController
         $md_content = $md_parser->transformString($file_content);
         $output_bag = $md_parser->get('OutputFormatBag');
         $menu = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormater());
+            ->getToc($md_content, $output_bag->getFormatter());
 
         $content = $this->docbook->display(
             $md_content->getBody(),
@@ -151,7 +151,7 @@ class DocBookController
         $md_content = $md_parser->transformString($file_content);
         $output_bag = $md_parser->get('OutputFormatBag');
         $menu = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormater());
+            ->getToc($md_content, $output_bag->getFormatter());
 
         $content = $this->docbook->display(
             $md_content->getBody(),

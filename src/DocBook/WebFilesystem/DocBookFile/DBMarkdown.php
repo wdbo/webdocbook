@@ -54,7 +54,7 @@ class DBMarkdown
             $params['page_citations'] = $page_citations;
         }
         $params['toc'] = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormater());
+            ->getToc($md_content, $output_bag->getFormatter());
 
         return $docbook->display($md_content->getBody(), 'content', $params);
 /*

@@ -3,9 +3,9 @@
 namespace DocBook\MDEOutputFormat;
 
 use MarkdownExtended\MarkdownExtended,
-    MarkdownExtended\Content,
-    MarkdownExtended\OutputFormatInterface,
-    MarkdownExtended\OutputFormatHelperInterface,
+    MarkdownExtended\API\ContentInterface,
+    MarkdownExtended\API\OutputFormatInterface,
+    MarkdownExtended\API\OutputFormatHelperInterface,
     MarkdownExtended\Helper as MDE_Helper,
     MarkdownExtended\Exception as MDE_Exception,
     MarkdownExtended\OutputFormat\HTMLHelper;
@@ -43,12 +43,12 @@ class DocBookHelper extends HTMLHelper implements OutputFormatHelperInterface
     /**
      * Build a hierarchical menu
      *
-     * @param object $content \MarkdownExtended\Content
-     * @param object $formater \MarkdownExtended\OutputFormatInterface
+     * @param object $content \MarkdownExtended\API\ContentInterface
+     * @param object $formatter \MarkdownExtended\API\OutputFormatInterface
      *
      * @return string
      */
-    public function getToc(Content $md_content, OutputFormatInterface $formater, array $attributes = null)
+    public function getToc(ContentInterface $md_content, OutputFormatInterface $formatter, array $attributes = null)
     {
         $cfg_toc_max_level = $this->getConfigOrDefault('toc_max_level');
         $cfg_toc_title = $this->getConfigOrDefault('toc_title');
@@ -78,7 +78,7 @@ class DocBookHelper extends HTMLHelper implements OutputFormatHelperInterface
                     $list_content .= '<li>';
                 }
                 $depth += $diff;
-                $list_content .= $formater->buildTag('link', $menu_item['text'], array(
+                $list_content .= $formatter->buildTag('link', $menu_item['text'], array(
                     'href'=>'#'.$item_id,
                     'title'=>isset($attributes['toc_item_title']) ? $attributes['toc_item_title'] : $cfg_toc_item_title,
                 ));
@@ -87,12 +87,12 @@ class DocBookHelper extends HTMLHelper implements OutputFormatHelperInterface
             if ($depth!=0) {
                 $list_content .= str_repeat('</ul></li>', $depth);
             }
-            $content .= $formater->buildTag('title', $cfg_toc_title, array(
+            $content .= $formatter->buildTag('title', $cfg_toc_title, array(
                 'level'=>isset($attributes['toc_title_level']) ? $attributes['toc_title_level'] : $cfg_toc_title_level,
                 'id'=>isset($attributes['toc_id']) ? $attributes['toc_id'] : $cfg_toc_id,
                 'no-addon'=>true
             ));
-            $content .= $formater->buildTag('unordered_list', $list_content, array(
+            $content .= $formatter->buildTag('unordered_list', $list_content, array(
                 'class'=>isset($attributes['class']) ? $attributes['class'] : $cfg_toc_class,
             ));
         }

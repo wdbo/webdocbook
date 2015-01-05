@@ -3,11 +3,10 @@
 namespace DocBook\MDEOutputFormat;
 
 use MarkdownExtended\MarkdownExtended,
-    MarkdownExtended\OutputFormatInterface,
-    MarkdownExtended\OutputFormat\AbstractOutputFormat,
+    MarkdownExtended\API\OutputFormatInterface,
+    MarkdownExtended\OutputFormat\HTML,
     MarkdownExtended\Helper as MDE_Helper,
-    MarkdownExtended\Exception as MDE_Exception,
-    MarkdownExtended\OutputFormat\HTML;
+    MarkdownExtended\Exception as MDE_Exception;
 
 use DocBook\MDEOutputFormat\DocBookHelper;
 
@@ -19,93 +18,94 @@ class DocBook extends HTML implements OutputFormatInterface
 
     /**
      * @var array
-     */
     protected $tags_map = array(
-        'block' => array(
-            'tag'=>'div',
-        ),
-        'paragraph' => array(
-            'tag'=>'p',
-        ),
-        'bold' => array(
-            'tag'=>'strong',
-        ),
-        'italic' => array(
-            'tag'=>'em',
-        ),
-        'preformated' => array(
-            'tag'=>'pre',
-        ),
-        'link' => array(
-            'tag'=>'a',
-        ),
-        'abbreviation' => array(
-            'tag'=>'abbr',
-        ),
-        'definition_list' => array(
-            'tag'=>'dl',
-        ),
-        'definition_list_item_term' => array(
-            'tag'=>'dt',
-        ),
-        'definition_list_item_definition' => array(
-            'tag'=>'dd',
-        ),
-        'list' => array(
-            'tag'=>'ul',
-        ),
-        'list_item' => array(
-            'tag'=>'li',
-        ),
-        'unordered_list' => array(
-            'tag'=>'ul',
-        ),
-        'unordered_list_item' => array(
-            'tag'=>'li',
-        ),
-        'ordered_list' => array(
-            'tag'=>'ol',
-        ),
-        'ordered_list_item' => array(
-            'tag'=>'li',
-        ),
-        'table_caption' => array(
-            'tag'=>'caption',
-        ),
-        'table_header' => array(
-            'tag'=>'thead',
-        ),
-        'table_body' => array(
-            'tag'=>'tbody',
-        ),
-        'table_footer' => array(
-            'tag'=>'tfoot',
-        ),
-        'table_line' => array(
-            'tag'=>'tr',
-        ),
-        'table_cell' => array(
-            'tag'=>'td',
-        ),
-        'table_cell_head' => array(
-            'tag'=>'th',
-        ),
-        'meta_title' => array(
-            'tag'=>'title',
-        ),
-        'image' => array(
-            'tag'=>'img',
-            'closable'=>true,
-        ),
-        'new_line' => array(
-            'tag'=>'br',
-            'closable'=>true,
-        ),
-        'horizontal_rule' => array(
-            'tag'=>'hr',
-            'closable'=>true,
-        ),
+    'block' => array(
+    'tag'=>'div',
+    ),
+    'paragraph' => array(
+    'tag'=>'p',
+    ),
+    'bold' => array(
+    'tag'=>'strong',
+    ),
+    'italic' => array(
+    'tag'=>'em',
+    ),
+    'preformated' => array(
+    'tag'=>'pre',
+    ),
+    'link' => array(
+    'tag'=>'a',
+    ),
+    'abbreviation' => array(
+    'tag'=>'abbr',
+    ),
+    'definition_list' => array(
+    'tag'=>'dl',
+    ),
+    'definition_list_item_term' => array(
+    'tag'=>'dt',
+    ),
+    'definition_list_item_definition' => array(
+    'tag'=>'dd',
+    ),
+    'list' => array(
+    'tag'=>'ul',
+    ),
+    'list_item' => array(
+    'tag'=>'li',
+    ),
+    'unordered_list' => array(
+    'tag'=>'ul',
+    ),
+    'unordered_list_item' => array(
+    'tag'=>'li',
+    ),
+    'ordered_list' => array(
+    'tag'=>'ol',
+    ),
+    'ordered_list_item' => array(
+    'tag'=>'li',
+    ),
+    'table_caption' => array(
+    'tag'=>'caption',
+    ),
+    'table_header' => array(
+    'tag'=>'thead',
+    ),
+    'table_body' => array(
+    'tag'=>'tbody',
+    ),
+    'table_footer' => array(
+    'tag'=>'tfoot',
+    ),
+    'table_line' => array(
+    'tag'=>'tr',
+    ),
+    'table_cell' => array(
+    'tag'=>'td',
+    ),
+    'table_cell_head' => array(
+    'tag'=>'th',
+    ),
+    'meta_title' => array(
+    'tag'=>'title',
+    ),
+    'image' => array(
+    'tag'=>'img',
+    'closable'=>true,
+    ),
+    'new_line' => array(
+    'tag'=>'br',
+    'closable'=>true,
+    ),
+    'horizontal_rule' => array(
+    'tag'=>'hr',
+    'closable'=>true,
+    ),
     );
+     */
+
 
     protected function _getConfigOrDefault($var)
     {
