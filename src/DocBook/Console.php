@@ -570,7 +570,7 @@ EOT;
                     $this->md_parsed_content .= $md_output;
                 }
             } else {
-                self::error( "An error occured while trying to parse Markdown content ! (try to run `cd dir/to/markdown.php ...`)" );
+                self::error( "An error occurred while trying to parse Markdown content ! (try to run `cd dir/to/markdown.php ...`)" );
             }
         }
         return $md_output;
@@ -594,7 +594,7 @@ EOT;
                     }
                 }
             } else {
-                self::error( "An error occured while trying to extract data form Markdown content ! (try to run `cd dir/to/markdown.php ...`)" );
+                self::error( "An error occurred while trying to extract data form Markdown content ! (try to run `cd dir/to/markdown.php ...`)" );
             }
         }
         return $md_output;

@@ -163,7 +163,7 @@ virtual host's domain name, try the following:
 -   if you still have an error, come to ask us explaining your system & configuration at
     <https://github.com/atelierspierrot/docbook/issues>.
 
-### Error: "An error occured while trying to create directory 'XXX'!"
+### Error: "An error occurred while trying to create directory 'XXX'!"
 
 This message means that DocBook tries to create a new directory but has not enough rights to
 do so in your system. To correct this error, just creates the `XXX` directory mentionned in
