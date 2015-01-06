@@ -193,6 +193,9 @@ download it, use it or distribute it as long as you stay in the license conditio
     written by [Albert Farkas](http://twitter.com/afarkas), [John David Dalton](http://twitter.com/jdalton), 
     [Jonathan Neal](http://twitter.com/jon_neal) & [Remy Sharp](http://twitter.com/rem).
 
+The default icon of **DocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
+under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
+
 **DocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
 
 -   [PHP Patterns](http://github.com/atelierspierrot/patterns)
