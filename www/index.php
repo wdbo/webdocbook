@@ -1,11 +1,24 @@
 <?php
 /**
- * PHP / Markdown Extended : DocBook
- * @author      Pierre Cassat & contributors
- * @package     DocBook
- * @copyleft    Les Ateliers Pierrot <ateliers-pierrot.fr>
- * @license     GPL-v3
- * @sources     http://github.com/atelierspierrot/docbook
+ * This file is part of the DocBook package.
+ *
+ * Copyleft (ↄ) 2008-2015 Pierre Cassat <me@e-piwi.fr> and contributors
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The source code of this package is available online at 
+ * <http://github.com/atelierspierrot/docbook>.
  */
 
 /**
@@ -15,9 +28,9 @@
  * `E_ALL & ~E_STRICT` => for hard dev in PHP5.4 avoiding strict warnings
  * `E_ALL & ~E_NOTICE & ~E_STRICT` => classic setting
  */
-//@ini_set('display_errors','1'); @error_reporting(E_ALL);
+@ini_set('display_errors','1'); @error_reporting(E_ALL);
 //@ini_set('display_errors','1'); @error_reporting(E_ALL & ~E_STRICT);
-@ini_set('display_errors','1'); @error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+//@ini_set('display_errors','1'); @error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
 // Set a default timezone to avoid PHP5 warnings
 $dtmz = @date_default_timezone_get();
