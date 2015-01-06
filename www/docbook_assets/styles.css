@@ -115,11 +115,11 @@ ul#inpage_menu li a i { float: right; }
 #navbar-inner-list { font-size: 85%; }
 
 section.section .content.content-raw,
-section.section .content.content-embed { padding: 0; }
+section.section .content.content-embed { padding: 0; height: auto; min-height: 400px; }
 
 section.section .content.content-raw { text-align: center; }
 section.section .content.content-raw .highlight { text-align: left; }
-section.section .content.content-raw iframe { border: none; margin: auto; width: 80%; }
+section.section .content.content-raw iframe { border: none; margin: auto; width: 80%; height: 400px; }
 
 section.section .content.content-embed { background-color: #000; text-align: center; }
 section.section .content.content-embed img { margin: 2em auto; border: 1px solid #404040; }
