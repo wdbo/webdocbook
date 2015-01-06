@@ -10,7 +10,7 @@ To allow DocBook to work on your web-server, you need the following environment:
 
 -   a webserver running a Linux/UNIX operating system,
 -   your requests must be handled by [Apache 2](http://httpd.apache.org/)
-    (or, at least, `.htaccess` files must be activated)[^1]
+    (or, at least, `.htaccess` files must be activated)
 -   [PHP 5.3.0](http://php.net/) or higher.
 
 If you had not downloaded an "**out-of-the-box**" version of DocBook, you will need to manually
@@ -166,13 +166,13 @@ virtual host's domain name, try the following:
 ### Error: "An error occurred while trying to create directory 'XXX'!"
 
 This message means that DocBook tries to create a new directory but has not enough rights to
-do so in your system. To correct this error, just creates the `XXX` directory mentioned in
-the error message manually and set it full rights running [^2]:
+do so in your system. To correct this error, just create the `XXX` directory mentioned in
+the error message manually and set it writable rights running:
 
-    ~$ mkdir XXX && chmod 777 XXX
+    ~$ mkdir XXX && chmod 755 XXX
 
+If the error still occurred, you can set the directory some full rights (*this is really NOT
+recommended as it is a security failure*):
 
-[^1]: DocBook may works correctly with an Apache 1 version but we have not tested this case.
-[^2]: If your system refuses to set the CHMOD on 777, try to set it on 755 (*some hosting servers
-disallow using a chmod of 777*).
+    ~$ chmod 777 XXX
 
