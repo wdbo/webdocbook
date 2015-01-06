@@ -454,3 +454,11 @@ pre.code .fnc, pre.code .fnc span {color: #00b;}
 .php pre.code .str, .php pre.code .str span {color: #d00;}
 .php pre.code .var, .php pre.code .var span {color: #00b;}
 .php pre.code .com, .php pre.code .com span {color:#ff8000; font-style: italic; font-weight: normal;}
+
+/* make the dropdown inpage menus scrollable */
+ul#inpage_menu.dropdown-menu {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+
