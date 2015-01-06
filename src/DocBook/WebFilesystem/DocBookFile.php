@@ -115,12 +115,21 @@ class DocBookFile
         return true===$this->getIsRootLink();
     }
 
+    public function isChildOfLink()
+    {
+        $_root  = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
+        $_dir   = DirectoryHelper::slashDirname($this->getRealPath());
+        return (substr_count($_dir, $_root) == 0);
+    }
+
     public function getDocBookPath()
     {
         if (!isset($this->cache['docbook_path'])) {
             $filepath = $this->getRealPath();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+                $filepath   = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+            } elseif ($this->isChildOfLink()) {
+                $filepath   = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
             }
             $this->cache['docbook_path'] = $filepath;
         }
@@ -202,12 +211,13 @@ class DocBookFile
 
             $this->cache['docbook_scan_stack'] = array(
                 'dirname'       => $this->getHumanReadableFilename(),
-                'dirpath'       => $dir->getPath(),
+                'dirpath'       => $this->getDocBookPath(),
                 'dir_has_wip'   => $hasWip,
                 'dir_is_clone'  => $dir_is_clone,
                 'clone_remote'  => $remote,
                 'dirscan'       => $paths,
             );
+
         }
         return $this->cache['docbook_scan_stack'];
     }
