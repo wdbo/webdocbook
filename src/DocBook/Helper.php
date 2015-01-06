@@ -10,18 +10,12 @@
 
 namespace DocBook;
 
-use \DocBook\DocBookException,
-    \DocBook\DocBookRuntimeException,
-    \DocBook\FrontController;
-
-use \Library\Command,
-    \Library\Helper\Directory as DirectoryHelper,
-    \Library\Helper\Text as TextHelper,
-    \Library\Helper\Url as UrlHelper;
-
-use \DateTime,
-    \ReflectionMethod;
-
+use \Library\Command;
+use \Library\Helper\Directory as DirectoryHelper;
+use \Library\Helper\Text as TextHelper;
+use \Library\Helper\Url as UrlHelper;
+use \DateTime;
+use \ReflectionMethod;
 use \WebFilesystem\WebFilesystem;
 
 /**
@@ -234,13 +228,13 @@ class Helper
         return array(
             'date'              => new DateTime(),
             'timezone'          => date_default_timezone_get(),
-			'php_uname'         => php_uname(),
-			'php_version'       => phpversion(),
-			'php_sapi_name'     => php_sapi_name(),
-			'apache_version'    => function_exists('apache_get_version') ? apache_get_version() : '?',
-			'user_agent'        => $_SERVER['HTTP_USER_AGENT'],
-			'git_clone'         => DirectoryHelper::isGitClone($docbook->getPath('root_dir')),
-			'request'           => UrlHelper::getRequestUrl(),
+            'php_uname'         => php_uname(),
+            'php_version'       => phpversion(),
+            'php_sapi_name'     => php_sapi_name(),
+            'apache_version'    => function_exists('apache_get_version') ? apache_get_version() : '?',
+            'user_agent'        => $_SERVER['HTTP_USER_AGENT'],
+            'git_clone'         => DirectoryHelper::isGitClone($docbook->getPath('root_dir')),
+            'request'           => UrlHelper::getRequestUrl(),
         );
     }
 

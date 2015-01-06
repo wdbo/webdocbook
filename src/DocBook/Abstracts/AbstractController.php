@@ -10,13 +10,8 @@
 
 namespace DocBook\Abstracts;
 
-use \DocBook\FrontController,
-    \DocBook\Abstracts\AbstractPage,
-    \DocBook\NotFoundException,
-    \DocBook\TemplateBuilder;
-
-use \Markdown\Parser,
-    \Markdown\ExtraParser;
+use \DocBook\FrontController;
+use \DocBook\NotFoundException;
 
 /**
  */
@@ -59,7 +54,6 @@ abstract class AbstractController
     {
         return $this->path;
     }
-
 
 }
 

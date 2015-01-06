@@ -2,13 +2,12 @@
 
 namespace DocBook\MDEOutputFormat;
 
-use MarkdownExtended\MarkdownExtended,
-    MarkdownExtended\API\OutputFormatInterface,
-    MarkdownExtended\OutputFormat\HTML,
-    MarkdownExtended\Helper as MDE_Helper,
-    MarkdownExtended\Exception as MDE_Exception;
-
-use DocBook\MDEOutputFormat\DocBookHelper;
+use \MarkdownExtended\MarkdownExtended;
+use \MarkdownExtended\API\OutputFormatInterface;
+use \MarkdownExtended\OutputFormat\HTML;
+use \MarkdownExtended\Helper as MDE_Helper;
+use \MarkdownExtended\Exception as MDE_Exception;
+use \DocBook\Helper;
 
 /**
  * All '$_defaults' entries can be overwritten in config.

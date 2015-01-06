@@ -10,13 +10,11 @@
 
 namespace DocBook\WebFilesystem;
 
-use \DocBook\FrontController,
-    \DocBook\Helper;
-
+use \DocBook\FrontController;
+use \DocBook\Helper;
 use \Library\Helper\Directory as DirectoryHelper;
-
-use \WebFilesystem\FilesystemIterator,
-    \WebFilesystem\WebRecursiveDirectoryIterator;
+use \WebFilesystem\FilesystemIterator;
+use \WebFilesystem\WebRecursiveDirectoryIterator;
 
 /**
  */
@@ -36,8 +34,8 @@ class DocBookRecursiveDirectoryIterator
      */
     public function __construct(
         $path, $flags = 16448,
-        $file_validation_callback = "DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator::fileValidation",
-        $directory_validation_callback = "DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator::dirValidation"
+        $file_validation_callback = 'DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator::fileValidation',
+        $directory_validation_callback = 'DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator::dirValidation'
     ) {
         parent::__construct($path, $flags, $file_validation_callback, $directory_validation_callback);
     }
@@ -61,9 +59,9 @@ class DocBookRecursiveDirectoryIterator
         );
     }
 
-	/**
+    /**
      * @return mixed
-	 */
+    */
     public function current()
     {
         if ($this->getFlags() & self::CURRENT_AS_DOCBOOKFILE) {

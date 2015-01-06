@@ -10,15 +10,10 @@
 
 namespace DocBook;
 
-use \DocBook\FrontController,
-    \DocBook\Helper;
-
 use \Patterns\Interfaces\RouterInterface;
-
 use \Library\Helper\Url as UrlHelper;
+use \Patterns\Commons\Collection;
 
-/**
- */
 class Router
     implements RouterInterface
 {
@@ -149,14 +144,14 @@ class Router
      *
      * @param misc $route_infos The informations about the route to analyze
      * @param string $hash A hash tag to add to the generated URL
-	 * @param string $separator The argument/value separator (default is escaped ampersand : '&amp;')
+     * @param string $separator The argument/value separator (default is escaped ampersand : '&amp;')
      * @return string The application valid URL for the route
      */
     public function generateUrl($route_infos, $hash = null, $separator = '&amp;')
-	{
-		$url_args = $this->getArgumentsTable();
-		// ....
-	}
+    {
+        $url_args = $this->getArgumentsTable();
+        // ....
+    }
 
     /**
      * Test if an URL has a corresponding route
@@ -191,12 +186,12 @@ class Router
      * @param string $hash A hash tag to add to the generated URL
      */
     public function redirect($pathinfo, $hash = null)
-	{
-	    $uri = is_string($pathinfo) ? $pathinfo : $this->generateUrl($pathinfo);
-		if (!headers_sent()) {
-		  header("Location: $uri");
-		} else {
-			echo <<<MESSAGE
+    {
+        $uri = is_string($pathinfo) ? $pathinfo : $this->generateUrl($pathinfo);
+        if (!headers_sent()) {
+          header("Location: $uri");
+        } else {
+            echo <<<MESSAGE
 <!DOCTYPE HTML>
 <head>
 <meta http-equiv='Refresh' content='0; url={$uri}'><title>HTTP 302</title>
@@ -206,9 +201,9 @@ class Router
 <br />If not, please clic on next link: <a href="{$uri}">{$uri}</a>.</p>
 </body></html>
 MESSAGE;
-		}
-		exit;
-	}
+        }
+        exit;
+    }
 
 }
 

@@ -11,9 +11,6 @@ namespace DocBook\WebFilesystem;
 
 use \DocBook\WebFilesystem\DocBookFile;
 
-/**
- * @author 		Piero Wbmstr <me@e-piwi.fr>
- */
 interface DocBookFileInterface
 {
 

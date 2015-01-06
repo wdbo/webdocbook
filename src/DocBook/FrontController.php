@@ -10,20 +10,13 @@
 
 namespace DocBook;
 
-use \DocBook\Abstracts\AbstractFrontController,
-    \DocBook\Abstracts\AbstractPage,
-    \DocBook\Locator,
-    \DocBook\NotFoundException,
-    \DocBook\DocBookException,
-    \DocBook\DocBookRuntimeException,
-    \DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
-
+use \DocBook\Abstracts\AbstractFrontController;
+use \DocBook\Abstracts\AbstractPage;
+use \DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
 use \MarkdownExtended\MarkdownExtended;
-
-use \I18n\I18n,
-    \I18n\Loader as I18n_Loader,
-    \I18n\Twig\I18nExtension as I18n_Twig_Extension;
-
+use \I18n\I18n;
+use \I18n\Loader as I18n_Loader;
+use \I18n\Twig\I18nExtension as I18n_Twig_Extension;
 use \Library\Helper\Directory as DirectoryHelper;
 use \Library\Logger;
 

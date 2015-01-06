@@ -12,12 +12,6 @@ namespace DocBook;
 
 use \Patterns\Abstracts\AbstractView;
 
-use \DocBook\FrontController,
-    \DocBook\Locator,
-    \DocBook\DocBookException;
-
-/**
- */
 class TemplateBuilder
     extends AbstractView
 {

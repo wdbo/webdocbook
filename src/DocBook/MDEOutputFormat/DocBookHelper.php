@@ -2,22 +2,23 @@
 
 namespace DocBook\MDEOutputFormat;
 
-use MarkdownExtended\MarkdownExtended,
-    MarkdownExtended\API\ContentInterface,
-    MarkdownExtended\API\OutputFormatInterface,
-    MarkdownExtended\API\OutputFormatHelperInterface,
-    MarkdownExtended\Helper as MDE_Helper,
-    MarkdownExtended\Exception as MDE_Exception,
-    MarkdownExtended\OutputFormat\HTMLHelper;
-
-use DocBook\MDEOutputFormat\DocBook;
+use \MarkdownExtended\MarkdownExtended;
+use \MarkdownExtended\API\ContentInterface;
+use \MarkdownExtended\API\OutputFormatInterface;
+use \MarkdownExtended\API\OutputFormatHelperInterface;
+use \MarkdownExtended\Helper as MDE_Helper;
+use \MarkdownExtended\Exception as MDE_Exception;
+use \MarkdownExtended\OutputFormat\HTMLHelper;
+use \DocBook\Helper;
 
 /**
  * DocBook output Helper
  *
  * All '$_defaults' entries can be overwritten in config.
  */
-class DocBookHelper extends HTMLHelper implements OutputFormatHelperInterface
+class DocBookHelper
+    extends HTMLHelper
+    implements OutputFormatHelperInterface
 {
 
     protected static $_defaults = array(

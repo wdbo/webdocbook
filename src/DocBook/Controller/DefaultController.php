@@ -10,19 +10,14 @@
 
 namespace DocBook\Controller;
 
-use \DocBook\FrontController,
-    \DocBook\Helper,
-    \DocBook\Locator,
-    \DocBook\Abstracts\AbstractController,
-    \DocBook\WebFilesystem\DocBookFile,
-    \DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
-
-use \Markdown\Parser,
-    \Markdown\ExtraParser;
-
-use \WebFilesystem\WebFilesystem,
-    \WebFilesystem\WebFileInfo,
-    \WebFilesystem\FileType\WebImage;
+use \DocBook\FrontController;
+use \DocBook\Helper;
+use \DocBook\Abstracts\AbstractController;
+use \DocBook\WebFilesystem\DocBookFile;
+use \MarkdownExtended\MarkdownExtended;
+use \WebFilesystem\WebFilesystem;
+use \WebFilesystem\WebFileInfo;
+use \WebFilesystem\FileType\WebImage;
 
 /**
  */
@@ -80,7 +75,10 @@ exit('yo');
                 $tpl_params['title'] = _T('Home');
             }
         }
-        $dir_content = $this->docbook->display('', 'dirindex', $tpl_params);
+
+        $dir_content = $this->docbook
+            ->display('', 'dirindex', $tpl_params);
+
         return array('default', $dir_content.$readme_content, $tpl_params);
     }
 
@@ -123,6 +121,7 @@ exit('yo');
             'page' => $page,
             'contents'=>$contents
         ));
+
         return array('layout_empty_xml', $rss_content);
     }
 
@@ -213,10 +212,6 @@ exit('yo');
         ));
         return array('default', $search_content, $tpl_params);
     }
-
-// ---------------------
-// UTILITIES
-// ---------------------
 
 }
 

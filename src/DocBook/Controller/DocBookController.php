@@ -10,15 +10,11 @@
 
 namespace DocBook\Controller;
 
-use \DocBook\FrontController,
-    \DocBook\Helper,
-    \DocBook\Locator,
-    \DocBook\Abstracts\AbstractController;
-
+use \DocBook\FrontController;
+use \DocBook\Helper;
+use \DocBook\Abstracts\AbstractController;
 use \Library\Helper\Directory as DirectoryHelper;
-
-use \Markdown\Parser,
-    \Markdown\ExtraParser;
+use \MarkdownExtended\MarkdownExtended;
 
 /**
  */

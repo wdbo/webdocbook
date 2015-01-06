@@ -10,12 +10,8 @@
 
 namespace DocBook;
 
-use \DocBook\FrontController,
-    \DocBook\Helper,
-    \DocBook\NotFoundException;
-
-use \Library\Helper\Directory as DirectoryHelper,
-    \Library\HttpFundamental\Request as BaseRequest;
+use \Library\Helper\Directory as DirectoryHelper;
+use \Library\HttpFundamental\Request as BaseRequest;
 
 /**
  */

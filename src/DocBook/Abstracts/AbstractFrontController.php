@@ -10,19 +10,14 @@
 
 namespace DocBook\Abstracts;
 
-use \DocBook\Abstracts\AbstractController,
-    \DocBook\Abstracts\AbstractPage,
-    \DocBook\Locator,
-    \DocBook\Response,
-    \DocBook\Request,
-    \DocBook\TemplateBuilder;
-
+use \DocBook\Locator;
+use \DocBook\Response;
+use \DocBook\Request;
+use \DocBook\TemplateBuilder;
 use \Library\Command;
-
 use \MarkdownExtended\MarkdownExtended;
-
-use \Patterns\Abstracts\AbstractSingleton,
-    \Patterns\Commons\ConfigurationRegistry;
+use \Patterns\Abstracts\AbstractSingleton;
+use \Patterns\Commons\ConfigurationRegistry;
 
 /**
  */
@@ -51,7 +46,8 @@ abstract class AbstractFrontController
             ->setResponse(new Response)
             ->setRequest(new Request)
             ->setLocator(new Locator)
-            ->setTerminal(new Command);
+            ->setTerminal(new Command)
+        ;
     }
 
 // ------------------
@@ -155,7 +151,6 @@ abstract class AbstractFrontController
 // ------------------
 
     abstract public function distribute();
-
     abstract public function setInputFile($path);
     abstract public function getInputFile();
     abstract public function setInputPath($path);

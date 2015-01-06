@@ -8,12 +8,8 @@
 
 namespace DocBook;
 
-use \Exception;
-use \DocBook\FrontController;
-
-/**
- */
-class NotFoundException extends Exception
+class NotFoundException
+    extends \Exception
 {
 
     public function __construct($message = '', $code = 0, Exception $previous = null)

@@ -8,9 +8,12 @@
  * @sources     http://github.com/atelierspierrot/docbook
  */
 
-use \Twig_Extension, \Twig_SimpleFilter, \Twig_SimpleFunction;
+use \Twig_Extension;
+use \Twig_SimpleFilter;
+use \Twig_SimpleFunction;
 
-class DocBook_Twig_Extension extends \Twig_Extension
+class DocBook_Twig_Extension
+    extends \Twig_Extension
 {
 
     public function getName()

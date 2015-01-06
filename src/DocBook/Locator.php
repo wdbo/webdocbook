@@ -11,11 +11,8 @@
 namespace DocBook;
 
 use \DocBook\FrontController;
-
 use \Library\Helper\Directory as DirectoryHelper;
 
-/**
- */
 class Locator
 {
 

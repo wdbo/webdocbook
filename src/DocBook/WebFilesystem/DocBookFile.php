@@ -10,17 +10,14 @@
 
 namespace DocBook\WebFilesystem;
 
-use \DocBook\FrontController,
-    \DocBook\Helper;
-
-use \WebFilesystem\WebFilesystem,
-    \WebFilesystem\WebFileInfo,
-    \WebFilesystem\WebFilesystemIterator,
-    \WebFilesystem\Finder;
-
-use \Library\Helper\Directory as DirectoryHelper,
-    \Library\Helper\Text as TextHelper;
-
+use \DocBook\FrontController;
+use \DocBook\Helper;
+use \WebFilesystem\WebFilesystem;
+use \WebFilesystem\WebFileInfo;
+use \WebFilesystem\WebFilesystemIterator;
+use \WebFilesystem\Finder;
+use \Library\Helper\Directory as DirectoryHelper;
+use \Library\Helper\Text as TextHelper;
 use \FilesystemIterator;
 
 /**
@@ -83,7 +80,7 @@ class DocBookFile
         }
         $this->setFile($_file);
         $this->getFile()->setRootDir($_root);
-        $this->getFile()->setWebPath($_web_path);
+        $this->getFile()->setWebPath($_root.$this->docbook->getInputPath());
     }
 
     public function setFile(DocBookFileInterface $file)
@@ -137,6 +134,7 @@ class DocBookFile
             $hasWip = false;
             $paths = $known_filenames = array();
             foreach ($dir as $file) {
+                /* @var \DocBook\\WebFilesystem\\DocBookFile $file */
                 $filename = $lang = null;
                 if ($file->isDir() && $file->getBasename()===FrontController::WIP_DIR) {
                     $hasWip = true;
@@ -240,18 +238,18 @@ class DocBookFile
             }
             $_size = $truefile->isDir() ? Helper::getDirectorySize($truefile->getPathname()) : $truefile->getSize();
             $this->cache['docbook_stack'] = array(
-                'path'      =>$this->getDocBookPath(),
-                'type'      =>$this->getType(),
-                'route'     =>Helper::getRoute($this->getRealPath()),
-                'name'      =>$this->getHumanReadableFilename(),
-                'size'      =>WebFilesystem::getTransformedFilesize($_size),
-                'plainsize' =>$_size,
-                'mtime'     =>WebFilesystem::getDateTimeFromTimestamp($truefile->getMTime()),
-                'description'=>$this->getDescription(),
-                'trans'     =>$this->isDir() ? array() : $this->findTranslations(),
-                'dirpath'   =>dirname($this->getPathname()),
-                'lines_nb'  =>$this->isDir() ? null : Helper::getFileLinesCount($this->getRealPath()),
-                'extension' =>$this->getExtension(),
+                'path'      => $this->getDocBookPath(),
+                'type'      => $this->getType(),
+                'route'     => Helper::getRoute($this->getRealPath()),
+                'name'      => $this->getHumanReadableFilename(),
+                'size'      => WebFilesystem::getTransformedFilesize($_size),
+                'plainsize' => $_size,
+                'mtime'     => WebFilesystem::getDateTimeFromTimestamp($truefile->getMTime()),
+                'description'=> $this->getDescription(),
+                'trans'     => $this->isDir() ? array() : $this->findTranslations(),
+                'dirpath'   => dirname($this->getPathname()),
+                'lines_nb'  => $this->isDir() ? null : Helper::getFileLinesCount($this->getRealPath()),
+                'extension' => $this->getExtension(),
             );
         }
         return $this->cache['docbook_stack'];

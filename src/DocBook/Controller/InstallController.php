@@ -9,16 +9,7 @@
 namespace DocBook\Controller;
 
 use \DocBook\Abstracts\AbstractFrontController;
-use \DocBook\Abstracts\AbstractPage;
-use \Markdown\Parser, \Markdown\ExtraParser;
 
-/**
- */
-class InstallController
-    extends AbstractFrontController
-{
-
-
-}
+class InstallController extends AbstractFrontController {}
 
 // Endfile

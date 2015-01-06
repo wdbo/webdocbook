@@ -10,18 +10,10 @@
 
 namespace DocBook\WebFilesystem\DocBookFile;
 
-use \DocBook\FrontController,
-    \DocBook\Helper,
-    \DocBook\WebFilesystem\DocBookFile,
-    \DocBook\WebFilesystem\DocBookFileInterface;
+use \DocBook\FrontController;
+use \WebFilesystem\WebFileInfo;
+use \DocBook\WebFilesystem\DocBookFileInterface;
 
-use \WebFilesystem\WebFilesystem,
-    \WebFilesystem\WebFileInfo,
-    \WebFilesystem\WebFilesystemIterator,
-    \WebFilesystem\Finder;
-
-/**
- */
 class DBEmbed
     extends WebFileInfo
     implements DocBookFileInterface

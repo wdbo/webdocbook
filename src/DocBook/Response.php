@@ -13,8 +13,6 @@ namespace DocBook;
 use \Patterns\Abstracts\AbstractResponse;
 use \Library\HttpFundamental\Response as BaseResponse;
 
-use \DocBook\Request;
-
 /**
  * The global response class
  *

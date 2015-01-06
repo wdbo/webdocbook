@@ -8,10 +8,8 @@
 
 namespace DocBook;
 
-use \DocBook\FrontController,
-use \RuntimeException;
-
-class DocBookRuntimeException extends RuntimeException
+class DocBookRuntimeException
+    extends \RuntimeException
 {
     public function __construct($message = "", $code = 0, Exception $previous = null)
     {
