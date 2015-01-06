@@ -224,7 +224,8 @@ class Helper
         $command = $wc_cmd.' -l '.$path;
         list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command, $path);
 
-        $lines = array_shift(explode(' ', trim($stdout)));
+        $parts = explode(' ', trim($stdout));
+        $lines = array_shift($parts);
         return !empty($lines) ? $lines : 0;
     }
 
