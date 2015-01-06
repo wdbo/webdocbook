@@ -15,11 +15,11 @@
     "require": {
         "php": ">=5.3.0",
         "psr/log": "dev-master",
-        "atelierspierrot/patterns": "dev-master",
-        "atelierspierrot/library": "dev-master",
-        "atelierspierrot/webfilesystem": "dev-wip",
+        "atelierspierrot/patterns": "1.0.8",
+        "atelierspierrot/library": "1.1.6",
+        "atelierspierrot/webfilesystem": "1.0.2",
         "piwi/markdown-extended": "dev-master",
-        "atelierspierrot/internationalization": "dev-master",
+        "atelierspierrot/internationalization": "1.0.3",
         "twig/twig": "1.*"
     },
     "require-dev": {
