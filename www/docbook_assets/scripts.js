@@ -243,8 +243,9 @@ function initTablesorter( sel, opts )
 // build dropdown page menu in header
 function initInpageNavigation()
 {
-    var h_sel = 'section h2,section h3,section h4,section h5,section h6';
-    if ($('section h1').length>1) h_sel = 'section h1,'+h_sel;
+    var base_obj = 'section :not(#page_menu)',
+        h_sel = base_obj+' h2,'+base_obj+' h3,'+base_obj+' h4,'+base_obj+' h5,'+base_obj+' h6';
+    if ($(base_obj+' h1').length>1) h_sel = base_obj+' h1,'+h_sel;
     $(h_sel).each(function(i,el){
         var _id = $(this).attr('id');
         if (!_id) {
