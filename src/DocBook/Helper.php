@@ -28,6 +28,12 @@ class Helper
         FrontController::getInstance()->log($message, $level, $context, $logname);
     }
 
+    public static function getSafeIdString($string)
+    {
+        return TextHelper::stripSpecialChars(
+            TextHelper::slugify($string), '-_'
+        );
+    }
 
     public static function getSlug($string)
     {

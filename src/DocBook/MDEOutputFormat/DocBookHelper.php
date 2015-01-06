@@ -65,6 +65,7 @@ class DocBookHelper
             $depth = 0;
             $current_level = null;
             foreach ($menu as $item_id=>$menu_item) {
+                $_item_id = Helper::getSafeIdString($item_id);
                 if (isset($max_level) && $menu_item['level']>$max_level) {
                     continue;
                 }
@@ -80,7 +81,7 @@ class DocBookHelper
                 }
                 $depth += $diff;
                 $list_content .= $formatter->buildTag('link', $menu_item['text'], array(
-                    'href'=>'#'.$item_id,
+                    'href'=>'#'.$_item_id,
                     'title'=>isset($attributes['toc_item_title']) ? $attributes['toc_item_title'] : $cfg_toc_item_title,
                 ));
                 $current_level = $menu_item['level'];

@@ -119,6 +119,8 @@ class DocBook extends HTML implements OutputFormatInterface
     {
         if (!isset($attributes['id']) || empty($attributes['id'])) {
             $attributes['id'] = uniqid();
+        } else {
+            $attributes['id'] = Helper::getSafeIdString($attributes['id']);
         }
         if (!isset($attributes['name']) || empty($attributes['name'])) {
             $attributes['name'] = $attributes['id'];
