@@ -4,7 +4,6 @@
 
     <p class="text-center">
         <br />{{ manifest.description }}
-        <br />Protected under <a href="http://www.gnu.org/licenses/gpl-3.0.html" title="Read this license text online">General Public Licence version 3.0</a>, some rights reserved.
     </p>
 </div>
 
@@ -42,6 +41,9 @@
     {%- if loop.index < (loop.length-1) %}, {% endif %}
 {% endfor %}
     </dd>
+
+    <dt>license</dt>
+    <dd><a href="http://www.gnu.org/licenses/gpl-3.0.html" title="Read this license text online">General Public Licence version 3.0</a></dd>
 
     <dt>sources & updates</dt>
     <dd><a href="{{ manifest.homepage }}" title="See online">{{ manifest.homepage }}</a></dd>
