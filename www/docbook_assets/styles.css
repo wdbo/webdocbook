@@ -129,11 +129,11 @@ h1 a.permalink, h2 a.permalink,
 h3 a.permalink, h4 a.permalink, h5 a.permalink {
     font-size: 13pt;
     color: #ffffff/*#EFEFEF*/;
-	background-image:none !important;
-	font-size: 10pt;
-	font-weight: normal !important;
-	padding: 0px 6px 2px 6px !important;
-	line-height: inherit !important;
+    background-image:none !important;
+    font-size: 10pt;
+    font-weight: normal !important;
+    padding: 0px 6px 2px 6px !important;
+    line-height: inherit !important;
     line-height: 125%;
     vertical-align: middle;
 }
