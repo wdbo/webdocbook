@@ -312,6 +312,8 @@ class DocBookFile
     public function findNext()
     {
         if (!isset($this->cache['docbook_next'])) {
+            $this->cache['docbook_next'] = null;
+
             $filepath = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
@@ -341,8 +343,6 @@ class DocBookFile
                     $next = new DocBookFile($dir_table[$j]);
                     $this->cache['docbook_next'] = $next->getDocBookStack();
                 }
-            } else {
-                $this->cache['docbook_next'] = null;
             }
         }
         return $this->cache['docbook_next'];
@@ -356,6 +356,8 @@ class DocBookFile
     public function findPrevious()
     {
         if (!isset($this->cache['docbook_previous'])) {
+            $this->cache['docbook_previous'] = null;
+
             $filepath = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
@@ -385,8 +387,6 @@ class DocBookFile
                     $previous = new DocBookFile($dir_table[$j]);
                     $this->cache['docbook_previous'] = $previous->getDocBookStack();
                 }
-            } else {
-                $this->cache['docbook_previous'] = null;
             }
         }
         return $this->cache['docbook_previous'];
