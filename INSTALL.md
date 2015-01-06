@@ -6,7 +6,7 @@ Docbook : installation instructions
 
 ## Requirements
 
-To allow DocBook to work on your webserver, you need the following environment:
+To allow DocBook to work on your web-server, you need the following environment:
 
 -   a webserver running a Linux/UNIX operating system,
 -   your requests must be handled by [Apache 2](http://httpd.apache.org/)
@@ -19,7 +19,7 @@ on your system.
 
 As the package uses some internal Apache's features, you will need to:
 
--   create a new directory in your webserver HTTP accessible part,
+-   create a new directory in your web-server HTTP accessible part,
 -   set up the rights of the apache-user of your system upon directories,
 -   define a new virtual-host in your system using the sample configuration below,
 -   define an `.htaccess` file in your directory root using the sample file below,
@@ -43,7 +43,7 @@ You have four ways to get a copy of the sources:
 
         ~$ git clone git://github.com/atelierspierrot/docbook.git your/path/to/docbook
 
--   get an archive from GitHub, untar it in your target directory
+-   get an archive from GitHub, *untar* it in your target directory
 
 -   download a tag version of the sources, see <https://github.com/atelierspierrot/docbook/tags>.
 
@@ -66,7 +66,7 @@ web classic access to the `www/` directory.
 Depending on your system and your version of Apache, the virtual host definition may be added
 in the `/etc/apache2/httpd.conf` file or in a new file `/etc/apache/sites-available/your.domain`.
 In this second case, after defining your host, you will need to enable it and restart the
-Apache server on your system. See the [FAQ](#faq) section below for more infos.
+Apache server on your system. See the [FAQ](#faq) section below for more info.
 
 This is a classic DocBook virtual host configuration:
 
@@ -166,7 +166,7 @@ virtual host's domain name, try the following:
 ### Error: "An error occurred while trying to create directory 'XXX'!"
 
 This message means that DocBook tries to create a new directory but has not enough rights to
-do so in your system. To correct this error, just creates the `XXX` directory mentionned in
+do so in your system. To correct this error, just creates the `XXX` directory mentioned in
 the error message manually and set it full rights running [^2]:
 
     ~$ mkdir XXX && chmod 777 XXX
