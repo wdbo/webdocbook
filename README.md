@@ -24,15 +24,6 @@ no other file is requested in the URL.
 Any file named `README.md` in a directory will be displayed at the bottom of the directory 
 contents indexing, just like the default behavior of Apache.
 
-### Files infos
-
-For each file, a set of dependencies can be defined to overwrite the default values, that must 
-themselves be defined at the project root directory. These files are, by default:
-
--   `*.copyright.md`: a copyright, license or protection information for the file content,
--   `*.author(s).md`: an information about the author(s) of the file,
--   `*.changelog.md`: the evolutions information of the file.
-
 ### Markdown syntax
 
 The Markdown syntax used by DocBook follows the [Markdown Extended](https://github.com/piwi/markdown-extended)
@@ -55,18 +46,13 @@ Each document can be translated, naming the translation file like:
 Globally or for each of your DocBook directories, the following routes are available:
 
 -   `*/sitemap`: build a sitemap XML from this position and through its children,
--   `*/notes`: build a page referencing all footnotes from this position and through its children,
--   `*/glossary`: build a page referencing all glossary entries from this position and through 
-    its children,
--   `*/bibliography`: build a page referencing all bibliographic entries from this position and 
-    through its children,
 -   `*/rss`: build an RSS feed of contents from this position and through its children,
--   `*/search?s=A&ln=LN`: process a search of string "A" in contents from this position and through 
+-   `*/search?s=A&lang=LN`: process a search of string "A" in contents from this position and through 
     its children in the specified language if defined.
 
 For each file of your DocBook, the following routes are available:
 
--   `*/ln?LN`: get this content in LN language if present,
+-   `*/?lang=LN`: get this content in LN language if present,
 -   `*/download`: download the original file of the page,
 -   `*/htmlonly`: get the plain HTML version of the page,
 -   `*/plain`: get the plain text version of the page.
@@ -106,7 +92,7 @@ for quick access.
 
 ## Organization
 
-For more informations about how to use DocBook every day, browse the `/docbookdoc` URL of
+For more information about how to use DocBook every day, browse the `/docbookdoc` URL of
 your installation to read the DocBook user manual. A link to this manual is always accessible
 in the header navigation bar of each page.
 
