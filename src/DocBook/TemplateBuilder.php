@@ -104,7 +104,7 @@ class TemplateBuilder
             $this->setOutput( ob_get_contents() );
             ob_end_clean();
         } else {
-            throw new DocBookException(
+            throw new DocBookRuntimeException(
                 sprintf('Template "%s" can\'t be found!', $this->getView())
             );
         }
