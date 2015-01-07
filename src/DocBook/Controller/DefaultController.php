@@ -69,7 +69,11 @@ class DefaultController
      */
     public function directoryAction($path)
     {
-        $this->setPath($path);
+        try {
+            $this->setPath($path);
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
         $dbfile = new DocBookFile($this->getpath());
         $readme_content = $dir_content = '';
 
@@ -154,7 +158,11 @@ exit('yo');
      */
     public function rssFeedAction($path)
     {
-        $this->setPath($path);
+        try {
+            $this->setPath($path);
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
         $dbfile = new DocBookFile($this->getpath());
 
         $tpl_params = array(
@@ -204,7 +212,11 @@ exit('yo');
      */
     public function sitemapAction($path)
     {
-        $this->setPath($path);
+        try {
+            $this->setPath($path);
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
         $dbfile = new DocBookFile($this->getpath());
         FrontController::getInstance()->getResponse()
             ->setContentType('xml');
@@ -225,7 +237,11 @@ exit('yo');
      */
     public function htmlOnlyAction($path)
     {
-        $this->setPath($path);
+        try {
+            $this->setPath($path);
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
         $md_parser = $this->docbook->getMarkdownParser();
         $md_content = $md_parser->transformSource($this->getPath());
         return array('layout_empty_html', 
@@ -243,8 +259,13 @@ exit('yo');
      */
     public function plainTextAction($path)
     {
-        $this->setPath($path);
-        $ctt = $this->docbook->getResponse()->flush(file_get_contents($this->getPath()));
+        try {
+            $this->setPath($path);
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
+        $ctt = $this->docbook->getResponse()
+            ->flush(file_get_contents($this->getPath()));
         return array('layout_empty_txt', $ctt);
     }
 
@@ -256,7 +277,11 @@ exit('yo');
      */
     public function downloadAction($path)
     {
-        $this->setPath($path);
+        try {
+            $this->setPath($path);
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
         $this->docbook->getResponse()->download($path, 'text/plain');
         exit;
     }
@@ -270,7 +295,11 @@ exit('yo');
      */
     public function searchAction($path)
     {
-        $this->setPath($path);
+        try {
+            $this->setPath($path);
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
         $search = $this->docbook->getRequest()->getArgument('s');
         if (empty($search)) {
             return $this->indexAction($path);

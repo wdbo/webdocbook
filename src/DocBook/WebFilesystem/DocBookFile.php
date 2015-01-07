@@ -86,7 +86,12 @@ class DocBookFile
         } else {
             parent::__construct($file_name);
         }
-        $this->_init($file_name);
+
+        try {
+            $this->_init($file_name);
+        } catch (DocBookRuntimeException $e) {
+            throw $e;
+        }
     }
 
     /**
@@ -122,7 +127,7 @@ class DocBookFile
         if (class_exists($_class_name)) {
             $_file = new $_class_name($file_name);
         } else {
-            throw new ErrorException("DocBook file class '$_class_name' not found!");
+            throw new DocBookRuntimeException("DocBook file class '$_class_name' not found!");
         }
         $this->setFile($_file);
         $this->getFile()->setRootDir($_root);

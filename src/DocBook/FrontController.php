@@ -314,10 +314,14 @@ class FrontController
     public function distribute($return = false)
     {
         $this->processSessionValues();
-        
-        $routing = $this->request
-            ->parseDocBookRequest()
-            ->getDocBookRouting();
+
+        try {
+            $routing = $this->request
+                ->parseDocBookRequest()
+                ->getDocBookRouting();
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
 
         $this->processQueryArguments();
 
