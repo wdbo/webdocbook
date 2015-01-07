@@ -82,7 +82,7 @@ class DocBookHelper
         $menu = $md_content->getMenu();
         $content = $list_content = '';
         $max_level = isset($attributes['max_level']) ? $attributes['max_level'] : $cfg_toc_max_level;
-        if (!empty($menu)) {
+        if (!empty($menu) && count($menu) > 1) {
             $depth = 0;
             $current_level = null;
             foreach ($menu as $item_id=>$menu_item) {
