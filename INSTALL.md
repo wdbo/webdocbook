@@ -8,7 +8,7 @@ Docbook : installation instructions
 
 To allow DocBook to work on your web-server, you need the following environment:
 
--   a webserver running a Linux/UNIX operating system,
+-   a web-server running a Linux/UNIX operating system,
 -   your requests must be handled by [Apache 2](http://httpd.apache.org/)
     (or, at least, `.htaccess` files must be activated)
 -   [PHP 5.3.0](http://php.net/) or higher.
@@ -128,7 +128,6 @@ Then restart Apache running:
 
     ~$ sudo /etc/init.d/apache2 restart
 
-
 ### How-to: enable an Apache module
 
 To enable the Apache module `mod_NAME` on your server, just run the following command:
@@ -139,6 +138,17 @@ Once you have enabled all required modules, restart Apache running:
 
     ~$ sudo /etc/init.d/apache2 restart
 
+### How-to: make a custom configuration
+
+The configuration of *DocBook* is stored by default in the `src/config/docbook.ini` file
+that is initially a symbolic link to `src/config/dist/docbook.dist.ini`. If you want to
+manually build a custom configuration file, you can replace the symbolic link by a hard
+copy of the distributed configuration file and edit it:
+
+    $ cd src/config/
+    $ unlink docbook.ini
+    $ cp dist/docbook.dist.ini ./docbook.ini
+    $ vi docbook.ini
 
 ### Error: nothing seems to work but I got no error message
 
