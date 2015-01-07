@@ -66,8 +66,11 @@ The source code of this package is available online at
 {% endif %}
             </div>
 {% if message is not empty %}
+        <p class="small"><a id="error-info_handler" href="#0">guru meditation</a></p>
+        <div id="error-info">
             <h3>{{ 'Message received from the system'|translate }}</h3>
             <blockquote><p class="text-info">{{ message }}</p></blockquote>
+        </div>
 {% endif %}
         </div>
         <hr />

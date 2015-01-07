@@ -89,6 +89,8 @@ $(function() {
     initNavbar();
     // profiler in footer
     initHandler('profiler');
+    // profiler for not found error
+    initHandler('error-info');
     // any link with href=#0 does nothing ...
     $('a[href="#0"]').on('click', function(){ return false; });
     // translations
