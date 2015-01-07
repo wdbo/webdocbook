@@ -164,6 +164,7 @@ exit('yo');
             throw $e;
         }
         $dbfile = new DocBookFile($this->getpath());
+        $contents = array();
 
         $tpl_params = array(
             'page' => $dbfile->getDocBookFullStack(),
