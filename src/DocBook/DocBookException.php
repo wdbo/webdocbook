@@ -33,7 +33,13 @@ namespace DocBook;
 class DocBookException
     extends \Exception
 {
-    public function __construct($message = "", $code = 0, \Exception $previous = null)
+
+    /**
+     * @param string $message
+     * @param int $code
+     * @param \Exception $previous
+     */
+    public function __construct($message = '', $code = 0, \Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
 
@@ -44,7 +50,7 @@ class DocBookException
                 'exception'=>$this
             ), 'error');
             if (!FrontController::isDevMode()) {
-                $docbook->display('', 'error', array('message'=>$message), true);
+                $docbook->display('', 'error', array('message' => $message), true);
             }
         }
 
