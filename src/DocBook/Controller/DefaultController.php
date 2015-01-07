@@ -74,7 +74,12 @@ class DefaultController
         } catch (NotFoundException $e) {
             throw $e;
         }
+
         $dbfile = new DocBookFile($this->getpath());
+        if ($dbfile->isFile()) {
+            return $this->fileAction($this->getPath());
+        }
+
         $readme_content = $dir_content = '';
 
         $index = $dbfile->findIndex();
@@ -129,7 +134,12 @@ exit('yo');
         } catch (NotFoundException $e) {
             throw $e;
         }
+
         $dbfile = new DocBookFile($this->getPath());
+        if ($dbfile->isDir()) {
+            return $this->directoryAction($this->getPath());
+        }
+
         $tpl_params = array(
             'page' => $dbfile->getDocBookFullStack(),
             'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
@@ -218,7 +228,14 @@ exit('yo');
         } catch (NotFoundException $e) {
             throw $e;
         }
+
         $dbfile = new DocBookFile($this->getpath());
+        if (!$dbfile->isDir()) {
+            throw new NotFoundException(
+                'Can not build a sitemap from a single file!'
+            );
+        }
+
         FrontController::getInstance()->getResponse()
             ->setContentType('xml');
         $contents = Helper::getFlatDirscans($dbfile->getDocBookScanStack(true));
@@ -243,6 +260,14 @@ exit('yo');
         } catch (NotFoundException $e) {
             throw $e;
         }
+
+        $dbfile = new DocBookFile($this->getpath());
+        if (!$dbfile->isFile()) {
+            throw new NotFoundException(
+                'Can not send raw content of a directory!'
+            );
+        }
+
         $md_parser = $this->docbook->getMarkdownParser();
         $md_content = $md_parser->transformSource($this->getPath());
         return array('layout_empty_html', 
@@ -265,6 +290,14 @@ exit('yo');
         } catch (NotFoundException $e) {
             throw $e;
         }
+
+        $dbfile = new DocBookFile($this->getpath());
+        if (!$dbfile->isFile()) {
+            throw new NotFoundException(
+                'Can not send raw content of a directory!'
+            );
+        }
+
         $ctt = $this->docbook->getResponse()
             ->flush(file_get_contents($this->getPath()));
         return array('layout_empty_txt', $ctt);
@@ -283,8 +316,17 @@ exit('yo');
         } catch (NotFoundException $e) {
             throw $e;
         }
-        $this->docbook->getResponse()->download($path, 'text/plain');
-        exit;
+
+        $dbfile = new DocBookFile($this->getpath());
+        if (!$dbfile->isFile()) {
+            throw new NotFoundException(
+                'Can not send raw content of a directory!'
+            );
+        }
+
+        $this->docbook->getResponse()
+            ->download($path, 'text/plain');
+        exit(0);
     }
 
     /**
