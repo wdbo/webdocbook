@@ -143,7 +143,7 @@ Once you have enabled all required modules, restart Apache running:
 ### Error: nothing seems to work but I got no error message
 
 If you see the default page of Apache, just check that the `www/.htaccess` exists. If not,
-make a copy of the `src/config/www_htaccess.dist.txt` to `www/.htaccess` and reload the 
+make a copy of the `src/config/dist/www_htaccess.dist.txt` to `www/.htaccess` and reload the 
 page in your browser.
 
 ### Error: "Internal Server Error"
