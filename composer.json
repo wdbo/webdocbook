@@ -12,9 +12,12 @@
         "email": "contact@ateliers-pierrot.fr",
         "homepage": "http://www.ateliers-pierrot.fr/"
     }],
+    "support": {
+        "issues": "http://github.com/atelierspierrot/docbook/issues"
+    },
     "require": {
         "php": ">=5.3.0",
-        "psr/log": "dev-master",
+        "psr/log": "1.0.0",
         "atelierspierrot/patterns": "1.0.8",
         "atelierspierrot/library": "1.1.6",
         "atelierspierrot/webfilesystem": "1.0.2",
