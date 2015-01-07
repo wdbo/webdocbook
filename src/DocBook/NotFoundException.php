@@ -35,12 +35,16 @@ class NotFoundException
      * @param string $message
      * @param int $code
      * @param \Exception $previous
+     * @param string $alt_link
      */
-    public function __construct($message = '', $code = 0, \Exception $previous = null)
+    public function __construct($message = '', $code = 0, \Exception $previous = null, $alt_link = null)
     {
         $docbook = FrontController::getInstance();
         if ($docbook) {
-            $docbook->display('', 'not_found', array('message'=>$message), true);
+            $docbook->display('', 'not_found', array(
+                'message'   => $message,
+                'alt_link'  => $alt_link
+            ), true);
         }
     }
 

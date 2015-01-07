@@ -58,6 +58,12 @@ The source code of this package is available online at
                     <li>{{ 'a mistyped address'|translate }}</li>
                     <li>{{ 'an out-of-date link'|translate }}</li>
                 </ul>
+{% if alt_link is not empty %}
+                <p>
+                    {{ 'but perhaps you meant'|translate }}
+                    <a href="{{ alt_link }}">{{ alt_link }}</a>&nbsp;?
+                </p>
+{% endif %}
             </div>
 {% if message is not empty %}
             <h3>{{ 'Message received from the system'|translate }}</h3>
