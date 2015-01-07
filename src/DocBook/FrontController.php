@@ -248,7 +248,7 @@ class FrontController
             'force_rebuild' => true,
             'available_languages' => array_combine(array_keys($langs), array_keys($langs)),
         );
-        if (defined('DOCBOOK_MODE') && DOCBOOK_MODE==='dev') {
+        if (self::isDevMode()) {
             $i18n_loader_opts['show_untranslated'] = true;
         }
         $translator = I18n::getInstance(new I18n_Loader($i18n_loader_opts));
@@ -434,6 +434,14 @@ var_export($langs);
 // ---------------------
 // Setters / Getters
 // ---------------------
+
+    /**
+     * @return bool
+     */
+    public static function isDevMode()
+    {
+        return (defined('DOCBOOK_MODE') && DOCBOOK_MODE==='dev');
+    }
 
     /**
      * @param string $name

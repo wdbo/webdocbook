@@ -34,7 +34,9 @@ class NotFoundException
     public function __construct($message = '', $code = 0, \Exception $previous = null)
     {
         $docbook = FrontController::getInstance();
-        $docbook->display('', 'not_found', array('message'=>$message), true);
+        if ($docbook) {
+            $docbook->display('', 'not_found', array('message'=>$message), true);
+        }
     }
 
 }

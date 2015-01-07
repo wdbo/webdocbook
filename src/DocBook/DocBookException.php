@@ -36,10 +36,18 @@ class DocBookException
     public function __construct($message = "", $code = 0, \Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
-        FrontController::getInstance()->log(
-            $this->getMessage(), $code, array(
+
+        $docbook = FrontController::getInstance();
+        if ($docbook) {
+            $docbook->log(
+                $this->getMessage(), $code, array(
                 'exception'=>$this
             ), 'error');
+            if (!FrontController::isDevMode()) {
+                $docbook->display('', 'error', array('message'=>$message), true);
+            }
+        }
+
     }
 }
 
