@@ -131,11 +131,6 @@ class FrontController
     protected $action;
 
     /**
-     * @var \MarkdownExtended\MarkdownExtended
-     */
-    protected $markdown_parser;
-
-    /**
      * @var \Library\Logger
      */
     protected $logger;
@@ -551,13 +546,10 @@ var_export($langs);
     {
         return $this->action;
     }
-    
-    public function setMarkdownParser(MarkdownExtended $parser)
-    {
-        $this->markdown_parser = $parser;
-        return $this;
-    }
-    
+
+    /**
+     * @return MarkdownExtended
+     */
     public function getMarkdownParser()
     {
         if (empty($this->markdown_parser)) {

@@ -233,6 +233,24 @@ abstract class AbstractFrontController
         return $this->template_builder;
     }
 
+    /**
+     * @param \MarkdownExtended\MarkdownExtended $parser
+     * @return $this
+     */
+    public function setMarkdownParser(MarkdownExtended $parser)
+    {
+        $this->markdown_parser = $parser;
+        return $this;
+    }
+
+    /**
+     * @return \MarkdownExtended\MarkdownExtended
+     */
+    public function getMarkdownParser()
+    {
+        return $this->markdown_parser;
+    }
+
 // ------------------
 // Abstracts
 // ------------------
@@ -285,8 +303,6 @@ abstract class AbstractFrontController
      * @return string
      */
     abstract public function getAction();
-    abstract public function setMarkdownParser(MarkdownExtended $parser);
-    abstract public function getMarkdownParser();
 
 }
 
