@@ -232,7 +232,8 @@ exit('yo');
         $dbfile = new DocBookFile($this->getpath());
         if (!$dbfile->isDir()) {
             throw new NotFoundException(
-                'Can not build a sitemap from a single file!'
+                'Can not build a sitemap from a single file!',
+                0, null, Helper::getRoute($dbfile->getDocBookPath())
             );
         }
 
@@ -264,7 +265,8 @@ exit('yo');
         $dbfile = new DocBookFile($this->getpath());
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
-                'Can not send raw content of a directory!'
+                'Can not send raw content of a directory!',
+                0, null, Helper::getRoute($dbfile->getDocBookPath())
             );
         }
 
@@ -294,7 +296,8 @@ exit('yo');
         $dbfile = new DocBookFile($this->getpath());
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
-                'Can not send raw content of a directory!'
+                'Can not send raw content of a directory!',
+                0, null, Helper::getRoute($dbfile->getDocBookPath())
             );
         }
 
@@ -320,7 +323,8 @@ exit('yo');
         $dbfile = new DocBookFile($this->getpath());
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
-                'Can not send raw content of a directory!'
+                'Can not send raw content of a directory!',
+                0, null, Helper::getRoute($dbfile->getDocBookPath())
             );
         }
 
