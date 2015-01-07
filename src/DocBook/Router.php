@@ -233,7 +233,7 @@ class Router
 </head><body>
 <h1>HTTP 302</h1>
 <p>Your browser will be automatically redirected.
-<br />If not, please clic on next link: <a href="{$uri}">{$uri}</a>.</p>
+<br />If not, please click on next link: <a href="{$uri}">{$uri}</a>.</p>
 </body></html>
 MESSAGE;
         }
