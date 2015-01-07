@@ -34,72 +34,184 @@ use \Library\Helper\Directory as DirectoryHelper;
 use \Library\Logger;
 
 /**
+ * Class FrontController
+ *
+ * This is the kernel of DocBook
+ *
+ * @package DocBook
  */
 class FrontController
     extends AbstractFrontController
 {
 
-    const DOCBOOK_ASSETS = 'docbook_assets';
-    const DOCBOOK_INTERFACE = 'index.php';
-    const MARKDOWN_CONFIG = 'markdown.ini';
-    const DOCBOOK_CONFIG = 'docbook.ini';
+    /**
+     * Name of the DocBook's manifest (composer.json)
+     */
     const APP_MANIFEST = 'composer.json';
-    const APP_I18N = 'docbook_i18n.csv';
 
-    const USER_DIR = 'user';
+    /**
+     * Name of the templates directory (src/templates/)
+     */
     const TEMPLATES_DIR = 'templates';
+
+    /**
+     * Name of the configurations directory (src/config/)
+     */
     const CONFIG_DIR = 'config';
 
+    /**
+     * Name of the directory of DocBook's assets (www/docbook_assets/)
+     */
+    const DOCBOOK_ASSETS = 'docbook_assets';
+
+    /**
+     * Name of the DocBook's web interface (www/index.php)
+     */
+    const DOCBOOK_INTERFACE = 'index.php';
+
+    /**
+     * Name of the Markdown configuration file
+     * @TODO check if it really used ?
+     */
+    const MARKDOWN_CONFIG = 'markdown.ini';
+
+    /**
+     * Name of the DocBook's configuration file (src/config/docbook.ini)
+     */
+    const DOCBOOK_CONFIG = 'docbook.ini';
+
+    /**
+     * Name of the DocBook's languages file (src/config/docbook_i18n.csv)
+     */
+    const APP_I18N = 'docbook_i18n.csv';
+
+    /**
+     * Name of a special customization directory (user/)
+     */
+    const USER_DIR = 'user';
+
+    /**
+     * Default name of the README files for DocBook contents
+     */
     const README_FILE = 'README.md';
+
+    /**
+     * Default name of the INDEX files for DocBook contents
+     */
     const INDEX_FILE = 'INDEX.md';
+
+    /**
+     * Default name of the ASSETS sub-directory for DocBook contents
+     */
     const ASSETS_DIR = 'assets';
+
+    /**
+     * Default name of the WORK-IN-PROGRESS sub-directory for DocBook contents
+     */
     const WIP_DIR = 'wip';
 
-    // dependences
+    /**
+     * @var string
+     */
     protected $input_file;
+
+    /**
+     * @var string
+     */
     protected $input_path;
+
+    /**
+     * @var array
+     */
     protected $uri;
+
+    /**
+     * @var string
+     */
     protected $action;
+
+    /**
+     * @var \MarkdownExtended\MarkdownExtended
+     */
     protected $markdown_parser;
+
+    /**
+     * @var \Library\Logger
+     */
     protected $logger;
 
+    /**
+     * Front controller protected constructor
+     *
+     * To actually build a FrontController instance, use:
+     *
+     *      FrontController::getInstance()
+     *
+     */
     protected function __construct()
     {
         session_start();
         parent::__construct();
+    }
 
-        $src_dir = __DIR__.'/../';
-        $base_dir = $src_dir.'../';
+    protected function boot()
+    {
+        try {
+            $src_dir    = DirectoryHelper::slashDirname(dirname(__DIR__));
+            $base_dir   = DirectoryHelper::slashDirname(dirname($src_dir));
+            $tmp_dir    = DirectoryHelper::slashDirname($base_dir.'tmp');
+            Helper::ensureDirectoryExists($tmp_dir);
+            if (!is_writable($tmp_dir)) {
+                throw new \Exception("Directory '$tmp_dir' must be writable!");
+            }
+            $cache_dir  = DirectoryHelper::slashDirname($tmp_dir.'cache');
+            Helper::ensureDirectoryExists($cache_dir);
+            if (!is_writable($cache_dir)) {
+                throw new \Exception("Directory '$cache_dir' must be writable!");
+            }
+            $i18n_dir   = DirectoryHelper::slashDirname($tmp_dir.'i18n');
+            Helper::ensureDirectoryExists($i18n_dir);
+            if (!is_writable($i18n_dir)) {
+                throw new \Exception("Directory '$i18n_dir' must be writable!");
+            }
+            $log_dir    = DirectoryHelper::slashDirname($tmp_dir.'log');
+            Helper::ensureDirectoryExists($log_dir);
+            if (!is_writable($log_dir)) {
+                throw new \Exception("Directory '$log_dir' must be writable!");
+            }
 
-        $this
-            ->addPath('app_manifest', $base_dir.self::APP_MANIFEST)
-            ->addPath('base_dir_http', $base_dir.'www/')
-            ->addPath('base_dir', $src_dir)
-            ->addPath('root_dir', $base_dir);
+            $this
+                ->addPath('app_manifest', $base_dir.self::APP_MANIFEST)
+                ->addPath('base_dir_http', $base_dir.'www/')
+                ->addPath('base_dir', $src_dir)
+                ->addPath('root_dir', $base_dir)
+                ->addPath('tmp', $base_dir.'tmp/')
+                ->addPath('cache', $base_dir.'tmp/cache/')
+                ->addPath('i18n', $base_dir.'tmp/i18n/')
+                ->addPath('logs', $base_dir.'tmp/log/')
+                ->addPath('base_templates', $src_dir.self::TEMPLATES_DIR)
+            ;
 
-        Helper::ensureDirectoryExists($base_dir.'tmp/');
-        $this->addPath('tmp', $base_dir.'tmp/');
+            if (file_exists($base_dir.self::USER_DIR)) {
+                $this->addPath('user_dir', $base_dir.self::USER_DIR);
+                if (file_exists($base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR)) {
+                    $this->addPath('user_templates', $base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR);
+                }
+            }
 
-        Helper::ensureDirectoryExists($base_dir.'tmp/cache/');
-        $this->addPath('cache', $base_dir.'tmp/cache/');
-
-        Helper::ensureDirectoryExists($base_dir.'tmp/i18n/');
-        $this->addPath('i18n', $base_dir.'tmp/i18n/');
-
-        Helper::ensureDirectoryExists($base_dir.'tmp/log/');
-        $this->addPath('logs', $base_dir.'tmp/log/');
-
-        $this->addPath('base_templates', $src_dir.self::TEMPLATES_DIR);
-
-        if (file_exists($base_dir.self::USER_DIR)) {
-            $this->addPath('user_dir', $base_dir.self::USER_DIR);
-            if (file_exists($base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR))
-                $this->addPath('user_templates', $base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR);
+        } catch (\Exception $e) {
+            header('Content-Type: text/plain');
+            echo PHP_EOL.'[DocBook startup error] : '.$e->getMessage().PHP_EOL;
+            echo PHP_EOL.'-------------------------'.PHP_EOL;
+            echo 'For more info, see the "INSTALL.md" file.'.PHP_EOL;
+            exit(1);
         }
     }
 
     protected function init()
     {
+        $this->boot();
+
         // the docbook config (required)
         $docbook_cfgfile = $this->locator->fallbackFinder(self::DOCBOOK_CONFIG, 'config');
         if (!empty($docbook_cfgfile)) {
@@ -414,7 +526,9 @@ var_export($langs);
 
     public function log($message, $level = 'debug', array $context = array(), $logname = null)
     {
-        $this->logger->log($level, $message, $context, $logname);
+        if ($this->logger) {
+            $this->logger->log($level, $message, $context, $logname);
+        }
     }
 
 }
