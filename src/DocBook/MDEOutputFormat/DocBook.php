@@ -158,13 +158,14 @@ class DocBook
         }
 
         if (isset($attributes['level'])) {
-            $tag = 'h' . $attributes['level'];
+            $level = $attributes['level'];
             unset($attributes['level']);
         } else {
-            $tag = 'h' . MarkdownExtended::getVar('baseheaderlevel');
+            $level = MarkdownExtended::getVar('baseheaderlevel');
         }
+        $tag = 'h' . $level;
 
-        if (!isset($attributes['no-addon']) || $attributes['no-addon']!==true) {
+        if (($level > 1) && (!isset($attributes['no-addon']) || $attributes['no-addon']!==true)) {
             $text = $this->addTitleAddon($text, $attributes);
         }
         if (isset($attributes['no-addon'])) {
