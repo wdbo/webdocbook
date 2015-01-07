@@ -15,28 +15,41 @@ This file is written in French.
 
 ## Spécifications
 
+- menu des pages et sous-répertoires
+- "TOC" globale
+- fichiers globaux (utilisés par défaut pour toutes les pages si non redéfinis) : copyright info, authors list, aside, changelog
+- page d'accueil listant les dernières modifs, les infos système éventuelles, des liens vers d'autres sites (config)
+- URL routing:
+    -   `*/notes`: build a page referencing all footnotes from this position and through its children,
+    -   `*/glossary`: build a page referencing all glossary entries from this position and through 
+        its children,
+    -   `*/bibliography`: build a page referencing all bibliographic entries from this position and 
+        through its children,
+- Files infos:
+    -   `*.copyright.md`: a copyright, license or protection information for the file content,
+    -   `*.author(s).md`: an information about the author(s) of the file,
+    -   `*.changelog.md`: the evolutions information of the file.
+
 - DONE: "INDEX.md" comme vrai index
 - DONE: "README.md" comme texte de l'index listing
-- faire un "sitemap.xml" (redirigé via Apache)
-- navigation: previous / next / head / menu des pages et sous-répertoires
+- DONE: faire un "sitemap.xml" (redirigé via Apache)
+- DONE: navigation: previous / next / head 
 - DONE: interface riche avec Bootstrap (HTML5)
 - DONE: outil de recherche (?)
 - DONE: gestion des traductions avec extension ".LN.md"
 - DONE: FancyIndexing des contenus (icônes ? - icônes de Bootstrap)
-- "TOC" globale
-- fichiers globaux (utilisés par défaut pour toutes les pages si non redéfinis) : copyright info, authors list, aside, changelog
 - DONE: page 404
-- page d'accueil listant les dernières modifs, les infos système éventuelles, des liens vers d'autres sites (config)
-- RSS
+- DONE: RSS
 
 
 ## Technique
+
+- toutes les variables de config définissables dans "htaccess"
 
 - DONE: setup en htaccess ou virtual host
 - DONE: package seul avec dépendances via Composer et Bower
 - DONE: pouvoir gérer les pages via un GIT => faire la doc
 - DONE: système de cache ? => cache de Twig
-- toutes les variables de config définissables dans "htaccess"
 
 
 ## Idées construction pages
