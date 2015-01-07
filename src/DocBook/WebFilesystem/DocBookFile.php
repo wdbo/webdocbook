@@ -193,7 +193,7 @@ class DocBookFile
     {
         $_root  = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
         $_dir   = DirectoryHelper::slashDirname($this->getRealPath());
-        return (substr_count($_dir, $_root) == 0);
+        return (substr_count($_dir, $_root) === 0);
     }
 
     /**
@@ -206,7 +206,7 @@ class DocBookFile
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath   = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
             } elseif ($this->isChildOfLink()) {
-                $filepath   = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+                $filepath   = $this->getFile()->getRealWebPath();
             }
             $this->cache['docbook_path'] = $filepath;
         }
