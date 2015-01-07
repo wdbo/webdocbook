@@ -25,15 +25,26 @@ use \Twig_Extension;
 use \Twig_SimpleFilter;
 use \Twig_SimpleFunction;
 
+/**
+ * Class DocBook_Twig_Extension
+ *
+ * The Twig functions and filters for DocBook's templates
+ */
 class DocBook_Twig_Extension
     extends \Twig_Extension
 {
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'DocBook';
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return array(
@@ -48,6 +59,9 @@ class DocBook_Twig_Extension
         );
     }
 
+    /**
+     * @return array
+     */
     public function getFunctions()
     {
         return array(

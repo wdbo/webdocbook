@@ -27,7 +27,10 @@ use \DocBook\FrontController;
 use \WebFilesystem\WebFileInfo;
 use \DocBook\WebFilesystem\DocBookFileInterface;
 
-
+/**
+ * Class DBMarkdown
+ * @package DocBook\WebFilesystem\DocBookFile
+ */
 class DBMarkdown
     extends WebFileInfo
     implements DocBookFileInterface

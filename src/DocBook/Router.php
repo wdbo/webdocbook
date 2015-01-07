@@ -27,18 +27,40 @@ use \Patterns\Interfaces\RouterInterface;
 use \Library\Helper\Url as UrlHelper;
 use \Patterns\Commons\Collection;
 
+/**
+ * Class Router
+ * @package DocBook
+ */
 class Router
     implements RouterInterface
 {
 
+    /**
+     * @var string
+     */
     protected $route;
 
+    /**
+     * @var \Patterns\Commons\Collection
+     */
     protected $routes;
 
+    /**
+     * @var array
+     */
     protected $arguments_table;
 
+    /**
+     * @var string
+     */
     protected $matcher;
 
+    /**
+     * @param null $route
+     * @param \Patterns\Commons\Collection $routes
+     * @param array $arguments_table
+     * @param null $matcher
+     */
     public function __construct(
         $route = null, Collection $routes = null, array $arguments_table = array(), $matcher = null
     ) {
@@ -64,8 +86,8 @@ class Router
 
     /**
      * Set the current route
-     *
      * @param string $route The current application route to distribute
+     * @return $this
      */
     public function setRoute($route)
     {
@@ -75,6 +97,7 @@ class Router
 
     /**
      * Get the current route
+     * @return string
      */
     public function getRoute()
     {
@@ -83,17 +106,18 @@ class Router
 
     /**
      * Set the routes collection
-     *
-     * @param obj $collection A `Patterns\Commons\Collection` object
+     * @param \Patterns\Commons\Collection $collection
+     * @return $this
      */
     public function setRoutes(Collection $collection)
     {
-        $this->routes = $routes;
+        $this->routes = $collection;
         return $this;
     }
 
     /**
      * Get the routes collection
+     * @return \Patterns\Commons\Collection
      */
     public function getRoutes()
     {
@@ -102,8 +126,8 @@ class Router
 
     /**
      * Set the arguments correspondences table
-     *
      * @param array $arguments A table of correspondences like ( true arg in URL => true arg name in the app )
+     * @return $this
      */
     public function setArgumentsTable(array $arguments)
     {
@@ -113,6 +137,7 @@ class Router
 
     /**
      * Get the arguments table
+     * @return array
      */
     public function getArgumentsTable()
     {
@@ -121,8 +146,8 @@ class Router
 
     /**
      * Set the route matcher
-     *
      * @param string $matcher A mask to parse and match a route URL
+     * @return $this
      */
     public function setMatcher($matcher)
     {
@@ -132,6 +157,7 @@ class Router
 
     /**
      * Get the route matcher
+     * @return string
      */
     public function getMatcher()
     {
@@ -140,8 +166,8 @@ class Router
 
     /**
      * Check if a route exists
-     *
      * @param string $route The route to test
+     * @return bool
      */
     public function routeExists($route)
     {
@@ -154,8 +180,7 @@ class Router
 
     /**
      * Build a new route URL
-     *
-     * @param misc $route_infos The informations about the route to analyze
+     * @param mixed $route_infos The information about the route to analyze
      * @param string $hash A hash tag to add to the generated URL
      * @param string $separator The argument/value separator (default is escaped ampersand : '&amp;')
      * @return string The application valid URL for the route
@@ -168,8 +193,7 @@ class Router
 
     /**
      * Test if an URL has a corresponding route
-     *
-     * @param misc $pathinfo The path information to test
+     * @param mixed $pathinfo The path information to test
      */
     public function matchUrl($pathinfo)
     {
@@ -184,8 +208,7 @@ class Router
 
     /**
      * Forward the application to a new route (no HTTP redirect)
-     *
-     * @param misc $pathinfo The path information to forward to
+     * @param mixed $pathinfo The path information to forward to
      * @param string $hash A hash tag to add to the generated URL
      */
     public function forward($pathinfo, $hash = null)
@@ -194,8 +217,7 @@ class Router
 
     /**
      * Make a redirection to a new route (HTTP redirect)
-     *
-     * @param misc $pathinfo The path information to redirect to
+     * @param mixed $pathinfo The path information to redirect to
      * @param string $hash A hash tag to add to the generated URL
      */
     public function redirect($pathinfo, $hash = null)

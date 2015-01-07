@@ -27,11 +27,11 @@ use \Patterns\Abstracts\AbstractResponse;
 use \Library\HttpFundamental\Response as BaseResponse;
 
 /**
- * The global response class
+ * Class Response
  *
  * This is the global response of the application
  *
- * @author      Piero Wbmstr <me@e-piwi.fr>
+ * @package DocBook
  */
 class Response
     extends BaseResponse
@@ -39,6 +39,8 @@ class Response
 
     /**
      * Constructor : defines the current URL and gets the routes
+     * @param null $content
+     * @param null $type
      */
     public function __construct($content = null, $type = null)
     {
@@ -50,6 +52,9 @@ class Response
 
     /**
      * Send the response to the device
+     * @param null $content
+     * @param null $type
+     * @return mixed
      */
     public function send($content = null, $type = null) 
     {

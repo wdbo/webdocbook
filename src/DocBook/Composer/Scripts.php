@@ -26,22 +26,35 @@ namespace DocBook\Composer;
 use \Composer\Script\Event;
 
 /**
+ * Class Scripts
+ *
+ * Defines actions to launch on Composer events.
+ *
+ * @package DocBook\Composer
  */
 class Scripts
 {
 
+    /**
+     * Clear DocBook's cache on Composer's event
+     *
+     * @param \Composer\Script\Event $event
+     * @return void
+     */
     public static function emptyCache(Event $event)
     {
-        $_ds = DIRECTORY_SEPARATOR;
-        $composer = $event->getComposer();
-        $io = $event->getIO();
-        $app_base_path = realpath(__DIR__.'/../../..') . $_ds;
-        if (self::remove($app_base_path.'tmp')) {
+        $_ds        = DIRECTORY_SEPARATOR;
+        $composer   = $event->getComposer();
+        $io         = $event->getIO();
+        $base_path  = realpath(__DIR__.'/../../..') . $_ds;
+        if (self::remove($base_path.'tmp')) {
             $io->write( '<info>Docbook cache has been cleared</info>' );
         }
     }
 
     /**
+     * @param string $path
+     * @return bool
      */
     public static function remove($path)
     {
@@ -64,7 +77,9 @@ class Scripts
                     $ok = unlink($item);
                 }
             }
-            if ($ok) rmdir($path);
+            if ($ok) {
+                rmdir($path);
+            }
             clearstatcache();
             return true;
         }

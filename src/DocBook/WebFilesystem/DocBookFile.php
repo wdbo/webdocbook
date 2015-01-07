@@ -23,8 +23,10 @@
 
 namespace DocBook\WebFilesystem;
 
+use \DocBook\DocBookException;
 use \DocBook\FrontController;
 use \DocBook\Helper;
+use \DocBook\DocBookRuntimeException;
 use \WebFilesystem\WebFilesystem;
 use \WebFilesystem\WebFileInfo;
 use \WebFilesystem\WebFilesystemIterator;
@@ -34,23 +36,50 @@ use \Library\Helper\Text as TextHelper;
 use \FilesystemIterator;
 
 /**
+ * Class DocBookFile
+ *
+ * Default File class of DocBook
+ *
+ * @package DocBook\WebFilesystem
  */
 class DocBookFile
     extends WebFileInfo
 {
 
+    /**
+     * @var bool
+     */
     protected $is_root_link = false;
+
+    /**
+     * @var string
+     */
     protected $type;
 
+    /**
+     * @var \DocBook\DocBook
+     */
     protected $docbook;
+
+    /**
+     * @var array
+     */
     protected static $config;
 
+    /**
+     * @var array
+     */
     protected $cache        = array();
 
+    /**
+     * @param string $file_name
+     * @throws \DocBook\DocBookRuntimeException
+     */
     public function __construct($file_name)
     {
-        $this->docbook = FrontController::getInstance();
-        $_root = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
+        $this->docbook  = FrontController::getInstance();
+        $_root          = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
+
         if (substr_count($file_name, $_root)>0) {
             $realpath = $_root.str_replace($_root, '', $file_name);
             parent::__construct($realpath);
@@ -60,6 +89,10 @@ class DocBookFile
         $this->_init($file_name);
     }
 
+    /**
+     * @param string $file_name
+     * @throws \DocBook\DocBookRuntimeException
+     */
     protected function _init($file_name)
     {
         if (empty(self::$config)) {
@@ -96,38 +129,61 @@ class DocBookFile
         $this->getFile()->setWebPath($_root.$this->docbook->getInputPath());
     }
 
+    /**
+     * @param \DocBook\WebFileSystem\DocBookFileInterface $file
+     * @return $this
+     */
     public function setFile(DocBookFileInterface $file)
     {
         $this->_file = $file;
         return $this;
     }
 
-    public function getType()
-    {
-        return $this->type;
-    }
-
+    /**
+     * @return mixed
+     */
     public function getFile()
     {
         return $this->_file;
     }
 
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param bool $is_it
+     * @return $this
+     */
     public function setIsRootLink($is_it = false)
     {
         $this->is_root_link = $is_it;
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function getIsRootLink()
     {
         return $this->is_root_link;
     }
 
+    /**
+     * @return bool
+     */
     public function isRootLink()
     {
         return true===$this->getIsRootLink();
     }
 
+    /**
+     * @return bool
+     */
     public function isChildOfLink()
     {
         $_root  = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
@@ -135,6 +191,9 @@ class DocBookFile
         return (substr_count($_dir, $_root) == 0);
     }
 
+    /**
+     * @return array
+     */
     public function getDocBookPath()
     {
         if (!isset($this->cache['docbook_path'])) {
@@ -148,7 +207,11 @@ class DocBookFile
         }
         return $this->cache['docbook_path'];
     }
-    
+
+    /**
+     * @param bool $recursive
+     * @return array
+     */
     public function getDocBookScanStack($recursive = false)
     {
         if (!isset($this->cache['docbook_scan_stack'])) {
@@ -234,7 +297,10 @@ class DocBookFile
         }
         return $this->cache['docbook_scan_stack'];
     }
-    
+
+    /**
+     * @return array
+     */
     public function getDocBookStack()
     {
         if (!isset($this->cache['docbook_stack'])) {
@@ -277,7 +343,10 @@ class DocBookFile
         }
         return $this->cache['docbook_stack'];
     }
-    
+
+    /**
+     * @return array
+     */
     public function getDocBookFullStack()
     {
         if (!isset($this->cache['docbook_full_stack'])) {
@@ -289,7 +358,11 @@ class DocBookFile
         }
         return $this->cache['docbook_full_stack'];
     }
-    
+
+    /**
+     * @return mixed
+     * @throws \DocBook\DocBookException Any caught \WebFilesystem\Finder exceptions
+     */
     public function findTranslations()
     {
         if (!isset($this->cache['docbook_translations'])) {
@@ -298,11 +371,17 @@ class DocBookFile
                 $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
             }
             $parts = explode('.', $this->getBasename());
-            $finder = Finder::create()
-                ->files()
-                ->name($parts[0].'.*.md')
-                ->in(dirname(realpath($filepath)))
-                ->depth('0');
+            try {
+                $finder = Finder::create()
+                    ->files()
+                    ->name($parts[0].'.*.md')
+                    ->in(dirname(realpath($filepath)))
+                    ->depth('0');
+            } catch (\Exception $e) {
+                throw new DocBookException(
+                    $e->getMessage(), $e->getCode(), $e
+                );
+            }
             $trads = array();
             foreach($finder->getIterator() as $_file) {
                 $subparts = explode('.', $_file->getFilename());
@@ -404,7 +483,10 @@ class DocBookFile
         }
         return $this->cache['docbook_previous'];
     }
-    
+
+    /**
+     * @return string
+     */
     public function getHumanReadableFilename()
     {
         if (!isset($this->cache['docbook_human_readable_filename'])) {
@@ -421,6 +503,9 @@ class DocBookFile
         return $this->cache['docbook_human_readable_filename'];
     }
 
+    /**
+     * @return mixed
+     */
     public function findReadme()
     {
         if (!isset($this->cache['docbook_readme'])) {
@@ -430,6 +515,9 @@ class DocBookFile
         return $this->cache['docbook_readme'];
     }
 
+    /**
+     * @return mixed
+     */
     public function findIndex()
     {
         if (!isset($this->cache['docbook_index'])) {
@@ -439,6 +527,9 @@ class DocBookFile
         return $this->cache['docbook_index'];
     }
 
+    /**
+     * @return \I18n\str|string
+     */
     public function getDescription()
     {
         if (!isset($this->cache['docbook_description'])) {
@@ -494,6 +585,10 @@ class DocBookFile
         return $this->cache['docbook_file_infos'];
     }
 
+    /**
+     * @param null $path
+     * @return int|string
+     */
     public function getDocBookTypeByPath($path = null)
     {
         $_file = new WebFileInfo($path);

@@ -154,7 +154,11 @@ class FrontController
         parent::__construct();
     }
 
-    protected function boot()
+    /**
+     * @param string $config_file
+     * @return void
+     */
+    protected function boot($config_file)
     {
         try {
             $src_dir    = DirectoryHelper::slashDirname(dirname(__DIR__));
@@ -208,7 +212,11 @@ class FrontController
         }
     }
 
-    protected function init()
+    /**
+     * @param string $config_file
+     * @throws \DocBook\DocBookException
+     */
+    protected function init($config_file)
     {
         $this->boot();
 
@@ -282,9 +290,32 @@ class FrontController
             $translator->setLanguage($def_ln);
         }
 
-        $this->getTemplateBuilder()->getTwigEngine()->addExtension(new I18n_Twig_Extension($translator)); 
+        $this->getTemplateBuilder()
+            ->getTwigEngine()
+            ->addExtension(new I18n_Twig_Extension($translator));
     }
 
+    /**
+     * @param $message
+     * @param string $level
+     * @param array $context
+     * @param null $logname
+     */
+    public function log($message, $level = 'debug', array $context = array(), $logname = null)
+    {
+        if ($this->logger) {
+            if (is_int($level)) {
+                $level = 'error';
+            }
+            $this->logger->log($level, $message, $context, $logname);
+        }
+    }
+
+    /**
+     * @param bool $return
+     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\DocBookRuntimeException if the controller action does not return a valid arrau
+     */
     public function distribute($return = false)
     {
         $this->processSessionValues();
@@ -331,7 +362,14 @@ class FrontController
 
         $this->display($content, $template, $params, true);
     }
-    
+
+    /**
+     * @param string $content
+     * @param null $template_name
+     * @param array $params
+     * @param bool $send
+     * @return array|string
+     */
     public function display($content = '', $template_name = null, array $params = array(), $send = false)
     {
         $template = $this->getTemplate($template_name);
@@ -358,17 +396,33 @@ class FrontController
 // User settings
 // ---------------------
 
+    /**
+     * @return $this
+     */
     protected function processQueryArguments()
     {
         $args = $this->getQuery();
-        if (!empty($args)) $this->parseUserSettings($args);
+        if (!empty($args)) {
+            $this->parseUserSettings($args);
+        }
+        return $this;
     }
-    
+
+    /**
+     * @return $this
+     */
     protected function processSessionValues()
     {
-        if (!empty($_SESSION)) $this->parseUserSettings($_SESSION);
+        if (!empty($_SESSION)) {
+            $this->parseUserSettings($_SESSION);
+        }
+        return $this;
     }
-    
+
+    /**
+     * @param array $args
+     * @return $this
+     */
     protected function parseUserSettings(array $args)
     {
         if (!empty($args)) {
@@ -396,6 +450,7 @@ var_export($langs);
 
 //var_export($args);
 //exit('yo');
+        return $this;
     }
 
 // ---------------------
@@ -407,59 +462,91 @@ var_export($langs);
         $realpath = realpath($value);
         if (!empty($realpath)) {
             $this->registry->setConfig($name, $realpath, 'paths');
-            return $this;
         } else {
             throw new DocBookRuntimeException(
                 sprintf('Directory "%s" defined as an application path doesn\'t exist!', $value)
             );
         }
+        return $this;
     }
 
+    /**
+     * @param $name
+     * @return mixed|\Patterns\Commons\misc
+     */
     public function getPath($name)
     {
         return $this->registry->getConfig($name, null, 'paths');
     }
 
+    /**
+     * @param string $path
+     * @return $this
+     */
     public function setInputFile($path)
     {
         $this->input_file = $path;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getInputFile()
     {
         return $this->input_file;
     }
 
+    /**
+     * @param string $path
+     * @return $this
+     */
     public function setInputPath($path)
     {
         $this->input_path = $path;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getInputPath()
     {
         return $this->input_path;
     }
 
+    /**
+     * @param array $uri
+     * @return $this
+     */
     public function setQuery(array $uri)
     {
         $this->uri = $uri;
         $this->getRequest()->setArguments($this->uri);
         return $this;
     }
-    
+
+    /**
+     * @return array
+     */
     public function getQuery()
     {
         return $this->uri;
     }
-    
+
+    /**
+     * @param string $type
+     * @return $this
+     */
     public function setAction($type)
     {
         $this->action = $type;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getAction()
     {
         return $this->action;
@@ -490,11 +577,18 @@ var_export($langs);
         return $this->markdown_parser;
     }
 
+    /**
+     * @param $name
+     * @return mixed|\Patterns\Commons\misc
+     */
     public function getTemplate($name)
     {
         return $this->registry->get('templates:'.$name, null, 'docbook');
     }
 
+    /**
+     * @return array
+     */
     public function getChapters()
     {
         $www_http = $this->getPath('base_dir_http');
@@ -522,13 +616,6 @@ var_export($langs);
         var_dump($this);
         echo '</pre>';
         exit(0);
-    }
-
-    public function log($message, $level = 'debug', array $context = array(), $logname = null)
-    {
-        if ($this->logger) {
-            $this->logger->log($level, $message, $context, $logname);
-        }
     }
 
 }

@@ -30,31 +30,65 @@ use \Library\Helper\Directory as DirectoryHelper;
 use \MarkdownExtended\MarkdownExtended;
 
 /**
+ * Class DocBookController
+ *
+ * The DocBook internal controller
+ *
+ * @package DocBook\Controller
  */
 class DocBookController
     extends AbstractController
 {
 
+    /**
+     * The 404 Not Found action
+     *
+     * @param string $str
+     * @return array
+     */
     public function notFoundAction($str = '')
     {
         return array('not_found', '', array('message'=>$str));
     }
 
+    /**
+     * The 403 Forbidden action
+     *
+     * @param string $str
+     * @return array
+     */
     public function forbiddenAction($str = '')
     {
         return array('forbidden', '', array('message'=>$str));
     }
 
+    /**
+     * The 500 error action
+     *
+     * @param string $str
+     * @return array
+     */
     public function errorAction($str = '')
     {
         return array('error', '', array('message'=>$str));
     }
 
+    /**
+     * The credits action
+     *
+     * This is used by the 'about' box of global template
+     *
+     * @return array
+     */
     public function creditsAction()
     {
         return array('credits', '', array('title'=>'About DocBook'));
     }
 
+    /**
+     * The internal documentation action
+     * @return array
+     */
     public function docbookdocAction()
     {
         $title = _T('User manual');
@@ -95,6 +129,11 @@ class DocBookController
         return array('default', $content, $tpl_params);
     }
 
+    /**
+     * Admin panel action
+     * @return array
+     * @dev
+     */
     public function adminAction()
     {
         $title = _T('Administration');
@@ -137,6 +176,11 @@ class DocBookController
         return array('default', $content, $tpl_params);
     }
 
+    /**
+     * User preferences action
+     * @return array
+     * @dev
+     */
     public function preferencesAction()
     {
         $title = _T('Preferences');

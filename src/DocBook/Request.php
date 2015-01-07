@@ -27,11 +27,19 @@ use \Library\Helper\Directory as DirectoryHelper;
 use \Library\HttpFundamental\Request as BaseRequest;
 
 /**
+ * Class Request
+ *
+ * This is the global request of the application
+ *
+ * @package DocBook
  */
 class Request
     extends BaseRequest
 {
 
+    /**
+     * @var array
+     */
     protected $routing = array();
 
     /**
@@ -49,25 +57,36 @@ class Request
         }
     }
 
+    /**
+     * @param array $routing
+     * @return $this
+     */
     public function setRouting(array $routing)
     {
         $this->routing = $routing;
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getRouting()
     {
         return $this->routing;
     }
 
+    /**
+     * @return $this
+     */
     public function parseDocBookRequest()
     {
-        $server_pathtrans = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;
-        $server_uri = $_SERVER['REQUEST_URI'];
-        $server_query = $_SERVER['QUERY_STRING'];
-        $server_argv = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
-        $docbook = FrontController::getInstance();
-        $locator = new Locator;
+        $server_pathtrans   = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;
+        $server_uri         = $_SERVER['REQUEST_URI'];
+        $server_query       = $_SERVER['QUERY_STRING'];
+        $server_argv        = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
+        $docbook            = FrontController::getInstance();
+        $locator            = new Locator;
+
         $file = $path = $action = null;
         $args = array();
 
@@ -207,12 +226,16 @@ exit('yo');
         return $this;
     }
 
+    /**
+     * @return array
+     * @throws NotFoundException
+     */
     public function getDocBookRouting()
     {
-        $docbook = FrontController::getInstance();
+        $docbook            = FrontController::getInstance();
         $original_page_type = $docbook->getAction();
-        $page_type = !empty($original_page_type) ? $original_page_type : 'default';
-        $input_file = $docbook->getInputFile();
+        $page_type          = !empty($original_page_type) ? $original_page_type : 'default';
+        $input_file         = $docbook->getInputFile();
         if (empty($input_file)) {
             $input_path = $docbook->getInputPath();
             if (!empty($input_path)) {

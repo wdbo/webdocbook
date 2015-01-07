@@ -27,30 +27,50 @@ use \DocBook\FrontController;
 use \DocBook\NotFoundException;
 
 /**
+ * Class AbstractController
+ *
+ * Any controller MUST extend this one
+ *
+ * @package DocBook\Abstracts
  */
 abstract class AbstractController
 {
 
+    /**
+     * @var string
+     */
     protected $path;
+
+    /**
+     * @var \DocBook\FrontController
+     */
     protected $docbook;
 
-// ------------------
-// Construction
-// ------------------
-
+    /**
+     * @param string $path
+     * @throws \DocBook\NotFoundException
+     */
     public function __construct($path = null)
     {
         $this->docbook = FrontController::getInstance();
-        if (!empty($path)) $this->setPath($path);
+        if (!empty($path)) {
+            $this->setPath($path);
+        }
         $this->init();
     }
-    
-    protected function init(){}
-    
-// ------------------
-// Path management
-// ------------------
 
+    /**
+     * Singleton `init()`
+     */
+    protected function init(){}
+
+    /**
+     * Define the path of the document to treat
+     *
+     * @param string $path
+     * @return $this
+     * @throws \DocBook\NotFoundException
+     */
     public function setPath($path)
     {
         if (file_exists($path)) {
@@ -63,6 +83,11 @@ abstract class AbstractController
         return $this;
     }
 
+    /**
+     * Get the path of the document to treat
+     *
+     * @return string
+     */
     public function getPath()
     {
         return $this->path;

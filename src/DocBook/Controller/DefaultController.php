@@ -26,6 +26,7 @@ namespace DocBook\Controller;
 use \DocBook\FrontController;
 use \DocBook\Helper;
 use \DocBook\Abstracts\AbstractController;
+use \DocBook\NotFoundException;
 use \DocBook\WebFilesystem\DocBookFile;
 use \MarkdownExtended\MarkdownExtended;
 use \WebFilesystem\WebFilesystem;
@@ -33,11 +34,23 @@ use \WebFilesystem\WebFileInfo;
 use \WebFilesystem\FileType\WebImage;
 
 /**
+ * Class DefaultController
+ *
+ * This is the default controller of DocBook, which may
+ * handle most of the requests.
+ *
+ * @package DocBook\Controller
  */
 class DefaultController
     extends AbstractController
 {
 
+    /**
+     * Default action
+     *
+     * @param string $path
+     * @return array
+     */
     public function indexAction($path)
     {
         if (@is_dir($path)) {
@@ -47,10 +60,13 @@ class DefaultController
         }
     }
 
-// -------------
-// routes
-// -------------
-
+    /**
+     * Directory path action
+     *
+     * @param string $path
+     * @return array
+     * @throws \DocBook\NotFoundException
+     */
     public function directoryAction($path)
     {
         $this->setPath($path);
@@ -95,6 +111,47 @@ exit('yo');
         return array('default', $dir_content.$readme_content, $tpl_params);
     }
 
+    /**
+     * File path action
+     *
+     * @param string $path
+     * @return array
+     * @throws \DocBook\NotFoundException
+     */
+    public function fileAction($path)
+    {
+        try {
+            $this->setPath($path);
+        } catch (NotFoundException $e) {
+            throw $e;
+        }
+        $dbfile = new DocBookFile($this->getPath());
+        $tpl_params = array(
+            'page' => $dbfile->getDocBookFullStack(),
+            'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
+        );
+
+        $tpl_params['title'] = Helper::buildPageTitle($this->getPath());
+        if (empty($tpl_params['title'])) {
+            if (!empty($tpl_params['breadcrumbs'])) {
+                $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
+            } else {
+                $tpl_params['title'] = _T('Home');
+            }
+        }
+        $content = $dbfile->viewFileInfos();
+        return array('default',
+            $content,
+            $tpl_params);
+    }
+
+    /**
+     * RSS action for concerned path
+     *
+     * @param string $path
+     * @return array
+     * @throws \DocBook\NotFoundException
+     */
     public function rssFeedAction($path)
     {
         $this->setPath($path);
@@ -138,6 +195,13 @@ exit('yo');
         return array('layout_empty_xml', $rss_content);
     }
 
+    /**
+     * Sitemap action for a path
+     *
+     * @param string $path
+     * @return array
+     * @throws \DocBook\NotFoundException
+     */
     public function sitemapAction($path)
     {
         $this->setPath($path);
@@ -152,29 +216,13 @@ exit('yo');
         return array('layout_empty_xml', $rss_content);
     }
 
-    public function fileAction($path)
-    {
-        $this->setPath($path);
-        $dbfile = new DocBookFile($this->getPath());
-        $tpl_params = array(
-            'page' => $dbfile->getDocBookFullStack(),
-            'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
-        );
-
-        $tpl_params['title'] = Helper::buildPageTitle($this->getPath());
-        if (empty($tpl_params['title'])) {
-            if (!empty($tpl_params['breadcrumbs'])) {
-                $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
-            } else {
-                $tpl_params['title'] = _T('Home');
-            }
-        }
-        $content = $dbfile->viewFileInfos();
-        return array('default',
-            $content,
-            $tpl_params);
-    }
-
+    /**
+     * HTML only version of a path
+     *
+     * @param string $path
+     * @return array
+     * @throws \DocBook\NotFoundException
+     */
     public function htmlOnlyAction($path)
     {
         $this->setPath($path);
@@ -186,6 +234,13 @@ exit('yo');
         );
     }
 
+    /**
+     * Raw plain text action of a path
+     *
+     * @param string $path
+     * @return array
+     * @throws \DocBook\NotFoundException
+     */
     public function plainTextAction($path)
     {
         $this->setPath($path);
@@ -193,6 +248,12 @@ exit('yo');
         return array('layout_empty_txt', $ctt);
     }
 
+    /**
+     * Download action of a path
+     *
+     * @param string $path
+     * @throws \DocBook\NotFoundException
+     */
     public function downloadAction($path)
     {
         $this->setPath($path);
@@ -200,11 +261,20 @@ exit('yo');
         exit;
     }
 
+    /**
+     * Global search action of a path
+     *
+     * @param string $path
+     * @return array
+     * @throws \DocBook\NotFoundException
+     */
     public function searchAction($path)
     {
         $this->setPath($path);
         $search = $this->docbook->getRequest()->getArgument('s');
-        if (empty($search)) return $this->indexAction($path);
+        if (empty($search)) {
+            return $this->indexAction($path);
+        }
         $_s = Helper::processDocBookSearch($search, $this->getPath());
 
         $title = _T('Search for "%search_str%"', array('search_str'=>$search));

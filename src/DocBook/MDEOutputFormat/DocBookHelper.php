@@ -42,6 +42,9 @@ class DocBookHelper
     implements OutputFormatHelperInterface
 {
 
+    /**
+     * @var array
+     */
     protected static $_defaults = array(
         'toc_max_level'     => '6',
         'toc_title'         => 'Table of contents',
@@ -55,6 +58,10 @@ class DocBookHelper
         'backlink_onclick_mask' => "document.location.hash='%%'; return false;",
     );
 
+    /**
+     * @param string $var
+     * @return mixed
+     */
     public static function getConfigOrDefault($var)
     {
         $cfg_val = MarkdownExtended::getConfig($var);
@@ -67,7 +74,6 @@ class DocBookHelper
      *
      * @param object $content \MarkdownExtended\API\ContentInterface
      * @param object $formatter \MarkdownExtended\API\OutputFormatInterface
-     *
      * @return string
      */
     public function getToc(ContentInterface $md_content, OutputFormatInterface $formatter, array $attributes = null)

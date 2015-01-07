@@ -32,15 +32,27 @@ use \ReflectionMethod;
 use \WebFilesystem\WebFilesystem;
 
 /**
+ * Class Helper
+ * @package DocBook
  */
 class Helper
 {
 
+    /**
+     * @param $message
+     * @param string $level
+     * @param array $context
+     * @param null $logname
+     */
     public static function log($message, $level = 'debug', array $context = array(), $logname = null)
     {
         FrontController::getInstance()->log($message, $level, $context, $logname);
     }
 
+    /**
+     * @param $string
+     * @return string
+     */
     public static function getSafeIdString($string)
     {
         return TextHelper::stripSpecialChars(
@@ -48,11 +60,19 @@ class Helper
         );
     }
 
+    /**
+     * @param $string
+     * @return mixed
+     */
     public static function getSlug($string)
     {
         return str_replace(array(' '), '_', strtolower($string));
     }
 
+    /**
+     * @param $filename
+     * @return string
+     */
     public static function buildPageTitle($filename)
     {
         $name = basename($filename);
@@ -63,6 +83,10 @@ class Helper
         );
     }
 
+    /**
+     * @param null $path
+     * @return array
+     */
     public static function getBreadcrumbs($path = null)
     {
         $docbook = FrontController::getInstance();
@@ -74,24 +98,40 @@ class Helper
         return $breadcrumbs;
     }
 
+    /**
+     * @param $path
+     * @return mixed
+     */
     public static function getSecuredRealpath($path)
     {
         $docbook = FrontController::getInstance();
         return str_replace($docbook->getPath('root_dir'), '/[***]', $path);
     }
 
+    /**
+     * @param $path
+     * @return mixed
+     */
     public static function getRelativePath($path)
     {
         $docbook = FrontController::getInstance();
         return str_replace($docbook->getPath('base_dir_http'), '', $path);
     }
 
+    /**
+     * @param $path
+     * @return string
+     */
     public static function getAbsolutePath($path)
     {
         $docbook = FrontController::getInstance();
         return $docbook->getPath('base_dir_http').str_replace($docbook->getPath('base_dir_http'), '', $path);
     }
 
+    /**
+     * @param $path
+     * @return string
+     */
     public static function getAbsoluteRoute($path)
     {
         $url = UrlHelper::parse(UrlHelper::getRequestUrl());
@@ -100,6 +140,9 @@ class Helper
         return UrlHelper::build($url);
     }
 
+    /**
+     * @param $directory
+     */
     public static function ensureDirectoryExists($directory)
     {
         if (!is_dir($directory)) {
@@ -116,6 +159,10 @@ class Helper
         }
     }
 
+    /**
+     * @param $timestamp
+     * @return DateTime
+     */
     public static function getDateTimeFromTimestamp($timestamp)
     {
         $time = new DateTime;
@@ -123,6 +170,12 @@ class Helper
         return $time;
     }
 
+    /**
+     * @param $path
+     * @param null $type
+     * @param bool $with_interface
+     * @return string
+     */
     public static function getRoute($path, $type = null, $with_interface = false)
     {
         $route = $path;
@@ -135,6 +188,10 @@ class Helper
             .(!empty($type) ? ($add_last_slash ? '' : '/').$type : '');
     }
 
+    /**
+     * @param $path
+     * @return int
+     */
     public static function getDirectorySize($path)
     {
         $docbook = FrontController::getInstance();
@@ -158,7 +215,8 @@ class Helper
      *
      * @param string $_class The class name
      * @param string $_method The class method name
-     * @param misc $args A set of arguments to fetch
+     * @param mixed $args A set of arguments to fetch
+     * @return mixed
      */
     public static function fetchArguments($_class = null, $_method = null, $args = null)
     {
@@ -175,7 +233,11 @@ class Helper
         return call_user_func_array( array($_class, $_method), $args_def );
     }
 
-
+    /**
+     * @param $regexp
+     * @param null $path
+     * @return array|null
+     */
     public static function processDocBookSearch($regexp, $path = null)
     {
         $docbook = FrontController::getInstance();
@@ -229,6 +291,10 @@ class Helper
         return $result;
     }
 
+    /**
+     * @param $path
+     * @return int|mixed
+     */
     public static function getFileLinesCount($path)
     {
         $docbook = FrontController::getInstance();
@@ -242,6 +308,9 @@ class Helper
         return !empty($lines) ? $lines : 0;
     }
 
+    /**
+     * @return array
+     */
     public static function getProfiler()
     {
         $docbook = FrontController::getInstance();
@@ -258,12 +327,20 @@ class Helper
         );
     }
 
+    /**
+     * @param $path
+     * @return bool
+     */
     public static function isTranslationFile($path)
     {
         $parts = explode('.', basename($path));
         return count($parts)===3 && strlen($parts[1])===2 && $parts[2]==='md';
     }
 
+    /**
+     * @param $file_path
+     * @return bool
+     */
     public static function isFileValid($file_path)
     {
         $name = basename($file_path);
@@ -272,7 +349,11 @@ class Helper
             $name!==FrontController::README_FILE
         );
     }
-    
+
+    /**
+     * @param $file_path
+     * @return bool
+     */
     public static function isDirValid($file_path)
     {
         $name = basename($file_path);
@@ -281,6 +362,10 @@ class Helper
         );
     }
 
+    /**
+     * @param $repo_path
+     * @return array|null
+     */
     public static function getGitConfig($repo_path)
     {
         if (DirectoryHelper::isGitClone($repo_path)) {
@@ -297,6 +382,11 @@ class Helper
         return null;
     }
 
+    /**
+     * @param $str
+     * @param int $cut
+     * @return mixed|string
+     */
     public static function rssEncode($str, $cut = 800)
     {
         $str = preg_replace(',<h1(.*)</h1>,i', '', $str);
@@ -304,6 +394,11 @@ class Helper
         return $str;
     }
 
+    /**
+     * @param $dirscan
+     * @param bool $order_by_date
+     * @return mixed
+     */
     public static function getFlatDirscans($dirscan, $order_by_date = false)
     {
         $new_dirscan = $dirscan;
@@ -324,6 +419,10 @@ class Helper
         return $new_dirscan;
     }
 
+    /**
+     * @param $dirscan
+     * @param array $add
+     */
     protected static function _addDirscan(&$dirscan, array $add)
     {
         foreach ($add as $index=>$val) {
@@ -332,11 +431,21 @@ class Helper
         }
     }
 
+    /**
+     * @param $a
+     * @param $b
+     * @return int
+     */
     protected static function _cmpDirscan($a, $b)
     {
         return strcmp($a['mtime']->getTimestamp(), $b['mtime']->getTimestamp());
     }
 
+    /**
+     * @param null $type
+     * @param string $class
+     * @return string
+     */
     public static function getIcon($type = null, $class = '')
     {
         if (!empty($type)) {

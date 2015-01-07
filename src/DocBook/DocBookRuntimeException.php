@@ -23,10 +23,17 @@
 
 namespace DocBook;
 
+/**
+ * Class DocBookRuntimeException
+ *
+ * DocBook components should use this in place of classic `\RuntimeException`
+ *
+ * @package DocBook
+ */
 class DocBookRuntimeException
     extends \RuntimeException
 {
-    public function __construct($message = "", $code = 0, Exception $previous = null)
+    public function __construct($message = "", $code = 0, \Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
         FrontController::getInstance()->log(

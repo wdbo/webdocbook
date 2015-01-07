@@ -23,11 +23,15 @@
 
 namespace DocBook;
 
+/**
+ * Class NotFoundException
+ * @package DocBook
+ */
 class NotFoundException
     extends \Exception
 {
 
-    public function __construct($message = '', $code = 0, Exception $previous = null)
+    public function __construct($message = '', $code = 0, \Exception $previous = null)
     {
         $docbook = FrontController::getInstance();
         $docbook->display('', 'not_found', array('message'=>$message), true);

@@ -30,6 +30,8 @@ use \WebFilesystem\FilesystemIterator;
 use \WebFilesystem\WebRecursiveDirectoryIterator;
 
 /**
+ * Class DocBookRecursiveDirectoryIterator
+ * @package DocBook\WebFilesystem
  */
 class DocBookRecursiveDirectoryIterator
     extends WebRecursiveDirectoryIterator
@@ -43,7 +45,12 @@ class DocBookRecursiveDirectoryIterator
     const CURRENT_AS_DOCBOOKFILE    = 0x00000040;
 
     /**
-     * Default flags are : WebFilesystemIterator::KEY_AS_PATHNAME | self::CURRENT_AS_DOCBOOKFILE | WebFilesystemIterator::SKIP_DOTTED
+     * Constructor
+     *
+     * Default flags are :
+     *
+     *      WebFilesystemIterator::KEY_AS_PATHNAME | self::CURRENT_AS_DOCBOOKFILE | WebFilesystemIterator::SKIP_DOTTED
+     *
      */
     public function __construct(
         $path, $flags = 16448,
@@ -53,23 +60,22 @@ class DocBookRecursiveDirectoryIterator
         parent::__construct($path, $flags, $file_validation_callback, $directory_validation_callback);
     }
 
+    /**
+     * @param $file_path
+     * @return bool
+     */
     public static function fileValidation($file_path)
     {
         return Helper::isFileValid($file_path);
-        $name = basename($file_path);
-        return (
-            $name!==FrontController::DOCBOOK_INTERFACE && 
-            $name!==FrontController::README_FILE
-        );
     }
-    
+
+    /**
+     * @param $file_path
+     * @return bool
+     */
     public static function dirValidation($file_path)
     {
         return Helper::isDirValid($file_path);
-        $name = basename($file_path);
-        return (
-            $name!==FrontController::DOCBOOK_ASSETS
-        );
     }
 
     /**

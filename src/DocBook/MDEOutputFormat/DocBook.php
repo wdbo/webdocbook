@@ -33,7 +33,9 @@ use \DocBook\Helper;
 /**
  * All '$_defaults' entries can be overwritten in config.
  */
-class DocBook extends HTML implements OutputFormatInterface
+class DocBook
+    extends HTML
+    implements OutputFormatInterface
 {
 
     /**
@@ -126,7 +128,10 @@ class DocBook extends HTML implements OutputFormatInterface
     );
      */
 
-
+    /**
+     * @param $var string
+     * @return mixed
+     */
     protected function _getConfigOrDefault($var)
     {
         return DocBookHelper::getConfigOrDefault($var);
@@ -136,6 +141,11 @@ class DocBook extends HTML implements OutputFormatInterface
 // Tag specific builder
 // -------------------
 
+    /**
+     * @param $text
+     * @param array $attributes
+     * @return string
+     */
     public function buildTitle($text, array $attributes = array())
     {
         if (!isset($attributes['id']) || empty($attributes['id'])) {
@@ -163,7 +173,12 @@ class DocBook extends HTML implements OutputFormatInterface
         $_ttl = $this->getTagString($text, $tag, $attributes);
         return $_ttl;
     }
-    
+
+    /**
+     * @param null $text
+     * @param array $attributes
+     * @return null|string
+     */
     public function buildMetaData($text = null, array $attributes = array())
     {
         if (empty($attributes['content']) && !empty($text)) {
@@ -175,6 +190,11 @@ class DocBook extends HTML implements OutputFormatInterface
         return $text;
     }
 
+    /**
+     * @param null $text
+     * @param array $attributes
+     * @return string
+     */
     public function buildLink($text = null, array $attributes = array())
     {
         if (isset($attributes['email'])) {
@@ -187,6 +207,16 @@ class DocBook extends HTML implements OutputFormatInterface
 // DocBook specifics
 // -------------------
 
+    /**
+     * Title-add-ons
+     *
+     * Add the link to the table of contents and the permalink of the title
+     * after each title content.
+     *
+     * @param $text
+     * @param array $attributes
+     * @return string
+     */
     public function addTitleAddon($text, array $attributes = array())
     {
         $backlink_text = $this->_getConfigOrDefault('backlink_text');

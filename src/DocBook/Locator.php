@@ -23,24 +23,31 @@
 
 namespace DocBook;
 
-use \DocBook\FrontController;
 use \Library\Helper\Directory as DirectoryHelper;
 
+/**
+ * Class Locator
+ * @package DocBook
+ */
 class Locator
 {
 
+    /**
+     * @param $route
+     * @return array|null
+     */
     public function findController($route)
     {
-        $cfg = FrontController::getInstance()->getRegistry()->getConfig('app', array(), 'docbook');
-        $def_ctrl = isset($cfg['default_controller']) ? $cfg['default_controller'] : 'default';
-        $def_act = isset($cfg['default_action']) ? $cfg['default_action'] : 'default';
-        $routes = FrontController::getInstance()->getRegistry()->getConfig('routes', array(), 'docbook');
+        $cfg        = FrontController::getInstance()->getRegistry()->getConfig('app', array(), 'docbook');
+        $def_ctrl   = isset($cfg['default_controller']) ? $cfg['default_controller'] : 'default';
+        $def_act    = isset($cfg['default_action']) ? $cfg['default_action'] : 'default';
+        $routes     = FrontController::getInstance()->getRegistry()->getConfig('routes', array(), 'docbook');
 
         $ctrl = $action = null;
         if (array_key_exists($route, $routes)) {
             $route_info = $routes[$route];
             if (false===strpos($route_info, ':')) {
-                $ctrl = $def_ctrl;
+                $ctrl   = $def_ctrl;
                 $action = str_replace('Action', '', $route_info).'Action';
             } else {
                 list($ctrl, $action) = explode(':', $route_info);
@@ -60,6 +67,10 @@ class Locator
         return null;
     }
 
+    /**
+     * @param $path
+     * @return null|string
+     */
     public function locateDocument($path)
     {
         if (file_exists($path)) {
@@ -72,10 +83,11 @@ class Locator
         return null;
     }
     
-// ---------------------
-// Fallback process
-// ---------------------
-
+    /**
+     * @param $filename
+     * @param string $filetype
+     * @return bool|string
+     */
     public function fallbackFinder($filename, $filetype = 'template')
     {
         $docbook = FrontController::getInstance();

@@ -25,12 +25,17 @@ namespace DocBook;
 
 use \Patterns\Abstracts\AbstractView;
 
+/**
+ * Class TemplateBuilder
+ * @package DocBook
+ */
 class TemplateBuilder
     extends AbstractView
 {
 
     /**
      * The TWIG template engine
+     * @var \Twig_Environment
      */
     protected $twig;
 
@@ -42,14 +47,16 @@ class TemplateBuilder
      */
     public function __construct()
     {
-        $docbook = FrontController::getInstance();
+        $docbook        = FrontController::getInstance();
         // template engine
         $templates_dirs = array();
         $user_templates = $docbook->getPath('user_templates');
-        if (!empty($user_templates)) $templates_dirs[] = $user_templates;
-        $templates_dirs[] = $docbook->getPath('base_templates');
-        $loader = new \Twig_Loader_Filesystem($templates_dirs);
-        $this->twig = new \Twig_Environment($loader, array(
+        if (!empty($user_templates)) {
+            $templates_dirs[] = $user_templates;
+        }
+        $templates_dirs[]   = $docbook->getPath('base_templates');
+        $loader             = new \Twig_Loader_Filesystem($templates_dirs);
+        $this->twig         = new \Twig_Environment($loader, array(
             'cache'             => $docbook->getPath('cache'),
             'charset'           => $docbook->getRegistry()->get('html:charset', 'utf-8', 'docbook'),
             'debug'             => true,
@@ -64,9 +71,9 @@ class TemplateBuilder
 
     /**
      * Building of a view content by Twig
-     *
      * @param string $view The view filename
      * @param array $params An array of the parameters passed for the view parsing
+     * @return string
      */
     public function render($view, array $params = array())
     {
@@ -78,10 +85,10 @@ class TemplateBuilder
 
     /**
      * Building of a view content including a view file passing it parameters
-     *
      * @param string $view The view filename
      * @param array $params An array of the parameters passed for the view parsing
-     * @throw Throws an DocBookRuntimeException if the file view can't be found
+     * @return string
+     * @throws DocBookRuntimeException if the file view can't be found
      */
     public function renderSafe($view, array $params = array())
     {
@@ -89,8 +96,9 @@ class TemplateBuilder
         $this->setParams( array_merge($this->getDefaultViewParams(), $params) );
         if ($this->getView()) {
             $view_parameters = $this->getParams();
-            if (!empty($view_parameters))
+            if (!empty($view_parameters)) {
                 extract($view_parameters, EXTR_OVERWRITE);
+            }
             ob_start();
             include $this->getView();
             $this->setOutput( ob_get_contents() );
@@ -105,6 +113,7 @@ class TemplateBuilder
 
     /**
      * Get an array of the default parameters for all views
+     * @return array
      */
     public function getDefaultViewParams()
     {
@@ -124,9 +133,8 @@ class TemplateBuilder
 
     /**
      * Get a template file path (relative to `option['templates_dir']`)
-     *
      * @param string $name The view filename
-     * @return misc FALSE if nothing had been find, the filename otherwise
+     * @return bool|string FALSE if nothing had been find, the filename otherwise
      */
     public function getTemplate($name)
     {
@@ -134,6 +142,9 @@ class TemplateBuilder
         return $locator->fallbackFinder($name);
     }
 
+    /**
+     * @return \Twig_Environment
+     */
     public function getTwigEngine()
     {
         return $this->twig;

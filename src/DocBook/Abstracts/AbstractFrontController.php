@@ -33,25 +33,64 @@ use \Patterns\Abstracts\AbstractSingleton;
 use \Patterns\Commons\ConfigurationRegistry;
 
 /**
+ * Class AbstractFrontController
+ *
+ * Base of the \DocBook\FrontController
+ *
+ * @package DocBook\Abstracts
  */
 abstract class AbstractFrontController
     extends AbstractSingleton
 {
 
-    // dependences
+    /**
+     * @var array
+     */
     protected $routing = array();
+
+    /**
+     * @var \DocBook\Locator
+     */
     protected $locator;
+
+    /**
+     * @var \Patterns\Commons\ConfigurationRegistry
+     */
     protected $registry;
+
+    /**
+     * @var \DocBook\Request
+     */
     protected $request;
+
+    /**
+     * @var \DocBook\Response
+     */
     protected $response;
+
+    /**
+     * @var \DocBook\Controller
+     */
     protected $controller;
+
+    /**
+     * @var \DocBook\TemplateBuilder
+     */
     protected $template_builder;
+
+    /**
+     * @var \Library\Command
+     */
     protected $terminal;
 
-// ------------------
-// Dependencies init
-// ------------------
+    /**
+     * @var \MarkdownExtended\MarkdownExtended
+     */
+    protected $markdown_parser;
 
+    /**
+     * Construction: init dependencies
+     */
     protected function __construct()
     {
         $this
@@ -63,11 +102,9 @@ abstract class AbstractFrontController
         ;
     }
 
-// ------------------
-// Dependencies getters/setters
-// ------------------
-
     /**
+     * @param \Library\Command $terminal
+     * @return $this
      * @access private
      */
     private function setTerminal(Command $terminal)
@@ -76,12 +113,17 @@ abstract class AbstractFrontController
         return $this;
     }
 
+    /**
+     * @return \Library\Command
+     */
     public function getTerminal()
     {
         return $this->terminal;
     }
 
     /**
+     * @param \DocBook\Response $response
+     * @return $this
      * @access private
      */
     private function setResponse(Response $response)
@@ -90,12 +132,17 @@ abstract class AbstractFrontController
         return $this;
     }
 
+    /**
+     * @return Response
+     */
     public function getResponse()
     {
         return $this->response;
     }
 
     /**
+     * @param \DocBook\Locator $locator
+     * @return $this
      * @access private
      */
     private function setLocator(Locator $locator)
@@ -104,12 +151,17 @@ abstract class AbstractFrontController
         return $this;
     }
 
+    /**
+     * @return \DocBook\Locator
+     */
     public function getLocator()
     {
         return $this->locator;
     }
 
     /**
+     * @param \DocBook\Request $request
+     * @return $this
      * @access private
      */
     private function setRequest(Request $request)
@@ -118,12 +170,17 @@ abstract class AbstractFrontController
         return $this;
     }
 
+    /**
+     * @return \DocBook\Request
+     */
     public function getRequest()
     {
         return $this->request;
     }
 
     /**
+     * @param \Patterns\Commons\ConfigurationRegistry $registry
+     * @return $this
      * @access private
      */
     private function setRegistry(ConfigurationRegistry $registry)
@@ -132,28 +189,45 @@ abstract class AbstractFrontController
         return $this;
     }
 
+    /**
+     * @return \Patterns\Commons\ConfigurationRegistry
+     */
     public function getRegistry()
     {
         return $this->registry;
     }
 
+    /**
+     * @param \DocBook\Abstracts\AbstractController $ctrl
+     * @return $this
+     */
     public function setController(AbstractController $ctrl)
     {
         $this->controller = $ctrl;
         return $this;
     }
 
+    /**
+     * @return \DocBook\Abstracts\AbstractController
+     */
     public function getController()
     {
         return $this->controller;
     }
 
+    /**
+     * @param \DocBook\TemplateBuilder $builder
+     * @return $this
+     */
     public function setTemplateBuilder(TemplateBuilder $builder)
     {
         $this->template_builder = $builder;
         return $this;
     }
-    
+
+    /**
+     * @return \DocBook\TemplateBuilder
+     */
     public function getTemplateBuilder()
     {
         return $this->template_builder;
@@ -163,14 +237,53 @@ abstract class AbstractFrontController
 // Abstracts
 // ------------------
 
+    /**
+     * @return void
+     */
     abstract public function distribute();
+
+    /**
+     * @param string $path
+     * @return $this
+     */
     abstract public function setInputFile($path);
+
+    /**
+     * @return string
+     */
     abstract public function getInputFile();
+
+    /**
+     * @param string $path
+     * @return $this
+     */
     abstract public function setInputPath($path);
+
+    /**
+     * @return string
+     */
     abstract public function getInputPath();
+
+    /**
+     * @param array $uri
+     * @return $this
+     */
     abstract public function setQuery(array $uri);
+
+    /**
+     * @return array
+     */
     abstract public function getQuery();
+
+    /**
+     * @param string $action
+     * @return $this
+     */
     abstract public function setAction($action);
+
+    /**
+     * @return string
+     */
     abstract public function getAction();
     abstract public function setMarkdownParser(MarkdownExtended $parser);
     abstract public function getMarkdownParser();

@@ -27,6 +27,10 @@ use \DocBook\FrontController;
 use \WebFilesystem\WebFileInfo;
 use \DocBook\WebFilesystem\DocBookFileInterface;
 
+/**
+ * Class DBDefault
+ * @package DocBook\WebFilesystem\DocBookFile
+ */
 class DBDefault
     extends WebFileInfo
     implements DocBookFileInterface
