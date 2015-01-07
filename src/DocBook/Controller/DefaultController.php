@@ -28,10 +28,6 @@ use \DocBook\Helper;
 use \DocBook\Abstracts\AbstractController;
 use \DocBook\NotFoundException;
 use \DocBook\WebFilesystem\DocBookFile;
-use \MarkdownExtended\MarkdownExtended;
-use \WebFilesystem\WebFilesystem;
-use \WebFilesystem\WebFileInfo;
-use \WebFilesystem\FileType\WebImage;
 
 /**
  * Class DefaultController
