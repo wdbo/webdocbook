@@ -90,10 +90,12 @@ class Locator
      */
     public function fallbackFinder($filename, $filetype = 'template')
     {
-        $docbook = FrontController::getInstance();
-
-        $base_path = 'template'===$filetype ? FrontController::TEMPLATES_DIR : FrontController::CONFIG_DIR;
-        $file_path = DirectoryHelper::slashDirname($base_path).$filename;
+        $docbook    = FrontController::getInstance();
+        $base_path  = 'template'===$filetype ?
+            FrontController::getInstance()->getAppConfig('templates_dir', 'templates')
+            :
+            FrontController::getInstance()->getAppConfig('config_dir', 'config');
+        $file_path  = DirectoryHelper::slashDirname($base_path).$filename;
         
         // user first
         $user_path = $docbook->getPath('user_dir');

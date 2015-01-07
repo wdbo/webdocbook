@@ -182,7 +182,9 @@ class Helper
         $docbook = FrontController::getInstance();
         $rel_path = str_replace($docbook->getPath('base_dir_http'), '', $path);
         $add_last_slash = !empty($rel_path) && file_exists($path) && is_dir($path);
-        return (true===$with_interface ? FrontController::DOCBOOK_INTERFACE.'?' : !empty($rel_path) ? '/' : '')
+        return (true===$with_interface ?
+                FrontController::getInstance()->getAppConfig('app_interface', 'index.php').'?'
+                : !empty($rel_path) ? '/' : '')
             .trim($rel_path, '/')
             .($add_last_slash ? '/' : '')
             .(!empty($type) ? ($add_last_slash ? '' : '/').$type : '');
@@ -345,8 +347,8 @@ class Helper
     {
         $name = basename($file_path);
         return (
-            $name!==FrontController::DOCBOOK_INTERFACE && 
-            $name!==FrontController::README_FILE
+            $name!==FrontController::getInstance()->getAppConfig('app_interface', 'index.php') &&
+            $name!==FrontController::getInstance()->getAppConfig('readme_file', 'README.md')
         );
     }
 
@@ -358,7 +360,7 @@ class Helper
     {
         $name = basename($file_path);
         return (
-            $name!==FrontController::DOCBOOK_ASSETS
+            $name!==FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets')
         );
     }
 

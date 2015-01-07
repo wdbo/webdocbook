@@ -99,7 +99,7 @@ echo '<br />server_argv: '.var_export($server_argv,1);
         // first: request path from URL
         if (!empty($server_query)) {
             $req = $server_query;
-            if ($req===FrontController::DOCBOOK_INTERFACE) {
+            if ($req===FrontController::getInstance()->getAppConfig('app_interface', 'index.php')) {
                 $req = $server_uri;
             }
 
@@ -109,7 +109,9 @@ echo '<br />server_argv: '.var_export($server_argv,1);
             } else {
                 $parts = explode('/', $req);
                 $parts = array_filter($parts);
-                $int_index = array_search(FrontController::DOCBOOK_INTERFACE, $parts);
+                $int_index = array_search(
+                    FrontController::getInstance()->getAppConfig('app_interface', 'index.php'),
+                    $parts);
                 if (!empty($int_index)) unset($parts[$int_index]);
                 $original_parts = $parts;
 

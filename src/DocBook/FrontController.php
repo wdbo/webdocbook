@@ -50,67 +50,6 @@ class FrontController
     const APP_MANIFEST = 'composer.json';
 
     /**
-     * Name of the templates directory (src/templates/)
-     */
-    const TEMPLATES_DIR = 'templates';
-
-    /**
-     * Name of the configurations directory (src/config/)
-     */
-    const CONFIG_DIR = 'config';
-
-    /**
-     * Name of the directory of DocBook's assets (www/docbook_assets/)
-     */
-    const DOCBOOK_ASSETS = 'docbook_assets';
-
-    /**
-     * Name of the DocBook's web interface (www/index.php)
-     */
-    const DOCBOOK_INTERFACE = 'index.php';
-
-    /**
-     * Name of the Markdown configuration file
-     * @TODO check if it really used ?
-     */
-    const MARKDOWN_CONFIG = 'markdown.ini';
-
-    /**
-     * Name of the DocBook's configuration file (src/config/docbook.ini)
-     */
-    const DOCBOOK_CONFIG = 'docbook.ini';
-
-    /**
-     * Name of the DocBook's languages file (src/config/docbook_i18n.csv)
-     */
-    const APP_I18N = 'docbook_i18n.csv';
-
-    /**
-     * Name of a special customization directory (user/)
-     */
-    const USER_DIR = 'user';
-
-    /**
-     * Default name of the README files for DocBook contents
-     */
-    const README_FILE = 'README.md';
-
-    /**
-     * Default name of the INDEX files for DocBook contents
-     */
-    const INDEX_FILE = 'INDEX.md';
-
-    /**
-     * Default name of the ASSETS sub-directory for DocBook contents
-     */
-    const ASSETS_DIR = 'assets';
-
-    /**
-     * Default name of the WORK-IN-PROGRESS sub-directory for DocBook contents
-     */
-    const WIP_DIR = 'wip';
-
-    /**
      * @var string
      */
     protected $input_file;
@@ -156,9 +95,30 @@ class FrontController
     protected function boot($config_file)
     {
         try {
+
+            // the docbook config (required)
+            if (file_exists($config_file)) {
+                $config =  parse_ini_file($config_file, true);
+                if ($config) {
+                    $this->registry->setConfig('docbook', $config);
+                } else {
+                    throw new DocBookException(
+                        sprintf('DocBook configuration file "%s" seems malformed!', $config_file)
+                    );
+                }
+            } else {
+                throw new DocBookException(
+                    sprintf('DocBook configuration file not found but is required (searching "%s")!', $config_file)
+                );
+            }
+
+            // the app paths
             $src_dir    = DirectoryHelper::slashDirname(dirname(__DIR__));
             $base_dir   = DirectoryHelper::slashDirname(dirname($src_dir));
-            $tmp_dir    = DirectoryHelper::slashDirname($base_dir.'tmp');
+
+            $tmp_dir    = DirectoryHelper::slashDirname(
+                $base_dir . $this->getAppConfig('temp_dir', 'tmp')
+            );
             Helper::ensureDirectoryExists($tmp_dir);
             if (!is_writable($tmp_dir)) {
                 throw new \Exception("Directory '$tmp_dir' must be writable!");
@@ -179,28 +139,63 @@ class FrontController
                 throw new \Exception("Directory '$log_dir' must be writable!");
             }
 
+            $web_dir    = DirectoryHelper::slashDirname(
+                $base_dir . $this->getAppConfig('web_dir', 'www')
+            );
+            Helper::ensureDirectoryExists($web_dir);
+            $templates_dir = DirectoryHelper::slashDirname(
+                $src_dir . $this->getAppConfig('templates_dir', 'templates')
+            );
+            Helper::ensureDirectoryExists($templates_dir);
+
             $this
-                ->addPath('app_manifest', $base_dir.self::APP_MANIFEST)
-                ->addPath('base_dir_http', $base_dir.'www/')
-                ->addPath('base_dir', $src_dir)
                 ->addPath('root_dir', $base_dir)
-                ->addPath('tmp', $base_dir.'tmp/')
-                ->addPath('cache', $base_dir.'tmp/cache/')
-                ->addPath('i18n', $base_dir.'tmp/i18n/')
-                ->addPath('logs', $base_dir.'tmp/log/')
-                ->addPath('base_templates', $src_dir.self::TEMPLATES_DIR)
+                ->addPath('base_dir', $src_dir)
+                ->addPath('app_manifest', $base_dir.self::APP_MANIFEST)
+                ->addPath('base_dir_http', $web_dir)
+                ->addPath('tmp', $tmp_dir)
+                ->addPath('cache', $cache_dir)
+                ->addPath('i18n', $i18n_dir)
+                ->addPath('logs', $log_dir)
+                ->addPath('base_templates', $templates_dir)
             ;
 
-            if (file_exists($base_dir.self::USER_DIR)) {
-                $this->addPath('user_dir', $base_dir.self::USER_DIR);
-                if (file_exists($base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR)) {
-                    $this->addPath('user_templates', $base_dir.self::USER_DIR.'/'.self::TEMPLATES_DIR);
+            // user dir fallback if so
+            $user_dir = DirectoryHelper::slashDirname(
+                $base_dir . $this->getAppConfig('user_dir', 'user')
+            );
+            if (file_exists($user_dir)) {
+                $this->addPath('user_dir', $user_dir);
+                $user_templates_dir = DirectoryHelper::slashDirname(
+                    $user_dir . $this->getAppConfig('templates_dir', 'templates')
+                );
+                if (file_exists($user_templates_dir)) {
+                    $this->addPath('user_templates', $user_templates_dir);
                 }
             }
 
+            // the actual manifest
+            $manifest_ctt = file_get_contents($this->getPath('app_manifest'));
+            if ($manifest_ctt!==false) {
+                $manifest_data = json_decode($manifest_ctt, true);
+                if ($manifest_data) {
+                    $this->registry->setConfig('manifest', $manifest_data);
+                } else {
+                    throw new \Exception(
+                        sprintf('Can not parse app manifest "%s" JSON content!', $this->getPath('app_manifest'))
+                    );
+                }
+            } else {
+                throw new \Exception(
+                    sprintf('App manifest "%s" not found or is empty!', $this->getPath('app_manifest'))
+                );
+            }
+
         } catch (\Exception $e) {
+            // hard die for startup errors
             header('Content-Type: text/plain');
-            echo PHP_EOL.'[DocBook startup error] : '.$e->getMessage().PHP_EOL;
+            echo PHP_EOL.'[DocBook startup error] : '.PHP_EOL;
+            echo PHP_EOL."\t".$e->getMessage().PHP_EOL;
             echo PHP_EOL.'-------------------------'.PHP_EOL;
             echo 'For more info, see the "INSTALL.md" file.'.PHP_EOL;
             exit(1);
@@ -213,17 +208,8 @@ class FrontController
      */
     protected function init($config_file)
     {
-        $this->boot();
-
-        // the docbook config (required)
-        $docbook_cfgfile = $this->locator->fallbackFinder(self::DOCBOOK_CONFIG, 'config');
-        if (!empty($docbook_cfgfile)) {
-            $this->registry->setConfig('docbook', parse_ini_file($docbook_cfgfile, true));
-        } else {
-            throw new DocBookException(
-                sprintf('DocBook configuration file not found but is required (searching "%s")!', self::DOCBOOK_CONFIG)
-            );
-        }
+        // DocBook booting
+        $this->boot($config_file);
 
         // the logger
         $this->logger = new Logger(array_merge(
@@ -231,28 +217,20 @@ class FrontController
             $this->registry->get('logger', array(), 'docbook')
         ));
 
-        // the actual manifest
-        $this->registry->setConfig('manifest', json_decode(file_get_contents($this->getPath('app_manifest')), true));
-
-        // the markdown config (not required)
-        $emd_cfgfile = $this->locator->fallbackFinder(self::MARKDOWN_CONFIG, 'config');
-        if (!empty($emd_cfgfile)) {
-            $this->registry->setConfig('markdown', parse_ini_file($emd_cfgfile, true));
-        }
-
         // creating the application default headers
-        $charset = $this->registry->get('html:charset', 'utf-8', 'docbook');
-        $content_type = $this->registry->get('html:content-type', 'text/html', 'docbook');
+        $charset        = $this->registry->get('html:charset', 'utf-8', 'docbook');
+        $content_type   = $this->registry->get('html:content-type', 'text/html', 'docbook');
+        $app_name       = $this->registry->get('title', null, 'manifest');
+        $app_version    = $this->registry->get('version', null, 'manifest');
+        $app_website    = $this->registry->get('homepage', null, 'manifest');
         $this->response->addHeader('Content-type', $content_type.'; charset: '.$charset);
-        $app_name = $this->registry->get('title', null, 'manifest');
-        $app_version = $this->registry->get('version', null, 'manifest');
-        $app_website = $this->registry->get('homepage', null, 'manifest');
-        
+
         // expose app ?
         $expose_docbook = $this->registry->get('app:expose_docbook', true, 'docbook');
-        if (true===$expose_docbook || 'true'===$expose_docbook || '1'===$expose_docbook)
+        if (true===$expose_docbook || 'true'===$expose_docbook || '1'===$expose_docbook) {
             $this->response->addHeader('Composed-by', $app_name.' '.$app_version.' ('.$app_website.')');
-        
+        }
+
         // the template builder
         $this->setTemplateBuilder(new TemplateBuilder);
 
@@ -264,8 +242,9 @@ class FrontController
         $i18n_loader_opts = array(
             'language_directory' => $this->getPath('i18n'),
             'language_strings_db_directory' =>
-                DirectoryHelper::slashDirname($this->getPath('base_dir')).self::CONFIG_DIR,
-            'language_strings_db_filename' => self::APP_I18N,
+                DirectoryHelper::slashDirname($this->getPath('base_dir')).
+                $this->getAppConfig('config_dir', 'config'),
+            'language_strings_db_filename' => $this->getAppConfig('app_i18n', 'docbook_i18n.csv'),
             'force_rebuild' => true,
             'available_languages' => array_combine(array_keys($langs), array_keys($langs)),
         );
@@ -456,6 +435,22 @@ var_export($langs);
 // Setters / Getters
 // ---------------------
 
+    /**
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getAppConfig($name, $default)
+    {
+        $stack = $this->registry->getConfig('app', array(), 'docbook');
+        return (isset($stack[$name]) ? $stack[$name] : $default);
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @return $this
+     */
     public function addPath($name, $value)
     {
         $realpath = realpath($value);

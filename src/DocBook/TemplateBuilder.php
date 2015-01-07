@@ -124,8 +124,8 @@ class TemplateBuilder
             'app'               => $docbook->getRegistry()->getConfig('app', array(), 'docbook'),
             'langs'             => $docbook->getRegistry()->getConfig('languages', array(), 'docbook'),
             'manifest'          => $docbook->getRegistry()->getConfig('manifest', array()),
-            'assets'            => '/'.FrontController::DOCBOOK_ASSETS.'/',
-            'vendor_assets'     => '/'.FrontController::DOCBOOK_ASSETS.'/vendor/',
+            'assets'            => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/',
+            'vendor_assets'     => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/vendor/',
             'chapters'          => $docbook->getChapters(),
             'search_str'        => $docbook->getRequest()->getGet('s'),
         );
