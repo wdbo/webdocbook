@@ -73,18 +73,22 @@ The source code of this package is available online at
     </div>
 
     <ul class="nav nav-pills">
+
+{% if user_cfg.show_rss == 1 %}
         <li>
-{% if page.route is empty or page.route == '/' %}
+    {% if page.route is empty or page.route == '/' %}
             <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this DocBook - %url%', {'url': route(page.path, 'rss')}) }}">
                 <span class="glyphicon glyphicon-bookmark"></span>&nbsp;<small><em>{{ 'Subscribe to RSS feed of this DocBook'|translate }}</em></small>
             </a>
-{% else %}
+    {% else %}
             <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this chapter - %url%', {'url': route(page.path, 'rss')}) }}">
                 <span class="glyphicon glyphicon-bookmark"></span>&nbsp;<small><em>{{ 'Subscribe to RSS feed of this chapter'|translate }}</em></small>
             </a>
-{% endif %}
+    {% endif %}
         </li>
-{% if dirscan.dir_has_wip %}
+{% endif %}
+
+{% if user_cfg.show_wip == 1 and dirscan.dir_has_wip %}
     {% set wippath = dirscan.dirpath ~ '/wip' %}
         <li>
             <a href="{{ wippath|route }}" title="{{ 'See the work-in-progress of this chapter'|translate }}">
@@ -92,7 +96,8 @@ The source code of this package is available online at
             </a>
         </li>
 {% endif %}
-{% if dirscan.dir_is_clone %}
+
+{% if user_cfg.show_vcs and dirscan.dir_is_clone %}
         <li>
     {% if dirscan.clone_remote is not empty %}
             <a href="{{ dirscan.clone_remote }}" title="{{ 'See distant repository:'|translate }} {{ dirscan.clone_remote }}">

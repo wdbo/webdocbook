@@ -120,6 +120,7 @@ class TemplateBuilder
         $docbook = FrontController::getInstance();
         return array(
             'DB'                => $docbook,
+            'user_cfg'          => $docbook->getRegistry()->get('user_config', array(), 'docbook'),
             'app_cfg'           => $docbook->getRegistry()->get('html', array(), 'docbook'),
             'app'               => $docbook->getRegistry()->get('app', array(), 'docbook'),
             'langs'             => $docbook->getRegistry()->get('languages', array(), 'docbook'),

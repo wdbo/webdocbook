@@ -100,11 +100,13 @@ The source code of this package is available online at
 
 <br class="clearfix" />
 <ul class="nav nav-pills">
+{% if user_cfg.show_rss == 1 %}
     <li>
         <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this content - %url%', {'url': route(page.path, 'rss')}) }}">
             <span class="glyphicon glyphicon-bookmark"></span>&nbsp;<small><em>{{ 'Subscribe to RSS feed of this content'|translate }}</em></small>
         </a>
     </li>
+{% endif %}
 </ul>
 
 <div class="panel-group accordion-group footnotes" id="notes_accordion">

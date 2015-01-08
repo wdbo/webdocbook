@@ -387,7 +387,7 @@ class Helper
         $name = basename($file_path);
         return (
             $name !== FrontController::getInstance()->getAppConfig('app_interface', 'index.php') &&
-            $name !== FrontController::getInstance()->getAppConfig('readme_file', 'README.md')
+            $name !== FrontController::getInstance()->getRegistry()->get('user_config:readme_filename', 'README.md', 'docbook')
         );
     }
 
@@ -480,9 +480,7 @@ class Helper
     protected static function _cmpDirscan($a, $b)
     {
         return strcmp(
-            $a['mtime']->getTimestamp(),
-            $b['mtime']->getTimestamp()
-        );
+            $a['mtime']->getTimestamp(), $b['mtime']->getTimestamp());
     }
 
     /**

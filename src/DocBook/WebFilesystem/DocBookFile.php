@@ -226,7 +226,10 @@ class DocBookFile
             foreach ($dir as $file) {
                 /* @var \DocBook\\WebFilesystem\\DocBookFile $file */
                 $filename = $lang = null;
-                if ($file->isDir() && $file->getBasename()===FrontController::getInstance()->getAppConfig('wip_dir', 'wip')) {
+                if (
+                    $file->isDir() &&
+                    $file->getBasename() === FrontController::getInstance()->getRegistry()->get('user_config:wip_directory', 'wip', 'docbook')
+                ) {
                     $hasWip = true;
                 } else {
                     if ($file->isLink()) {
@@ -515,7 +518,7 @@ class DocBookFile
     {
         if (!isset($this->cache['docbook_readme'])) {
             $readme = DirectoryHelper::slashDirname($this->getRealPath()).
-                FrontController::getInstance()->getAppConfig('readme_file', 'README.md');
+                FrontController::getInstance()->getRegistry()->get('user_config:readme_filename', 'README.md', 'docbook');
             $this->cache['docbook_readme'] = file_exists($readme) ? $readme : null;
         }
         return $this->cache['docbook_readme'];
@@ -528,7 +531,7 @@ class DocBookFile
     {
         if (!isset($this->cache['docbook_index'])) {
             $index = DirectoryHelper::slashDirname($this->getRealPath()).
-                FrontController::getInstance()->getAppConfig('index_file', 'INDEX.md');
+                FrontController::getInstance()->getRegistry()->get('user_config:index_filename', 'INDEX.md', 'docbook');
             $this->cache['docbook_index'] = file_exists($index) ? $index : null;
         }
         return $this->cache['docbook_index'];

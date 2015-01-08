@@ -144,7 +144,7 @@ class DocBookController
 
         $user_config_file = DirectoryHelper::slashDirname($this->docbook->getAppConfig('temp_dir', 'tmp'))
             .$this->docbook->getRegistry()->get('app:user_config_file', '.docbook', 'docbook');
-        $user_config = $this->docbook->getRegistry()->get('userconf', array(), 'docbook');
+        $user_config = $this->docbook->getRegistry()->get('user_config', array(), 'docbook');
 
         $title = _T('Administration');
         $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))

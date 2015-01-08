@@ -31,16 +31,18 @@ The source code of this package is available online at
     <div class="text-muted credits pull-right hidden-print">
         {% include DB.getTemplate('page_credits') %}
         <br />
-    {% if profiler is not empty %}
+{% if profiler is not empty %}
         <a href="#0" id="profiler_handler" title="See page &amp; system infos">{{ icon('profiler')|raw }}&nbsp;Profiler</a>
         &nbsp;|&nbsp;
-    {% endif %}
+{% endif %}
         <a href="{{ 'docbookdoc'|route }}" title="Read the manual">{{ icon('user_manual')|raw }}&nbsp;Manual</a>
         &nbsp;|&nbsp;
         <a href="#0" onclick="messagebox('{{ 'credits'|route }}', 'About DocBook');" title="See the full application credits, check for updates ...">{{ icon('about')|raw }}&nbsp;About</a>
-{# this is not ready yet
+{% if user_cfg.show_admin == 1 %}
         &nbsp;|&nbsp;
         <a href="{{ route('admin') }}" title="{{ 'Administration'|translate }}">{{ icon('admin')|raw }}&nbsp;Admin</a>
+{% endif %}
+{# this is not ready yet
         &nbsp;|&nbsp;
         <a href="{{ route('prefs') }}" title="{{ 'Preferences'|translate }}">{{ icon('preferences')|raw }}&nbsp;Preferences</a>
 #}

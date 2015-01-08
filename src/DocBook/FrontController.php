@@ -217,6 +217,25 @@ class FrontController
             $this->registry->get('logger', array(), 'docbook')
         ));
 
+        // user configuration
+        $internal_config = $this->registry->get('userconf', array(), 'docbook');
+        $user_config_file =
+            DirectoryHelper::slashDirname($this->getPath('root_dir'))
+            .DirectoryHelper::slashDirname($this->getAppConfig('temp_dir', 'tmp'))
+            .$this->registry->get('app:user_config_file', '.docbook', 'docbook');
+        if (file_exists($user_config_file)) {
+            $user_config = parse_ini_file($user_config_file, true);
+            if (!empty($user_config)) {
+                $this->registry->set('user_config', $user_config, 'docbook');
+            } else {
+                throw new DocBookException(
+                    sprintf('Can not read you configuration file "%s"!', $user_config_file)
+                );
+            }
+        } else {
+            $this->registry->set('user_config', $internal_config, 'docbook');
+        }
+
         // creating the application default headers
         $charset        = $this->registry->get('html:charset', 'utf-8', 'docbook');
         $content_type   = $this->registry->get('html:content-type', 'text/html', 'docbook');
@@ -235,7 +254,7 @@ class FrontController
         $this->setTemplateBuilder(new TemplateBuilder);
 
         // some PHP configs
-        @date_default_timezone_set( $this->registry->get('app:timezone', 'Europe/London', 'docbook') );
+        @date_default_timezone_set( $this->registry->get('user_config:timezone', 'Europe/London', 'docbook') );
         
         // the internationalization
         $langs = $this->registry->get('languages:langs', array('en'=>'English'), 'docbook');
