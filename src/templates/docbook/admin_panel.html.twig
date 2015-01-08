@@ -78,8 +78,8 @@ The source code of this package is available online at
                                 {% set def = config.languages.fallback_language %}
                             {% endif %}
 
-                            {% for ln in langs.langs %}
-                            <option value="{{ ln }}"{% if ln == def %} selected="selected"{% endif %}>{{ config.languages.langs.ln|default(ln) }}</option>
+                            {% for ln,name in langs.langs %}
+                            <option value="{{ ln }}"{% if ln == def %} selected="selected"{% endif %}>{{ name }}</option>
                             {% endfor %}
                         </select>
                     </div>
