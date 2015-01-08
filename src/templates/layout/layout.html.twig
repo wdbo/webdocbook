@@ -19,7 +19,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 The source code of this package is available online at 
 <http://github.com/atelierspierrot/docbook>.
 #}
-{# GLOBAL PAGE HEADER #}
 {% block html_header %}
 <!DOCTYPE html>
 <html lang="{{ app_cfg.language }}">
@@ -70,8 +69,7 @@ The source code of this package is available online at
     </div>
 </div>
 <a id="bottom"></a>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{{ vendor_assets }}jquery/jquery.min.js"><\/script>')</script>
+<script src="{{ vendor_assets }}jquery/jquery.min.js"></script>
 <script>$.uiBackCompat = false;</script>
 <script src="{{ vendor_assets }}bootstrap3/js/bootstrap.min.js"></script>
 <script src="{{ assets }}scripts.js"></script>
