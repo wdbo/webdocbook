@@ -23,10 +23,12 @@
 
 namespace DocBook\Controller;
 
-use \DocBook\FrontController;
 use \DocBook\Helper;
 use \DocBook\Abstracts\AbstractController;
+use \DocBook\DocBookException;
+use \DocBook\NotFoundException;
 use \Library\Helper\Directory as DirectoryHelper;
+use \Library\Converter\Array2INI;
 
 /**
  * Class DocBookController
@@ -131,10 +133,19 @@ class DocBookController
     /**
      * Admin panel action
      * @return array
-     * @dev
+     * @throws NotFoundException
      */
     public function adminAction()
     {
+        $allowed = $this->docbook->getRegistry()->get('app:expose_admin', false, 'docbook');
+        if (!$allowed || ('true' !== $allowed && '1' !== $allowed)) {
+            throw new NotFoundException('Forbidden access!');
+        }
+
+        $user_config_file = DirectoryHelper::slashDirname($this->docbook->getAppConfig('temp_dir', 'tmp'))
+            .$this->docbook->getRegistry()->get('app:user_config_file', '.docbook', 'docbook');
+        $user_config = $this->docbook->getRegistry()->get('userconf', array(), 'docbook');
+
         $title = _T('Administration');
         $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
             .'ADMIN_WELCOME.md';
@@ -151,28 +162,65 @@ class DocBookController
             'page_tools' => 'false'
         );
 
-        $file_content = file_get_contents($path);
-        $md_parser = $this->docbook->getMarkdownParser();
-        $md_content = $md_parser->transformString($file_content);
-        $output_bag = $md_parser->get('OutputFormatBag');
-        $menu = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormatter());
+        $file_content   = file_get_contents($path);
+        $md_parser      = $this->docbook->getMarkdownParser();
+        $md_content     = $md_parser->transformString($file_content);
+        $output_bag     = $md_parser->get('OutputFormatBag');
+        $menu           = $output_bag->getHelper()->getToc($md_content, $output_bag->getFormatter());
 
-        $content = $this->docbook->display(
+        $content        = $this->docbook->display(
             $md_content->getBody(),
             'admin_panel',
             array(
-                'page'=>$page_infos,
-                'page_tools' => 'false',
-                'page_title' => 'true',
-                'page_notes' => $md_content->getNotesToString(),
-                'title' => $title,
-                'toc'=>$menu,
-                'config' => $this->docbook->getRegistry()->getConfigs(),
+                'page'          => $page_infos,
+                'page_tools'    => 'false',
+                'page_title'    => 'true',
+                'page_notes'    => $md_content->getNotesToString(),
+                'title'         => $title,
+                'toc'           => $menu,
+                'user_config_file'=> $user_config_file,
+                'user_config'   => $user_config,
+                'config'        => $this->docbook->getRegistry()->getConfigs(),
             )
         );
 
         return array('default', $content, $tpl_params);
+    }
+
+    /**
+     * @return array
+     * @throws DocBookException
+     * @throws NotFoundException
+     */
+    public function saveadminAction()
+    {
+        $allowed = $this->docbook->getRegistry()->get('app:expose_admin', false, 'docbook');
+        if (!$allowed || ('true' !== $allowed && '1' !== $allowed)) {
+            throw new NotFoundException('Forbidden access!');
+        }
+
+        if ($this->docbook->getRequest()->isPost()) {
+
+            $root_dir       = $this->docbook->getPath('root_dir');
+            $data           = $this->docbook->getRequest()->getData();
+            $config_file    = DirectoryHelper::slashDirname($this->docbook->getAppConfig('temp_dir', 'tmp'))
+                                .$this->docbook->getRegistry()->get('app:user_config_file', '.docbook', 'docbook');
+
+            if (false === file_put_contents(
+                    DirectoryHelper::slashDirname($root_dir).$config_file,
+                    Array2INI::convert($data),
+                    LOCK_EX
+            )) {
+                throw new DocBookException(
+                    sprintf('Can\'t write configuration in file "%s"!', $config_file)
+                );
+            }
+        }
+
+        $this->docbook->getResponse()->redirect(
+            Helper::getRoute('admin')
+        );
+        exit();
     }
 
     /**

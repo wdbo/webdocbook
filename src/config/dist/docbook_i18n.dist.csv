@@ -116,3 +116,31 @@ see_content_directory;Voir le contenu du dossier;See this directory contents
 ;Soumettre;Submit
 ;Annuler;Cancel
 but perhaps you meant;Mais peut-être vouliez-vous dire;But perhaps you meant
+;Désolé, mais la page que vous tentez de charger a causé une erreur (erreur interne du serveur).;Sorry, but the page you were trying to load causes an error (internal server error).
+;Erreur;Error
+;un bug dans le code;a typo in the code
+;Montrer les liens des fils RSS;Show RSS feeds links
+;Montrer les liens VCS;Show VCS links
+;Montrer les sections « wip »;"Show ""wip"" section info & link"
+;Montrer le bouton d'administration;Show admin button
+;Options d'architecture;Architecture options
+;Options de pages;Pages options
+;Options globales;Global options
+;Répertoires d'assets;Assets directory
+;Répertoire « wip »;WIP directory
+;Nom des fichiers « read-me »;Read-me filename
+;Nom des fichiers « index »;Index filename
+;Nom du fichier d'index des répertoires;Name of directory index file
+;Nom du fichier « lisez-moi » des répertoires;Name of directory read-me file
+;Nom du sous-répertoire de travail-en-cours;Name of work-in-progress directory
+;Nom du sous-répertoire des assets;Name of assets sub-directory
+;Chemins des icônes;Icons paths
+;Icône de l'app;App icon
+;Chemin de l'icône de l'application;Path of the application icon
+;Fav-icône de l'app;App favicon
+;Chemin de l'icône navigateur de l'application;Path of the application favicon
+;Icône pré-composé de l'app;App precomposed icon
+;Chemin de l'icône pré-composée de l'application;Path of the application precomposed icon
+;Optimisation des pages;Pages optimization
+;Minifier les assets;Minify assets
+;Merger les assets;Merge assets

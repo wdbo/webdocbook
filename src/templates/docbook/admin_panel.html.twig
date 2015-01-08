@@ -42,6 +42,8 @@ The source code of this package is available online at
         {% endif %}
 
         {{ content|raw }}
+
+        <p>User configuration is stored in file <var>{{ user_config_file }}</var> (INI format).</p>
     </div>
     </section>
     </div>
@@ -53,46 +55,182 @@ The source code of this package is available online at
     <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
     <div class="col-xs-12 col-sm-10 col-md-10  col-lg-10">
     <section>
-    <form action="" method="post" class="form-horizontal" role="form">
-        <div class="form-group">
-            <label for="docbook_app_title" class="col-sm-2 control-label">{{ 'Title'|translate }}</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control"
-                    id="docbook_app_title" name="docbook_app_title"
-                    placeholder="{{ 'Application title'|translate }}"
-                    value="{% if config.docbook.app.title is not empty %}{{ config.docbook.app.title }}{% endif %}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="docbook_languages_default" class="col-sm-2 control-label">{{ 'Default language'|translate }}</label>
-            <div class="col-sm-10">
-                <select class="form-control" id="docbook_languages_default" name="docbook_languages_default">
+        <form action="{{ route('saveadmin') }}" method="post" class="form-horizontal" role="form">
+            <fieldset>
+                <legend>{{ 'Global options'|translate }}</legend>
+                <div class="form-group">
+                    <label for="app_name" class="col-sm-2 control-label">{{ 'Title'|translate }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="app_name" name="app_name"
+                               placeholder="{{ 'Application title'|translate }}"
+                               value="{% if user_config.app_name is not empty %}{{ user_config.app_name }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="docbook_languages_default" class="col-sm-2 control-label">{{ 'Default language'|translate }}</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="languages_default" name="languages_default">
 
-{% if config.docbook.languages.default is not empty and config.docbook.languages.default != 'auto' %}
-    {% set def = config.docbook.languages.default %}
-{% else %}
-    {% set def = config.docbook.languages.fallback_language %}
-{% endif %}
+                            {% if config.languages.default is not empty and config.languages.default != 'auto' %}
+                                {% set def = config.languages.default %}
+                            {% else %}
+                                {% set def = config.languages.fallback_language %}
+                            {% endif %}
 
-{% for ln in config.docbook.languages.langs %}                
-                    <option value="{{ ln }}"{% if ln == def %} selected="selected"{% endif %}>{{ config.docbook.languages.langs.ln|default(ln) }}</option>
-{% endfor %}
-                </select>
+                            {% for ln in langs.langs %}
+                            <option value="{{ ln }}"{% if ln == def %} selected="selected"{% endif %}>{{ config.languages.langs.ln|default(ln) }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{{ 'Pages options'|translate }}</legend>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label class="control-label">
+                                <input type="checkbox" id="show_rss" name="show_rss" value="1"{% if user_config.show_rss is not empty and user_config.show_rss == '1' %} checked{% endif %}>
+                                {{ 'Show RSS feeds links'|translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label class="control-label">
+                                <input type="checkbox" id="show_vcs" name="show_vcs" value="1"{% if user_config.show_vcs is not empty and user_config.show_vcs == '1' %} checked{% endif %}>
+                                {{ 'Show VCS links'|translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label class="control-label">
+                                <input type="checkbox" id="show_wip" name="show_wip" value="1"{% if user_config.show_wip is not empty and user_config.show_wip == '1' %} checked{% endif %}>
+                                {{ 'Show "wip" section info & link'|translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label class="control-label">
+                                <input type="checkbox" id="show_admin" name="show_admin" value="1"{% if user_config.show_admin is not empty and user_config.show_admin == '1' %} checked{% endif %}>
+                                {{ 'Show admin button'|translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{{ 'Architecture options'|translate }}</legend>
+                <div class="form-group">
+                    <label for="assets_directory" class="col-sm-2 control-label">{{ 'Assets directory'|translate }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="assets_directory" name="assets_directory"
+                               placeholder="{{ 'Name of assets sub-directory'|translate }}"
+                               value="{% if user_config.assets_directory is not empty %}{{ user_config.assets_directory }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="wip_directory" class="col-sm-2 control-label">{{ 'WIP directory'|translate }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="wip_directory" name="wip_directory"
+                               placeholder="{{ 'Name of work-in-progress directory'|translate }}"
+                               value="{% if user_config.wip_directory is not empty %}{{ user_config.wip_directory }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="readme_filename" class="col-sm-2 control-label">{{ 'Read-me filename'|translate }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="readme_filename" name="readme_filename"
+                               placeholder="{{ 'Name of directory read-me file'|translate }}"
+                               value="{% if user_config.readme_filename is not empty %}{{ user_config.readme_filename }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="index_filename" class="col-sm-2 control-label">{{ 'Index filename'|translate }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="index_filename" name="index_filename"
+                               placeholder="{{ 'Name of directory index file'|translate }}"
+                               value="{% if user_config.index_filename is not empty %}{{ user_config.index_filename }}{% endif %}">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{{ 'Icons paths'|translate }}</legend>
+                <div class="form-group">
+                    <label for="app_icon" class="col-sm-2 control-label">{{ 'App icon'|translate }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="app_icon" name="app_icon"
+                               placeholder="{{ 'Path of the application icon'|translate }}"
+                               value="{% if user_config.app_icon is not empty %}{{ user_config.app_icon }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="app_favicon" class="col-sm-2 control-label">{{ 'App favicon'|translate }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="app_favicon" name="app_favicon"
+                               placeholder="{{ 'Path of the application favicon'|translate }}"
+                               value="{% if user_config.app_favicon is not empty %}{{ user_config.app_favicon }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="app_icon_precomposed" class="col-sm-2 control-label">{{ 'App precomposed icon'|translate }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="app_icon_precomposed" name="app_icon_precomposed"
+                               placeholder="{{ 'Path of the application precomposed icon'|translate }}"
+                               value="{% if user_config.app_icon_precomposed is not empty %}{{ user_config.app_icon_precomposed }}{% endif %}">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{{ 'Pages optimization'|translate }}</legend>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label class="control-label">
+                                <input type="checkbox" id="minify_assets" name="minify_assets" value="1"{% if user_config.minify_assets is not empty and user_config.minify_assets == '1' %} checked{% endif %}>
+                                {{ 'Minify assets'|translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label class="control-label">
+                                <input type="checkbox" id="merge_assets" name="merge_assets" value="1"{% if user_config.merge_assets is not empty and user_config.merge_assets == '1' %} checked{% endif %}>
+                                {{ 'Merge assets'|translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" class="btn btn-primary" value="{{ 'Submit'|translate }}">
+                    <input type="reset" class="btn btn-default" value="{{ 'Cancel'|translate }}">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" class="btn btn-primary" value="{{ 'Submit'|translate }}">
-                <input type="reset" class="btn btn-default" value="{{ 'Cancel'|translate }}">
-            </div>
-        </div>
-    </form>
-
+        </form>
 
 <!--
 {% for i,item in config %}
-{{i}}
-{{dump(item)}}
+    {{i}} : {{dump(item)}}
 {% endfor %}
 -->
 

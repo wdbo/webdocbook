@@ -66,7 +66,32 @@ class Response
         }
         return parent::send();
     }
-    
+
+    /**
+     * Make a redirection to a new route (HTTP redirect)
+     * @param mixed $pathinfo The path information to redirect to
+     * @param string $hash A hash tag to add to the generated URL
+     */
+    public function redirect($pathinfo, $hash = null)
+    {
+        $uri = is_string($pathinfo) ? $pathinfo : $this->generateUrl($pathinfo);
+        if (!headers_sent()) {
+            header("Location: $uri");
+        } else {
+            echo <<<MESSAGE
+<!DOCTYPE HTML>
+<head>
+<meta http-equiv='Refresh' content='0; url={$uri}'><title>HTTP 302</title>
+</head><body>
+<h1>HTTP 302</h1>
+<p>Your browser will be automatically redirected.
+<br />If not, please click on next link: <a href="{$uri}">{$uri}</a>.</p>
+</body></html>
+MESSAGE;
+        }
+        exit;
+    }
+
 }
 
 // Endfile
