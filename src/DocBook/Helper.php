@@ -248,22 +248,54 @@ class Helper
         }
         $path = DirectoryHelper::slashDirname($docbook->getPath('base_dir_http')).$path;
         $is_dir = file_exists($path) && is_dir($path);
-        if ($is_dir) $path = DirectoryHelper::slashDirname($path);
+        if ($is_dir) {
+            $path = DirectoryHelper::slashDirname($path);
+        }
 
-        $grep_cmd = Command::getCommandPath('grep');
-        $command = $grep_cmd.' -rn -A 2 -B 2'
+        $grep_cmd   = Command::getCommandPath('grep');
+
+        $cmd_filenames = $grep_cmd.' -rnl'
             .($is_dir ? ' --include="*.md"' : '')
-            .' "'.$regexp.'" '.$path;
-        self::log('Running command: '.$command);
-        list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command, $path);
+            .' "'.$regexp.'" '.rtrim($path, '/');
+        self::log('Running command: '.$cmd_filenames);
+        list($stdout, $status, $stderr) = $docbook->getTerminal()->run($cmd_filenames, $path);
+        if ($status > 0) {
+            return null;
+        }
+        $filenames = explode("\n", $stdout);
 
-        if ($status) return null;
-
+        $cmd_matches = $grep_cmd.' -rn -A 2 -B 2'
+            .($is_dir ? ' --include="*.md"' : '')
+            .' "'.$regexp.'" '.rtrim($path, '/');
+        self::log('Running command: '.$cmd_matches);
+        list($stdout, $status, $stderr) = $docbook->getTerminal()->run($cmd_matches, $path);
+        if ($status > 0) {
+            return null;
+        }
         $result_files = explode("\n--", $stdout);
-        $result = array();
+
+        $result     = array();
+        $fn_index   = 0;
         foreach($result_files as $stack) {
-            $filename = $is_dir ? substr($stack, 0, strpos($stack, '-')) : '';
-            $filepath = str_replace($path, '', $filename);
+            $stack = trim($stack);
+            if (empty($stack)) {
+                continue;
+            }
+
+            while (
+                ($fn_index < count($filenames)) &&
+                (substr($stack, 0, strlen($filenames[$fn_index])) !== $filenames[$fn_index])
+            ) {
+                $fn_index++;
+            }
+
+            $stack_lines    = explode("\n", $stack);
+            if (isset($filenames[$fn_index])) {
+                $filename   = $filenames[$fn_index];
+            } else {
+                $filename   = $is_dir ? substr($stack, 0, strpos($stack, '-')) : '';
+            }
+            $filepath       = str_replace($path, '', $filename);
             if (!isset($result[$filename])) {
                 $result[$filename] = array();
             }
