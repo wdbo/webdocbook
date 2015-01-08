@@ -92,8 +92,8 @@ class Helper
         $docbook = FrontController::getInstance();
         $breadcrumbs = array();
         if (!empty($path)) {
-            $parts = explode('/', str_replace($docbook->getPath('base_dir_http'), '', $path));
-            $breadcrumbs = array_filter($parts);
+            $parts          = explode('/', str_replace($docbook->getPath('base_dir_http'), '', $path));
+            $breadcrumbs    = array_filter($parts);
         }
         return $breadcrumbs;
     }
@@ -125,7 +125,8 @@ class Helper
     public static function getAbsolutePath($path)
     {
         $docbook = FrontController::getInstance();
-        return $docbook->getPath('base_dir_http').str_replace($docbook->getPath('base_dir_http'), '', $path);
+        return $docbook->getPath('base_dir_http')
+            .str_replace($docbook->getPath('base_dir_http'), '', $path);
     }
 
     /**
@@ -134,14 +135,15 @@ class Helper
      */
     public static function getAbsoluteRoute($path)
     {
-        $url = UrlHelper::parse(UrlHelper::getRequestUrl());
-        $url['path'] = self::getRelativePath(self::getRoute($path));
-        $url['params'] = array();
+        $url            = UrlHelper::parse(UrlHelper::getRequestUrl());
+        $url['path']    = self::getRelativePath(self::getRoute($path));
+        $url['params']  = array();
         return UrlHelper::build($url);
     }
 
     /**
      * @param $directory
+     * @return bool
      */
     public static function ensureDirectoryExists($directory)
     {
@@ -157,6 +159,7 @@ class Helper
                 );
             }
         }
+        return true;
     }
 
     /**
@@ -178,13 +181,15 @@ class Helper
      */
     public static function getRoute($path, $type = null, $with_interface = false)
     {
-        $route = $path;
-        $docbook = FrontController::getInstance();
-        $rel_path = str_replace($docbook->getPath('base_dir_http'), '', $path);
-        $add_last_slash = !empty($rel_path) && file_exists($path) && is_dir($path);
+        $route          = $path;
+        $docbook        = FrontController::getInstance();
+        $rel_path       = str_replace($docbook->getPath('base_dir_http'), '', $path);
+        $add_last_slash = (!empty($rel_path) && file_exists($path) && is_dir($path));
         return (true===$with_interface ?
                 FrontController::getInstance()->getAppConfig('app_interface', 'index.php').'?'
-                : !empty($rel_path) ? '/' : '')
+                :
+                (!empty($rel_path) ? '/' : '')
+            )
             .trim($rel_path, '/')
             .($add_last_slash ? '/' : '')
             .(!empty($type) ? ($add_last_slash ? '' : '/').$type : '');
@@ -196,14 +201,13 @@ class Helper
      */
     public static function getDirectorySize($path)
     {
-        $docbook = FrontController::getInstance();
-        $tmp = DirectoryHelper::slashDirname($docbook->getPath('tmp'));
+        $docbook    = FrontController::getInstance();
+        $tmp        = DirectoryHelper::slashDirname($docbook->getPath('tmp'));
+        $du_cmd     = Command::getCommandPath('du');
+        $grep_cmd   = Command::getCommandPath('grep');
+        $command    = $du_cmd.' -cLak '.$path.' | '.$grep_cmd.' total';
 
-        $du_cmd = Command::getCommandPath('du');
-        $grep_cmd = Command::getCommandPath('grep');
-        $command = $du_cmd.' -cLak '.$path.' | '.$grep_cmd.' total';
         list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command);
-
         if ($stdout && !$status) {
             $result = explode(' ', $stdout);
             return (1024*array_shift($result));
@@ -222,8 +226,10 @@ class Helper
      */
     public static function fetchArguments($_class = null, $_method = null, $args = null)
     {
-        if (empty($_class) || empty($_method)) return;
-        $args_def=array();
+        if (empty($_class) || empty($_method)) {
+            return null;
+        }
+        $args_def = array();
         if (!empty($args)) {
             $analyze = new ReflectionMethod($_class, $_method);
             foreach($analyze->getParameters() as $_param) {
@@ -247,6 +253,7 @@ class Helper
             $path = '/';
         }
         $path = DirectoryHelper::slashDirname($docbook->getPath('base_dir_http')).$path;
+
         $is_dir = file_exists($path) && is_dir($path);
         if ($is_dir) {
             $path = DirectoryHelper::slashDirname($path);
@@ -299,18 +306,18 @@ class Helper
             if (!isset($result[$filename])) {
                 $result[$filename] = array();
             }
-            foreach(explode("\n", $stack) as $line) {
-                $filename_rest = $is_dir ? substr($line, strlen($filename)+1) : $line;
-                $delim_dash = strpos($filename_rest, '-') ?: 10000;
-                $delim_column = strpos($filename_rest, ':') ?: 10000;
-                $delim = min($delim_dash, $delim_column);
-                $linenumber = substr($filename_rest, 0, $delim);
-                $linecontent = substr($filename_rest, $delim+1);
+            foreach($stack_lines as $line) {
+                $filename_rest  = $is_dir ? substr($line, strlen($filename)+1) : $line;
+                $delim_dash     = strpos($filename_rest, '-') ?: 10000;
+                $delim_column   = strpos($filename_rest, ':') ?: 10000;
+                $delim          = min($delim_dash, $delim_column);
+                $linenumber     = substr($filename_rest, 0, $delim);
+                $linecontent    = substr($filename_rest, $delim+1);
                 $result[$filename][] = array(
-                    'path'=>$filename,
-                    'line'=>$linenumber,
-                    'content'=>!empty($linecontent) ? $linecontent : '',
-                    'highlighted'=>$delim===$delim_column
+                    'path'      => $filename,
+                    'line'      => $linenumber,
+                    'content'   => (!empty($linecontent) ? $linecontent : ''),
+                    'highlighted' => ($delim === $delim_column)
                 );
             }
         }
@@ -322,6 +329,7 @@ class Helper
             }
             $result = array_filter($result);
         }
+
         return $result;
     }
 
@@ -331,15 +339,14 @@ class Helper
      */
     public static function getFileLinesCount($path)
     {
-        $docbook = FrontController::getInstance();
+        $docbook    = FrontController::getInstance();
+        $wc_cmd     = Command::getCommandPath('wc');
+        $command    = $wc_cmd.' -l '.$path;
 
-        $wc_cmd = Command::getCommandPath('wc');
-        $command = $wc_cmd.' -l '.$path;
         list($stdout, $status, $stderr) = $docbook->getTerminal()->run($command, $path);
-
-        $parts = explode(' ', trim($stdout));
-        $lines = array_shift($parts);
-        return !empty($lines) ? $lines : 0;
+        $parts      = explode(' ', trim($stdout));
+        $lines      = array_shift($parts);
+        return (!empty($lines) ? $lines : 0);
     }
 
     /**
@@ -368,7 +375,7 @@ class Helper
     public static function isTranslationFile($path)
     {
         $parts = explode('.', basename($path));
-        return count($parts)===3 && strlen($parts[1])===2 && $parts[2]==='md';
+        return ( (count($parts) === 3) && (strlen($parts[1]) === 2) && ($parts[2] === 'md'));
     }
 
     /**
@@ -379,8 +386,8 @@ class Helper
     {
         $name = basename($file_path);
         return (
-            $name!==FrontController::getInstance()->getAppConfig('app_interface', 'index.php') &&
-            $name!==FrontController::getInstance()->getAppConfig('readme_file', 'README.md')
+            $name !== FrontController::getInstance()->getAppConfig('app_interface', 'index.php') &&
+            $name !== FrontController::getInstance()->getAppConfig('readme_file', 'README.md')
         );
     }
 
@@ -392,7 +399,7 @@ class Helper
     {
         $name = basename($file_path);
         return (
-            $name!==FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets')
+            $name !== FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets')
         );
     }
 
@@ -472,7 +479,10 @@ class Helper
      */
     protected static function _cmpDirscan($a, $b)
     {
-        return strcmp($a['mtime']->getTimestamp(), $b['mtime']->getTimestamp());
+        return strcmp(
+            $a['mtime']->getTimestamp(),
+            $b['mtime']->getTimestamp()
+        );
     }
 
     /**
@@ -483,8 +493,8 @@ class Helper
     public static function getIcon($type = null, $class = '')
     {
         if (!empty($type)) {
-            $docbook = FrontController::getInstance();
-            $icons = $docbook->getRegistry()->get('icons', array(), 'docbook');
+            $docbook    = FrontController::getInstance();
+            $icons      = $docbook->getRegistry()->get('icons', array(), 'docbook');
             return '<span class="glyphicon glyphicon-'
                 .(isset($icons[$type]) ? $icons[$type] : $icons['default'])
                 .(!empty($class) ? ' '.$class : '')

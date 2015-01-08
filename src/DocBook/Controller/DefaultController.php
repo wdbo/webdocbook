@@ -343,10 +343,12 @@ exit('yo');
         } catch (NotFoundException $e) {
             throw $e;
         }
+
         $search = $this->docbook->getRequest()->getArgument('s');
         if (empty($search)) {
             return $this->indexAction($path);
         }
+
         $_s = Helper::processDocBookSearch($search, $this->getPath());
 
         $title = _T('Search for "%search_str%"', array('search_str'=>$search));
