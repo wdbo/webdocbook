@@ -206,6 +206,13 @@ class DocBookController
             $config_file    = DirectoryHelper::slashDirname($this->docbook->getAppConfig('temp_dir', 'tmp'))
                                 .$this->docbook->getRegistry()->get('app:user_config_file', '.docbook', 'docbook');
 
+            $internal_conf = $this->docbook->getRegistry()->get('userconf', array(), 'docbook');
+            foreach ($internal_conf as $var=>$val) {
+                if (!array_key_exists($var, $data) && ($val=='1' || $val=='0')) {
+                    $data[$var] = 0;
+                }
+            }
+
             if (false === file_put_contents(
                     DirectoryHelper::slashDirname($root_dir).$config_file,
                     Array2INI::convert($data),
