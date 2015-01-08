@@ -23,7 +23,6 @@
 
 namespace DocBook\Controller;
 
-use \DocBook\FrontController;
 use \DocBook\Helper;
 use \DocBook\Abstracts\AbstractController;
 use \DocBook\NotFoundException;
@@ -185,8 +184,7 @@ exit('yo');
             }
         }
 
-        FrontController::getInstance()->getResponse()
-            ->setContentType('xml');
+        $this->docbook->getResponse()->setContentType('xml');
 
         $page = $dbfile->getDocBookStack();
         if ($dbfile->isDir()) {
@@ -233,8 +231,8 @@ exit('yo');
             );
         }
 
-        FrontController::getInstance()->getResponse()
-            ->setContentType('xml');
+        $this->docbook->getResponse()->setContentType('xml');
+
         $contents = Helper::getFlatDirscans($dbfile->getDocBookScanStack(true));
         $rss_content = $this->docbook->display('', 'sitemap', array(
             'page' => $dbfile->getDocBookStack(),

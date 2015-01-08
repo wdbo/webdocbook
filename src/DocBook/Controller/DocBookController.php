@@ -27,7 +27,6 @@ use \DocBook\FrontController;
 use \DocBook\Helper;
 use \DocBook\Abstracts\AbstractController;
 use \Library\Helper\Directory as DirectoryHelper;
-use \MarkdownExtended\MarkdownExtended;
 
 /**
  * Class DocBookController
@@ -92,7 +91,7 @@ class DocBookController
     public function docbookdocAction()
     {
         $title = _T('User manual');
-        $path = DirectoryHelper::slashDirname(FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets'))
+        $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
             .'USER_MANUAL.md';
 
         $page_infos = array(
@@ -137,7 +136,7 @@ class DocBookController
     public function adminAction()
     {
         $title = _T('Administration');
-        $path = DirectoryHelper::slashDirname(FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets'))
+        $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
             .'ADMIN_WELCOME.md';
 
         $page_infos = array(
@@ -184,7 +183,7 @@ class DocBookController
     public function preferencesAction()
     {
         $title = _T('Preferences');
-        $path = DirectoryHelper::slashDirname(FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets'))
+        $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
             .'USER_PREFERENCES.md';
 
         $page_infos = array(
