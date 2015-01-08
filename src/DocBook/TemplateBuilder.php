@@ -120,10 +120,10 @@ class TemplateBuilder
         $docbook = FrontController::getInstance();
         return array(
             'DB'                => $docbook,
-            'app_cfg'           => $docbook->getRegistry()->getConfig('html', array(), 'docbook'),
-            'app'               => $docbook->getRegistry()->getConfig('app', array(), 'docbook'),
-            'langs'             => $docbook->getRegistry()->getConfig('languages', array(), 'docbook'),
-            'manifest'          => $docbook->getRegistry()->getConfig('manifest', array()),
+            'app_cfg'           => $docbook->getRegistry()->get('html', array(), 'docbook'),
+            'app'               => $docbook->getRegistry()->get('app', array(), 'docbook'),
+            'langs'             => $docbook->getRegistry()->get('languages', array(), 'docbook'),
+            'manifest'          => $docbook->getRegistry()->get('manifest', array()),
             'assets'            => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/',
             'vendor_assets'     => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/vendor/',
             'chapters'          => $docbook->getChapters(),

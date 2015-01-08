@@ -38,10 +38,10 @@ class Locator
      */
     public function findController($route)
     {
-        $cfg        = FrontController::getInstance()->getRegistry()->getConfig('app', array(), 'docbook');
+        $cfg        = FrontController::getInstance()->getRegistry()->get('app', array(), 'docbook');
         $def_ctrl   = isset($cfg['default_controller']) ? $cfg['default_controller'] : 'default';
         $def_act    = isset($cfg['default_action']) ? $cfg['default_action'] : 'default';
-        $routes     = FrontController::getInstance()->getRegistry()->getConfig('routes', array(), 'docbook');
+        $routes     = FrontController::getInstance()->getRegistry()->get('routes', array(), 'docbook');
 
         $ctrl = $action = null;
         if (array_key_exists($route, $routes)) {
