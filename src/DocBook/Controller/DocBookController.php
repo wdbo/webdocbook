@@ -213,14 +213,20 @@ class DocBookController
                 }
             }
 
-            if (false === file_put_contents(
+            if (false !== file_put_contents(
                     DirectoryHelper::slashDirname($root_dir).$config_file,
                     Array2INI::convert($data),
                     LOCK_EX
             )) {
-                throw new DocBookException(
-                    sprintf('Can\'t write configuration in file "%s"!', $config_file)
-                );
+                $this->docbook->getSession()
+                    ->setFlash(
+                        _T('OK - Your configuration has been updated'), 'message_ok'
+                    );
+            } else {
+                $this->docbook->getSession()
+                    ->setFlash(
+                        _T("Can't write configuration file!"), 'message_error'
+                    );
             }
         }
 
