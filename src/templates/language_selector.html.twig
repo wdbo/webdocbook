@@ -22,7 +22,7 @@ The source code of this package is available online at
 
 <a id="language-info" href="#" class="notooltip" onclick="return showTranslator();" title="{{ 'Change application language'|translate }}">
     <span class="visible-xs hidden-sm visible-md visible-lg">{{ i18n.getLanguageName(i18n.locale)|capitalize }}&nbsp;{{ icon('language_selector')|raw }}</span>
-    <span class="hidden-xs visible-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-globe"></span></span>
+    <span class="hidden-xs visible-sm hidden-md hidden-lg">{{ icon('globe')|raw }}</span>
 </a>
 
 <div id="language-selector">
@@ -38,7 +38,7 @@ The source code of this package is available online at
                 {{- 'Choose this language'|translate -}}
     {% endif %}">
     {% if code==i18n.locale %}
-                <span class="glyphicon glyphicon-flag"></span>
+                {{ icon('flag')|raw }}
     {% endif %}
             {{ name }}
             </a></li>

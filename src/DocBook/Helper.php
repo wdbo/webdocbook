@@ -500,7 +500,7 @@ class Helper
                 self::$_cfg_icons = FrontController::getInstance()->getRegistry()
                     ->get('icons', array(), 'docbook');
             }
-            return '<span class="glyphicon glyphicon-'
+            return '<span class="fa fa-'
                 .(isset(self::$_cfg_icons[$type]) ? self::$_cfg_icons[$type] : self::$_cfg_icons['default'])
                 .(!empty($class) ? ' '.$class : '')
                 .'"></span>';

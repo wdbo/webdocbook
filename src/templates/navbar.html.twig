@@ -28,7 +28,7 @@ The source code of this package is available online at
         </button>
         <button type="button" class="navbar-toggle navbar-btn" data-toggle="collapse" data-target="#navbar-searchbox">
             <span class="sr-only">{{ 'search'|translate }}</span>            
-            <span class="glyphicon glyphicon-search glyphicon-white"></span>
+            {{ icon('search')|raw }}
         </button>
         <a class="navbar-brand apicon popover-link" href="#"
             title="{{ manifest.title }} {{ manifest.version }}"
@@ -75,8 +75,8 @@ The source code of this package is available online at
             </a></li>
 {% endif %}
             <li><a href="{{ 'docbookdoc'|route }}" class="notooltip" title="{{ 'Read the manual'|translate }}">
-                <span class="visible-xs hidden-sm visible-md visible-lg">{{ 'Help'|translate }}&nbsp;{{ icon('user_manual')|raw }}</span>
-                <span class="hidden-xs visible-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-question-sign"></span></span>
+                <span class="visible-xs hidden-sm visible-md visible-lg">{{ 'Help'|translate }}&nbsp;{{ icon('help')|raw }}</span>
+                <span class="hidden-xs visible-sm hidden-md hidden-lg">{{ icon('help')|raw }}</span>
             </a></li>
 {% if langs.langs is not empty and langs.langs|length > 1 %}
             <li>

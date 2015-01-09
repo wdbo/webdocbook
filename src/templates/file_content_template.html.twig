@@ -40,17 +40,17 @@ The source code of this package is available online at
             <ul class="nav navbar-nav">
                 <li class="divider-vertical hidden-xs hidden-sm"></li>
                 <li><a href="#0" title="{{ 'File infos'|translate }}">
-                    <span class="glyphicon glyphicon-tasks glyphicon-black"></span>
+                    {{ icon('lines')|raw }}
                     {{ page.size }}
     {%- if page.lines_nb is not empty -%}
                      &nbsp;-&nbsp;{{ page.lines_nb }} {{ 'lines'|translate }}
     {%- endif -%}
                 </a></li>
                 <li><a href="#0" title="{{ 'Last update of this content'|translate }}">
-                    <span class="glyphicon glyphicon-time glyphicon-black"></span>
+                    {{ icon('time')|raw }}
                     {{ page.mtime.format('d-m-Y H:i:s') }}</a></li>
     {% if page.trans is not empty %}
-                <li><a href="#0" title="{{ 'Translations of this content'|translate }}"><span class="glyphicon glyphicon-flag glyphicon-black"></span></a></li>
+                <li><a href="#0" title="{{ 'Translations of this content'|translate }}">{{ icon('flag')|raw }}</a></li>
         {% for _trad, _route in page.trans %}
                 <li><a href="{{ _route|route }}" title="{{ translate('see_this_content_in_ln', {'ln': i18n.languageName(_trad)}) }}"><strong>{{ _trad|upper }}</strong></a></li>
         {% endfor %}
@@ -59,12 +59,12 @@ The source code of this package is available online at
             <ul class="nav navbar-nav navbar-right">
                 <li class="divider-vertical hidden-xs hidden-sm"></li>
                 <li><a href="{{ page.path|route('download') }}" title="{{ 'Download this file'|translate }}">
-                    <span class="visible-xs hidden-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-download glyphicon-black"></span>&nbsp;{{ 'Download this file'|translate }}</span>
-                    <span class="hidden-xs visible-sm visible-md visible-lg"><span class="glyphicon glyphicon-download glyphicon-black"></span></span>
+                    <span class="visible-xs hidden-sm hidden-md hidden-lg">{{ icon('download')|raw }}&nbsp;{{ 'Download this file'|translate }}</span>
+                    <span class="hidden-xs visible-sm visible-md visible-lg">{{ icon('download')|raw }}</span>
                 </a></li>
                 <li><a href="{{ page.path|route('plain') }}" title="{{ 'View plain text version of this content'|translate }}">
-                    <span class="visible-xs hidden-sm hidden-md hidden-lg"><span class="glyphicon glyphicon-align-justify glyphicon-black"></span>&nbsp;{{ 'Plain text version of this content'|translate }}</span>
-                    <span class="hidden-xs visible-sm visible-md visible-lg"><span class="glyphicon glyphicon-fullscreen glyphicon-black"></span></span>
+                    <span class="visible-xs hidden-sm hidden-md hidden-lg">{{ icon('fullscreen')|raw }}&nbsp;{{ 'Plain text version of this content'|translate }}</span>
+                    <span class="hidden-xs visible-sm visible-md visible-lg">{{ icon('fullscreen')|raw }}</span>
                 </a></li>
             </ul>
         </div>

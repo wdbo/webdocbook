@@ -20,7 +20,7 @@ The source code of this package is available online at
 <http://github.com/atelierspierrot/docbook>.
 #}
 <form class="form-search" method="get" action="{{ page.path|route('search') }}">
-    {% if search_str is not empty %}<span class="glyphicon glyphicon-remove-circle" id="delete-search" title="{{ 'Clear the search field'|translate }}" onclick="updateClass(this, 'icon-indicator', 'glyphicon glyphicon-remove-circle')"></span>{% endif %}
+    {% if search_str is not empty %}<span class="fa fa-close" id="delete-search" title="{{ 'Clear the search field'|translate }}" onclick="updateClass(this, 'icon-indicator', 'fa fa-close')"></span>{% endif %}
     <div class="input-group">
         <input type="text" class="form-control search-query searchField {% if search_str is not empty %}searchFieldDeletable{% endif %}" data-toggle="tooltip" name="s" title="{{ 'You can build your search string with regular expressions'|translate }}" placeholder="{{ 'search'|translate }}" value="{{ search_str|default('') }}" tabindex="1" />
         <span class="input-group-btn">
@@ -28,7 +28,7 @@ The source code of this package is available online at
                 {{- 'Update current search'|translate -}}
             {% else %}
                 {{- 'Start the search'|translate -}}
-            {% endif %}"><span class="glyphicon glyphicon-search"></span></button>
+            {% endif %}">{{ icon('search')|raw }}</button>
         </span>
     </div>
 </form>
