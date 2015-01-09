@@ -24,22 +24,22 @@ The source code of this package is available online at
 <html lang="{{ app_cfg.language }}">
 <head>
     <meta charset="{{ app_cfg.charset }}">
-    <title>{% block title %}{% endblock %} - {{ manifest.title }}</title>
+    <title>{% block title %}{% endblock %} - {{ user_cfg.app_name }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {% block metas %}{% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ assets }}{{ user_config.app_favicon }}" />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ assets }}{{ user_config.app_favicon }}" />
-{% if user_config.app_icon_precomposed_sized['144x144'] is not empty %}
-    <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_config.app_icon_precomposed_sized['144x144'] }}" sizes="144x144">
+    <link rel="icon" type="image/x-icon" href="{{ assets }}{{ user_cfg.app_favicon }}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ assets }}{{ user_cfg.app_favicon }}" />
+{% if user_cfg.app_icon_precomposed_sized['144x144'] is not empty %}
+    <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_cfg.app_icon_precomposed_sized['144x144'] }}" sizes="144x144">
 {% endif %}
-{% if user_config.app_icon_precomposed_sized['114x114'] is not empty %}
-    <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_config.app_icon_precomposed_sized['114x114'] }}" sizes="114x114">
+{% if user_cfg.app_icon_precomposed_sized['114x114'] is not empty %}
+    <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_cfg.app_icon_precomposed_sized['114x114'] }}" sizes="114x114">
 {% endif %}
-{% if user_config.app_icon_precomposed_sized['72x72'] is not empty %}
-    <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_config.app_icon_precomposed_sized['72x72'] }}" sizes="72x72">
+{% if user_cfg.app_icon_precomposed_sized['72x72'] is not empty %}
+    <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_cfg.app_icon_precomposed_sized['72x72'] }}" sizes="72x72">
 {% endif %}
-{% if user_config.app_icon_precomposed is not empty %}
-    <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_config.app_icon_precomposed }}">
+{% if user_cfg.app_icon_precomposed is not empty %}
+    <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_cfg.app_icon_precomposed }}">
 {% endif %}
     <link href="{{ vendor_assets }}bootstrap3/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ vendor_assets }}bootstrap3/css/bootstrap-theme.min.css" rel="stylesheet">
