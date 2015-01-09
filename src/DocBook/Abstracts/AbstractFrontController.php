@@ -28,6 +28,7 @@ use \DocBook\Response;
 use \DocBook\Request;
 use \DocBook\TemplateBuilder;
 use \Library\Command;
+use \Library\Session\FlashSession;
 use \MarkdownExtended\MarkdownExtended;
 use \Patterns\Abstracts\AbstractSingleton;
 use \Patterns\Commons\ConfigurationRegistry;
@@ -89,6 +90,11 @@ abstract class AbstractFrontController
     protected $markdown_parser;
 
     /**
+     * @var \Library\Session\FlashSession
+     */
+    protected $session;
+
+    /**
      * Construction: init dependencies
      */
     protected function __construct()
@@ -99,6 +105,7 @@ abstract class AbstractFrontController
             ->setRequest(new Request)
             ->setLocator(new Locator)
             ->setTerminal(new Command)
+            ->setSession(new FlashSession)
         ;
     }
 
@@ -249,6 +256,25 @@ abstract class AbstractFrontController
     public function getMarkdownParser()
     {
         return $this->markdown_parser;
+    }
+
+    /**
+     * @param \Library\Session\FlashSession $session
+     * @return $this
+     * @access private
+     */
+    private function setSession(FlashSession $session)
+    {
+        $this->session = $session;
+        return $this;
+    }
+
+    /**
+     * @return \Library\Session\FlashSession
+     */
+    public function getSession()
+    {
+        return $this->session;
     }
 
 // ------------------

@@ -84,7 +84,6 @@ class FrontController
      */
     protected function __construct()
     {
-        session_start();
         parent::__construct();
     }
 
@@ -95,6 +94,7 @@ class FrontController
     protected function boot($config_file)
     {
         try {
+            $this->session->start();
 
             // the docbook config (required)
             if (file_exists($config_file)) {

@@ -118,6 +118,7 @@ class TemplateBuilder
     public function getDefaultViewParams()
     {
         $docbook = FrontController::getInstance();
+        $session = $docbook->getSession();
         return array(
             'DB'                => $docbook,
             'user_cfg'          => $docbook->getRegistry()->get('user_config', array(), 'docbook'),
@@ -129,6 +130,7 @@ class TemplateBuilder
             'vendor_assets'     => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/vendor/',
             'chapters'          => $docbook->getChapters(),
             'search_str'        => $docbook->getRequest()->getGet('s'),
+            'session'           => $session->hasFlash() ? $session->allFlashes() : array(),
         );
     }
 
