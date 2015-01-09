@@ -484,6 +484,11 @@ class Helper
     }
 
     /**
+     * @var array The icons names cache
+     */
+    private static $_cfg_icons = null;
+
+    /**
      * @param null $type
      * @param string $class
      * @return string
@@ -491,10 +496,12 @@ class Helper
     public static function getIcon($type = null, $class = '')
     {
         if (!empty($type)) {
-            $docbook    = FrontController::getInstance();
-            $icons      = $docbook->getRegistry()->get('icons', array(), 'docbook');
+            if (is_null(self::$_cfg_icons)) {
+                self::$_cfg_icons = FrontController::getInstance()->getRegistry()
+                    ->get('icons', array(), 'docbook');
+            }
             return '<span class="glyphicon glyphicon-'
-                .(isset($icons[$type]) ? $icons[$type] : $icons['default'])
+                .(isset(self::$_cfg_icons[$type]) ? self::$_cfg_icons[$type] : self::$_cfg_icons['default'])
                 .(!empty($class) ? ' '.$class : '')
                 .'"></span>';
         }
