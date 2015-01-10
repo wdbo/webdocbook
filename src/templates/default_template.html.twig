@@ -43,9 +43,9 @@ The source code of this package is available online at
 
 {% block scripts %}
 {{ parent() }}
-<script src="{{ vendor_assets }}jquery.highlight.js"></script>
 <script src="{{ vendor_assets }}jquery.metadata/jquery.metadata.js"></script>
 <script src="{{ vendor_assets }}jquery.tablesorter/jquery.tablesorter.min.js"></script>
+<script src="{{ vendor_assets }}jquery.highlight/jquery.highlight.js"></script>
 <script>
 $(function() {
     initHighlighted('pre.code');
