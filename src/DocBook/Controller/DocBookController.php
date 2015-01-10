@@ -142,7 +142,7 @@ class DocBookController
             throw new NotFoundException('Forbidden access!');
         }
 
-        $user_config_file = DirectoryHelper::slashDirname($this->docbook->getAppConfig('temp_dir', 'tmp'))
+        $user_config_file = DirectoryHelper::slashDirname($this->docbook->getAppConfig('var_dir', 'tmp'))
             .$this->docbook->getRegistry()->get('app:user_config_file', '.docbook', 'docbook');
         $user_config = $this->docbook->getRegistry()->get('user_config', array(), 'docbook');
 
@@ -203,7 +203,7 @@ class DocBookController
 
             $root_dir       = $this->docbook->getPath('root_dir');
             $data           = $this->docbook->getRequest()->getData();
-            $config_file    = DirectoryHelper::slashDirname($this->docbook->getAppConfig('temp_dir', 'tmp'))
+            $config_file    = DirectoryHelper::slashDirname($this->docbook->getAppConfig('var_dir', 'tmp'))
                                 .$this->docbook->getRegistry()->get('app:user_config_file', '.docbook', 'docbook');
 
             $internal_conf = $this->docbook->getRegistry()->get('userconf', array(), 'docbook');

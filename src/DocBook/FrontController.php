@@ -117,7 +117,7 @@ class FrontController
             $base_dir   = DirectoryHelper::slashDirname(dirname($src_dir));
 
             $tmp_dir    = DirectoryHelper::slashDirname(
-                $base_dir . $this->getAppConfig('temp_dir', 'tmp')
+                $base_dir . $this->getAppConfig('var_dir', 'tmp')
             );
             Helper::ensureDirectoryExists($tmp_dir);
             if (!is_writable($tmp_dir)) {
@@ -221,7 +221,7 @@ class FrontController
         $internal_config = $this->registry->get('userconf', array(), 'docbook');
         $user_config_file =
             DirectoryHelper::slashDirname($this->getPath('root_dir'))
-            .DirectoryHelper::slashDirname($this->getAppConfig('temp_dir', 'tmp'))
+            .DirectoryHelper::slashDirname($this->getAppConfig('var_dir', 'tmp'))
             .$this->registry->get('app:user_config_file', '.docbook', 'docbook');
         if (file_exists($user_config_file)) {
             $user_config = parse_ini_file($user_config_file, true);

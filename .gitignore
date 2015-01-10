@@ -4,6 +4,7 @@
 # Specifics
 user/*
 www/docbook_assets/user/*
+var/*
 tmp/*
 dev/*
 phpdoc/*
