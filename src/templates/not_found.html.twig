@@ -55,8 +55,8 @@ The source code of this package is available online at
                 <p>{{ 'Sorry, but the page you were trying to view does not exist.'|translate }}</p>
                 <p>{{ 'It looks like this was the result of either:'|translate }}</p>
                 <ul>
-                    <li>{{ 'a mistyped address'|translate }}</li>
-                    <li>{{ 'an out-of-date link'|translate }}</li>
+                    <li><p>{{ 'a mistyped address'|translate }}</p></li>
+                    <li><p>{{ 'an out-of-date link'|translate }}</p></li>
                 </ul>
 {% if alt_link is not empty %}
                 <p>
@@ -68,8 +68,8 @@ The source code of this package is available online at
 {% if message is not empty %}
         <p class="small"><a id="error-info_handler" href="#0">guru meditation</a></p>
         <div id="error-info">
-            <h3>{{ 'Message received from the system'|translate }}</h3>
-            <blockquote><p class="text-info">{{ message }}</p></blockquote>
+            <h3 class="small">{{ 'Message received from the system'|translate }}</h3>
+            <blockquote><p class="small text-info">{{ message }}</p></blockquote>
         </div>
 {% endif %}
         </div>
