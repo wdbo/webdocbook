@@ -72,4 +72,5 @@ jQuery Table Sorter
 jQuery syntax highlight
 -----------------------
 
--   <http://webcodingstudio.com/blog/jquery-syntax-highlight-plugin>
+-   <https://github.com/piwi/highlight>
+-   actual version: 1.2 (tag v1.2-bower)
