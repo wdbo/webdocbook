@@ -177,18 +177,24 @@ download it, use it or distribute it as long as you stay in the license conditio
 -   [HTML5shiv](http://code.google.com/p/html5shiv/), an old browsers HTML5 explainer, 
     released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
     written by [Albert Farkas](http://twitter.com/afarkas), [John David Dalton](http://twitter.com/jdalton), 
-    [Jonathan Neal](http://twitter.com/jon_neal) & [Remy Sharp](http://twitter.com/rem).
+    [Jonathan Neal](http://twitter.com/jon_neal) & [Remy Sharp](http://twitter.com/rem),
+-   [Tablesorter](http://mottie.github.io/tablesorter/docs/), a *jQuery* plugin, 
+    released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
+    written by [Christian Bach](http://twitter.com/lovepeacenukes),
+-   [Highlight](http://webcodingstudio.com/blog/jquery-syntax-highlight-plugin), a *jQuery* plugin, 
+    released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
+    written by [Evgeny Matsakov](http://webcodingstudio.com/).
 
 The default icon of **DocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
 under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
 
 **DocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
 
--   [PHP Patterns](http://github.com/atelierspierrot/patterns)
--   [PHP Library](http://github.com/atelierspierrot/library)
--   [PHP Web Filesystem](http://github.com/atelierspierrot/webfilesystem)
--   [PHP Markdown Extended](http://github.com/piwi/markdown-extended)
--   [PHP Internationalization](http://github.com/atelierspierrot/internationalization)
+-   [PHP Patterns](http://github.com/atelierspierrot/patterns),
+-   [PHP Library](http://github.com/atelierspierrot/library),
+-   [PHP Web Filesystem](http://github.com/atelierspierrot/webfilesystem),
+-   [PHP Markdown Extended](http://github.com/piwi/markdown-extended),
+-   [PHP Internationalization](http://github.com/atelierspierrot/internationalization).
 
 
 ----
