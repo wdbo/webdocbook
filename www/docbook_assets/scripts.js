@@ -54,7 +54,7 @@
         if ( !speed ) var speed = 'slow';
 
         return this.each( function() {
-            $(this).live('click', function() {
+            $(this).on('click', function() {
                 var goscroll = false;
                 var the_hash = $(this).attr("href");
                 var regex = new RegExp("(.*)\#(.*)","gi");

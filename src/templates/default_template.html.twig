@@ -28,6 +28,10 @@ The source code of this package is available online at
 {% include 'metas.html.twig' %}
 {% endblock %}
 
+{% block stylesheets %}
+    <link href="{{ vendor_assets }}jquery.tablesorter/theme.bootstrap.css" rel="stylesheet">
+{% endblock %}
+
 {% block body_attributes %}data-spy="scroll" data-target="#inpage_menu" data-offset="80"{% endblock %}
 
 {% block body %}
@@ -45,6 +49,7 @@ The source code of this package is available online at
 {{ parent() }}
 <script src="{{ vendor_assets }}jquery.metadata/jquery.metadata.js"></script>
 <script src="{{ vendor_assets }}jquery.tablesorter/jquery.tablesorter.min.js"></script>
+<script src="{{ vendor_assets }}jquery.tablesorter/jquery.tablesorter.widgets.min.js"></script>
 <script src="{{ vendor_assets }}jquery.highlight/jquery.highlight.js"></script>
 <script>
 $(function() {
@@ -54,15 +59,21 @@ $(function() {
     getToHash();
     initSearchField();
     initScrollTo();
+    $.tablesorter.themes.bootstrap.sortNone = 'fa fa-unsorted';
+    $.tablesorter.themes.bootstrap.sortAsc  = 'fa fa-sort-up';
+    $.tablesorter.themes.bootstrap.sortDesc = 'fa fa-sort-down';
+    $.tablesorter.themes.bootstrap.table    = 'table table-striped table-hover';
     initTablesorter('table.indextable', {
         textExtraction: function(n){ 
             var data = $(n).attr('data-type');
             return (data!==undefined ? data : $(n).text());
-        }
+        },
+        theme: "bootstrap",
+        widthFixed: true,
+        headerTemplate : '{content} {icon}',
+        widgets : [ "uitheme" ]
     });
-
     $('section.section').scrollspy({ target: '.navbar-section' })
-
 });
 </script>
 {% endblock %}
