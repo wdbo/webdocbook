@@ -41,14 +41,16 @@ The source code of this package is available online at
 {% if user_cfg.app_icon_precomposed is not empty %}
     <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_cfg.app_icon_precomposed }}">
 {% endif %}
-    <link href="{{ vendor_assets }}bootstrap3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ vendor_assets }}bootstrap3/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Bower dependencies -->
+    <link href="{{ vendor_assets }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ vendor_assets }}bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="{{ vendor_assets }}fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="{{ vendor_assets }}html5shiv/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- DoBook's styles -->
     <link href="{{ assets }}styles.css" rel="stylesheet">
     <link href="{{ assets }}styles_print.css" rel="stylesheet" media="print">
-    <link href="{{ vendor_assets }}font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-        <script src="{{ vendor_assets }}html5shiv/html5shiv.js"></script>
-    <![endif]-->
     {% block stylesheets %}{% endblock %}
 </head>
 <body {% block body_attributes %}data-spy="scroll" data-target="#inpage_menu" data-offset="80"{% endblock %}>
@@ -77,9 +79,11 @@ The source code of this package is available online at
     </div>
 </div>
 <a id="bottom"></a>
+<!-- Bower dependencies -->
 <script src="{{ vendor_assets }}jquery/jquery.min.js"></script>
 <script>$.uiBackCompat = false;</script>
-<script src="{{ vendor_assets }}bootstrap3/js/bootstrap.min.js"></script>
+<script src="{{ vendor_assets }}bootstrap/js/bootstrap.min.js"></script>
+<!-- DocBook's scripts -->
 <script src="{{ assets }}scripts.js"></script>
 {% block scripts %}
 <script>

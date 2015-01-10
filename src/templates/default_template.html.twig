@@ -45,6 +45,7 @@ The source code of this package is available online at
 {{ parent() }}
 <script src="{{ vendor_assets }}jquery.highlight.js"></script>
 <script src="{{ vendor_assets }}jquery.juizScrollTo.js"></script>
+<script src="{{ vendor_assets }}jquery.metadata/jquery.metadata.js"></script>
 <script src="{{ vendor_assets }}jquery.tablesorter/jquery.tablesorter.min.js"></script>
 <script>
 $(function() {
@@ -52,7 +53,7 @@ $(function() {
     initTablesorter('table.tablesorter');
     initInpageNavigation();
     getToHash();
-    initSearchField()
+    initSearchField();
     initScrollTo();
     initTablesorter('table.indextable', {
         textExtraction: function(n){ 
@@ -61,9 +62,7 @@ $(function() {
         }
     });
 
-
     $('section.section').scrollspy({ target: '.navbar-section' })
-
 
 });
 </script>
