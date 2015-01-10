@@ -216,6 +216,7 @@ class FrontController
             'directory'     => $this->getPath('logs'),
             'logfile'       => $this->registry->get('app:logfile', 'history', 'docbook'),
             'error_logfile' => $this->registry->get('app:error_logfile', 'errors', 'docbook'),
+            'duplicate_errors' => false,
         ));
 
         // user configuration
