@@ -39,6 +39,8 @@ class NotFoundException
      */
     public function __construct($message = '', $code = 0, \Exception $previous = null, $alt_link = null)
     {
+        parent::__construct($message, $code, $previous);
+
         $docbook = FrontController::getInstance();
         if ($docbook) {
             $docbook->log(
