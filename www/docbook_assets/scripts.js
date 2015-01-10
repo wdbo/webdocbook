@@ -44,6 +44,62 @@
     }
 }());
 
+/**
+ * Inspired by <http://www.creativejuiz.fr/blog/tutoriels/mise-jour-jquery-effet-smoothscroll-au-chargement-page>
+ *
+ * Usage: $('a').juizScrollTo('slow');
+ */
+(function($) {
+    $.fn.juizScrollTo = function( speed ) {
+        if ( !speed ) var speed = 'slow';
+
+        return this.each( function() {
+            $(this).live('click', function() {
+                var goscroll = false;
+                var the_hash = $(this).attr("href");
+                var regex = new RegExp("(.*)\#(.*)","gi");
+                var the_element = '';
+
+                if (the_hash.match("\#(.+)")) {
+                    the_hash = the_hash.replace(regex,"$2");
+//                    the_hash = escapeSelector(the_hash);
+                    if ($("#"+the_hash).length > 0) {
+                        the_element = "#" + the_hash;
+                        goscroll = true;
+                    }  else if ($("a[name=" + the_hash + "]").length > 0) {
+                        the_element = "a[name=" + the_hash + "]";
+                        goscroll = true;
+                    }
+                    if ( goscroll ) {
+                        $('html,body').animate( {
+                            scrollTop: $(the_element).offset().top - 60
+                        }, speed, function() {
+                            tab_n_focus(the_hash)
+                            write_hash(the_hash);
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+
+        function write_hash( the_hash ) {
+            document.location.hash =  "r:" + the_hash;
+        }
+
+        function tab_n_focus( the_hash ) {
+            $(the_hash).attr('tabindex','0').focus().removeAttr('tabindex');
+        }
+    };
+
+    function trigger_click_for_slide() {
+        var the_hash = document.location.hash;
+        if (the_hash) $('a[href~="'+the_hash+'"]').trigger('click');
+    }
+    trigger_click_for_slide();
+
+})(jQuery);
+
 // ---------------------------
 // Utilities
 // ---------------------------
