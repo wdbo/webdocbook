@@ -137,8 +137,13 @@ class DocBookController
      */
     public function adminAction()
     {
-        $allowed = $this->docbook->getRegistry()->get('app:expose_admin', false, 'docbook');
-        if (!$allowed || ('true' !== $allowed && '1' !== $allowed)) {
+        $allowed = $this->docbook->getRegistry()->get('user_config:expose_admin', false, 'docbook');
+        $saveadmin = $this->docbook->getSession()->get('saveadmin');
+        $this->docbook->getSession()->remove('saveadmin');
+        if (
+            (!$allowed || ('true' !== $allowed && '1' !== $allowed)) &&
+            (is_null($saveadmin) || $saveadmin != time())
+        ) {
             throw new NotFoundException('Forbidden access!');
         }
 
@@ -194,13 +199,14 @@ class DocBookController
      */
     public function saveadminAction()
     {
-        $allowed = $this->docbook->getRegistry()->get('app:expose_admin', false, 'docbook');
+        $allowed = $this->docbook->getRegistry()->get('user_config:expose_admin', false, 'docbook');
         if (!$allowed || ('true' !== $allowed && '1' !== $allowed)) {
             throw new NotFoundException('Forbidden access!');
         }
 
         if ($this->docbook->getRequest()->isPost()) {
 
+            $this->docbook->getSession()->set('saveadmin', time());
             $root_dir       = $this->docbook->getPath('root_dir');
             $data           = $this->docbook->getRequest()->getData();
             $config_file    = DirectoryHelper::slashDirname($this->docbook->getAppConfig('var_dir', 'tmp'))
