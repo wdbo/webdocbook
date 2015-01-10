@@ -60,11 +60,11 @@ else
     FILESMASK=''
 fi
 
-echo "> tailing log files from '${ORIGINALDIR}/tmp/log/'"
+echo "> tailing log files from '${ORIGINALDIR}/var/log/'"
 if [ "$FILESMASK" != '' ]; then
-    tail -f tmp/log/$FILESMASK
+    tail -f var/log/$FILESMASK
 else
-    tail -f tmp/log/*
+    tail -f var/log/*
 fi
 
 echo "_ ok"
