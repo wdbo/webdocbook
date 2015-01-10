@@ -3,3 +3,21 @@ http://www.pngfactory.net/png/5154/yin-yang
 http://silmasoron.deviantart.com/
 
 http://www.pngfactory.net/gallery/15297/Silmasoron
+
+## Message posted to <http://www.pngfactory.net/customxp/forum/sendmessage.php?do=mailmember&u=15297> at 10/01/2015
+
+>   Bonjour Silmasoron,
+
+    Je suis développeur PHP et j'aurai aimé utiliser ton icône "yin-yang" (http://www.pngfactory.net/png/5154/yin-yang)
+    dans un application open source (sous GPL). Sachant qu'il ne peut y avoir d'utilisation commerciale, je ne pense pas
+    que cela puisse nuire à ton travail. En prévision, j'ai inscrit une mention sur le README de l'appli et dans le
+    répertoire des icônes ... que je peux modifier bien entendu.
+
+    Voici l'URL des sources: <https://github.com/atelierspierrot/docbook/tree/wip> (attention, c'est bien sur la branche "wip")
+    et pour le répertoire des icônes: <https://github.com/atelierspierrot/docbook/tree/wip/www/docbook_assets/icons>.
+
+    Serais-tu d'accord pour j'inclus définitivement ton icône à l'appli ? Est-ce que les mentions te concernant te conviennent ?
+
+    Merci d'avance, et merci pour cette très belle icône ... il se trouve qu'elle est parfaite pour mon projet ;)
+
+    @+
