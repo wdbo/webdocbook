@@ -14,6 +14,7 @@ composer.lock
 # Web
 www/*
 !www/docbook_assets
+www/docbook_assets/vendor/bower_components/*
 !www/.htaccess
 !www/index.php
 !www/INDEX.md
