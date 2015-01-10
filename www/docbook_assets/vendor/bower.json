@@ -7,6 +7,7 @@
     "fontawesome": "~4.2.0",
     "jquery.tablesorter": "~2.18.4",
     "jquery-smooth-scroll": "~1.5.4",
-    "jquery.metadata": "*"
+    "jquery.metadata": "*",
+    "highlight": "https://github.com/piwi/highlight.git#v1.2-bower"
   }
 }
