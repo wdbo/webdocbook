@@ -212,9 +212,10 @@ class FrontController
         $this->boot($config_file);
 
         // the logger
-        $this->logger = new Logger(array_merge(
-            array('directory'=>$this->getPath('logs')),
-            $this->registry->get('logger', array(), 'docbook')
+        $this->logger = new Logger(array(
+            'directory'     => $this->getPath('logs'),
+            'logfile'       => $this->registry->get('app:logfile', 'history', 'docbook'),
+            'error_logfile' => $this->registry->get('app:error_logfile', 'errors', 'docbook'),
         ));
 
         // user configuration

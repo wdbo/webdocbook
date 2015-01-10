@@ -41,6 +41,10 @@ class NotFoundException
     {
         $docbook = FrontController::getInstance();
         if ($docbook) {
+            $docbook->log(
+                $this->getMessage(), $code, array(
+                'exception'=>$this
+            ), 'error');
             $docbook->display('', 'not_found', array(
                 'message'   => $message,
                 'alt_link'  => $alt_link
