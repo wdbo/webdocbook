@@ -1,1 +1,1 @@
-docbook_assets/INDEX.md
+docbook_assets/docs/INDEX.md

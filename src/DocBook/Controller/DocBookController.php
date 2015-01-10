@@ -94,10 +94,10 @@ class DocBookController
     {
         $title = _T('User manual');
         $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
-            .'USER_MANUAL.md';
+            .$this->docbook->getRegistry()->get('pages:user_manual', array(), 'docbook');
 
         $page_infos = array(
-            'name'      => 'USER_MANUAL.md',
+            'name'      => $title,
             'path'      => 'docbookdoc',
             'update'    => Helper::getDateTimeFromTimestamp(filemtime($path))
         );
@@ -148,10 +148,10 @@ class DocBookController
 
         $title = _T('Administration');
         $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
-            .'ADMIN_WELCOME.md';
+            .$this->docbook->getRegistry()->get('pages:admin_welcome', array(), 'docbook');
 
         $page_infos = array(
-            'name'      => 'ADMIN_WELCOME.md',
+            'name'      => $title,
             'path'      => 'admin',
             'update'    => Helper::getDateTimeFromTimestamp(filemtime($path))
         );
@@ -234,53 +234,6 @@ class DocBookController
             Helper::getRoute('admin')
         );
         exit();
-    }
-
-    /**
-     * User preferences action
-     * @return array
-     * @dev
-     */
-    public function preferencesAction()
-    {
-        $title = _T('Preferences');
-        $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
-            .'USER_PREFERENCES.md';
-
-        $page_infos = array(
-            'name'      => 'USER_PREFERENCES.md',
-            'path'      => 'prefs',
-            'update'    => Helper::getDateTimeFromTimestamp(filemtime($path))
-        );
-        $tpl_params = array(
-            'breadcrumbs' => array($title),
-            'title' => $title,
-            'page' => $page_infos,
-            'page_tools' => 'false'
-        );
-
-        $file_content = file_get_contents($path);
-        $md_parser = $this->docbook->getMarkdownParser();
-        $md_content = $md_parser->transformString($file_content);
-        $output_bag = $md_parser->get('OutputFormatBag');
-        $menu = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormatter());
-
-        $content = $this->docbook->display(
-            $md_content->getBody(),
-            'admin_panel',
-            array(
-                'page'=>$page_infos,
-                'page_tools' => 'false',
-                'page_title' => 'true',
-                'page_notes' => $md_content->getNotesToString(),
-                'title' => $title,
-                'toc'=>$menu,
-                'config' => $this->docbook->getRegistry()->getConfigs(),
-            )
-        );
-
-        return array('default', $content, $tpl_params);
     }
 
 }
