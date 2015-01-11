@@ -38,8 +38,10 @@
         "vendor-dir": "src/vendor"
     },
     "scripts": {
-        "post-update-cmd": "DocBook\\Composer\\Scripts::emptyCache",
-        "post-install-cmd": "DocBook\\Composer\\Scripts::emptyCache"
+        "post-update-cmd": "DocBook\\Composer\\Scripts::postUpdate",
+        "post-install-cmd": "DocBook\\Composer\\Scripts::postInstall",
+        "post-autoload-dump": "DocBook\\Composer\\Scripts::postAutoloadDump",
+        "post-create-project-cmd": "DocBook\\Composer\\Scripts::postCreateProject"
     },
     "extra": {
         "license_url": "http://github.com/atelierspierrot/docbook/blob/master/LICENSE",

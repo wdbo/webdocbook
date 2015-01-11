@@ -42,11 +42,6 @@ class FrontController
 {
 
     /**
-     * Name of the DocBook's manifest (composer.json)
-     */
-    const APP_MANIFEST = 'composer.json';
-
-    /**
      * @var string
      */
     protected $input_file;
@@ -156,7 +151,7 @@ class FrontController
             $this
                 ->addPath('root_dir', $base_dir)
                 ->addPath('base_dir', $src_dir)
-                ->addPath('app_manifest', $base_dir.self::APP_MANIFEST)
+                ->addPath('app_manifest', $base_dir.Kernel::APP_MANIFEST)
                 ->addPath('base_dir_http', $web_dir)
                 ->addPath('tmp', $tmp_dir)
                 ->addPath('cache', $cache_dir)
@@ -307,6 +302,7 @@ class FrontController
      * @param bool $return
      * @throws \DocBook\Exception\NotFoundException
      * @throws \DocBook\Exception\RuntimeException if the controller action does not return a valid array
+     * @return void
      */
     public function distribute($return = false)
     {

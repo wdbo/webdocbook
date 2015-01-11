@@ -23,8 +23,6 @@
 
 namespace DocBook\Composer;
 
-use \Composer\Script\Event;
-
 /**
  * Class Scripts
  *
@@ -33,55 +31,63 @@ use \Composer\Script\Event;
 class Scripts
 {
 
+    public function __construct()
+    {
+        if (!@class_exists('\DocBook\Kernel')) {
+            include_once __DIR__.'/../Kernel.php';
+        }
+    }
+
+    /**
+     * @param \Composer\Script\Event $event
+     * @return void
+     */
+    public static function postCreateProject(\Composer\Script\Event $event)
+    {
+        $composer   = $event->getComposer();
+        $io         = $event->getIO();
+
+    }
+
+    /**
+     * @param \Composer\Script\Event $event
+     * @return void
+     */
+    public static function postAutoloadDump(\Composer\Script\Event $event)
+    {
+        $composer   = $event->getComposer();
+        $io         = $event->getIO();
+
+    }
+
     /**
      * Clear DocBook's cache on Composer's event
      *
      * @param \Composer\Script\Event $event
      * @return void
      */
-    public static function emptyCache(Event $event)
+    public static function postUpdate(\Composer\Script\Event $event)
     {
-        $_ds        = DIRECTORY_SEPARATOR;
         $composer   = $event->getComposer();
         $io         = $event->getIO();
-        $base_path  = realpath(__DIR__.'/../../..') . $_ds;
-        if (self::remove($base_path.'tmp')) {
+        if (\DocBook\Kernel::clearCache()) {
             $io->write( '<info>Docbook cache has been cleared</info>' );
         }
     }
 
     /**
-     * @param string $path
-     * @return bool
+     * Clear DocBook's cache on Composer's event
+     *
+     * @param \Composer\Script\Event $event
+     * @return void
      */
-    public static function remove($path)
+    public static function postInstall(\Composer\Script\Event $event)
     {
-        if (file_exists($path) && is_dir($path)) {
-            if (!is_dir($path) || is_link($path)) {
-                return unlink($path);
-            }
-            $ok = true;
-            $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($path), 
-                \RecursiveIteratorIterator::SELF_FIRST | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS
-            );
-            foreach($iterator as $item) {
-                if (in_array($item->getFilename(), array('.', '..'))) {
-                    continue;
-                }
-                if ($item->isDir()) {
-                    $ok = self::remove($item);
-                } else {
-                    $ok = unlink($item);
-                }
-            }
-            if ($ok) {
-                rmdir($path);
-            }
-            clearstatcache();
-            return true;
+        $composer   = $event->getComposer();
+        $io         = $event->getIO();
+        if (\DocBook\Kernel::clearCache()) {
+            $io->write( '<info>Docbook cache has been cleared</info>' );
         }
-        return false;
     }
 
 }
