@@ -21,9 +21,8 @@
  * <http://github.com/atelierspierrot/docbook>.
  */
 
-namespace DocBook;
+namespace DocBook\HttpFundamental;
 
-use \Patterns\Abstracts\AbstractResponse;
 use \Library\HttpFundamental\Response as BaseResponse;
 
 /**

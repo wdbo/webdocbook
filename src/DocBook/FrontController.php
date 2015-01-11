@@ -380,7 +380,7 @@ class FrontController
             $full_params['profiler'] = Helper::getProfiler();
         }
         $full_content = $this->getTemplateBuilder()->render($template, $full_params);
-        if (Request::isAjax()) {
+        if ($this->getRequest()->isAjax()) {
             $this->response->setContentType('json', true);
             $full_content = array_merge($params, array('body' => $full_content));
         }

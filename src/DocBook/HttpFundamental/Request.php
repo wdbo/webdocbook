@@ -21,8 +21,10 @@
  * <http://github.com/atelierspierrot/docbook>.
  */
 
-namespace DocBook;
+namespace DocBook\HttpFundamental;
 
+use \DocBook\FrontController;
+use \DocBook\Locator;
 use \DocBook\Exception\NotFoundException;
 use \Library\Helper\Directory as DirectoryHelper;
 use \Library\HttpFundamental\Request as BaseRequest;

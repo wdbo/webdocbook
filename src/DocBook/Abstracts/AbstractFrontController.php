@@ -24,8 +24,8 @@
 namespace DocBook\Abstracts;
 
 use \DocBook\Locator;
-use \DocBook\Response;
-use \DocBook\Request;
+use \DocBook\HttpFundamental\Response;
+use \DocBook\HttpFundamental\Request;
 use \DocBook\TemplateBuilder;
 use \Library\Command;
 use \Library\Session\FlashSession;
@@ -60,17 +60,17 @@ abstract class AbstractFrontController
     protected $registry;
 
     /**
-     * @var \DocBook\Request
+     * @var \DocBook\HttpFundamental\Request
      */
     protected $request;
 
     /**
-     * @var \DocBook\Response
+     * @var \DocBook\HttpFundamental\Response
      */
     protected $response;
 
     /**
-     * @var \DocBook\Controller
+     * @var \DocBook\Controller\misc
      */
     protected $controller;
 
@@ -129,7 +129,7 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @param \DocBook\Response $response
+     * @param \DocBook\HttpFundamental\Response $response
      * @return $this
      * @access private
      */
@@ -140,7 +140,7 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @return Response
+     * @return \DocBook\HttpFundamental\Response
      */
     public function getResponse()
     {
@@ -167,7 +167,7 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @param \DocBook\Request $request
+     * @param \DocBook\HttpFundamental\Request $request
      * @return $this
      * @access private
      */
@@ -178,7 +178,7 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @return \DocBook\Request
+     * @return \DocBook\HttpFundamental\Request
      */
     public function getRequest()
     {
