@@ -24,7 +24,7 @@
 namespace DocBook\Abstracts;
 
 use \DocBook\FrontController;
-use \DocBook\NotFoundException;
+use \DocBook\Exception\NotFoundException;
 
 /**
  * Class AbstractController
@@ -48,7 +48,7 @@ abstract class AbstractController
 
     /**
      * @param string $path
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function __construct($path = null)
     {
@@ -69,7 +69,7 @@ abstract class AbstractController
      *
      * @param string $path
      * @return $this
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function setPath($path)
     {

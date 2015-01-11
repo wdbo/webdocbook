@@ -21,17 +21,19 @@
  * <http://github.com/atelierspierrot/docbook>.
  */
 
-namespace DocBook;
+namespace DocBook\Exception;
+
+use \DocBook\FrontController;
 
 /**
- * Class DocBookException
+ * Class RuntimeException
  *
- * DocBook components should use this in place of classic `\Exception`
+ * DocBook components should use this in place of classic `\RuntimeException`
  *
  * @package DocBook
  */
-class DocBookException
-    extends \Exception
+class RuntimeException
+    extends \RuntimeException
 {
 
     /**
@@ -50,7 +52,7 @@ class DocBookException
                 'exception'=>$this
             ), 'error');
             if (!FrontController::isDevMode()) {
-                $docbook->display('', 'error', array('message' => $message), true);
+                $docbook->display('', 'error', array('message'=>$message), true);
             }
         }
 

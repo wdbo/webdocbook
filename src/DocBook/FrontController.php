@@ -25,6 +25,8 @@ namespace DocBook;
 
 use \DocBook\Abstracts\AbstractFrontController;
 use \DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
+use \DocBook\Exception\Exception;
+use \DocBook\Exception\RuntimeException;
 use \MarkdownExtended\MarkdownExtended;
 use \I18n\I18n;
 use \I18n\Loader as I18n_Loader;
@@ -101,12 +103,12 @@ class FrontController
                 if ($config) {
                     $this->setConfig('docbook', $config, null);
                 } else {
-                    throw new DocBookException(
+                    throw new Exception(
                         sprintf('DocBook configuration file "%s" seems malformed!', $config_file)
                     );
                 }
             } else {
-                throw new DocBookException(
+                throw new Exception(
                     sprintf('DocBook configuration file not found but is required (searching "%s")!', $config_file)
                 );
             }
@@ -206,7 +208,7 @@ class FrontController
 
     /**
      * @param string $config_file
-     * @throws \DocBook\DocBookException
+     * @throws \DocBook\Exception\Exception
      */
     protected function init($config_file)
     {
@@ -229,7 +231,7 @@ class FrontController
             if (!empty($user_config)) {
                 $this->setConfig('user_config', $user_config);
             } else {
-                throw new DocBookException(
+                throw new Exception(
                     sprintf('Can not read you configuration file "%s"!', $user_config_file)
                 );
             }
@@ -307,8 +309,8 @@ class FrontController
 
     /**
      * @param bool $return
-     * @throws \DocBook\NotFoundException
-     * @throws \DocBook\DocBookRuntimeException if the controller action does not return a valid array
+     * @throws \DocBook\Exception\NotFoundException
+     * @throws \DocBook\Exception\RuntimeException if the controller action does not return a valid array
      */
     public function distribute($return = false)
     {
@@ -343,7 +345,7 @@ class FrontController
         if (empty($result) || !is_array($result) || (count($result)!=2 && count($result)!=3)) {
             $str = gettype($result);
             if (is_array($result)) $str .= ' length '.count($result);
-            throw new DocBookRuntimeException(
+            throw new RuntimeException(
                 sprintf('A controller action must return a two or three entries array like [ template file , content (, params) ]! Received %s from class "%s::%s()".',
                 $str, $routing['controller_classname'], $routing['action'])
             );
@@ -484,7 +486,7 @@ var_export($langs);
         if (!empty($realpath)) {
             $this->setConfig($name, $realpath, 'paths');
         } else {
-            throw new DocBookRuntimeException(
+            throw new RuntimeException(
                 sprintf('Directory "%s" defined as an application path doesn\'t exist!', $value)
             );
         }

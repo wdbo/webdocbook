@@ -23,6 +23,7 @@
 
 namespace DocBook;
 
+use \DocBook\Exception\RuntimeException;
 use \Library\Command;
 use \Library\Helper\Directory as DirectoryHelper;
 use \Library\Helper\Text as TextHelper;
@@ -149,12 +150,12 @@ class Helper
     {
         if (!is_dir($directory)) {
             if (file_exists($directory)) {
-                throw new DocBookRuntimeException(
+                throw new RuntimeException(
                     sprintf('"%s" exists and is not a directory!', $directory)
                 );
             }
             if (!@mkdir($directory, 0777, true)) {
-                throw new DocBookRuntimeException(
+                throw new RuntimeException(
                     sprintf('An error occurred while trying to create directory "%s"!', $directory)
                 );
             }

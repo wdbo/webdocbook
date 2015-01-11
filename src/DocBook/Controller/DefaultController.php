@@ -25,7 +25,7 @@ namespace DocBook\Controller;
 
 use \DocBook\Helper;
 use \DocBook\Abstracts\AbstractController;
-use \DocBook\NotFoundException;
+use \DocBook\Exception\NotFoundException;
 use \DocBook\WebFilesystem\DocBookFile;
 
 /**
@@ -60,7 +60,7 @@ class DefaultController
      *
      * @param string $path
      * @return array
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function directoryAction($path)
     {
@@ -120,7 +120,7 @@ exit('yo');
      *
      * @param string $path
      * @return array
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function fileAction($path)
     {
@@ -159,7 +159,7 @@ exit('yo');
      *
      * @param string $path
      * @return array
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function rssFeedAction($path)
     {
@@ -213,7 +213,7 @@ exit('yo');
      *
      * @param string $path
      * @return array
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function sitemapAction($path)
     {
@@ -246,7 +246,7 @@ exit('yo');
      *
      * @param string $path
      * @return array
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function htmlOnlyAction($path)
     {
@@ -277,7 +277,7 @@ exit('yo');
      *
      * @param string $path
      * @return array
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function plainTextAction($path)
     {
@@ -304,7 +304,7 @@ exit('yo');
      * Download action of a path
      *
      * @param string $path
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function downloadAction($path)
     {
@@ -332,7 +332,7 @@ exit('yo');
      *
      * @param string $path
      * @return array
-     * @throws \DocBook\NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function searchAction($path)
     {

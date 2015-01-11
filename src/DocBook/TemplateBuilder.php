@@ -23,6 +23,7 @@
 
 namespace DocBook;
 
+use \DocBook\Exception\RuntimeException;
 use \Patterns\Abstracts\AbstractView;
 
 /**
@@ -88,7 +89,7 @@ class TemplateBuilder
      * @param string $view The view filename
      * @param array $params An array of the parameters passed for the view parsing
      * @return string
-     * @throws DocBookRuntimeException if the file view can't be found
+     * @throws \DocBook\Exception\RuntimeException if the file view can't be found
      */
     public function renderSafe($view, array $params = array())
     {
@@ -104,7 +105,7 @@ class TemplateBuilder
             $this->setOutput( ob_get_contents() );
             ob_end_clean();
         } else {
-            throw new DocBookRuntimeException(
+            throw new RuntimeException(
                 sprintf('Template "%s" can\'t be found!', $this->getView())
             );
         }

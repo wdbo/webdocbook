@@ -21,7 +21,9 @@
  * <http://github.com/atelierspierrot/docbook>.
  */
 
-namespace DocBook;
+namespace DocBook\Exception;
+
+use \DocBook\FrontController;
 
 /**
  * Class NotFoundException

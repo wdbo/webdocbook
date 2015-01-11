@@ -25,8 +25,7 @@ namespace DocBook\Controller;
 
 use \DocBook\Helper;
 use \DocBook\Abstracts\AbstractController;
-use \DocBook\DocBookException;
-use \DocBook\NotFoundException;
+use \DocBook\Exception\NotFoundException;
 use \Library\Helper\Directory as DirectoryHelper;
 use \Library\Converter\Array2INI;
 
@@ -133,7 +132,7 @@ class DocBookController
     /**
      * Admin panel action
      * @return array
-     * @throws NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function adminAction()
     {
@@ -190,8 +189,8 @@ class DocBookController
 
     /**
      * @return array
-     * @throws DocBookException
-     * @throws NotFoundException
+     * @throws \DocBook\Exception\Exception
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function saveadminAction()
     {

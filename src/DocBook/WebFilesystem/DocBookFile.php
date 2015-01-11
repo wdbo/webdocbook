@@ -23,10 +23,10 @@
 
 namespace DocBook\WebFilesystem;
 
-use \DocBook\DocBookException;
 use \DocBook\FrontController;
 use \DocBook\Helper;
-use \DocBook\DocBookRuntimeException;
+use \DocBook\Exception\Exception;
+use \DocBook\Exception\RuntimeException;
 use \WebFilesystem\WebFilesystem;
 use \WebFilesystem\WebFileInfo;
 use \WebFilesystem\WebFilesystemIterator;
@@ -73,7 +73,7 @@ class DocBookFile
 
     /**
      * @param string $file_name
-     * @throws \DocBook\DocBookRuntimeException
+     * @throws \DocBook\Exception\RuntimeException
      */
     public function __construct($file_name)
     {
@@ -89,14 +89,14 @@ class DocBookFile
 
         try {
             $this->_init($file_name);
-        } catch (DocBookRuntimeException $e) {
+        } catch (RuntimeException $e) {
             throw $e;
         }
     }
 
     /**
      * @param string $file_name
-     * @throws \DocBook\DocBookRuntimeException
+     * @throws \DocBook\Exception\RuntimeException
      */
     protected function _init($file_name)
     {
@@ -127,7 +127,7 @@ class DocBookFile
         if (class_exists($_class_name)) {
             $_file = new $_class_name($file_name);
         } else {
-            throw new DocBookRuntimeException("DocBook file class '$_class_name' not found!");
+            throw new RuntimeException("DocBook file class '$_class_name' not found!");
         }
         $this->setFile($_file);
         $this->getFile()->setRootDir($_root);
@@ -369,7 +369,7 @@ class DocBookFile
 
     /**
      * @return mixed
-     * @throws \DocBook\DocBookException Any caught \WebFilesystem\Finder exceptions
+     * @throws \DocBook\Exception\Exception Any caught \WebFilesystem\Finder exceptions
      */
     public function findTranslations()
     {
@@ -386,7 +386,7 @@ class DocBookFile
                     ->in(dirname(realpath($filepath)))
                     ->depth('0');
             } catch (\Exception $e) {
-                throw new DocBookException(
+                throw new Exception(
                     $e->getMessage(), $e->getCode(), $e
                 );
             }

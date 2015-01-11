@@ -23,6 +23,7 @@
 
 namespace DocBook;
 
+use \DocBook\Exception\NotFoundException;
 use \Library\Helper\Directory as DirectoryHelper;
 use \Library\HttpFundamental\Request as BaseRequest;
 
@@ -230,7 +231,7 @@ exit('yo');
 
     /**
      * @return array
-     * @throws NotFoundException
+     * @throws \DocBook\Exception\NotFoundException
      */
     public function getDocBookRouting()
     {
