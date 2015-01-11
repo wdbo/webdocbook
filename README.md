@@ -122,7 +122,7 @@ The default global architecture of your DocBook is:
     doesn't exist in the distribution ; it may follow an architecture like:
 
         | user/
-        | ---- config/
+        | ---- docbook.config
         | ---- templates/
 
 -   `www/` sub-directory must be the `DOCUMENT_ROOT` of your virtual host (anything outside 
@@ -144,8 +144,8 @@ the templates used to build the pages. This feature is quite simple:
 
 -   by default, some configurations and templates are embedded with the application in 
     the `src/config/` and `src/templates/` directories ;
--   any file found in the `user/config/` will be taken primary to the default config and
-    any file found in the `user/templates/` will be taken primary to the default templates.
+-   if a `user/docbook.config` file is found, it will override default configuration ;
+-   any file found in the `user/templates/` will be taken primary to the default templates.
 
 The templates follows a specific rule as the application can use a collection of templates
 to build different designs for pages.

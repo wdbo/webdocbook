@@ -76,13 +76,32 @@ class Locator
         if (file_exists($path)) {
             return $path;
         }
-        $file_path = DirectoryHelper::slashDirname(FrontController::getInstance()->getPath('base_dir_http')).trim($path, '/');
+        $file_path = DirectoryHelper::slashDirname(FrontController::getInstance()->getPath('base_dir_http'))
+            .trim($path, '/');
         if (file_exists($file_path)) {
             return $file_path;
         }
         return null;
     }
-    
+
+    /**
+     * @param bool $local
+     * @return string
+     */
+    public function getUserConfigPath($local = false)
+    {
+        $docbook        = FrontController::getInstance();
+        $user_path      = $docbook->getPath('user_dir');
+        $config_file    = DirectoryHelper::slashDirname($user_path)
+            .$docbook->getRegistry()->get('app:user_config_file', 'docbook.config', 'docbook');
+        if ($local) {
+            $config_file = str_replace(
+                DirectoryHelper::slashDirname($docbook->getPath('root_dir'))
+                , '', $config_file);
+        }
+        return $config_file;
+    }
+
     /**
      * @param $filename
      * @param string $filetype
@@ -91,14 +110,12 @@ class Locator
     public function fallbackFinder($filename, $filetype = 'template')
     {
         $docbook    = FrontController::getInstance();
+        $user_path  = $docbook->getPath('user_dir');
         $base_path  = 'template'===$filetype ?
-            FrontController::getInstance()->getAppConfig('templates_dir', 'templates')
-            :
-            FrontController::getInstance()->getAppConfig('config_dir', 'config');
+            $docbook->getAppConfig('templates_dir', 'templates') : $docbook->getPath($filetype);
         $file_path  = DirectoryHelper::slashDirname($base_path).$filename;
         
         // user first
-        $user_path = $docbook->getPath('user_dir');
         if (!empty($user_path)) {
             $user_file_path = DirectoryHelper::slashDirname($docbook->getPath('user_dir')).$file_path;
             if (file_exists($user_file_path)) {

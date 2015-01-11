@@ -139,6 +139,14 @@ class FrontController
                 throw new \Exception("Directory '$log_dir' must be writable!");
             }
 
+            $user_dir = DirectoryHelper::slashDirname(
+                $base_dir . $this->getAppConfig('user_dir', 'user')
+            );
+            Helper::ensureDirectoryExists($user_dir);
+            if (!is_writable($user_dir)) {
+                throw new \Exception("Directory '$user_dir' must be writable!");
+            }
+
             $web_dir    = DirectoryHelper::slashDirname(
                 $base_dir . $this->getAppConfig('web_dir', 'www')
             );
@@ -158,20 +166,15 @@ class FrontController
                 ->addPath('i18n', $i18n_dir)
                 ->addPath('logs', $log_dir)
                 ->addPath('base_templates', $templates_dir)
+                ->addPath('user_dir', $user_dir)
             ;
 
             // user dir fallback if so
-            $user_dir = DirectoryHelper::slashDirname(
-                $base_dir . $this->getAppConfig('user_dir', 'user')
+            $user_templates_dir = DirectoryHelper::slashDirname(
+                $user_dir . $this->getAppConfig('templates_dir', 'templates')
             );
-            if (file_exists($user_dir)) {
-                $this->addPath('user_dir', $user_dir);
-                $user_templates_dir = DirectoryHelper::slashDirname(
-                    $user_dir . $this->getAppConfig('templates_dir', 'templates')
-                );
-                if (file_exists($user_templates_dir)) {
-                    $this->addPath('user_templates', $user_templates_dir);
-                }
+            if (file_exists($user_templates_dir)) {
+                $this->addPath('user_templates', $user_templates_dir);
             }
 
             // the actual manifest
@@ -220,11 +223,8 @@ class FrontController
         ));
 
         // user configuration
-        $internal_config = $this->registry->get('userconf', array(), 'docbook');
-        $user_config_file =
-            DirectoryHelper::slashDirname($this->getPath('root_dir'))
-            .DirectoryHelper::slashDirname($this->getAppConfig('var_dir', 'tmp'))
-            .$this->registry->get('app:user_config_file', '.docbook', 'docbook');
+        $internal_config    = $this->registry->get('userconf', array(), 'docbook');
+        $user_config_file   = $this->getLocator()->getUserConfigPath();
         if (file_exists($user_config_file)) {
             $user_config = parse_ini_file($user_config_file, true);
             if (!empty($user_config)) {

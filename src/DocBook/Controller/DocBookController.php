@@ -147,33 +147,29 @@ class DocBookController
             throw new NotFoundException('Forbidden access!');
         }
 
-        $user_config_file = DirectoryHelper::slashDirname($this->docbook->getAppConfig('var_dir', 'tmp'))
-            .$this->docbook->getRegistry()->get('app:user_config_file', '.docbook', 'docbook');
-        $user_config = $this->docbook->getRegistry()->get('user_config', array(), 'docbook');
-
-        $title = _T('Administration');
-        $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
-            .$this->docbook->getRegistry()->get('pages:admin_welcome', array(), 'docbook');
-
-        $page_infos = array(
+        $user_config_file   = $this->docbook->getLocator()->getUserConfigPath(true);
+        $user_config        = $this->docbook->getRegistry()->get('user_config', array(), 'docbook');
+        $title              = _T('Administration');
+        $path               = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
+                                .$this->docbook->getRegistry()->get('pages:admin_welcome', array(), 'docbook');
+        $page_infos         = array(
             'name'      => $title,
             'path'      => 'admin',
             'update'    => Helper::getDateTimeFromTimestamp(filemtime($path))
         );
-        $tpl_params = array(
+        $tpl_params         = array(
             'breadcrumbs' => array($title),
             'title' => $title,
             'page' => $page_infos,
             'page_tools' => 'false'
         );
+        $file_content       = file_get_contents($path);
+        $md_parser          = $this->docbook->getMarkdownParser();
+        $md_content         = $md_parser->transformString($file_content);
+        $output_bag         = $md_parser->get('OutputFormatBag');
+        $menu               = $output_bag->getHelper()->getToc($md_content, $output_bag->getFormatter());
 
-        $file_content   = file_get_contents($path);
-        $md_parser      = $this->docbook->getMarkdownParser();
-        $md_content     = $md_parser->transformString($file_content);
-        $output_bag     = $md_parser->get('OutputFormatBag');
-        $menu           = $output_bag->getHelper()->getToc($md_content, $output_bag->getFormatter());
-
-        $content        = $this->docbook->display(
+        $content            = $this->docbook->display(
             $md_content->getBody(),
             'admin_panel',
             array(
@@ -209,8 +205,7 @@ class DocBookController
             $this->docbook->getSession()->set('saveadmin', time());
             $root_dir       = $this->docbook->getPath('root_dir');
             $data           = $this->docbook->getRequest()->getData();
-            $config_file    = DirectoryHelper::slashDirname($this->docbook->getAppConfig('var_dir', 'tmp'))
-                                .$this->docbook->getRegistry()->get('app:user_config_file', '.docbook', 'docbook');
+            $config_file    = $this->docbook->getLocator()->getUserConfigPath();
 
             $internal_conf = $this->docbook->getRegistry()->get('userconf', array(), 'docbook');
             foreach ($internal_conf as $var=>$val) {
@@ -220,7 +215,7 @@ class DocBookController
             }
 
             if (false !== file_put_contents(
-                    DirectoryHelper::slashDirname($root_dir).$config_file,
+                    $config_file,
                     Array2INI::convert($data),
                     LOCK_EX
             )) {
