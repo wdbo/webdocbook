@@ -24,7 +24,6 @@
 namespace DocBook;
 
 use \DocBook\Abstracts\AbstractFrontController;
-use \DocBook\Abstracts\AbstractPage;
 use \DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
 use \MarkdownExtended\MarkdownExtended;
 use \I18n\I18n;
@@ -309,7 +308,7 @@ class FrontController
     /**
      * @param bool $return
      * @throws \DocBook\NotFoundException
-     * @throws \DocBook\DocBookRuntimeException if the controller action does not return a valid arrau
+     * @throws \DocBook\DocBookRuntimeException if the controller action does not return a valid array
      */
     public function distribute($return = false)
     {
