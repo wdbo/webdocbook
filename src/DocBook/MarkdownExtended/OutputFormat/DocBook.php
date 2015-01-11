@@ -21,7 +21,7 @@
  * <http://github.com/atelierspierrot/docbook>.
  */
 
-namespace DocBook\MDEOutputFormat;
+namespace DocBook\MarkdownExtended\OutputFormat;
 
 use \MarkdownExtended\MarkdownExtended;
 use \MarkdownExtended\API\OutputFormatInterface;
