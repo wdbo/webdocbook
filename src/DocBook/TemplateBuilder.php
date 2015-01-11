@@ -58,7 +58,7 @@ class TemplateBuilder
         $loader             = new \Twig_Loader_Filesystem($templates_dirs);
         $this->twig         = new \Twig_Environment($loader, array(
             'cache'             => $docbook->getPath('cache'),
-            'charset'           => $docbook->getRegistry()->get('html:charset', 'utf-8', 'docbook'),
+            'charset'           => $docbook->getRegistry()->get('html:charset', 'utf-8'),
             'debug'             => true,
         ));
         $this->twig->addExtension(new \Twig_Extension_Debug());
@@ -121,11 +121,11 @@ class TemplateBuilder
         $session = $docbook->getSession();
         return array(
             'DB'                => $docbook,
-            'user_cfg'          => $docbook->getRegistry()->get('user_config', array(), 'docbook'),
-            'app_cfg'           => $docbook->getRegistry()->get('html', array(), 'docbook'),
-            'app'               => $docbook->getRegistry()->get('app', array(), 'docbook'),
-            'langs'             => $docbook->getRegistry()->get('languages', array(), 'docbook'),
-            'manifest'          => $docbook->getRegistry()->get('manifest', array()),
+            'user_cfg'          => $docbook->getRegistry()->get('user_config', array()),
+            'app_cfg'           => $docbook->getRegistry()->get('html', array()),
+            'app'               => $docbook->getRegistry()->get('app', array()),
+            'langs'             => $docbook->getRegistry()->get('languages', array()),
+            'manifest'          => $docbook->getRegistry()->get('manifest', array(), null),
             'assets'            => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/',
             'vendor_assets'     => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/vendor/',
             'chapters'          => $docbook->getChapters(),

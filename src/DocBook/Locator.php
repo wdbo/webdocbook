@@ -38,10 +38,10 @@ class Locator
      */
     public function findController($route)
     {
-        $cfg        = FrontController::getInstance()->getRegistry()->get('app', array(), 'docbook');
+        $cfg        = FrontController::getInstance()->getRegistry()->get('app', array());
         $def_ctrl   = isset($cfg['default_controller']) ? $cfg['default_controller'] : 'default';
         $def_act    = isset($cfg['default_action']) ? $cfg['default_action'] : 'default';
-        $routes     = FrontController::getInstance()->getRegistry()->get('routes', array(), 'docbook');
+        $routes     = FrontController::getInstance()->getRegistry()->get('routes', array());
 
         $ctrl = $action = null;
         if (array_key_exists($route, $routes)) {
@@ -93,7 +93,7 @@ class Locator
         $docbook        = FrontController::getInstance();
         $user_path      = $docbook->getPath('user_dir');
         $config_file    = DirectoryHelper::slashDirname($user_path)
-            .$docbook->getRegistry()->get('app:user_config_file', 'docbook.config', 'docbook');
+            .$docbook->getRegistry()->get('app:user_config_file', 'docbook.config');
         if ($local) {
             $config_file = str_replace(
                 DirectoryHelper::slashDirname($docbook->getPath('root_dir'))

@@ -94,7 +94,7 @@ class DocBookController
     {
         $title = _T('User manual');
         $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
-            .$this->docbook->getRegistry()->get('pages:user_manual', array(), 'docbook');
+            .$this->docbook->getRegistry()->get('pages:user_manual', array());
 
         $page_infos = array(
             'name'      => $title,
@@ -137,7 +137,7 @@ class DocBookController
      */
     public function adminAction()
     {
-        $allowed = $this->docbook->getRegistry()->get('user_config:expose_admin', false, 'docbook');
+        $allowed = $this->docbook->getRegistry()->get('user_config:expose_admin', false);
         $saveadmin = $this->docbook->getSession()->get('saveadmin');
         $this->docbook->getSession()->remove('saveadmin');
         if (
@@ -148,10 +148,10 @@ class DocBookController
         }
 
         $user_config_file   = $this->docbook->getLocator()->getUserConfigPath(true);
-        $user_config        = $this->docbook->getRegistry()->get('user_config', array(), 'docbook');
+        $user_config        = $this->docbook->getRegistry()->get('user_config', array());
         $title              = _T('Administration');
         $path               = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
-                                .$this->docbook->getRegistry()->get('pages:admin_welcome', array(), 'docbook');
+                                .$this->docbook->getRegistry()->get('pages:admin_welcome', array());
         $page_infos         = array(
             'name'      => $title,
             'path'      => 'admin',
@@ -195,7 +195,7 @@ class DocBookController
      */
     public function saveadminAction()
     {
-        $allowed = $this->docbook->getRegistry()->get('user_config:expose_admin', false, 'docbook');
+        $allowed = $this->docbook->getRegistry()->get('user_config:expose_admin', false);
         if (!$allowed || ('true' !== $allowed && '1' !== $allowed)) {
             throw new NotFoundException('Forbidden access!');
         }
@@ -207,7 +207,7 @@ class DocBookController
             $data           = $this->docbook->getRequest()->getData();
             $config_file    = $this->docbook->getLocator()->getUserConfigPath();
 
-            $internal_conf = $this->docbook->getRegistry()->get('userconf', array(), 'docbook');
+            $internal_conf = $this->docbook->getRegistry()->get('userconf', array());
             foreach ($internal_conf as $var=>$val) {
                 if (!array_key_exists($var, $data) && ($val=='1' || $val=='0')) {
                     $data[$var] = 0;

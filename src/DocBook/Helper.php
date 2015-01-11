@@ -387,7 +387,7 @@ class Helper
         $name = basename($file_path);
         return (
             $name !== FrontController::getInstance()->getAppConfig('app_interface', 'index.php') &&
-            $name !== FrontController::getInstance()->getRegistry()->get('user_config:readme_filename', 'README.md', 'docbook')
+            $name !== FrontController::getInstance()->getRegistry()->get('user_config:readme_filename', 'README.md')
         );
     }
 
@@ -497,8 +497,7 @@ class Helper
     {
         if (!empty($type)) {
             if (is_null(self::$_cfg_icons)) {
-                self::$_cfg_icons = FrontController::getInstance()->getRegistry()
-                    ->get('icons', array(), 'docbook');
+                self::$_cfg_icons = FrontController::getInstance()->getRegistry()->get('icons', array());
             }
             return '<span class="fa fa-'
                 .(isset(self::$_cfg_icons[$type]) ? self::$_cfg_icons[$type] : self::$_cfg_icons['default'])

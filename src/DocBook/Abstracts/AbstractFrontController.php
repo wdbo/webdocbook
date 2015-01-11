@@ -24,6 +24,7 @@
 namespace DocBook\Abstracts;
 
 use \DocBook\Locator;
+use \DocBook\Registry;
 use \DocBook\Response;
 use \DocBook\Request;
 use \DocBook\TemplateBuilder;
@@ -31,7 +32,6 @@ use \Library\Command;
 use \Library\Session\FlashSession;
 use \MarkdownExtended\MarkdownExtended;
 use \Patterns\Abstracts\AbstractSingleton;
-use \Patterns\Commons\ConfigurationRegistry;
 
 /**
  * Class AbstractFrontController
@@ -55,7 +55,7 @@ abstract class AbstractFrontController
     protected $locator;
 
     /**
-     * @var \Patterns\Commons\ConfigurationRegistry
+     * @var \DocBook\Registry
      */
     protected $registry;
 
@@ -100,7 +100,7 @@ abstract class AbstractFrontController
     protected function __construct()
     {
         $this
-            ->setRegistry(new ConfigurationRegistry)
+            ->setRegistry(new Registry)
             ->setResponse(new Response)
             ->setRequest(new Request)
             ->setLocator(new Locator)
@@ -186,18 +186,18 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @param \Patterns\Commons\ConfigurationRegistry $registry
+     * @param \DocBook\Registry $registry
      * @return $this
      * @access private
      */
-    private function setRegistry(ConfigurationRegistry $registry)
+    private function setRegistry(Registry $registry)
     {
         $this->registry = $registry;
         return $this;
     }
 
     /**
-     * @return \Patterns\Commons\ConfigurationRegistry
+     * @return \DocBook\Registry
      */
     public function getRegistry()
     {
