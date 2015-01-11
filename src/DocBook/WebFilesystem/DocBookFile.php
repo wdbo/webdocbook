@@ -101,7 +101,7 @@ class DocBookFile
     protected function _init($file_name)
     {
         if (empty(self::$config)) {
-            self::$config = $this->docbook->getRegistry()->get('file_types', array());
+            self::$config = $this->docbook->getConfig('file_types', array());
         }
 
         $_root = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
@@ -228,7 +228,7 @@ class DocBookFile
                 $filename = $lang = null;
                 if (
                     $file->isDir() &&
-                    $file->getBasename() === FrontController::getInstance()->getRegistry()->get('user_config:wip_directory', 'wip')
+                    $file->getBasename() === FrontController::getInstance()->getConfig('user_config:wip_directory', 'wip')
                 ) {
                     $hasWip = true;
                 } else {
@@ -518,7 +518,7 @@ class DocBookFile
     {
         if (!isset($this->cache['docbook_readme'])) {
             $readme = DirectoryHelper::slashDirname($this->getRealPath()).
-                FrontController::getInstance()->getRegistry()->get('user_config:readme_filename', 'README.md');
+                FrontController::getInstance()->getConfig('user_config:readme_filename', 'README.md');
             $this->cache['docbook_readme'] = file_exists($readme) ? $readme : null;
         }
         return $this->cache['docbook_readme'];
@@ -531,7 +531,7 @@ class DocBookFile
     {
         if (!isset($this->cache['docbook_index'])) {
             $index = DirectoryHelper::slashDirname($this->getRealPath()).
-                FrontController::getInstance()->getRegistry()->get('user_config:index_filename', 'INDEX.md');
+                FrontController::getInstance()->getConfig('user_config:index_filename', 'INDEX.md');
             $this->cache['docbook_index'] = file_exists($index) ? $index : null;
         }
         return $this->cache['docbook_index'];
@@ -546,13 +546,13 @@ class DocBookFile
             $docbook = FrontController::getInstance();
 
             $name = strtolower($this->getBasename());
-            $cfg_esc = $docbook->getRegistry()->get('descriptions', array());
+            $cfg_esc = $docbook->getConfig('descriptions', array());
             if (!empty($cfg_esc) && is_array($cfg_esc) && array_key_exists($name, $cfg_esc)) {
                 return _T($cfg_esc[$name]);
             }
 
             $extension = strtolower($this->getExtension());
-            $cfg_ext = $docbook->getRegistry()->get('descriptions_extensions', array());
+            $cfg_ext = $docbook->getConfig('descriptions_extensions', array());
             if (!empty($cfg_ext) && is_array($cfg_ext) && array_key_exists($extension, $cfg_ext)) {
                 $this->cache['docbook_description'] = _T($cfg_ext[$extension]);
             } else {
@@ -605,7 +605,7 @@ class DocBookFile
         if ($_file->isDir()) {
             return 'directory';
         }
-        $config = $this->docbook->getRegistry()->get('file_types', array());
+        $config = $this->docbook->getConfig('file_types', array());
         foreach ($config as $type=>$infos) {
             $extensions = isset($infos['extensions']) ? explode(',', $infos['extensions']) : array();
             if (in_array($_file->getExtension(), $extensions)) {

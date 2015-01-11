@@ -24,7 +24,6 @@
 namespace DocBook\Abstracts;
 
 use \DocBook\Locator;
-use \DocBook\Registry;
 use \DocBook\Response;
 use \DocBook\Request;
 use \DocBook\TemplateBuilder;
@@ -32,6 +31,7 @@ use \Library\Command;
 use \Library\Session\FlashSession;
 use \MarkdownExtended\MarkdownExtended;
 use \Patterns\Abstracts\AbstractSingleton;
+use \Patterns\Commons\ConfigurationRegistry;
 
 /**
  * Class AbstractFrontController
@@ -55,7 +55,7 @@ abstract class AbstractFrontController
     protected $locator;
 
     /**
-     * @var \DocBook\Registry
+     * @var \Patterns\Commons\ConfigurationRegistry
      */
     protected $registry;
 
@@ -100,7 +100,7 @@ abstract class AbstractFrontController
     protected function __construct()
     {
         $this
-            ->setRegistry(new Registry)
+            ->setRegistry(new ConfigurationRegistry)
             ->setResponse(new Response)
             ->setRequest(new Request)
             ->setLocator(new Locator)
@@ -186,11 +186,11 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @param \DocBook\Registry $registry
+     * @param \Patterns\Commons\ConfigurationRegistry $registry
      * @return $this
      * @access private
      */
-    private function setRegistry(Registry $registry)
+    private function setRegistry(ConfigurationRegistry $registry)
     {
         $this->registry = $registry;
         return $this;
@@ -202,6 +202,32 @@ abstract class AbstractFrontController
     public function getRegistry()
     {
         return $this->registry;
+    }
+
+    /**
+     * @param null $name
+     * @param null $default
+     * @param string $scope
+     * @return array|mixed|null
+     */
+    public function getConfig($name = null, $default = null, $scope = 'docbook')
+    {
+        if (is_null($name)) {
+            return $this->registry->getConfigs();
+        } else {
+            return $this->registry->get($name, $default, $scope);
+        }
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     * @param string $scope
+     * @return mixed
+     */
+    public function setConfig($name, $value, $scope = 'docbook')
+    {
+        return $this->registry->set($name, $value, $scope);
     }
 
     /**

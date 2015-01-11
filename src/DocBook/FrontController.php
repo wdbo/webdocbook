@@ -100,7 +100,7 @@ class FrontController
             if (file_exists($config_file)) {
                 $config =  parse_ini_file($config_file, true);
                 if ($config) {
-                    $this->registry->set('docbook', $config, null);
+                    $this->setConfig('docbook', $config, null);
                 } else {
                     throw new DocBookException(
                         sprintf('DocBook configuration file "%s" seems malformed!', $config_file)
@@ -182,7 +182,7 @@ class FrontController
             if ($manifest_ctt!==false) {
                 $manifest_data = json_decode($manifest_ctt, true);
                 if ($manifest_data) {
-                    $this->registry->set('manifest', $manifest_data, null);
+                    $this->setConfig('manifest', $manifest_data, null);
                 } else {
                     throw new \Exception(
                         sprintf('Can not parse app manifest "%s" JSON content!', $this->getPath('app_manifest'))
@@ -217,37 +217,37 @@ class FrontController
         // the logger
         $this->logger = new Logger(array(
             'directory'     => $this->getPath('logs'),
-            'logfile'       => $this->registry->get('app:logfile', 'history'),
-            'error_logfile' => $this->registry->get('app:error_logfile', 'errors'),
+            'logfile'       => $this->getConfig('app:logfile', 'history'),
+            'error_logfile' => $this->getConfig('app:error_logfile', 'errors'),
             'duplicate_errors' => false,
         ));
 
         // user configuration
-        $internal_config    = $this->registry->get('userconf', array());
+        $internal_config    = $this->getConfig('userconf', array());
         $user_config_file   = $this->getLocator()->getUserConfigPath();
         if (file_exists($user_config_file)) {
             $user_config = parse_ini_file($user_config_file, true);
             if (!empty($user_config)) {
-                $this->registry->set('user_config', $user_config);
+                $this->setConfig('user_config', $user_config);
             } else {
                 throw new DocBookException(
                     sprintf('Can not read you configuration file "%s"!', $user_config_file)
                 );
             }
         } else {
-            $this->registry->set('user_config', $internal_config);
+            $this->setConfig('user_config', $internal_config);
         }
 
         // creating the application default headers
-        $charset        = $this->registry->get('html:charset', 'utf-8');
-        $content_type   = $this->registry->get('html:content-type', 'text/html');
-        $app_name       = $this->registry->get('title', null, 'manifest');
-        $app_version    = $this->registry->get('version', null, 'manifest');
-        $app_website    = $this->registry->get('homepage', null, 'manifest');
+        $charset        = $this->getConfig('html:charset', 'utf-8');
+        $content_type   = $this->getConfig('html:content-type', 'text/html');
+        $app_name       = $this->getConfig('title', null, 'manifest');
+        $app_version    = $this->getConfig('version', null, 'manifest');
+        $app_website    = $this->getConfig('homepage', null, 'manifest');
         $this->response->addHeader('Content-type', $content_type.'; charset: '.$charset);
 
         // expose app ?
-        $expose_docbook = $this->registry->get('app:expose_docbook', true);
+        $expose_docbook = $this->getConfig('app:expose_docbook', true);
         if (true===$expose_docbook || 'true'===$expose_docbook || '1'===$expose_docbook) {
             $this->response->addHeader('Composed-by', $app_name.' '.$app_version.' ('.$app_website.')');
         }
@@ -256,10 +256,10 @@ class FrontController
         $this->setTemplateBuilder(new TemplateBuilder);
 
         // some PHP configs
-        @date_default_timezone_set( $this->registry->get('user_config:timezone', 'Europe/London') );
+        @date_default_timezone_set( $this->getConfig('user_config:timezone', 'Europe/London') );
         
         // the internationalization
-        $langs = $this->registry->get('languages:langs', array('en'=>'English'));
+        $langs = $this->getConfig('languages:langs', array('en'=>'English'));
         $i18n_loader_opts = array(
             'language_directory' => $this->getPath('i18n'),
             'language_strings_db_directory' =>
@@ -275,10 +275,10 @@ class FrontController
         $translator = I18n::getInstance(new I18n_Loader($i18n_loader_opts));
 
         // language
-        $def_ln = $this->registry->get('languages:default', 'auto');
+        $def_ln = $this->getConfig('languages:default', 'auto');
         if (!empty($def_ln) && $def_ln==='auto') {
             $translator->setDefaultFromHttp();
-            $def_ln = $this->registry->get('languages:fallback_language', 'en');
+            $def_ln = $this->getConfig('languages:fallback_language', 'en');
         }
         $trans_ln = $translator->getLanguage();
         if (empty($trans_ln)) {
@@ -382,7 +382,6 @@ class FrontController
         if (Request::isAjax()) {
             $this->response->setContentType('json', true);
             $full_content = array_merge($params, array('body' => $full_content));
-            $full_content = $full_content;
         }
         if ($send) {
             $this->response->send(!empty($full_content) ? $full_content : $content);
@@ -428,7 +427,7 @@ class FrontController
             foreach ($args as $param=>$value) {
                 
                 if ($param==='lang') {
-                    $langs = $this->registry->get('languages:langs', array('en'=>'English'));
+                    $langs = $this->getConfig('languages:langs', array('en'=>'English'));
 /*
 echo '<br />';
 var_export($value);
@@ -471,7 +470,7 @@ var_export($langs);
      */
     public function getAppConfig($name, $default)
     {
-        $stack = $this->registry->get('app', array());
+        $stack = $this->getConfig('app', array());
         return (isset($stack[$name]) ? $stack[$name] : $default);
     }
 
@@ -484,7 +483,7 @@ var_export($langs);
     {
         $realpath = realpath($value);
         if (!empty($realpath)) {
-            $this->registry->set($name, $realpath, 'paths');
+            $this->setConfig($name, $realpath, 'paths');
         } else {
             throw new DocBookRuntimeException(
                 sprintf('Directory "%s" defined as an application path doesn\'t exist!', $value)
@@ -499,7 +498,7 @@ var_export($langs);
      */
     public function getPath($name)
     {
-        return $this->registry->get($name, null, 'paths');
+        return $this->getConfig($name, null, 'paths');
     }
 
     /**
@@ -582,8 +581,8 @@ var_export($langs);
     {
         if (empty($this->markdown_parser)) {
             // creating the Markdown parser
-            $emd_config = $this->registry->get('markdown', array());
-            $emd_config_strs = $this->registry->get('markdown_i18n', array());
+            $emd_config = $this->getConfig('markdown', array());
+            $emd_config_strs = $this->getConfig('markdown_i18n', array());
             if (!empty($emd_config_strs) && is_array($emd_config_strs) && count($emd_config_strs)==1 && isset($emd_config_strs['markdown_i18n'])) {
                 $emd_config_strs = $emd_config_strs['markdown_i18n'];
             }
@@ -603,7 +602,7 @@ var_export($langs);
      */
     public function getTemplate($name)
     {
-        return $this->registry->get('templates:'.$name, null);
+        return $this->getConfig('templates:'.$name, null);
     }
 
     /**
