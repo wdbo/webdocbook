@@ -26,7 +26,7 @@ contents indexing, just like the default behavior of Apache.
 
 ### Markdown syntax
 
-The Markdown syntax used by DocBook follows the [Markdown Extended](https://github.com/piwi/markdown-extended)
+The Markdown syntax used by DocBook follows the [Markdown Extended](http://github.com/piwi/markdown-extended)
 rules. They are inherited from:
 
 -   the original [John Gruber's syntax](http://daringfireball.net/projects/markdown/syntax),
@@ -159,9 +159,9 @@ want to write your own templates you may follow [Twig's documentation](http://tw
 ## License / Dependencies
 
 **DocBook** is an open-source application released under a
-[GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html). You can freely
-download it, use it or distribute it as long as you stay in the license conditions. See the
-`License` file for more info.
+[GNU General Public License version 3](http://github.com/atelierspierrot/docbook/blob/master/LICENSE). 
+You can freely download it, use it or distribute it as long as you stay in the license 
+conditions. See the `LICENSE` file for more info.
 
 **DocBook** is developed with the help of the following third-parties:
 
@@ -170,7 +170,7 @@ download it, use it or distribute it as long as you stay in the license conditio
     written by [Mark Otto](http://twitter.com/mdo) & [Jacob Thornton](http://twitter.com/fat),    
 -   [Twig](http://twig.sensiolabs.org/), a template engine for PHP, 
     released under [BSD license](http://opensource.org/licenses/BSD-3-Clause),
-    written by [Fabien Potencier](https://connect.sensiolabs.com/api/alternates/4aed4f5d-e0cb-4320-902f-885fddaa7d15),
+    written by [Fabien Potencier](http://connect.sensiolabs.com/api/alternates/4aed4f5d-e0cb-4320-902f-885fddaa7d15),
 -   [jQuery](http://jquery.com/), an open-source javascript library, 
     released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
     written by [John Resig](http://ejohn.org/) & the [jQuery Foundation and other contributors](http://jquery.org/),

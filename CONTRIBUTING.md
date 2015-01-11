@@ -92,7 +92,7 @@ The development process of the package requires some external dependencies to wo
 [Composer](http://getcomposer.org/). To install them, run:
 
     // install Composer if your don't have it
-    curl -sS https://getcomposer.org/installer | php
+    curl -sS http://getcomposer.org/installer | php
 
     // install PHP dependencies
     php composer.phar install

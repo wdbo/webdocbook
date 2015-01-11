@@ -39,13 +39,13 @@ You have four ways to get a copy of the sources:
 
     you can select a specific version replacing `dev-master` by the version number 
 
--   make a clone of the [GitHub repository](https://github.com/atelierspierrot/docbook):
+-   make a clone of the [GitHub repository](http://github.com/atelierspierrot/docbook):
 
         ~$ git clone git://github.com/atelierspierrot/docbook.git your/path/to/docbook
 
 -   get an archive from GitHub, *untar* it in your target directory
 
--   download a tag version of the sources, see <https://github.com/atelierspierrot/docbook/tags>.
+-   download a tag version of the sources, see <http://github.com/atelierspierrot/docbook/tags>.
 
 For each stable version of DocBook, a new tag may exist named **vX.Y.Z**, if you prefer to
 use a download version rather than a Git clone, use a tag preferably.
@@ -171,7 +171,7 @@ virtual host's domain name, try the following:
     chapter above
 
 -   if you still have an error, come to ask us explaining your system & configuration at
-    <https://github.com/atelierspierrot/docbook/issues>.
+    <http://github.com/atelierspierrot/docbook/issues>.
 
 ### Error: "An error occurred while trying to create directory 'XXX'!"
 

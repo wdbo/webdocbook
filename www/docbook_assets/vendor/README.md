@@ -43,7 +43,7 @@ Bootstrap
 -   actual version 3.3.1
 
 The package configuration (basically all but the Glyphicons) is stored
-at <https://gist.github.com/19ee64a16ea9662a97d2>.
+at <http://gist.github.com/19ee64a16ea9662a97d2>.
 To rebuild it, you can directly load 
 <http://getbootstrap.com/customize/?id=19ee64a16ea9662a97d2>.
 
@@ -51,7 +51,7 @@ To rebuild it, you can directly load
 HTML5shiv
 ---------
 
--   <https://github.com/aFarkas/html5shiv>
+-   <http://github.com/aFarkas/html5shiv>
 -   actual version: 3.6.2
 
 
@@ -65,12 +65,12 @@ Font Awesome
 jQuery Table Sorter
 -------------------
 
--   <https://github.com/Mottie/tablesorter>
+-   <http://github.com/Mottie/tablesorter>
 -   actual version: 2.18.4
 
 
 jQuery syntax highlight
 -----------------------
 
--   <https://github.com/piwi/highlight>
+-   <http://github.com/piwi/highlight>
 -   actual version: 1.2 (tag v1.2-bower)
