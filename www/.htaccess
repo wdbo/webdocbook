@@ -49,6 +49,10 @@ ErrorDocument 500 /index.php?error
     RewriteCond %{REQUEST_URI} ^(.*)docbook_assets/(.*)
     RewriteRule "." - [skip=100]
 
+    # skip all this for chapters assets
+    RewriteCond %{REQUEST_URI} ^(.*)/assets/(.*)
+    RewriteRule "." - [skip=100]
+
     # if the dir exists, handle it by index.php anyway
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^(.*) index.php?$1
