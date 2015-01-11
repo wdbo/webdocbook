@@ -33,8 +33,6 @@ use \Library\Converter\Array2INI;
  * Class DocBookController
  *
  * The DocBook internal controller
- *
- * @package DocBook\Controller
  */
 class DocBookController
     extends AbstractController

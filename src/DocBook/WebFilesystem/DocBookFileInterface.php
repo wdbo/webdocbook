@@ -27,7 +27,6 @@ use \DocBook\WebFilesystem\DocBookFile;
 
 /**
  * Interface DocBookFileInterface
- * @package DocBook\WebFilesystem
  */
 interface DocBookFileInterface
 {

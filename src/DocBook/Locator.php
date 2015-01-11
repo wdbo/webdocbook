@@ -27,7 +27,6 @@ use \Library\Helper\Directory as DirectoryHelper;
 
 /**
  * Class Locator
- * @package DocBook
  */
 class Locator
 {

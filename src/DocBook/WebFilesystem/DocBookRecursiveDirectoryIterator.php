@@ -31,7 +31,6 @@ use \WebFilesystem\WebRecursiveDirectoryIterator;
 
 /**
  * Class DocBookRecursiveDirectoryIterator
- * @package DocBook\WebFilesystem
  */
 class DocBookRecursiveDirectoryIterator
     extends WebRecursiveDirectoryIterator

@@ -36,10 +36,6 @@ use \Library\Logger;
 
 /**
  * Class FrontController
- *
- * This is the kernel of DocBook
- *
- * @package DocBook
  */
 class FrontController
     extends AbstractFrontController

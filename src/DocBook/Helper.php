@@ -34,7 +34,6 @@ use \WebFilesystem\WebFilesystem;
 
 /**
  * Class Helper
- * @package DocBook
  */
 class Helper
 {

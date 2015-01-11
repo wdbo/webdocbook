@@ -28,7 +28,6 @@ use \Patterns\Abstracts\AbstractView;
 
 /**
  * Class TemplateBuilder
- * @package DocBook
  */
 class TemplateBuilder
     extends AbstractView

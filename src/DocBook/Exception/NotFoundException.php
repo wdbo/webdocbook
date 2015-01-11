@@ -27,7 +27,6 @@ use \DocBook\FrontController;
 
 /**
  * Class NotFoundException
- * @package DocBook
  */
 class NotFoundException
     extends \Exception

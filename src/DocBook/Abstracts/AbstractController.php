@@ -30,8 +30,6 @@ use \DocBook\Exception\NotFoundException;
  * Class AbstractController
  *
  * Any controller MUST extend this one
- *
- * @package DocBook\Abstracts
  */
 abstract class AbstractController
 {

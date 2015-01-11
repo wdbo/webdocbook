@@ -29,8 +29,6 @@ use \Composer\Script\Event;
  * Class Scripts
  *
  * Defines actions to launch on Composer events.
- *
- * @package DocBook\Composer
  */
 class Scripts
 {

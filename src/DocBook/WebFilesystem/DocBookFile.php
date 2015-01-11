@@ -39,8 +39,6 @@ use \FilesystemIterator;
  * Class DocBookFile
  *
  * Default File class of DocBook
- *
- * @package DocBook\WebFilesystem
  */
 class DocBookFile
     extends WebFileInfo

@@ -30,7 +30,6 @@ use \WebFilesystem\FileType\WebImage;
 
 /**
  * Class DBImage
- * @package DocBook\WebFilesystem\DocBookFile
  */
 class DBImage
     extends WebImage

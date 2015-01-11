@@ -33,8 +33,6 @@ use \Library\HttpFundamental\Request as BaseRequest;
  * Class Request
  *
  * This is the global request of the application
- *
- * @package DocBook
  */
 class Request
     extends BaseRequest

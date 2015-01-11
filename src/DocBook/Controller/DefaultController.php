@@ -33,8 +33,6 @@ use \DocBook\WebFilesystem\DocBookFile;
  *
  * This is the default controller of DocBook, which may
  * handle most of the requests.
- *
- * @package DocBook\Controller
  */
 class DefaultController
     extends AbstractController

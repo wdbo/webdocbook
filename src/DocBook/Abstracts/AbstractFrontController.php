@@ -37,8 +37,6 @@ use \Patterns\Commons\ConfigurationRegistry;
  * Class AbstractFrontController
  *
  * Base of the \DocBook\FrontController
- *
- * @package DocBook\Abstracts
  */
 abstract class AbstractFrontController
     extends AbstractSingleton

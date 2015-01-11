@@ -29,7 +29,6 @@ use \DocBook\WebFilesystem\DocBookFileInterface;
 
 /**
  * Class DBDirectory
- * @package DocBook\WebFilesystem\DocBookFile
  */
 class DBDirectory
     extends WebFileInfo

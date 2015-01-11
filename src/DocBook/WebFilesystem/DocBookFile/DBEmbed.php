@@ -29,7 +29,6 @@ use \DocBook\WebFilesystem\DocBookFileInterface;
 
 /**
  * Class DBEmbed
- * @package DocBook\WebFilesystem\DocBookFile
  */
 class DBEmbed
     extends WebFileInfo

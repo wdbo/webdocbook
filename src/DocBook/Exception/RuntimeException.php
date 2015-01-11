@@ -29,8 +29,6 @@ use \DocBook\FrontController;
  * Class RuntimeException
  *
  * DocBook components should use this in place of classic `\RuntimeException`
- *
- * @package DocBook
  */
 class RuntimeException
     extends \RuntimeException

@@ -29,8 +29,6 @@ use \Library\HttpFundamental\Response as BaseResponse;
  * Class Response
  *
  * This is the global response of the application
- *
- * @package DocBook
  */
 class Response
     extends BaseResponse
