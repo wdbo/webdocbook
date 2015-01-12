@@ -24,6 +24,7 @@
 namespace DocBook\Controller;
 
 use \DocBook\Helper;
+use \DocBook\Kernel;
 use \DocBook\Abstracts\AbstractController;
 use \DocBook\Exception\NotFoundException;
 use \Library\Helper\Directory as DirectoryHelper;
@@ -90,7 +91,7 @@ class DocBookController
     public function docbookdocAction()
     {
         $title = _T('User manual');
-        $path = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
+        $path = DirectoryHelper::slashDirname(Kernel::getPath('docbook_assets'))
             .$this->docbook->getConfig('pages:user_manual', array());
 
         $page_infos = array(
@@ -147,7 +148,7 @@ class DocBookController
         $user_config_file   = $this->docbook->getLocator()->getUserConfigPath(true);
         $user_config        = $this->docbook->getConfig('user_config', array());
         $title              = _T('Administration');
-        $path               = DirectoryHelper::slashDirname($this->docbook->getAppConfig('internal_assets_dir', 'docbook_assets'))
+        $path               = DirectoryHelper::slashDirname(Kernel::getPath('docbook_assets'))
                                 .$this->docbook->getConfig('pages:admin_welcome', array());
         $page_infos         = array(
             'name'      => $title,
@@ -200,7 +201,7 @@ class DocBookController
         if ($this->docbook->getRequest()->isPost()) {
 
             $this->docbook->getSession()->set('saveadmin', time());
-            $root_dir       = $this->docbook->getPath('root_dir');
+            $root_dir       = Kernel::getPath('app_base_path');
             $data           = $this->docbook->getRequest()->getData();
             $config_file    = $this->docbook->getLocator()->getUserConfigPath();
 

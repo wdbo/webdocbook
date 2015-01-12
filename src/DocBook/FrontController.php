@@ -80,19 +80,23 @@ class FrontController
     }
 
     /**
-     * @param string $config_file
      * @return void
      */
-    protected function boot($config_file)
+    protected function boot()
     {
         try {
+            Kernel::boot();
+//            Kernel::debug();
+
             $this->session->start();
 
             // the docbook config (required)
+            $config_file = Kernel::getPath('app_config');
             if (file_exists($config_file)) {
                 $config =  parse_ini_file($config_file, true);
                 if ($config) {
                     $this->setConfig('docbook', $config, null);
+                    Kernel::parseConfig($config);
                 } else {
                     throw new Exception(
                         sprintf('DocBook configuration file "%s" seems malformed!', $config_file)
@@ -104,85 +108,20 @@ class FrontController
                 );
             }
 
-            // the app paths
-            $src_dir    = DirectoryHelper::slashDirname(dirname(__DIR__));
-            $base_dir   = DirectoryHelper::slashDirname(dirname($src_dir));
-
-            $tmp_dir    = DirectoryHelper::slashDirname(
-                $base_dir . $this->getAppConfig('var_dir', 'tmp')
-            );
-            Helper::ensureDirectoryExists($tmp_dir);
-            if (!is_writable($tmp_dir)) {
-                throw new \Exception("Directory '$tmp_dir' must be writable!");
-            }
-            $cache_dir  = DirectoryHelper::slashDirname($tmp_dir.'cache');
-            Helper::ensureDirectoryExists($cache_dir);
-            if (!is_writable($cache_dir)) {
-                throw new \Exception("Directory '$cache_dir' must be writable!");
-            }
-            $i18n_dir   = DirectoryHelper::slashDirname($tmp_dir.'i18n');
-            Helper::ensureDirectoryExists($i18n_dir);
-            if (!is_writable($i18n_dir)) {
-                throw new \Exception("Directory '$i18n_dir' must be writable!");
-            }
-            $log_dir    = DirectoryHelper::slashDirname($tmp_dir.'log');
-            Helper::ensureDirectoryExists($log_dir);
-            if (!is_writable($log_dir)) {
-                throw new \Exception("Directory '$log_dir' must be writable!");
-            }
-
-            $user_dir = DirectoryHelper::slashDirname(
-                $base_dir . $this->getAppConfig('user_dir', 'user')
-            );
-            Helper::ensureDirectoryExists($user_dir);
-            if (!is_writable($user_dir)) {
-                throw new \Exception("Directory '$user_dir' must be writable!");
-            }
-
-            $web_dir    = DirectoryHelper::slashDirname(
-                $base_dir . $this->getAppConfig('web_dir', 'www')
-            );
-            Helper::ensureDirectoryExists($web_dir);
-            $templates_dir = DirectoryHelper::slashDirname(
-                $src_dir . $this->getAppConfig('templates_dir', 'templates')
-            );
-            Helper::ensureDirectoryExists($templates_dir);
-
-            $this
-                ->addPath('root_dir', $base_dir)
-                ->addPath('base_dir', $src_dir)
-                ->addPath('app_manifest', $base_dir.Kernel::APP_MANIFEST)
-                ->addPath('base_dir_http', $web_dir)
-                ->addPath('tmp', $tmp_dir)
-                ->addPath('cache', $cache_dir)
-                ->addPath('i18n', $i18n_dir)
-                ->addPath('logs', $log_dir)
-                ->addPath('base_templates', $templates_dir)
-                ->addPath('user_dir', $user_dir)
-            ;
-
-            // user dir fallback if so
-            $user_templates_dir = DirectoryHelper::slashDirname(
-                $user_dir . $this->getAppConfig('templates_dir', 'templates')
-            );
-            if (file_exists($user_templates_dir)) {
-                $this->addPath('user_templates', $user_templates_dir);
-            }
-
             // the actual manifest
-            $manifest_ctt = file_get_contents($this->getPath('app_manifest'));
+            $manifest_ctt = file_get_contents(Kernel::getPath('app_manifest'));
             if ($manifest_ctt!==false) {
                 $manifest_data = json_decode($manifest_ctt, true);
                 if ($manifest_data) {
                     $this->setConfig('manifest', $manifest_data, null);
                 } else {
                     throw new \Exception(
-                        sprintf('Can not parse app manifest "%s" JSON content!', $this->getPath('app_manifest'))
+                        sprintf('Can not parse app manifest "%s" JSON content!', Kernel::getPath('app_manifest'))
                     );
                 }
             } else {
                 throw new \Exception(
-                    sprintf('App manifest "%s" not found or is empty!', $this->getPath('app_manifest'))
+                    sprintf('App manifest "%s" not found or is empty!', Kernel::getPath('app_manifest'))
                 );
             }
 
@@ -208,7 +147,7 @@ class FrontController
 
         // the logger
         $this->logger = new Logger(array(
-            'directory'     => $this->getPath('logs'),
+            'directory'     => Kernel::getPath('log'),
             'logfile'       => $this->getConfig('app:logfile', 'history'),
             'error_logfile' => $this->getConfig('app:error_logfile', 'errors'),
             'duplicate_errors' => false,
@@ -253,15 +192,13 @@ class FrontController
         // the internationalization
         $langs = $this->getConfig('languages:langs', array('en'=>'English'));
         $i18n_loader_opts = array(
-            'language_directory' => $this->getPath('i18n'),
-            'language_strings_db_directory' =>
-                DirectoryHelper::slashDirname($this->getPath('base_dir')).
-                $this->getAppConfig('config_dir', 'config'),
-            'language_strings_db_filename' => $this->getAppConfig('app_i18n', 'docbook_i18n.csv'),
-            'force_rebuild' => true,
-            'available_languages' => array_combine(array_keys($langs), array_keys($langs)),
+            'language_directory'            => Kernel::getPath('i18n'),
+            'language_strings_db_directory' => Kernel::getPath('user_config'),
+            'language_strings_db_filename'  => Kernel::getPath('app_i18n'),
+            'force_rebuild'                 => true,
+            'available_languages'           => array_combine(array_keys($langs), array_keys($langs)),
         );
-        if (self::isDevMode()) {
+        if (Kernel::isDevMode()) {
             $i18n_loader_opts['show_untranslated'] = true;
         }
         $translator = I18n::getInstance(new I18n_Loader($i18n_loader_opts));
@@ -322,7 +259,7 @@ class FrontController
         if (empty($input_file)) {
             $input_path = $this->getInputPath();
             if (!empty($input_path)) {
-                $input_file = DirectoryHelper::slashDirname($this->getPath('base_dir_http')).trim($input_path, '/');
+                $input_file = Kernel::getPath('web').trim($input_path, '/');
             }
         }
         $result = null;
@@ -449,52 +386,6 @@ var_export($langs);
 // ---------------------
 
     /**
-     * @return bool
-     */
-    public static function isDevMode()
-    {
-        return (defined('DOCBOOK_MODE') && DOCBOOK_MODE==='dev');
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $default
-     * @return mixed
-     */
-    public function getAppConfig($name, $default)
-    {
-        $stack = $this->getConfig('app', array());
-        return (isset($stack[$name]) ? $stack[$name] : $default);
-    }
-
-    /**
-     * @param string $name
-     * @param string $value
-     * @return $this
-     */
-    public function addPath($name, $value)
-    {
-        $realpath = realpath($value);
-        if (!empty($realpath)) {
-            $this->setConfig($name, $realpath, 'paths');
-        } else {
-            throw new RuntimeException(
-                sprintf('Directory "%s" defined as an application path doesn\'t exist!', $value)
-            );
-        }
-        return $this;
-    }
-
-    /**
-     * @param $name
-     * @return mixed|\Patterns\Commons\misc
-     */
-    public function getPath($name)
-    {
-        return $this->getConfig($name, null, 'paths');
-    }
-
-    /**
      * @param string $path
      * @return $this
      */
@@ -603,7 +494,7 @@ var_export($langs);
      */
     public function getChapters()
     {
-        $www_http = $this->getPath('base_dir_http');
+        $www_http = Kernel::getPath('web');
         $dir = new DocBookRecursiveDirectoryIterator($www_http);
         $paths = array();
         foreach($dir as $file) {

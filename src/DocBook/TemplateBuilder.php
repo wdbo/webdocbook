@@ -49,15 +49,18 @@ class TemplateBuilder
     {
         $docbook        = FrontController::getInstance();
         // template engine
-        $templates_dirs = array();
-        $user_templates = $docbook->getPath('user_templates');
-        if (!empty($user_templates)) {
+        $templates_dirs = array(
+            Kernel::getPath('templates')
+        );
+        try {
+            $user_templates = Kernel::getPath('user_templates');
+        } catch (\Exception $e) {}
+        if (!empty($user_templates) && file_exists($user_templates)) {
             $templates_dirs[] = $user_templates;
         }
-        $templates_dirs[]   = $docbook->getPath('base_templates');
         $loader             = new \Twig_Loader_Filesystem($templates_dirs);
         $this->twig         = new \Twig_Environment($loader, array(
-            'cache'             => $docbook->getPath('cache'),
+            'cache'             => Kernel::getPath('cache'),
             'charset'           => $docbook->getConfig('html:charset', 'utf-8'),
             'debug'             => true,
         ));
@@ -117,8 +120,10 @@ class TemplateBuilder
      */
     public function getDefaultViewParams()
     {
-        $docbook = FrontController::getInstance();
-        $session = $docbook->getSession();
+        $docbook    = FrontController::getInstance();
+        $assets     = str_replace(Kernel::getPath('web'), '/', Kernel::getPath('docbook_assets').'/');
+        $db_assets  = $assets.Kernel::getPath('vendor');
+        $session    = $docbook->getSession();
         return array(
             'DB'                => $docbook,
             'user_cfg'          => $docbook->getConfig('user_config', array()),
@@ -126,8 +131,8 @@ class TemplateBuilder
             'app'               => $docbook->getConfig('app', array()),
             'langs'             => $docbook->getConfig('languages', array()),
             'manifest'          => $docbook->getConfig('manifest', array(), null),
-            'assets'            => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/',
-            'vendor_assets'     => '/'.FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets').'/vendor/',
+            'assets'            => $assets,
+            'vendor_assets'     => $db_assets,
             'chapters'          => $docbook->getChapters(),
             'search_str'        => $docbook->getRequest()->getGet('s'),
             'session'           => $session->hasFlash() ? $session->allFlashes() : array(),
@@ -141,8 +146,7 @@ class TemplateBuilder
      */
     public function getTemplate($name)
     {
-        $locator = new Locator;
-        return $locator->fallbackFinder($name);
+        return Kernel::fallbackFinder($name);
     }
 
     /**

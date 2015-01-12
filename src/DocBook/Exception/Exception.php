@@ -24,6 +24,7 @@
 namespace DocBook\Exception;
 
 use \DocBook\FrontController;
+use \DocBook\Kernel;
 
 /**
  * Class Exception
@@ -49,7 +50,7 @@ class Exception
                 $this->getMessage(), $code, array(
                 'exception'=>$this
             ), 'error');
-            if (!FrontController::isDevMode()) {
+            if (!Kernel::isDevMode()) {
                 $docbook->display('', 'error', array('message' => $message), true);
             }
         }

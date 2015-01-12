@@ -30,48 +30,283 @@ class Kernel
 {
 
     /**
-     * Name of the DocBook's manifest
+     * @var array
      */
-    const APP_MANIFEST              = 'composer.json';
+    protected static $_defaults = array(
+        'php' => array(
+            'default_controller'    => 'default',
+            'default_action'        => 'index'
+        ),
+        'paths' => array(
+            'src_dir'               => 'src',
+            'user_dir'              => 'user',
+            'var_dir'               => 'var',
+            'web_dir'               => 'www'
+        ),
+        'dirnames' => array(
+            'config_dir'            => 'config',
+            'templates_dir'         => 'templates',
+            'cache_dir'             => 'cache',
+            'log_dir'               => 'log',
+            'i18n_dir'              => 'i18n',
+            'vendor_dir'            => 'vendor',
+        ),
+        'filenames' => array(
+            'app_manifest'          => 'composer.json',
+            'app_i18n'              => 'docbook_i18n.csv',
+            'config_file'           => 'docbook.ini',
+            'user_config_file'      => 'user_config.ini'
+        )
+    );
 
     /**
-     * Name of the distributed DocBook's manifest
+     * @var array Table of all configuration values
      */
-    const APP_MANIFEST_DIST         = 'composer.dist.json';
+    protected static $_registry = array();
+
+//*/
+    /**
+     * @var array Table of properties for debug
+     */
+    public $debug_vars = array();
+
+    public static function debug()
+    {
+        $a = new Kernel;
+        eval('$b = ' . var_export($a, true) . ';');
+        header('Content-TYpe: text/plain');
+        var_export($b);
+        echo PHP_EOL;
+        exit('-- Kernel DEBUG --');
+    }
+
+    public static function __set_state(array $vars)
+    {
+        $a = new self;
+        $a->debug_vars = self::$_registry;
+        return $a;
+    }
+//*/
 
     /**
-     * Name of the DocBook's config file
+     * @return void
      */
-    const APP_CONFIG_DEFAULT        = '%user_dir%/docbook.ini';
+    public static function init()
+    {
+        self::$_registry = array();
+    }
 
     /**
-     * Name of the distributed DocBook's config file
+     * @throws \Exception
      */
-    const APP_CONFIG_DIST           = 'docbook.dist.ini';
-
-    /**
-     * Name of the DocBook's language file
-     */
-    const APP_I18N_DEFAULT          = '%user_dir%/docbook_i18n.csv';
-
-    /**
-     * Name of the distributed DocBook's language file
-     */
-    const APP_I18N_DIST             = 'docbook_i18n.dist.csv';
-
-    /**
-     * Name of the DocBook's web interface file
-     */
-    const APP_WEBINTERFACE_DEFAULT  = '%web_dir%/index.php';
-
-    /**
-     * Name of the distributed DocBook's web interface file
-     */
-    const APP_WEBINTERFACE_DIST     = 'www_index.dist.php';
-
     public static function boot()
     {
+        try {
+            // initialize object
+            self::init();
 
+            // installation base path
+            self::$_registry['app_base_path'] = self::slashDirname(dirname(dirname(__DIR__)));
+
+            // 1st level paths
+            foreach (self::$_defaults['paths'] as $name=>$path) {
+                $path_name = str_replace('_dir', '_path', $name);
+                self::$_registry[$path_name] = self::$_registry['app_base_path'].self::slashDirname($path);
+            }
+
+            // vendor dirname
+            self::$_registry['vendor'] = self::slashDirname(self::$_defaults['dirnames']['vendor_dir']);
+
+            // var must be writable
+            if (!is_writable(self::getPath('var'))) {
+                throw new \Exception("Directory 'var/' must be writable!");
+            }
+
+            // user must be writable
+            if (!is_writable(self::getPath('user'))) {
+                throw new \Exception("Directory 'user/' must be writable!");
+            }
+
+            // src/config/
+            self::$_registry['config_path'] = self::$_registry['src_path']
+                .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
+
+            // src/templates/
+            self::$_registry['templates_path'] = self::$_registry['src_path']
+                .self::slashDirname(self::$_defaults['dirnames']['templates_dir']);
+
+            // user/config/
+            self::$_registry['user_config_path'] = self::$_registry['user_path']
+                .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
+
+            // user/templates/
+            $user_templates_dir = self::$_registry['user_path']
+                .self::slashDirname(self::$_defaults['dirnames']['templates_dir']);
+            if (file_exists($user_templates_dir)) {
+                self::$_registry['user_templates_path'] = $user_templates_dir;
+            }
+
+            // var/cache/
+            self::$_registry['cache_path'] = self::$_registry['var_path']
+                .self::slashDirname(self::$_defaults['dirnames']['cache_dir']);
+            if (!is_writable(self::getPath('cache'))) {
+                throw new \Exception("Directory 'var/cache/' must be writable!");
+            }
+
+            // var/i18n/
+            self::$_registry['i18n_path'] = self::$_registry['var_path']
+                .self::slashDirname(self::$_defaults['dirnames']['i18n_dir']);
+            if (!is_writable(self::getPath('i18n'))) {
+                throw new \Exception("Directory 'var/i18n/' must be writable!");
+            }
+
+            // var/log/
+            self::$_registry['log_path'] = self::$_registry['var_path']
+                .self::slashDirname(self::$_defaults['dirnames']['log_dir']);
+            if (!is_writable(self::getPath('log'))) {
+                throw new \Exception("Directory 'var/log/' must be writable!");
+            }
+
+            // app manifest
+            self::$_registry['app_manifest_path'] = self::$_registry['app_base_path']
+                .self::$_defaults['filenames']['app_manifest'];
+
+            // config
+            self::$_registry['app_config_path'] = self::getPath('user_config')
+                .self::$_defaults['filenames']['config_file'];
+
+            // i18n
+            self::$_registry['app_i18n_path'] = self::getPath('user_config')
+                .self::$_defaults['filenames']['app_i18n'];
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+    }
+
+    /**
+     * @param array $config
+     * @throws \Exception
+     */
+    public static function parseConfig(array $config)
+    {
+        try {
+
+            // web interface
+            self::$_registry['app_interface_path'] = self::getPath('web')
+                .$config['app']['app_interface'];
+
+            // web docbook assets
+            self::$_registry['docbook_assets_path'] = self::getPath('web')
+                .$config['app']['internal_assets_dir'];
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isDevMode()
+    {
+        return (defined('DOCBOOK_MODE') && DOCBOOK_MODE==='dev');
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     * @throws \Exception
+     */
+    public static function getPath($name)
+    {
+        // absolute path first
+        $_name = str_replace('_dir', '', $name) . '_path';
+        if (array_key_exists($_name, self::$_registry)) {
+            return self::$_registry[$_name];
+
+        // else relative one
+        } elseif (array_key_exists($name, self::$_registry)) {
+            return self::$_registry[$name];
+
+        // else error
+        } else {
+            throw new \Exception(
+                sprintf('Unknown DocBook path "%s"!', $name)
+            );
+        }
+    }
+
+    /**
+     * @param $filename
+     * @param string $filetype
+     * @return bool|string
+     * @throws \Exception
+     */
+    public static function fallbackFinder($filename, $filetype = 'templates_dir')
+    {
+        try {
+            // user first
+            $filetype_name  = 'user_'.$filetype;
+            $user_path      = self::getPath(str_replace('_dir', '_path', $filetype_name));
+            $user_file_path = $user_path.$filename;
+            if (file_exists($user_file_path)) {
+                return $user_file_path;
+            }
+
+            // default
+            $filetype_default   = 'src_'.$filetype;
+            $default_path       = self::getPath(str_replace('_dir', '_path', $filetype_default));
+            $def_file_path      = $default_path.$filename;
+            if (file_exists($def_file_path)) {
+                return $def_file_path;
+            } else {
+                throw new \Exception(
+                    sprintf('File "%s" not found!', $filename)
+                );
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+// ----------------------------
+// Utilities
+// ----------------------------
+
+    /**
+     * @param string $str
+     * @return string
+     */
+    public static function slashDirname($str)
+    {
+        $str = rtrim($str, DIRECTORY_SEPARATOR.'/');
+        return $str.DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * @param $file
+     * @return array
+     * @throws \Exception
+     */
+    public static function parseIniFile($file)
+    {
+        if (file_exists($file)) {
+            $config =  parse_ini_file($file, true);
+            if ($config) {
+                return $config;
+            } else {
+                throw new \Exception(
+                    sprintf('DocBook configuration file "%s" seems malformed!', $file)
+                );
+            }
+        } else {
+            throw new \Exception(
+                sprintf('DocBook configuration file not found but is required (searching "%s")!', $file)
+            );
+        }
     }
 
     /**

@@ -89,10 +89,9 @@ class Helper
      */
     public static function getBreadcrumbs($path = null)
     {
-        $docbook = FrontController::getInstance();
         $breadcrumbs = array();
         if (!empty($path)) {
-            $parts          = explode('/', str_replace($docbook->getPath('base_dir_http'), '', $path));
+            $parts          = explode('/', str_replace(Kernel::getPath('web'), '', $path));
             $breadcrumbs    = array_filter($parts);
         }
         return $breadcrumbs;
@@ -104,8 +103,7 @@ class Helper
      */
     public static function getSecuredRealpath($path)
     {
-        $docbook = FrontController::getInstance();
-        return str_replace($docbook->getPath('root_dir'), '/[***]', $path);
+        return str_replace(Kernel::getPath('app_base_path'), '/[***]', $path);
     }
 
     /**
@@ -114,8 +112,7 @@ class Helper
      */
     public static function getRelativePath($path)
     {
-        $docbook = FrontController::getInstance();
-        return str_replace($docbook->getPath('base_dir_http'), '', $path);
+        return str_replace(Kernel::getPath('web'), '', $path);
     }
 
     /**
@@ -124,9 +121,8 @@ class Helper
      */
     public static function getAbsolutePath($path)
     {
-        $docbook = FrontController::getInstance();
-        return $docbook->getPath('base_dir_http')
-            .str_replace($docbook->getPath('base_dir_http'), '', $path);
+        return Kernel::getPath('web')
+            .str_replace(Kernel::getPath('web'), '', $path);
     }
 
     /**
@@ -182,11 +178,10 @@ class Helper
     public static function getRoute($path, $type = null, $with_interface = false)
     {
         $route          = $path;
-        $docbook        = FrontController::getInstance();
-        $rel_path       = str_replace($docbook->getPath('base_dir_http'), '', $path);
+        $rel_path       = str_replace(Kernel::getPath('web'), '', $path);
         $add_last_slash = (!empty($rel_path) && file_exists($path) && is_dir($path));
         return (true===$with_interface ?
-                FrontController::getInstance()->getAppConfig('app_interface', 'index.php').'?'
+                Kernel::getPath('app_interface').'?'
                 :
                 (!empty($rel_path) ? '/' : '')
             )
@@ -202,7 +197,7 @@ class Helper
     public static function getDirectorySize($path)
     {
         $docbook    = FrontController::getInstance();
-        $tmp        = DirectoryHelper::slashDirname($docbook->getPath('tmp'));
+        $tmp        = Kernel::getPath('var');
         $du_cmd     = Command::getCommandPath('du');
         $grep_cmd   = Command::getCommandPath('grep');
         $command    = $du_cmd.' -cLak '.$path.' | '.$grep_cmd.' total';
@@ -252,7 +247,7 @@ class Helper
         if (is_null($path)) {
             $path = '/';
         }
-        $path = DirectoryHelper::slashDirname($docbook->getPath('base_dir_http')).$path;
+        $path = DirectoryHelper::slashDirname(Kernel::getPath('web')).$path;
 
         $is_dir = file_exists($path) && is_dir($path);
         if ($is_dir) {
@@ -363,7 +358,7 @@ class Helper
             'php_sapi_name'     => php_sapi_name(),
             'apache_version'    => function_exists('apache_get_version') ? apache_get_version() : '?',
             'user_agent'        => $_SERVER['HTTP_USER_AGENT'],
-            'git_clone'         => DirectoryHelper::isGitClone($docbook->getPath('root_dir')),
+            'git_clone'         => DirectoryHelper::isGitClone(Kernel::getPath('app_base_path')),
             'request'           => UrlHelper::getRequestUrl(),
         );
     }
@@ -386,7 +381,7 @@ class Helper
     {
         $name = basename($file_path);
         return (
-            $name !== FrontController::getInstance()->getAppConfig('app_interface', 'index.php') &&
+            $name !== basename(Kernel::getPath('app_interface')) &&
             $name !== FrontController::getInstance()->getConfig('user_config:readme_filename', 'README.md')
         );
     }
@@ -399,7 +394,7 @@ class Helper
     {
         $name = basename($file_path);
         return (
-            $name !== FrontController::getInstance()->getAppConfig('internal_assets_dir', 'docbook_assets')
+            $name !== Kernel::getPath('docbook_assets')
         );
     }
 

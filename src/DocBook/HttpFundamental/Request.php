@@ -24,6 +24,7 @@
 namespace DocBook\HttpFundamental;
 
 use \DocBook\FrontController;
+use \DocBook\Kernel;
 use \DocBook\Locator;
 use \DocBook\Exception\NotFoundException;
 use \Library\Helper\Directory as DirectoryHelper;
@@ -100,7 +101,7 @@ echo '<br />server_argv: '.var_export($server_argv,1);
         // first: request path from URL
         if (!empty($server_query)) {
             $req = $server_query;
-            if ($req===FrontController::getInstance()->getAppConfig('app_interface', 'index.php')) {
+            if ($req===basename(Kernel::getPath('app_interface'))) {
                 $req = $server_uri;
             }
 
@@ -111,7 +112,7 @@ echo '<br />server_argv: '.var_export($server_argv,1);
                 $parts = explode('/', $req);
                 $parts = array_filter($parts);
                 $int_index = array_search(
-                    FrontController::getInstance()->getAppConfig('app_interface', 'index.php'),
+                    basename(Kernel::getPath('app_interface')),
                     $parts);
                 if (!empty($int_index)) unset($parts[$int_index]);
                 $original_parts = $parts;
@@ -160,8 +161,8 @@ echo '<br />server_argv: '.var_export($server_argv,1);
                 if (!empty($file) && ($tmp_action===$file || trim($tmp_action, '/')===$file)) {
                     $tmp_action = null;
                 }
-                if (!empty($tmp_action) && false!==strpos($tmp_action, $docbook->getPath('base_dir_http'))) {
-                    $tmp_action = str_replace($docbook->getPath('base_dir_http'), '', $tmp_action);
+                if (!empty($tmp_action) && false!==strpos($tmp_action, $docbook->getPath('web'))) {
+                    $tmp_action = str_replace($docbook->getPath('web'), '', $tmp_action);
                 }
                 if (!empty($file) && ($tmp_action===$file || trim($tmp_action, '/')===$file)) {
                     $tmp_action = null;
@@ -242,7 +243,7 @@ exit('yo');
         if (empty($input_file)) {
             $input_path = $docbook->getInputPath();
             if (!empty($input_path)) {
-                $input_file = DirectoryHelper::slashDirname($docbook->getPath('base_dir_http')).trim($input_path, '/');
+                $input_file = Kernel::getPath('web').trim($input_path, '/');
             }
         }
 

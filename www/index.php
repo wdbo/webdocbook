@@ -22,11 +22,6 @@
  */
 
 /**
- * Application configuration file
- */
-define('DOCBOOK_CONFIG_FILE', __DIR__.'/../src/config/docbook.ini');
-
-/**
  * Application mode: 'dev' or anything else (as prod)
  */
 define('DOCBOOK_MODE', 'dev');
@@ -61,8 +56,7 @@ if (!defined('DOCBOOK_MODE') || DOCBOOK_MODE!=='dev') {
 }
 
 // the application
-\DocBook\FrontController::getInstance(
-    defined('DOCBOOK_CONFIG_FILE') ? DOCBOOK_CONFIG_FILE : __DIR__.'/../src/config/docbook.ini'
-)->distribute();
+\DocBook\FrontController::getInstance()
+    ->distribute();
 
 // Endfile

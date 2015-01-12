@@ -75,7 +75,7 @@ class Locator
         if (file_exists($path)) {
             return $path;
         }
-        $file_path = DirectoryHelper::slashDirname(FrontController::getInstance()->getPath('base_dir_http'))
+        $file_path = DirectoryHelper::slashDirname(Kernel::getPath('web'))
             .trim($path, '/');
         if (file_exists($file_path)) {
             return $file_path;
@@ -90,46 +90,15 @@ class Locator
     public function getUserConfigPath($local = false)
     {
         $docbook        = FrontController::getInstance();
-        $user_path      = $docbook->getPath('user_dir');
+        $user_path      = Kernel::getPath('user');
         $config_file    = DirectoryHelper::slashDirname($user_path)
             .$docbook->getConfig('app:user_config_file', 'docbook.config');
         if ($local) {
             $config_file = str_replace(
-                DirectoryHelper::slashDirname($docbook->getPath('root_dir'))
+                DirectoryHelper::slashDirname(Kernel::getPath('app_base_path'))
                 , '', $config_file);
         }
         return $config_file;
-    }
-
-    /**
-     * @param $filename
-     * @param string $filetype
-     * @return bool|string
-     */
-    public function fallbackFinder($filename, $filetype = 'template')
-    {
-        $docbook    = FrontController::getInstance();
-        $user_path  = $docbook->getPath('user_dir');
-        $base_path  = 'template'===$filetype ?
-            $docbook->getAppConfig('templates_dir', 'templates') : $docbook->getPath($filetype);
-        $file_path  = DirectoryHelper::slashDirname($base_path).$filename;
-        
-        // user first
-        if (!empty($user_path)) {
-            $user_file_path = DirectoryHelper::slashDirname($docbook->getPath('user_dir')).$file_path;
-            if (file_exists($user_file_path)) {
-                return $user_file_path;
-            }
-        }
-
-        // default
-        $def_file_path = DirectoryHelper::slashDirname($docbook->getPath('base_dir')).$file_path;
-        if (file_exists($def_file_path)) {
-            return $def_file_path;
-        }
-
-        // else false        
-        return false;
     }
 
 }

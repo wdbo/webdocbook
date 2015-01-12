@@ -25,6 +25,7 @@ namespace DocBook\WebFilesystem;
 
 use \DocBook\FrontController;
 use \DocBook\Helper;
+use \DocBook\Kernel;
 use \DocBook\Exception\Exception;
 use \DocBook\Exception\RuntimeException;
 use \WebFilesystem\WebFilesystem;
@@ -55,7 +56,7 @@ class DocBookFile
     protected $type;
 
     /**
-     * @var \DocBook\DocBook
+     * @var \DocBook\FrontController
      */
     protected $docbook;
 
@@ -76,7 +77,7 @@ class DocBookFile
     public function __construct($file_name)
     {
         $this->docbook  = FrontController::getInstance();
-        $_root          = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
+        $_root          = DirectoryHelper::slashDirname(Kernel::getPath('web'));
 
         if (substr_count($file_name, $_root)>0) {
             $realpath = $_root.str_replace($_root, '', $file_name);
@@ -102,7 +103,7 @@ class DocBookFile
             self::$config = $this->docbook->getConfig('file_types', array());
         }
 
-        $_root = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
+        $_root = DirectoryHelper::slashDirname(Kernel::getPath('web'));
         if (substr_count($file_name, $_root)>0) {
             $realpath = $_root.str_replace($_root, '', $file_name);
             $this->type = $this->getDocBookTypeByPath($realpath);
@@ -189,7 +190,7 @@ class DocBookFile
      */
     public function isChildOfLink()
     {
-        $_root  = DirectoryHelper::slashDirname($this->docbook->getPath('base_dir_http'));
+        $_root  = Kernel::getPath('web');
         $_dir   = DirectoryHelper::slashDirname($this->getRealPath());
         return (substr_count($_dir, $_root) === 0);
     }
@@ -498,7 +499,7 @@ class DocBookFile
         if (!isset($this->cache['docbook_human_readable_filename'])) {
             $docbook = FrontController::getInstance();
             if (
-                DirectoryHelper::slashDirname($this->getRealPath())===DirectoryHelper::slashDirname($docbook->getPath('base_dir_http')) ||
+                DirectoryHelper::slashDirname($this->getRealPath())===Kernel::getPath('web') ||
                 DirectoryHelper::slashDirname($this->getRealPath())==='/'
             ) {
                 $this->cache['docbook_human_readable_filename'] = _T('Home');
