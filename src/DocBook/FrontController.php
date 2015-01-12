@@ -137,13 +137,12 @@ class FrontController
     }
 
     /**
-     * @param string $config_file
      * @throws \DocBook\Exception\Exception
      */
-    protected function init($config_file)
+    protected function init()
     {
         // DocBook booting
-        $this->boot($config_file);
+        $this->boot();
 
         // the logger
         $this->logger = new Logger(array(
