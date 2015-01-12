@@ -357,15 +357,9 @@ class FrontController
                 
                 if ($param==='lang') {
                     $langs = $this->getConfig('languages:langs', array('en'=>'English'));
-/*
-echo '<br />';
-var_export($value);
-var_export($langs);
-*/
                     if (array_key_exists($value, $langs)) {
                         i18n::getInstance()->setLanguage($value);
                         $true_language = i18n::getInstance()->getLanguage();
-//var_export($true_language);
                         if (!isset($_SESSION['lang']) || $_SESSION['lang']!==$true_language) {
                             $_SESSION['lang'] = $true_language;
                         }
@@ -374,9 +368,6 @@ var_export($langs);
                 
             }
         }
-
-//var_export($args);
-//exit('yo');
         return $this;
     }
 
