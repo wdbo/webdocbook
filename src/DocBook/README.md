@@ -1,48 +1,13 @@
 DocBook sources
 ===============
 
+This directory stores the PHP sources and resources of *DocBook*.
 
-App structure
--------------
+To get more information about these sources, their organization and
+the development process, you can have a look at the 
+[documentation](http://github.com/atelierspierrot/docbook/tree/master/src/DocBook/Resources/docs/)
+(it is included in the package at `src/DocBook/Resources/docs/`).
 
-The structure described below MUST be fixed and not over-writable:
-
-    [ROOT_DIR]
-    |
-    | composer.json
-    |
-    | src/                              : docbook internals: this can NOT be edited, moved or removed
-    | ----- config/
-    | ----- DocBook/
-    | ----- templates/
-    | ----- vendor/
-    |
-    | user/
-    | ----- config/
-    | ------------- docbook.ini         : this can be edited
-    | ------------- docbook_i18n.csv    : this can be edited
-    | ------------- user_config.ini     : this is handled by the '/admin' page of DocBook
-    | ----- templates/                  : this is optional
-    |
-    | var/
-    | ----- cache/
-    | ----- log/
-    | ----- i18n/
-    |
-    | www/
-    | ----- index.php                   : this can be renamed in user/config/docbook.ini
-    | ----- docbook_assets/             : this can be renamed in user/config/docbook.ini
-    | -------------------- vendor/
-
-
-Namespace
----------
-
-The whole app is embedded in the `DocBook` PHP namespace. As it uses [Composer](http://getcomposer.com/),
-the package's classes are all named following their class name (in camel-case-underscored) 
-and all included in the namespace.
-
-
-Kernel
-------
-
+To get more information about third-parties assets, you can have a look
+at the [assets documentation](http://github.com/atelierspierrot/docbook/tree/master/www/docbook_assets/vendor/)
+(it is included in the package at `www/docbook_assets/vendor/`).
