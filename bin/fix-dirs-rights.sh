@@ -52,11 +52,9 @@ CHMOD="${1:-0775}"
 
 echo "> setting rights '${CHMOD}' on directories '${ORIGINALDIR}/{var|user}/'"
 
-mkdir -p "${ORIGINALDIR}/{var|user}"
-mkdir -p "${ORIGINALDIR}/var/{cache|i18n|log}"
-mkdir -p "${ORIGINALDIR}/user/config"
-chmod -R "$CHMOD" "${ORIGINALDIR}/var"
-chmod -R "$CHMOD" "${ORIGINALDIR}/user"
+mkdir -p "$ORIGINALDIR"/{var/{cache,i18n,log},user/config}
+chmod -R "$CHMOD" "$ORIGINALDIR"/var
+chmod -R "$CHMOD" "$ORIGINALDIR"/user
 
 echo "_ ok"
 
