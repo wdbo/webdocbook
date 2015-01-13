@@ -126,6 +126,9 @@ class Kernel
             return;
         }
 
+        // a simple error string
+        $error_str = 'Directory "%s" must be writable for your web-server\'s user!';
+
         // initialize object
         self::init();
 
@@ -140,12 +143,12 @@ class Kernel
 
         // var must be writable
         if (!is_writable(self::getPath('var'))) {
-            throw new \Exception("Directory 'var/' must be writable!");
+            throw new \Exception(sprintf($error_str, 'var/'));
         }
 
         // user must be writable
         if (!is_writable(self::getPath('user'))) {
-            throw new \Exception("Directory 'user/' must be writable!");
+            throw new \Exception(sprintf($error_str, 'user/'));
         }
 
         // src/config/
@@ -160,7 +163,7 @@ class Kernel
         self::$_registry['user_config_path'] = self::$_registry['user_path']
             .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
         if (!is_writable(self::getPath('user_config'))) {
-            throw new \Exception("Directory 'user/config/' must be writable!");
+            throw new \Exception(sprintf($error_str, 'user/config/'));
         }
 
         // user/templates/
@@ -174,21 +177,21 @@ class Kernel
         self::$_registry['cache_path'] = self::$_registry['var_path']
             .self::slashDirname(self::$_defaults['dirnames']['cache_dir']);
         if (!is_writable(self::getPath('cache'))) {
-            throw new \Exception("Directory 'var/cache/' must be writable!");
+            throw new \Exception(sprintf($error_str, 'var/cache/'));
         }
 
         // var/i18n/
         self::$_registry['i18n_path'] = self::$_registry['var_path']
             .self::slashDirname(self::$_defaults['dirnames']['i18n_dir']);
         if (!is_writable(self::getPath('i18n'))) {
-            throw new \Exception("Directory 'var/i18n/' must be writable!");
+            throw new \Exception(sprintf($error_str, 'var/i18n/'));
         }
 
         // var/log/
         self::$_registry['log_path'] = self::$_registry['var_path']
             .self::slashDirname(self::$_defaults['dirnames']['log_dir']);
         if (!is_writable(self::getPath('log'))) {
-            throw new \Exception("Directory 'var/log/' must be writable!");
+            throw new \Exception(sprintf($error_str, 'var/log/'));
         }
 
         // app manifest
@@ -449,7 +452,7 @@ class Kernel
             $ok = copy($i18n_src, $i18n_tgt);
             if (!$ok) {
                 throw new \Exception(
-                    sprintf('Can not copy distributed configuration file to "%s"!', self::getPath('app_i18n', true))
+                    sprintf('Can not copy distributed language file to "%s"!', self::getPath('app_i18n', true))
                 );
             }
         }
