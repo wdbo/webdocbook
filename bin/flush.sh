@@ -67,12 +67,12 @@ fi
 echo "> flushing DocBook temporary files in '$ORIGINALDIR'"
 
 if $FLUSH_CACHE; then
-    echo "tmp/cache/* ..."
-    rm -rf tmp/cache/*
+    echo "var/cache/* ..."
+    rm -rf var/cache/*
 fi
 if $FLUSH_I18N; then
-    echo "tmp/i18n/* ..."
-    rm -rf tmp/i18n/*
+    echo "var/i18n/* ..."
+    rm -rf var/i18n/*
 fi
 
 echo "_ ok"
