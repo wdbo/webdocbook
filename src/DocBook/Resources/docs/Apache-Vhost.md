@@ -1,6 +1,7 @@
 Virtual host with *Apache*
 ==========================
 
+A default `.htaccess` file could be:
 
     # no indexing
     Options -Indexes +FollowSymLinks
