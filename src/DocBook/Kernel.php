@@ -51,9 +51,10 @@ class Kernel
         ),
         'paths' => array(
             'src_dir'               => 'src',
+            'resources_dir'         => 'src/DocBook/Resources',
             'user_dir'              => 'user',
             'var_dir'               => 'var',
-            'web_dir'               => 'www'
+            'web_dir'               => 'www',
         ),
         'dirnames' => array(
             'config_dir'            => 'config',
@@ -148,7 +149,7 @@ class Kernel
         }
 
         // src/config/
-        self::$_registry['config_path'] = self::$_registry['src_path']
+        self::$_registry['config_path'] = self::$_registry['resources_path']
             .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
 
         // src/templates/
