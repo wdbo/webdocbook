@@ -23,7 +23,6 @@
 
 namespace DocBook\Abstracts;
 
-use \DocBook\Locator;
 use \DocBook\HttpFundamental\Response;
 use \DocBook\HttpFundamental\Request;
 use \DocBook\TemplateBuilder;
@@ -31,7 +30,6 @@ use \Library\Command;
 use \Library\Session\FlashSession;
 use \MarkdownExtended\MarkdownExtended;
 use \Patterns\Abstracts\AbstractSingleton;
-use \Patterns\Commons\ConfigurationRegistry;
 
 /**
  * Class AbstractFrontController
@@ -46,16 +44,6 @@ abstract class AbstractFrontController
      * @var array
      */
     protected $routing = array();
-
-    /**
-     * @var \DocBook\Locator
-     */
-    protected $locator;
-
-    /**
-     * @var \Patterns\Commons\ConfigurationRegistry
-     */
-    protected $registry;
 
     /**
      * @var \DocBook\HttpFundamental\Request
@@ -98,10 +86,8 @@ abstract class AbstractFrontController
     protected function __construct()
     {
         $this
-            ->setRegistry(new ConfigurationRegistry)
             ->setResponse(new Response)
             ->setRequest(new Request)
-            ->setLocator(new Locator)
             ->setTerminal(new Command)
             ->setSession(new FlashSession)
         ;
@@ -146,25 +132,6 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @param \DocBook\Locator $locator
-     * @return $this
-     * @access private
-     */
-    private function setLocator(Locator $locator)
-    {
-        $this->locator = $locator;
-        return $this;
-    }
-
-    /**
-     * @return \DocBook\Locator
-     */
-    public function getLocator()
-    {
-        return $this->locator;
-    }
-
-    /**
      * @param \DocBook\HttpFundamental\Request $request
      * @return $this
      * @access private
@@ -181,51 +148,6 @@ abstract class AbstractFrontController
     public function getRequest()
     {
         return $this->request;
-    }
-
-    /**
-     * @param \Patterns\Commons\ConfigurationRegistry $registry
-     * @return $this
-     * @access private
-     */
-    private function setRegistry(ConfigurationRegistry $registry)
-    {
-        $this->registry = $registry;
-        return $this;
-    }
-
-    /**
-     * @return \DocBook\Registry
-     */
-    public function getRegistry()
-    {
-        return $this->registry;
-    }
-
-    /**
-     * @param null $name
-     * @param null $default
-     * @param string $scope
-     * @return array|mixed|null
-     */
-    public function getConfig($name = null, $default = null, $scope = 'docbook')
-    {
-        if (is_null($name)) {
-            return $this->registry->getConfigs();
-        } else {
-            return $this->registry->get($name, $default, $scope);
-        }
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @param string $scope
-     * @return mixed
-     */
-    public function setConfig($name, $value, $scope = 'docbook')
-    {
-        return $this->registry->set($name, $value, $scope);
     }
 
     /**

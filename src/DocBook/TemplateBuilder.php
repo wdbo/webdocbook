@@ -61,7 +61,7 @@ class TemplateBuilder
         $loader             = new \Twig_Loader_Filesystem($templates_dirs);
         $this->twig         = new \Twig_Environment($loader, array(
             'cache'             => Kernel::getPath('cache'),
-            'charset'           => $docbook->getConfig('html:charset', 'utf-8'),
+            'charset'           => Kernel::getConfig('html:charset', 'utf-8'),
             'debug'             => true,
         ));
         $this->twig->addExtension(new \Twig_Extension_Debug());
@@ -121,18 +121,16 @@ class TemplateBuilder
     public function getDefaultViewParams()
     {
         $docbook    = FrontController::getInstance();
-        $assets     = str_replace(Kernel::getPath('web'), '/', Kernel::getPath('docbook_assets').'/');
-        $db_assets  = $assets.Kernel::getPath('vendor');
         $session    = $docbook->getSession();
         return array(
             'DB'                => $docbook,
-            'user_cfg'          => $docbook->getConfig('user_config', array()),
-            'app_cfg'           => $docbook->getConfig('html', array()),
-            'app'               => $docbook->getConfig('app', array()),
-            'langs'             => $docbook->getConfig('languages', array()),
-            'manifest'          => $docbook->getConfig('manifest', array(), null),
-            'assets'            => $assets,
-            'vendor_assets'     => $db_assets,
+            'user_cfg'          => Kernel::get('user_config'),
+            'manifest'          => Kernel::get('manifest'),
+            'app_cfg'           => Kernel::getConfig('html', array()),
+            'app'               => Kernel::getConfig('app', array()),
+            'langs'             => Kernel::getConfig('languages', array()),
+            'assets'            => '/'.Kernel::getPath('docbook_assets', true, 'web'),
+            'vendor_assets'     => '/'.Kernel::getPath('vendor_assets', true, 'web'),
             'chapters'          => $docbook->getChapters(),
             'search_str'        => $docbook->getRequest()->getGet('s'),
             'session'           => $session->hasFlash() ? $session->allFlashes() : array(),
@@ -146,7 +144,7 @@ class TemplateBuilder
      */
     public function getTemplate($name)
     {
-        return Kernel::fallbackFinder($name);
+        return Kernel::findTemplate($name);
     }
 
     /**

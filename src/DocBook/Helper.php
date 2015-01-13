@@ -247,7 +247,7 @@ class Helper
         if (is_null($path)) {
             $path = '/';
         }
-        $path = DirectoryHelper::slashDirname(Kernel::getPath('web')).$path;
+        $path = Kernel::getPath('web') . $path;
 
         $is_dir = file_exists($path) && is_dir($path);
         if ($is_dir) {
@@ -382,7 +382,7 @@ class Helper
         $name = basename($file_path);
         return (
             $name !== basename(Kernel::getPath('app_interface')) &&
-            $name !== FrontController::getInstance()->getConfig('user_config:readme_filename', 'README.md')
+            $name !== Kernel::getConfig('user_config:readme_filename', 'README.md')
         );
     }
 
@@ -492,7 +492,7 @@ class Helper
     {
         if (!empty($type)) {
             if (is_null(self::$_cfg_icons)) {
-                self::$_cfg_icons = FrontController::getInstance()->getConfig('icons', array());
+                self::$_cfg_icons = Kernel::getConfig('icons', array());
             }
             return '<span class="fa fa-'
                 .(isset(self::$_cfg_icons[$type]) ? self::$_cfg_icons[$type] : self::$_cfg_icons['default'])

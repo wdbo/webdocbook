@@ -91,8 +91,7 @@ class DocBookController
     public function docbookdocAction()
     {
         $title = _T('User manual');
-        $path = DirectoryHelper::slashDirname(Kernel::getPath('docbook_assets'))
-            .$this->docbook->getConfig('pages:user_manual', array());
+        $path = Kernel::getPath('docbook_assets') . Kernel::getConfig('pages:user_manual', '');
 
         $page_infos = array(
             'name'      => $title,
@@ -135,7 +134,7 @@ class DocBookController
      */
     public function adminAction()
     {
-        $allowed = $this->docbook->getConfig('user_config:expose_admin', false);
+        $allowed = Kernel::getConfig('expose_admin', false, 'user_config');
         $saveadmin = $this->docbook->getSession()->get('saveadmin');
         $this->docbook->getSession()->remove('saveadmin');
         if (
@@ -145,11 +144,10 @@ class DocBookController
             throw new NotFoundException('Forbidden access!');
         }
 
-        $user_config_file   = $this->docbook->getLocator()->getUserConfigPath(true);
-        $user_config        = $this->docbook->getConfig('user_config', array());
+        $user_config_file   = Kernel::getPath('user_config', true);
+        $user_config        = Kernel::get('user_config');
         $title              = _T('Administration');
-        $path               = DirectoryHelper::slashDirname(Kernel::getPath('docbook_assets'))
-                                .$this->docbook->getConfig('pages:admin_welcome', array());
+        $path               = Kernel::getPath('docbook_assets') . Kernel::getConfig('pages:admin_welcome', '');
         $page_infos         = array(
             'name'      => $title,
             'path'      => 'admin',
@@ -179,7 +177,7 @@ class DocBookController
                 'toc'           => $menu,
                 'user_config_file'=> $user_config_file,
                 'user_config'   => $user_config,
-                'config'        => $this->docbook->getConfig(),
+                'config'        => Kernel::getConfig(),
             )
         );
 
@@ -193,7 +191,7 @@ class DocBookController
      */
     public function saveadminAction()
     {
-        $allowed = $this->docbook->getConfig('user_config:expose_admin', false);
+        $allowed = Kernel::getConfig('expose_admin', false, 'user_config');
         if (!$allowed || ('true' !== $allowed && '1' !== $allowed)) {
             throw new NotFoundException('Forbidden access!');
         }
@@ -203,9 +201,9 @@ class DocBookController
             $this->docbook->getSession()->set('saveadmin', time());
             $root_dir       = Kernel::getPath('app_base_path');
             $data           = $this->docbook->getRequest()->getData();
-            $config_file    = $this->docbook->getLocator()->getUserConfigPath();
+            $config_file    = Kernel::getPath('user_config');
 
-            $internal_conf = $this->docbook->getConfig('userconf', array());
+            $internal_conf = Kernel::getConfig('userconf', array());
             foreach ($internal_conf as $var=>$val) {
                 if (!array_key_exists($var, $data) && ($val=='1' || $val=='0')) {
                     $data[$var] = 0;

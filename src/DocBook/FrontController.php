@@ -90,38 +90,20 @@ class FrontController
 
             $this->session->start();
 
-            // the docbook config (required)
-            $config_file = Kernel::getPath('app_config');
-            if (file_exists($config_file)) {
-                $config =  parse_ini_file($config_file, true);
-                if ($config) {
-                    $this->setConfig('docbook', $config, null);
-                    Kernel::parseConfig($config);
-                } else {
-                    throw new Exception(
-                        sprintf('DocBook configuration file "%s" seems malformed!', $config_file)
-                    );
-                }
-            } else {
-                throw new Exception(
-                    sprintf('DocBook configuration file not found but is required (searching "%s")!', $config_file)
-                );
-            }
-
             // the actual manifest
             $manifest_ctt = file_get_contents(Kernel::getPath('app_manifest'));
             if ($manifest_ctt!==false) {
                 $manifest_data = json_decode($manifest_ctt, true);
                 if ($manifest_data) {
-                    $this->setConfig('manifest', $manifest_data, null);
+                    Kernel::setConfig($manifest_data, 'manifest');
                 } else {
                     throw new \Exception(
-                        sprintf('Can not parse app manifest "%s" JSON content!', Kernel::getPath('app_manifest'))
+                        sprintf('Can not parse app manifest "%s" JSON content!', Kernel::getPath('app_manifest', true))
                     );
                 }
             } else {
                 throw new \Exception(
-                    sprintf('App manifest "%s" not found or is empty!', Kernel::getPath('app_manifest'))
+                    sprintf('App manifest "%s" not found or is empty!', Kernel::getPath('app_manifest', true))
                 );
             }
 
@@ -146,38 +128,38 @@ class FrontController
 
         // the logger
         $this->logger = new Logger(array(
-            'directory'     => Kernel::getPath('log'),
-            'logfile'       => $this->getConfig('app:logfile', 'history'),
-            'error_logfile' => $this->getConfig('app:error_logfile', 'errors'),
-            'duplicate_errors' => false,
+            'directory'         => Kernel::getPath('log'),
+            'logfile'           => Kernel::getConfig('app:logfile', 'history'),
+            'error_logfile'     => Kernel::getConfig('app:error_logfile', 'errors'),
+            'duplicate_errors'  => false,
         ));
 
         // user configuration
-        $internal_config    = $this->getConfig('userconf', array());
-        $user_config_file   = $this->getLocator()->getUserConfigPath();
+        $internal_config    = Kernel::getConfig('userconf', array());
+        $user_config_file   = Kernel::getPath('user_config');
         if (file_exists($user_config_file)) {
             $user_config = parse_ini_file($user_config_file, true);
             if (!empty($user_config)) {
-                $this->setConfig('user_config', $user_config);
+                Kernel::setConfig($user_config, 'user_config');
             } else {
                 throw new Exception(
                     sprintf('Can not read you configuration file "%s"!', $user_config_file)
                 );
             }
         } else {
-            $this->setConfig('user_config', $internal_config);
+            Kernel::setConfig($internal_config, 'user_config');
         }
 
         // creating the application default headers
-        $charset        = $this->getConfig('html:charset', 'utf-8');
-        $content_type   = $this->getConfig('html:content-type', 'text/html');
-        $app_name       = $this->getConfig('title', null, 'manifest');
-        $app_version    = $this->getConfig('version', null, 'manifest');
-        $app_website    = $this->getConfig('homepage', null, 'manifest');
+        $charset        = Kernel::getConfig('html:charset', 'utf-8');
+        $content_type   = Kernel::getConfig('html:content-type', 'text/html');
+        $app_name       = Kernel::getConfig('title', null, 'manifest');
+        $app_version    = Kernel::getConfig('version', null, 'manifest');
+        $app_website    = Kernel::getConfig('homepage', null, 'manifest');
         $this->response->addHeader('Content-type', $content_type.'; charset: '.$charset);
 
         // expose app ?
-        $expose_docbook = $this->getConfig('app:expose_docbook', true);
+        $expose_docbook = Kernel::getConfig('app:expose_docbook', true);
         if (true===$expose_docbook || 'true'===$expose_docbook || '1'===$expose_docbook) {
             $this->response->addHeader('Composed-by', $app_name.' '.$app_version.' ('.$app_website.')');
         }
@@ -186,10 +168,10 @@ class FrontController
         $this->setTemplateBuilder(new TemplateBuilder);
 
         // some PHP configs
-        @date_default_timezone_set( $this->getConfig('user_config:timezone', 'Europe/London') );
+        @date_default_timezone_set( Kernel::getConfig('user_config:timezone', 'Europe/London') );
         
         // the internationalization
-        $langs = $this->getConfig('languages:langs', array('en'=>'English'));
+        $langs = Kernel::getConfig('languages:langs', array('en'=>'English'));
         $i18n_loader_opts = array(
             'language_directory'            => Kernel::getPath('i18n'),
             'language_strings_db_directory' => Kernel::getPath('user_config'),
@@ -203,10 +185,10 @@ class FrontController
         $translator = I18n::getInstance(new I18n_Loader($i18n_loader_opts));
 
         // language
-        $def_ln = $this->getConfig('languages:default', 'auto');
+        $def_ln = Kernel::getConfig('languages:default', 'auto');
         if (!empty($def_ln) && $def_ln==='auto') {
             $translator->setDefaultFromHttp();
-            $def_ln = $this->getConfig('languages:fallback_language', 'en');
+            $def_ln = Kernel::getConfig('languages:fallback_language', 'en');
         }
         $trans_ln = $translator->getLanguage();
         if (empty($trans_ln)) {
@@ -356,7 +338,7 @@ class FrontController
             foreach ($args as $param=>$value) {
                 
                 if ($param==='lang') {
-                    $langs = $this->getConfig('languages:langs', array('en'=>'English'));
+                    $langs = Kernel::getConfig('languages:langs', array('en'=>'English'));
                     if (array_key_exists($value, $langs)) {
                         i18n::getInstance()->setLanguage($value);
                         $true_language = i18n::getInstance()->getLanguage();
@@ -455,8 +437,8 @@ class FrontController
     {
         if (empty($this->markdown_parser)) {
             // creating the Markdown parser
-            $emd_config = $this->getConfig('markdown', array());
-            $emd_config_strs = $this->getConfig('markdown_i18n', array());
+            $emd_config = Kernel::getConfig('markdown', array());
+            $emd_config_strs = Kernel::getConfig('markdown_i18n', array());
             if (!empty($emd_config_strs) && is_array($emd_config_strs) && count($emd_config_strs)==1 && isset($emd_config_strs['markdown_i18n'])) {
                 $emd_config_strs = $emd_config_strs['markdown_i18n'];
             }
@@ -476,7 +458,7 @@ class FrontController
      */
     public function getTemplate($name)
     {
-        return $this->getConfig('templates:'.$name, null);
+        return Kernel::getConfig('templates:'.$name, null);
     }
 
     /**
@@ -490,9 +472,9 @@ class FrontController
         foreach($dir as $file) {
             if ($file->isDir()) {
                 $paths[] = array(
-                    'path'      =>Helper::getSecuredRealpath($file->getRealPath()),
-                    'route'     =>Helper::getRoute($file->getDocBookPath()),
-                    'name'      =>$file->getHumanReadableFilename(),
+                    'path'      => Helper::getSecuredRealpath($file->getRealPath()),
+                    'route'     => Helper::getRoute($file->getDocBookPath()),
+                    'name'      => $file->getHumanReadableFilename(),
                 );
             }
         }

@@ -25,7 +25,6 @@ namespace DocBook\HttpFundamental;
 
 use \DocBook\FrontController;
 use \DocBook\Kernel;
-use \DocBook\Locator;
 use \DocBook\Exception\NotFoundException;
 use \Library\Helper\Directory as DirectoryHelper;
 use \Library\HttpFundamental\Request as BaseRequest;
@@ -87,7 +86,6 @@ class Request
         $server_query       = $_SERVER['QUERY_STRING'];
         $server_argv        = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
         $docbook            = FrontController::getInstance();
-        $locator            = new Locator;
 
         $file = $path = $action = null;
         $args = array();
@@ -106,7 +104,7 @@ echo '<br />server_argv: '.var_export($server_argv,1);
             }
 
             // if '/action'
-            if ($ctrl = $locator->findController(trim($req, '/'))) {
+            if ($ctrl = Kernel::findController(trim($req, '/'))) {
                 $action = trim($req, '/');
             } else {
                 $parts = explode('/', $req);
@@ -118,10 +116,10 @@ echo '<br />server_argv: '.var_export($server_argv,1);
                 $original_parts = $parts;
 
                 // classic case : XXX/YYY/...(/action)
-                $test_file = $locator->locateDocument(implode('/', $parts));
+                $test_file = Kernel::findDocument(implode('/', $parts));
                 while(empty($test_file) && count($parts)>0) {
                     array_pop($parts);
-                    $test_file = $locator->locateDocument(implode('/', $parts));
+                    $test_file = Kernel::findDocument(implode('/', $parts));
                 }
                 if (count($parts)>0) {
                     $file = $test_file;
@@ -247,7 +245,7 @@ exit('yo');
             }
         }
 
-        $ctrl_infos = $docbook->getLocator()->findController($page_type);
+        $ctrl_infos = Kernel::findController($page_type);
         if ($ctrl_infos) {
             $this->setRouting($ctrl_infos);
         } else {

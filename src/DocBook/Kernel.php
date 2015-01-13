@@ -24,13 +24,25 @@
 namespace DocBook;
 
 /**
- * Class Kernel of DocBook
+ * Class Kernel
+ *
+ * This is the central kernel of DocBook, fully static.
+ *
+ * It only throws "classic" `\Exception` as it is used by Composer's
+ * commands scripts (when the namespace is not yet loaded).
+ *
+ * The `$_defaults` table defines default required paths and variables.
  */
 class Kernel
 {
 
     /**
-     * @var array
+     * @var bool Flag to initiate the Kernel object at each run
+     */
+    private static $_booted = false;
+
+    /**
+     * @var array Table of defaults paths and variables (not over-writable)
      */
     protected static $_defaults = array(
         'php' => array(
@@ -54,8 +66,8 @@ class Kernel
         'filenames' => array(
             'app_manifest'          => 'composer.json',
             'app_i18n'              => 'docbook_i18n.csv',
-            'config_file'           => 'docbook.ini',
-            'user_config_file'      => 'user_config.ini'
+            'app_config'            => 'docbook.ini',
+            'user_config'           => 'user_config.ini'
         )
     );
 
@@ -65,9 +77,11 @@ class Kernel
     protected static $_registry = array();
 
 //*/
-    /**
-     * @var array Table of properties for debug
-     */
+// ----------------------------
+// use this for hard debug: Kernel::debug()
+// ----------------------------
+
+
     public $debug_vars = array();
 
     public static function debug()
@@ -88,6 +102,10 @@ class Kernel
     }
 //*/
 
+// ----------------------------
+// Booting system
+// ----------------------------
+
     /**
      * @return void
      */
@@ -97,118 +115,130 @@ class Kernel
     }
 
     /**
+     * @param bool $soft_boot Set to `true` to not load configuration (during Composer installation)
+     * @return void
      * @throws \Exception
      */
-    public static function boot()
+    public static function boot($soft_boot = false)
     {
+        if (self::$_booted) {
+            return;
+        }
+
+        // initialize object
+        self::init();
+
+        // installation base path
+        self::$_registry['app_base_path'] = self::slashDirname(dirname(dirname(__DIR__)));
+
+        // 1st level paths
+        foreach (self::$_defaults['paths'] as $name=>$path) {
+            $path_name = str_replace('_dir', '_path', $name);
+            self::$_registry[$path_name] = self::$_registry['app_base_path'].self::slashDirname($path);
+        }
+
+        // var must be writable
+        if (!is_writable(self::getPath('var'))) {
+            throw new \Exception("Directory 'var/' must be writable!");
+        }
+
+        // user must be writable
+        if (!is_writable(self::getPath('user'))) {
+            throw new \Exception("Directory 'user/' must be writable!");
+        }
+
+        // src/config/
+        self::$_registry['config_path'] = self::$_registry['src_path']
+            .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
+
+        // src/templates/
+        self::$_registry['templates_path'] = self::$_registry['src_path']
+            .self::slashDirname(self::$_defaults['dirnames']['templates_dir']);
+
+        // user/config/
+        self::$_registry['user_config_path'] = self::$_registry['user_path']
+            .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
+
+        // user/templates/
+        $user_templates_dir = self::$_registry['user_path']
+            .self::slashDirname(self::$_defaults['dirnames']['templates_dir']);
+        if (file_exists($user_templates_dir)) {
+            self::$_registry['user_templates_path'] = $user_templates_dir;
+        }
+
+        // var/cache/
+        self::$_registry['cache_path'] = self::$_registry['var_path']
+            .self::slashDirname(self::$_defaults['dirnames']['cache_dir']);
+        if (!is_writable(self::getPath('cache'))) {
+            throw new \Exception("Directory 'var/cache/' must be writable!");
+        }
+
+        // var/i18n/
+        self::$_registry['i18n_path'] = self::$_registry['var_path']
+            .self::slashDirname(self::$_defaults['dirnames']['i18n_dir']);
+        if (!is_writable(self::getPath('i18n'))) {
+            throw new \Exception("Directory 'var/i18n/' must be writable!");
+        }
+
+        // var/log/
+        self::$_registry['log_path'] = self::$_registry['var_path']
+            .self::slashDirname(self::$_defaults['dirnames']['log_dir']);
+        if (!is_writable(self::getPath('log'))) {
+            throw new \Exception("Directory 'var/log/' must be writable!");
+        }
+
+        // app manifest
+        self::$_registry['app_manifest_path'] = self::$_registry['app_base_path']
+            .self::$_defaults['filenames']['app_manifest'];
+
+        // config
+        self::$_registry['app_config_path'] = self::getPath('user_config')
+            .self::$_defaults['filenames']['app_config'];
+
+        // i18n
+        self::$_registry['app_i18n_path'] = self::getPath('user_config')
+            .self::$_defaults['filenames']['app_i18n'];
+
+        // user_config
+        self::$_registry['user_config_path'] = self::getPath('user_config')
+            .self::$_defaults['filenames']['user_config'];
+
+        // stops here for soft boot
+        if ($soft_boot) {
+            return;
+        }
+
+        // configuration file
         try {
-            // initialize object
-            self::init();
-
-            // installation base path
-            self::$_registry['app_base_path'] = self::slashDirname(dirname(dirname(__DIR__)));
-
-            // 1st level paths
-            foreach (self::$_defaults['paths'] as $name=>$path) {
-                $path_name = str_replace('_dir', '_path', $name);
-                self::$_registry[$path_name] = self::$_registry['app_base_path'].self::slashDirname($path);
-            }
-
-            // vendor dirname
-            self::$_registry['vendor'] = self::slashDirname(self::$_defaults['dirnames']['vendor_dir']);
-
-            // var must be writable
-            if (!is_writable(self::getPath('var'))) {
-                throw new \Exception("Directory 'var/' must be writable!");
-            }
-
-            // user must be writable
-            if (!is_writable(self::getPath('user'))) {
-                throw new \Exception("Directory 'user/' must be writable!");
-            }
-
-            // src/config/
-            self::$_registry['config_path'] = self::$_registry['src_path']
-                .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
-
-            // src/templates/
-            self::$_registry['templates_path'] = self::$_registry['src_path']
-                .self::slashDirname(self::$_defaults['dirnames']['templates_dir']);
-
-            // user/config/
-            self::$_registry['user_config_path'] = self::$_registry['user_path']
-                .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
-
-            // user/templates/
-            $user_templates_dir = self::$_registry['user_path']
-                .self::slashDirname(self::$_defaults['dirnames']['templates_dir']);
-            if (file_exists($user_templates_dir)) {
-                self::$_registry['user_templates_path'] = $user_templates_dir;
-            }
-
-            // var/cache/
-            self::$_registry['cache_path'] = self::$_registry['var_path']
-                .self::slashDirname(self::$_defaults['dirnames']['cache_dir']);
-            if (!is_writable(self::getPath('cache'))) {
-                throw new \Exception("Directory 'var/cache/' must be writable!");
-            }
-
-            // var/i18n/
-            self::$_registry['i18n_path'] = self::$_registry['var_path']
-                .self::slashDirname(self::$_defaults['dirnames']['i18n_dir']);
-            if (!is_writable(self::getPath('i18n'))) {
-                throw new \Exception("Directory 'var/i18n/' must be writable!");
-            }
-
-            // var/log/
-            self::$_registry['log_path'] = self::$_registry['var_path']
-                .self::slashDirname(self::$_defaults['dirnames']['log_dir']);
-            if (!is_writable(self::getPath('log'))) {
-                throw new \Exception("Directory 'var/log/' must be writable!");
-            }
-
-            // app manifest
-            self::$_registry['app_manifest_path'] = self::$_registry['app_base_path']
-                .self::$_defaults['filenames']['app_manifest'];
-
-            // config
-            self::$_registry['app_config_path'] = self::getPath('user_config')
-                .self::$_defaults['filenames']['config_file'];
-
-            // i18n
-            self::$_registry['app_i18n_path'] = self::getPath('user_config')
-                .self::$_defaults['filenames']['app_i18n'];
-
+            $config = self::parseIniFile(self::getPath('app_config'));
+            self::$_registry['docbook'] = $config;
         } catch (\Exception $e) {
             throw $e;
         }
 
-    }
+        // web interface
+        self::$_registry['app_interface_path'] = self::getPath('web')
+            .(isset($config['app']['app_interface']) ? $config['app']['app_interface'] : 'index.php');
 
-    /**
-     * @param array $config
-     * @throws \Exception
-     */
-    public static function parseConfig(array $config)
-    {
-        try {
+        // web docbook assets
+        self::$_registry['docbook_assets_path'] = self::getPath('web')
+            .self::slashDirname(
+                isset($config['app']['internal_assets_dir']) ? $config['app']['internal_assets_dir'] : 'docbook_assets'
+            );
 
-            // web interface
-            self::$_registry['app_interface_path'] = self::getPath('web')
-                .$config['app']['app_interface'];
-
-            // web docbook assets
-            self::$_registry['docbook_assets_path'] = self::getPath('web')
-                .$config['app']['internal_assets_dir'];
-
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        // web vendor assets
+        self::$_registry['vendor_assets_path'] = self::getPath('docbook_assets')
+            .self::slashDirname(self::$_defaults['dirnames']['vendor_dir']);
 
     }
+
+// ----------------------------
+// Kernel API
+// ----------------------------
 
     /**
      * @return bool
+     * @api
      */
     public static function isDevMode()
     {
@@ -216,20 +246,80 @@ class Kernel
     }
 
     /**
-     * @param string $name
-     * @return string
-     * @throws \Exception
+     * Get the value of a specific option with depth
+     *
+     * @param   string  $name       The index of the configuration value to get, with a scope using notation `index:name`
+     * @param   mixed   $default    The default value to return if so (`null` by default)
+     * @param   string  $scope      The scope to use in the configuration registry if it is not defined in the `$name` parameter
+     * @return  mixed   The value retrieved in the registry or the default value otherwise
+     * @api
      */
-    public static function getPath($name)
+    public static function getConfig($name = null, $default = null, $scope = 'docbook')
+    {
+        $stack = self::get($scope);
+        if (is_null($name)) {
+            return $stack;
+        } else {
+            if (strpos($name, ':')) {
+                list($entry, $name) = explode(':', $name);
+                $cfg = self::getConfig($entry, array(), $scope);
+                return isset($cfg[$name]) ? $cfg[$name] : $default;
+            } else {
+                return isset($stack[$name]) ? $stack[$name] : $default;
+            }
+        }
+    }
+
+    /**
+     * Set an array of options
+     *
+     * @param   mixed   $value    The array of values to set for the configuration entry
+     * @param   string  $scope    The scope to use in the configuration registry
+     * @return  void
+     * @api
+     */
+    public static function setConfig($value, $scope)
+    {
+        self::$_registry[$scope] = $value;
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     * @api
+     */
+    public static function get($name)
+    {
+        return (array_key_exists($name, self::$_registry) ? self::$_registry[$name] : null);
+
+    }
+
+    /**
+     * @param   string  $name
+     * @param   bool    $local
+     * @param   string  $base_path
+     * @return  string
+     * @throws  \Exception
+     * @api
+     */
+    public static function getPath($name, $local = false, $base_path = 'app_base_path')
     {
         // absolute path first
         $_name = str_replace('_dir', '', $name) . '_path';
         if (array_key_exists($_name, self::$_registry)) {
-            return self::$_registry[$_name];
+            if ($local) {
+                return str_replace(self::getPath($base_path), '', self::$_registry[$_name]);
+            } else {
+                return self::$_registry[$_name];
+            }
 
         // else relative one
         } elseif (array_key_exists($name, self::$_registry)) {
-            return self::$_registry[$name];
+            if ($local) {
+                return str_replace(self::getPath($base_path), '', self::$_registry[$name]);
+            } else {
+                return self::$_registry[$name];
+            }
 
         // else error
         } else {
@@ -240,36 +330,93 @@ class Kernel
     }
 
     /**
-     * @param $filename
-     * @param string $filetype
-     * @return bool|string
-     * @throws \Exception
+     * @param $path
+     * @return null|string
+     * @api
      */
-    public static function fallbackFinder($filename, $filetype = 'templates_dir')
+    public static function findDocument($path)
     {
-        try {
-            // user first
-            $filetype_name  = 'user_'.$filetype;
-            $user_path      = self::getPath(str_replace('_dir', '_path', $filetype_name));
-            $user_file_path = $user_path.$filename;
-            if (file_exists($user_file_path)) {
-                return $user_file_path;
-            }
+        if (file_exists($path)) {
+            return $path;
+        }
+        $file_path = self::getPath('web') . trim($path, '/');
+        if (file_exists($file_path)) {
+            return $file_path;
+        }
+        return null;
+    }
 
-            // default
-            $filetype_default   = 'src_'.$filetype;
-            $default_path       = self::getPath(str_replace('_dir', '_path', $filetype_default));
-            $def_file_path      = $default_path.$filename;
-            if (file_exists($def_file_path)) {
-                return $def_file_path;
+    /**
+     * @param $route
+     * @return array|null
+     * @api
+     */
+    public static function findController($route)
+    {
+        $ctrl       = null;
+        $action     = null;
+        $def_ctrl   = self::$_defaults['php']['default_controller'];
+        $def_act    = self::$_defaults['php']['default_action'];
+        $routes     = self::getConfig('routes');
+
+        if (array_key_exists($route, $routes)) {
+            $route_info = $routes[$route];
+            if (false === strpos($route_info, ':')) {
+                $ctrl   = $def_ctrl;
+                $action = str_replace('Action', '', $route_info).'Action';
             } else {
-                throw new \Exception(
-                    sprintf('File "%s" not found!', $filename)
+                list($ctrl, $action) = explode(':', $route_info);
+                $action = str_replace('Action', '', $action).'Action';
+            }
+        }
+
+        if (!empty($ctrl)) {
+            $_cls = 'DocBook\\Controller\\'.ucfirst($ctrl).'Controller';
+            if (class_exists($_cls)) {
+                return array(
+                    'controller_classname' => $_cls,
+                    'action' => $action
                 );
             }
-        } catch (\Exception $e) {
-            throw $e;
         }
+        return null;
+    }
+
+    /**
+     * @param   $filename
+     * @return  string
+     * @api
+     */
+    public static function findTemplate($filename)
+    {
+        return self::fallbackFinder($filename, 'templates');
+    }
+
+    /**
+     * @param $filename
+     * @param string $filetype
+     * @return null|string
+     * @api
+     */
+    public static function fallbackFinder($filename, $filetype)
+    {
+        // user first
+        $filetype_name      = 'user_'.$filetype;
+        $user_path          = self::getPath(str_replace('_dir', '_path', $filetype_name));
+        $user_file_path     = $user_path.$filename;
+        if (file_exists($user_file_path)) {
+            return $user_file_path;
+        }
+
+        // default
+        $filetype_default   = 'src_'.$filetype;
+        $default_path       = self::getPath(str_replace('_dir', '_path', $filetype_default));
+        $def_file_path      = $default_path.$filename;
+        if (file_exists($def_file_path)) {
+            return $def_file_path;
+        }
+
+        return null;
     }
 
 // ----------------------------
