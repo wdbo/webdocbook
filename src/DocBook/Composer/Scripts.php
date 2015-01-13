@@ -27,12 +27,22 @@ namespace DocBook\Composer;
  * Class Scripts
  *
  * Defines actions to launch on Composer events.
+ *
+ * @see https://getcomposer.org/apidoc/master/index.html
  */
 class Scripts
 {
 
+    /**
+     * @var bool
+     */
     protected static $_inited = false;
 
+    /**
+     * Initialize DocBook environment
+     * @throws \Exception
+     * @see \DocBook\Kernel::boot()
+     */
     public static function init()
     {
         if (!self::$_inited) {
@@ -47,6 +57,7 @@ class Scripts
     /**
      * @param \Composer\Script\Event $event
      * @return void
+     * @throws \Exception
      */
     public static function postCreateProject(\Composer\Script\Event $event)
     {
@@ -70,6 +81,7 @@ class Scripts
     /**
      * @param \Composer\Script\Event $event
      * @return void
+     * @throws \Exception
      */
     public static function postAutoloadDump(\Composer\Script\Event $event)
     {
@@ -90,10 +102,9 @@ class Scripts
     }
 
     /**
-     * Clear DocBook's cache on Composer's event
-     *
      * @param \Composer\Script\Event $event
      * @return void
+     * @throws \Exception
      */
     public static function postUpdate(\Composer\Script\Event $event)
     {
@@ -117,10 +128,9 @@ class Scripts
     }
 
     /**
-     * Clear DocBook's cache on Composer's event
-     *
      * @param \Composer\Script\Event $event
      * @return void
+     * @throws \Exception
      */
     public static function postInstall(\Composer\Script\Event $event)
     {
