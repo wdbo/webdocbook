@@ -203,7 +203,7 @@ class Kernel
             .str_replace('.dist', '', self::$_defaults['filenames']['app_config']);
 
         // i18n
-        self::$_registry['app_i18n_path'] = self::getPath('user_config')
+        self::$_registry['app_i18n_filepath'] = self::getPath('user_config')
             .str_replace('.dist', '', self::$_defaults['filenames']['app_i18n']);
 
         // user_config
@@ -434,8 +434,8 @@ class Kernel
      */
     public static function installConfig()
     {
-        $conf_tgt = self::getPath('app_config');
-        $i18n_tgt = self::getPath('app_i18n');
+        $conf_tgt = self::get('app_config_filepath');
+        $i18n_tgt = self::get('app_i18n_filepath');
 
         if (!file_exists($conf_tgt)) {
             $conf_src = self::getPath('config') . self::$_defaults['filenames']['app_config'];

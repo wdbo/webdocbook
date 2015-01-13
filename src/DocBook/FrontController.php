@@ -175,7 +175,7 @@ class FrontController
         $i18n_loader_opts = array(
             'language_directory'            => Kernel::getPath('i18n'),
             'language_strings_db_directory' => Kernel::getPath('user_config'),
-            'language_strings_db_filename'  => basename(Kernel::getPath('app_i18n')),
+            'language_strings_db_filename'  => basename(Kernel::get('app_i18n_filepath')),
             'force_rebuild'                 => true,
             'available_languages'           => array_combine(array_keys($langs), array_keys($langs)),
         );
