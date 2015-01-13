@@ -42,10 +42,10 @@ class DBImage
      */
     public function viewFileInfos(array $params = array())
     {
-        $img = new WebImage($this->getRealPath());
+        $img    = new WebImage($this->getRealPath());
         $params = array_merge($params, array(
-            'height'=>$this->getHeight(),
-            'width'=>$this->getWidth(),
+            'height'    => $this->getHeight(),
+            'width'     => $this->getWidth(),
         ));
         return FrontController::getInstance()
             ->display( $this->getBase64Content(true), 'embed_content', $params);

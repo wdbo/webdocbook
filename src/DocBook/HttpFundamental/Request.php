@@ -49,9 +49,9 @@ class Request
     public function __construct()
     {
         parent::guessFromCurrent();
-        $server_uri = $_SERVER['REQUEST_URI'];
-        $server_query = $_SERVER['QUERY_STRING'];
-        $full_query_string = str_replace(array('?',$server_query), '', trim($server_uri, '/'));
+        $server_uri         = $_SERVER['REQUEST_URI'];
+        $server_query       = $_SERVER['QUERY_STRING'];
+        $full_query_string  = str_replace(array('?',$server_query), '', trim($server_uri, '/'));
         parse_str($full_query_string, $full_query);
         if (!empty($full_query)) {
             $this->setArguments(array_merge($this->getArguments(), $full_query));
@@ -90,12 +90,6 @@ class Request
         $file = $path = $action = null;
         $args = array();
 
-/*/
-echo '<br />server_pathtrans: '.var_export($server_pathtrans,1);
-echo '<br />server_uri: '.var_export($server_uri,1);
-echo '<br />server_query: '.var_export($server_query,1);
-echo '<br />server_argv: '.var_export($server_argv,1);
-//*/ 
         // first: request path from URL
         if (!empty($server_query)) {
             $req = $server_query;
@@ -107,12 +101,14 @@ echo '<br />server_argv: '.var_export($server_argv,1);
             if ($ctrl = Kernel::findController(trim($req, '/'))) {
                 $action = trim($req, '/');
             } else {
-                $parts = explode('/', $req);
-                $parts = array_filter($parts);
-                $int_index = array_search(
+                $parts      = explode('/', $req);
+                $parts      = array_filter($parts);
+                $int_index  = array_search(
                     basename(Kernel::getPath('app_interface')),
                     $parts);
-                if (!empty($int_index)) unset($parts[$int_index]);
+                if (!empty($int_index)) {
+                    unset($parts[$int_index]);
+                }
                 $original_parts = $parts;
 
                 // classic case : XXX/YYY/...(/action)
@@ -146,34 +142,7 @@ echo '<br />server_argv: '.var_export($server_argv,1);
                 }
             }
         }
-/*
-        // second: request from CLI
-        if (empty($action)) {
-            if (!empty($server_argv)) {
-                $tmp_action = end($server_argv);
-            } elseif (!empty($server_pathtrans)) {
-                $tmp_action = $server_pathtrans;
-            }
 
-            if (!empty($tmp_action)) {
-                if (!empty($file) && ($tmp_action===$file || trim($tmp_action, '/')===$file)) {
-                    $tmp_action = null;
-                }
-                if (!empty($tmp_action) && false!==strpos($tmp_action, $docbook->getPath('web'))) {
-                    $tmp_action = str_replace($docbook->getPath('web'), '', $tmp_action);
-                }
-                if (!empty($file) && ($tmp_action===$file || trim($tmp_action, '/')===$file)) {
-                    $tmp_action = null;
-                }
-    
-                if (!empty($tmp_action)) {
-                    $action_parts = explode('/', $tmp_action);
-                    $action_parts = array_filter($action_parts);
-                    $action = array_shift($action_parts);
-                }
-            }
-        }
-*/
         if (!empty($file)) {
             $docbook->setInputFile($file);
             if (file_exists($file)) {
@@ -183,11 +152,10 @@ echo '<br />server_argv: '.var_export($server_argv,1);
             $docbook->setInputPath('/');
         }
         
-//echo '<br />intermediate action: '.var_export($action,1);
         // if GET args in action
         if (!empty($action) && strpos($action, '?')!==false) {
-            $action_new = substr($action, 0, strpos($action, '?'));
-            $action_args = substr($action, strpos($action, '?')+1);
+            $action_new     = substr($action, 0, strpos($action, '?'));
+            $action_args    = substr($action, strpos($action, '?')+1);
             parse_str($action_args, $action_str_args);
             if (!empty($action_str_args)) {
                 $args = array_merge($args, $action_str_args);
@@ -204,7 +172,9 @@ echo '<br />server_argv: '.var_export($server_argv,1);
         if (0<substr_count($server_uri, $server_query)) {
             $uri_diff = trim(str_replace($server_query, '', $server_uri), '/');
             if (!empty($uri_diff)) {
-                if (substr($uri_diff, 0, 1)==='?') $uri_diff = substr($uri_diff, 1);
+                if (substr($uri_diff, 0, 1)==='?') {
+                    $uri_diff = substr($uri_diff, 1);
+                }
                 parse_str($uri_diff, $uri_diff_args);
                 if (!empty($uri_diff_args)) {
                     $args = array_merge($args, $uri_diff_args);
@@ -217,14 +187,7 @@ echo '<br />server_argv: '.var_export($server_argv,1);
         }
 
         $docbook->setAction(!empty($action) ? $action : 'default');
-/*
-echo '<br />file: '.var_export($docbook->getInputFile(),1);
-echo '<br />path: '.var_export($docbook->getInputPath(),1);
-echo '<br />action: '.var_export($docbook->getAction(),1);
-echo '<br />arguments: '.var_export($docbook->getQuery(),1);
-var_dump($this);
-exit('yo');
-*/
+
         return $this;
     }
 
@@ -239,7 +202,7 @@ exit('yo');
         $page_type          = !empty($original_page_type) ? $original_page_type : 'default';
         $input_file         = $docbook->getInputFile();
         if (empty($input_file)) {
-            $input_path = $docbook->getInputPath();
+            $input_path     = $docbook->getInputPath();
             if (!empty($input_path)) {
                 $input_file = Kernel::getPath('web').trim($input_path, '/');
             }

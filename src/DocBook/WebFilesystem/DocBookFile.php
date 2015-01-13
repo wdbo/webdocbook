@@ -105,7 +105,7 @@ class DocBookFile
 
         $_root = Kernel::getPath('web');
         if (substr_count($file_name, $_root)>0) {
-            $realpath = $_root.str_replace($_root, '', $file_name);
+            $realpath   = $_root.str_replace($_root, '', $file_name);
             $this->type = $this->getDocBookTypeByPath($realpath);
             $this->setRootDir($_root);
             $this->setWebPath(dirname($file_name));
@@ -219,9 +219,9 @@ class DocBookFile
     public function getDocBookScanStack($recursive = false)
     {
         if (!isset($this->cache['docbook_scan_stack'])) {
-            $dir = new DocBookRecursiveDirectoryIterator($this->getRealPath());
+            $dir    = new DocBookRecursiveDirectoryIterator($this->getRealPath());
             $hasWip = false;
-            $paths = $known_filenames = array();
+            $paths  = $known_filenames = array();
             foreach ($dir as $file) {
                 /* @var \DocBook\\WebFilesystem\\DocBookFile $file */
                 $filename = $lang = null;
@@ -231,34 +231,40 @@ class DocBookFile
                 ) {
                     $hasWip = true;
                 } else {
+
                     if ($file->isLink()) {
                         $filename_real = basename($file->getRealPath());
                         if (strpos($filename_real, '.')!==false) {
                             $filename_parts = explode('.', $filename_real);
-                            $filename = array_shift($filename_parts);
-                            $lang = array_shift($filename_parts);
-                            if ($lang==='md') $lang = null;
+                            $filename       = array_shift($filename_parts);
+                            $lang           = array_shift($filename_parts);
+                            if ($lang==='md') {
+                                $lang = null;
+                            }
                         }
                     } elseif ($file->isFile()) {
                         $filename_parts = explode('.', $file->getBasename());
-                        $filename = array_shift($filename_parts);
-                        $lang = array_shift($filename_parts);
-                        if ($lang==='md') $lang = null;
+                        $filename       = array_shift($filename_parts);
+                        $lang           = array_shift($filename_parts);
+                        if ($lang==='md') {
+                            $lang = null;
+                        }
                     } else {
-                        $filename = $file->getBasename();
+                        $filename       = $file->getBasename();
                     }
+
                     if (array_key_exists($filename, $paths) && !empty($lang)) {
                         $paths[$filename]['trads'][$lang] = Helper::getRoute($file->getRealPath());
                     } elseif (array_key_exists($filename, $paths)) {
-                        $original = $paths[$filename];
-                        $dbfile = new DocBookFile($file);
-                        $paths[$filename] = $dbfile->getDocBookStack();
-                        $paths[$filename]['trads'] = isset($original['trads']) ? $original['trads'] : array();
+                        $original                   = $paths[$filename];
+                        $dbfile                     = new DocBookFile($file);
+                        $paths[$filename]           = $dbfile->getDocBookStack();
+                        $paths[$filename]['trads']  = isset($original['trads']) ? $original['trads'] : array();
                         if ($file->isDir() && $recursive) {
-                            $dirscan = $dbfile->getDocBookScanStack(true);
-                            $paths[$filename] = array_merge(
-                                $paths[$filename], $dirscan
-                            );
+                            $dirscan                = $dbfile->getDocBookScanStack(true);
+                            $paths[$filename]       = array_merge(
+                                                        $paths[$filename], $dirscan
+                                                    );
                         }
                     } else {
                         $dbfile = new DocBookFile($file);
@@ -267,10 +273,10 @@ class DocBookFile
                         }
                         $paths[$filename] = $dbfile->getDocBookStack();
                         if ($file->isDir() && $recursive) {
-                            $dirscan = $dbfile->getDocBookScanStack(true);
-                            $paths[$filename] = array_merge(
-                                $paths[$filename], $dirscan
-                            );
+                            $dirscan            = $dbfile->getDocBookScanStack(true);
+                            $paths[$filename]   = array_merge(
+                                                    $paths[$filename], $dirscan
+                                                );
                         }
                         if (!empty($lang)) {
                             $paths[$filename]['trads'][$lang] = Helper::getRoute($file->getRealPath());
@@ -359,8 +365,8 @@ class DocBookFile
         if (!isset($this->cache['docbook_full_stack'])) {
             $data = $this->getDocBookStack();
             $this->cache['docbook_full_stack'] = array_merge($data, array(
-                'next'      =>$this->findNext(),
-                'previous'  =>$this->findPrevious(),
+                'next'      => $this->findNext(),
+                'previous'  => $this->findPrevious(),
             ));
         }
         return $this->cache['docbook_full_stack'];
@@ -391,11 +397,11 @@ class DocBookFile
             }
             $trads = array();
             foreach($finder->getIterator() as $_file) {
-                $subparts = explode('.', $_file->getFilename());
+                $subparts                   = explode('.', $_file->getFilename());
                 if (count($subparts)==3 && $_file->getRealPath()!=$this->getRealPath()) {
-                    $trads[$subparts[1]] = $_file->getRealPath();
+                    $trads[$subparts[1]]    = $_file->getRealPath();
                 } elseif (count($subparts)==2 && $_file->getRealPath()!=$this->getRealPath()) {
-                    $trads['en'] = $_file->getRealPath();
+                    $trads['en']            = $_file->getRealPath();
                 }
             }
             $this->cache['docbook_translations'] = $trads;
@@ -413,18 +419,18 @@ class DocBookFile
         if (!isset($this->cache['docbook_next'])) {
             $this->cache['docbook_next'] = null;
 
-            $filepath = $this->getPathname();
+            $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
             }
-            $dir_realpath = dirname(realpath($filepath));
+            $dir_realpath   = dirname(realpath($filepath));
             $dir_targetpath = dirname($filepath);
             if (empty($dir_realpath)) {
                 $dir_realpath = $dir_targetpath;
             }
-            $dir = new FilesystemIterator($dir_realpath, FilesystemIterator::CURRENT_AS_PATHNAME);
-            $dir_table = iterator_to_array($dir, false);
-            $i = array_search($this->getRealPath(), $dir_table);
+            $dir            = new FilesystemIterator($dir_realpath, FilesystemIterator::CURRENT_AS_PATHNAME);
+            $dir_table      = iterator_to_array($dir, false);
+            $i              = array_search($this->getRealPath(), $dir_table);
             if (false!==$i) {
                 $j = $i+1;
                 while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
@@ -457,18 +463,18 @@ class DocBookFile
         if (!isset($this->cache['docbook_previous'])) {
             $this->cache['docbook_previous'] = null;
 
-            $filepath = $this->getPathname();
+            $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+                $filepath   = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
             }
-            $dir_realpath = dirname(realpath($filepath));
+            $dir_realpath   = dirname(realpath($filepath));
             $dir_targetpath = dirname($filepath);
             if (empty($dir_realpath)) {
                 $dir_realpath = $dir_targetpath;
             }
-            $dir = new FilesystemIterator($dir_realpath, FilesystemIterator::CURRENT_AS_PATHNAME);
-            $dir_table = iterator_to_array($dir, false);
-            $i = array_search($this->getRealPath(), $dir_table);
+            $dir                = new FilesystemIterator($dir_realpath, FilesystemIterator::CURRENT_AS_PATHNAME);
+            $dir_table          = iterator_to_array($dir, false);
+            $i                  = array_search($this->getRealPath(), $dir_table);
             if (false!==$i) {
                 $j = $i-1;
                 while ($j>=0 && array_key_exists($j, $dir_table) && (
@@ -586,9 +592,9 @@ class DocBookFile
     {
         if (!isset($this->cache['docbook_file_infos'])) {
             $this->cache['docbook_file_infos'] = $this->getFile()->viewFileInfos(array(
-                'page'=>$this->getDocBookStack(),
-                'contents'=>$this->getDocBookFullStack(),
-                'dirscan'=>$this->isDir() ? $this->getDocBookScanStack() : null,
+                'page'      => $this->getDocBookStack(),
+                'contents'  => $this->getDocBookFullStack(),
+                'dirscan'   => $this->isDir() ? $this->getDocBookScanStack() : null,
             ));
         }
         return $this->cache['docbook_file_infos'];

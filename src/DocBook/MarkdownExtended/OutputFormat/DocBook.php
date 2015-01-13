@@ -39,96 +39,6 @@ class DocBook
 {
 
     /**
-     * @var array
-    protected $tags_map = array(
-    'block' => array(
-    'tag'=>'div',
-    ),
-    'paragraph' => array(
-    'tag'=>'p',
-    ),
-    'bold' => array(
-    'tag'=>'strong',
-    ),
-    'italic' => array(
-    'tag'=>'em',
-    ),
-    'preformated' => array(
-    'tag'=>'pre',
-    ),
-    'link' => array(
-    'tag'=>'a',
-    ),
-    'abbreviation' => array(
-    'tag'=>'abbr',
-    ),
-    'definition_list' => array(
-    'tag'=>'dl',
-    ),
-    'definition_list_item_term' => array(
-    'tag'=>'dt',
-    ),
-    'definition_list_item_definition' => array(
-    'tag'=>'dd',
-    ),
-    'list' => array(
-    'tag'=>'ul',
-    ),
-    'list_item' => array(
-    'tag'=>'li',
-    ),
-    'unordered_list' => array(
-    'tag'=>'ul',
-    ),
-    'unordered_list_item' => array(
-    'tag'=>'li',
-    ),
-    'ordered_list' => array(
-    'tag'=>'ol',
-    ),
-    'ordered_list_item' => array(
-    'tag'=>'li',
-    ),
-    'table_caption' => array(
-    'tag'=>'caption',
-    ),
-    'table_header' => array(
-    'tag'=>'thead',
-    ),
-    'table_body' => array(
-    'tag'=>'tbody',
-    ),
-    'table_footer' => array(
-    'tag'=>'tfoot',
-    ),
-    'table_line' => array(
-    'tag'=>'tr',
-    ),
-    'table_cell' => array(
-    'tag'=>'td',
-    ),
-    'table_cell_head' => array(
-    'tag'=>'th',
-    ),
-    'meta_title' => array(
-    'tag'=>'title',
-    ),
-    'image' => array(
-    'tag'=>'img',
-    'closable'=>true,
-    ),
-    'new_line' => array(
-    'tag'=>'br',
-    'closable'=>true,
-    ),
-    'horizontal_rule' => array(
-    'tag'=>'hr',
-    'closable'=>true,
-    ),
-    );
-     */
-
-    /**
      * @param $var string
      * @return mixed
      */
@@ -220,12 +130,12 @@ class DocBook
      */
     public function addTitleAddon($text, array $attributes = array())
     {
-        $backlink_text = $this->_getConfigOrDefault('backlink_text');
-        $backlink_attributes = array();
-        $backlink_attributes['title'] = '';
+        $backlink_text                  = $this->_getConfigOrDefault('backlink_text');
+        $backlink_attributes            = array();
+        $backlink_attributes['title']   = '';
 
         // permalink links class
-        $cfg_permalink_class = $this->_getConfigOrDefault('permalink_class');
+        $cfg_permalink_class            = $this->_getConfigOrDefault('permalink_class');
         if (isset($attributes['permalink_class'])) {
             $backlink_attributes['class'] = $attributes['permalink_class'];
             unset($attributes['permalink_class']);
@@ -234,7 +144,7 @@ class DocBook
         }
 
         // toc backlink id
-        $cfg_permalink_title = $this->_getConfigOrDefault('permalink_mask_title');
+        $cfg_permalink_title            = $this->_getConfigOrDefault('permalink_mask_title');
         if (isset($attributes['id'])) {
             $backlink_attributes['href'] = '#'.$attributes['id'];
             if (isset($attributes['permalink_title'])) {
@@ -249,9 +159,9 @@ class DocBook
         }
 
         // toc backlink id
-        $cfg_toc_id = $this->_getConfigOrDefault('toc_id');
-        $cfg_toc_title = $this->_getConfigOrDefault('toc_backlink_title');
-        $cfg_backlink_onclick_mask = $this->_getConfigOrDefault('backlink_onclick_mask');
+        $cfg_toc_id                 = $this->_getConfigOrDefault('toc_id');
+        $cfg_toc_title              = $this->_getConfigOrDefault('toc_backlink_title');
+        $cfg_backlink_onclick_mask  = $this->_getConfigOrDefault('backlink_onclick_mask');
         $cfg_permalink_title_separator = $this->_getConfigOrDefault('permalink_title_separator');        
         if (isset($attributes['permalink_title_separator'])) {
             $permalink_title_separator = $attributes['permalink_title_separator'];

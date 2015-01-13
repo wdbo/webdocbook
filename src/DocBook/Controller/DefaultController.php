@@ -81,24 +81,11 @@ class DefaultController
         }
 
         $tpl_params = array(
-            'page' => $dbfile->getDocBookFullStack(),
-            'dirscan' => $dbfile->getDocBookScanStack(),
-            'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
+            'page'          => $dbfile->getDocBookFullStack(),
+            'dirscan'       => $dbfile->getDocBookScanStack(),
+            'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
+            'title'         => Helper::buildPageTitle($this->getPath()),
         );
-/*/
-var_dump($dbfile);
-var_dump($tpl_params);
-exit('yo');
-//*/
-        $readme = $dbfile->findReadme();
-        if (file_exists($readme)) {
-            $this->docbook->setInputFile($readme);
-            $readme_dbfile = new DocBookFile($readme);
-            $readme_content = $readme_dbfile->viewFileInfos();
-        }
-
-        $tpl_params['inpage_menu'] = !empty($readme_content) ? 'true' : 'false';
-        $tpl_params['title'] = Helper::buildPageTitle($this->getPath());
         if (empty($tpl_params['title'])) {
             if (!empty($tpl_params['breadcrumbs'])) {
                 $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
@@ -106,6 +93,14 @@ exit('yo');
                 $tpl_params['title'] = _T('Home');
             }
         }
+
+        $readme = $dbfile->findReadme();
+        if (file_exists($readme)) {
+            $this->docbook->setInputFile($readme);
+            $readme_dbfile  = new DocBookFile($readme);
+            $readme_content = $readme_dbfile->viewFileInfos();
+        }
+        $tpl_params['inpage_menu']  = !empty($readme_content) ? 'true' : 'false';
 
         $dir_content = $this->docbook
             ->display('', 'dirindex', $tpl_params);
@@ -134,11 +129,10 @@ exit('yo');
         }
 
         $tpl_params = array(
-            'page' => $dbfile->getDocBookFullStack(),
-            'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
+            'page'          => $dbfile->getDocBookFullStack(),
+            'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
+            'title'         => Helper::buildPageTitle($this->getPath()),
         );
-
-        $tpl_params['title'] = Helper::buildPageTitle($this->getPath());
         if (empty($tpl_params['title'])) {
             if (!empty($tpl_params['breadcrumbs'])) {
                 $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
@@ -147,6 +141,7 @@ exit('yo');
             }
         }
         $content = $dbfile->viewFileInfos();
+
         return array('default',
             $content,
             $tpl_params);
@@ -166,14 +161,14 @@ exit('yo');
         } catch (NotFoundException $e) {
             throw $e;
         }
-        $dbfile = new DocBookFile($this->getpath());
-        $contents = array();
 
+        $dbfile     = new DocBookFile($this->getpath());
+        $contents   = array();
         $tpl_params = array(
-            'page' => $dbfile->getDocBookFullStack(),
-            'breadcrumbs' => Helper::getBreadcrumbs($this->getPath()),
+            'page'          => $dbfile->getDocBookFullStack(),
+            'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
+            'title'         => Helper::buildPageTitle($this->getPath()),
         );
-        $tpl_params['title'] = Helper::buildPageTitle($this->getPath());
         if (empty($tpl_params['title'])) {
             if (!empty($tpl_params['breadcrumbs'])) {
                 $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
@@ -190,8 +185,7 @@ exit('yo');
             foreach ($contents['dirscan'] as $i=>$item) {
                 if ($item['type']!=='dir' && file_exists($item['path'])) {
                     $dbfile = new DocBookFile($item['path']);
-                    $contents['dirscan'][$i]['content'] = 
-                        $dbfile->viewIntroduction(4000, false);
+                    $contents['dirscan'][$i]['content'] = $dbfile->viewIntroduction(4000, false);
                 }
             }
         } else {
@@ -199,8 +193,8 @@ exit('yo');
         }
         
         $rss_content = $this->docbook->display('', 'rss', array(
-            'page' => $page,
-            'contents'=>$contents
+            'page'      => $page,
+            'contents'  => $contents
         ));
 
         return array('layout_empty_xml', $rss_content);
@@ -231,10 +225,10 @@ exit('yo');
 
         $this->docbook->getResponse()->setContentType('xml');
 
-        $contents = Helper::getFlatDirscans($dbfile->getDocBookScanStack(true));
-        $rss_content = $this->docbook->display('', 'sitemap', array(
-            'page' => $dbfile->getDocBookStack(),
-            'contents'=>$contents
+        $contents       = Helper::getFlatDirscans($dbfile->getDocBookScanStack(true));
+        $rss_content    = $this->docbook->display('', 'sitemap', array(
+            'page'          => $dbfile->getDocBookStack(),
+            'contents'      => $contents
         ));
         return array('layout_empty_xml', $rss_content);
     }
@@ -262,11 +256,11 @@ exit('yo');
             );
         }
 
-        $md_parser = $this->docbook->getMarkdownParser();
+        $md_parser  = $this->docbook->getMarkdownParser();
         $md_content = $md_parser->transformSource($this->getPath());
         return array('layout_empty_html', 
             $md_content->getBody(),
-            array('page_notes'=>$md_content->getNotesToString())
+            array('page_notes' => $md_content->getNotesToString())
         );
     }
 
@@ -347,21 +341,21 @@ exit('yo');
 
         $_s = Helper::processDocBookSearch($search, $this->getPath());
 
-        $title = _T('Search for "%search_str%"', array('search_str'=>$search));
-        $breadcrumbs = Helper::getBreadcrumbs($this->getPath());
-        $breadcrumbs[] = $title;
-        $dbfile = new DocBookFile($this->getpath());
-        $page = $dbfile->getDocBookStack();
-        $page['type'] = 'search';
-        $tpl_params = array(
-            'page' => $page,
-            'breadcrumbs' => $breadcrumbs,
-            'title' => $title,
+        $title          = _T('Search for "%search_str%"', array('search_str'=>$search));
+        $breadcrumbs    = Helper::getBreadcrumbs($this->getPath());
+        $breadcrumbs[]  = $title;
+        $dbfile         = new DocBookFile($this->getpath());
+        $page           = $dbfile->getDocBookStack();
+        $page['type']   = 'search';
+        $tpl_params     = array(
+            'page'          => $page,
+            'breadcrumbs'   => $breadcrumbs,
+            'title'         => $title,
         );
 
         $search_content = $this->docbook->display($_s, 'search', array(
-            'search_str' => $search,
-            'path' => Helper::buildPageTitle($this->getPath()),
+            'search_str'    => $search,
+            'path'          => Helper::buildPageTitle($this->getPath()),
         ));
         return array('default', $search_content, $tpl_params);
     }

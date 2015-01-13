@@ -90,37 +90,35 @@ class DocBookController
      */
     public function docbookdocAction()
     {
-        $title = _T('User manual');
-        $path = Kernel::getPath('docbook_assets') . Kernel::getConfig('pages:user_manual', '');
-
-        $page_infos = array(
-            'name'      => $title,
-            'path'      => 'docbookdoc',
-            'update'    => Helper::getDateTimeFromTimestamp(filemtime($path))
+        $title          = _T('User manual');
+        $path           = Kernel::getPath('docbook_assets') . Kernel::getConfig('pages:user_manual', '');
+        $page_infos     = array(
+            'name'          => $title,
+            'path'          => 'docbookdoc',
+            'update'        => Helper::getDateTimeFromTimestamp(filemtime($path))
         );
-        $tpl_params = array(
-            'breadcrumbs' => array($title),
-            'title' => $title,
-            'page' => $page_infos,
-            'page_tools' => 'false'
+        $tpl_params     = array(
+            'breadcrumbs'   => array($title),
+            'title'         => $title,
+            'page'          => $page_infos,
+            'page_tools'    => 'false'
         );
-
-        $file_content = file_get_contents($path);
-        $md_parser = $this->docbook->getMarkdownParser();
-        $md_content = $md_parser->transformString($file_content);
-        $output_bag = $md_parser->get('OutputFormatBag');
-        $menu = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormatter());
-        $content = $this->docbook->display(
+        $file_content   = file_get_contents($path);
+        $md_parser      = $this->docbook->getMarkdownParser();
+        $md_content     = $md_parser->transformString($file_content);
+        $output_bag     = $md_parser->get('OutputFormatBag');
+        $menu           = $output_bag->getHelper()
+                            ->getToc($md_content, $output_bag->getFormatter());
+        $content        = $this->docbook->display(
             $md_content->getBody(),
             'content',
             array(
-                'page'=>$page_infos,
-                'page_tools' => 'false',
-                'page_title' => 'true',
-                'page_notes' => $md_content->getNotesToString(),
-                'title' => $title,
-                'toc'=>$menu,
+                'page'          => $page_infos,
+                'page_tools'    => 'false',
+                'page_title'    => 'true',
+                'page_notes'    => $md_content->getNotesToString(),
+                'title'         => $title,
+                'toc'           => $menu,
             )
         );
 
@@ -134,8 +132,8 @@ class DocBookController
      */
     public function adminAction()
     {
-        $allowed = Kernel::getConfig('expose_admin', false, 'user_config');
-        $saveadmin = $this->docbook->getSession()->get('saveadmin');
+        $allowed    = Kernel::getConfig('expose_admin', false, 'user_config');
+        $saveadmin  = $this->docbook->getSession()->get('saveadmin');
         $this->docbook->getSession()->remove('saveadmin');
         if (
             (!$allowed || ('true' !== $allowed && '1' !== $allowed)) &&
@@ -149,15 +147,15 @@ class DocBookController
         $title              = _T('Administration');
         $path               = Kernel::getPath('docbook_assets') . Kernel::getConfig('pages:admin_welcome', '');
         $page_infos         = array(
-            'name'      => $title,
-            'path'      => 'admin',
-            'update'    => Helper::getDateTimeFromTimestamp(filemtime($path))
+            'name'              => $title,
+            'path'              => 'admin',
+            'update'            => Helper::getDateTimeFromTimestamp(filemtime($path))
         );
         $tpl_params         = array(
-            'breadcrumbs' => array($title),
-            'title' => $title,
-            'page' => $page_infos,
-            'page_tools' => 'false'
+            'breadcrumbs'       => array($title),
+            'title'             => $title,
+            'page'              => $page_infos,
+            'page_tools'        => 'false'
         );
         $file_content       = file_get_contents($path);
         $md_parser          = $this->docbook->getMarkdownParser();
@@ -202,8 +200,7 @@ class DocBookController
             $root_dir       = Kernel::getPath('app_base_path');
             $data           = $this->docbook->getRequest()->getData();
             $config_file    = Kernel::getPath('user_config_filepath');
-
-            $internal_conf = Kernel::getConfig('userconf', array());
+            $internal_conf  = Kernel::getConfig('userconf', array());
             foreach ($internal_conf as $var=>$val) {
                 if (!array_key_exists($var, $data) && ($val=='1' || $val=='0')) {
                     $data[$var] = 0;

@@ -243,15 +243,15 @@ class Helper
      */
     public static function processDocBookSearch($regexp, $path = null)
     {
-        $docbook = FrontController::getInstance();
+        $docbook    = FrontController::getInstance();
         if (is_null($path)) {
-            $path = '/';
+            $path   = '/';
         }
-        $path = Kernel::getPath('web') . $path;
+        $path       = Kernel::getPath('web') . $path;
 
-        $is_dir = file_exists($path) && is_dir($path);
+        $is_dir     = file_exists($path) && is_dir($path);
         if ($is_dir) {
-            $path = DirectoryHelper::slashDirname($path);
+            $path   = DirectoryHelper::slashDirname($path);
         }
 
         $grep_cmd   = Command::getCommandPath('grep');
@@ -279,7 +279,7 @@ class Helper
         $result     = array();
         $fn_index   = 0;
         foreach($result_files as $stack) {
-            $stack = trim($stack);
+            $stack  = trim($stack);
             if (empty($stack)) {
                 continue;
             }
@@ -309,10 +309,10 @@ class Helper
                 $linenumber     = substr($filename_rest, 0, $delim);
                 $linecontent    = substr($filename_rest, $delim+1);
                 $result[$filename][] = array(
-                    'path'      => $filename,
-                    'line'      => $linenumber,
-                    'content'   => (!empty($linecontent) ? $linecontent : ''),
-                    'highlighted' => ($delim === $delim_column)
+                    'path'          => $filename,
+                    'line'          => $linenumber,
+                    'content'       => (!empty($linecontent) ? $linecontent : ''),
+                    'highlighted'   => ($delim === $delim_column)
                 );
             }
         }
@@ -474,8 +474,7 @@ class Helper
      */
     protected static function _cmpDirscan($a, $b)
     {
-        return strcmp(
-            $a['mtime']->getTimestamp(), $b['mtime']->getTimestamp());
+        return strcmp($a['mtime']->getTimestamp(), $b['mtime']->getTimestamp());
     }
 
     /**

@@ -41,8 +41,8 @@ class DBMarkdown
      */
     public function viewFileInfos(array $params = array())
     {
-        $docbook = FrontController::getInstance();
-        $md_parser = $docbook->getMarkdownParser();
+        $docbook    = FrontController::getInstance();
+        $md_parser  = $docbook->getMarkdownParser();
         $md_content = $md_parser->transformSource($this->getRealPath());
         $output_bag = $md_parser->get('OutputFormatBag');
 
@@ -50,22 +50,17 @@ class DBMarkdown
         $params['page_notes'] = $page_notes;
 
         $page_footnotes = $md_content->getFootnotes();
-        $page_glossary = $md_content->getGlossaries();
+        $page_glossary  = $md_content->getGlossaries();
         $page_citations = $md_content->getCitations();
         if (!empty($page_citations) || !empty($page_glossary)) {
-            $params['page_footnotes'] = $page_footnotes;
-            $params['page_glossary'] = $page_glossary;
-            $params['page_citations'] = $page_citations;
+            $params['page_footnotes']   = $page_footnotes;
+            $params['page_glossary']    = $page_glossary;
+            $params['page_citations']   = $page_citations;
         }
         $params['toc'] = $output_bag->getHelper()
             ->getToc($md_content, $output_bag->getFormatter());
 
         return $docbook->display($md_content->getBody(), 'content', $params);
-/*
-var_dump($md_content->getFootnotes());
-var_dump($md_content->getGlossaries());
-var_dump($md_content->getCitations());
-*/
     }
 
     /**
@@ -74,8 +69,8 @@ var_dump($md_content->getCitations());
      */
     public function getIntroduction(array $params = array())
     {
-        $docbook = FrontController::getInstance();
-        $md_parser = $docbook->getMarkdownParser();
+        $docbook    = FrontController::getInstance();
+        $md_parser  = $docbook->getMarkdownParser();
         $md_content = $md_parser->transformSource($this->getRealPath());
         return $md_content->getBody();
     }

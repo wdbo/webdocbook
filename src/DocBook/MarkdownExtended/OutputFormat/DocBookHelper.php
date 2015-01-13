@@ -46,13 +46,13 @@ class DocBookHelper
      * @var array
      */
     protected static $_defaults = array(
-        'toc_max_level'     => '6',
-        'toc_title'         => 'Table of contents',
-        'toc_title_level'   => '4',
-        'toc_id'            => 'toc',
-        'toc_class'         => 'toc-menu',
-        'toc_item_title'    => 'Reach this section',
-        'permalink_mask_title' => 'Copy this link URL to get this title permanent link: #%%',
+        'toc_max_level'         => '6',
+        'toc_title'             => 'Table of contents',
+        'toc_title_level'       => '4',
+        'toc_id'                => 'toc',
+        'toc_class'             => 'toc-menu',
+        'toc_item_title'        => 'Reach this section',
+        'permalink_mask_title'  => 'Copy this link URL to get this title permanent link: #%%',
         'permalink_title_separator' => ' - ',
         'toc_backlink_title'    => 'Click to go back to table of contents',
         'backlink_onclick_mask' => "document.location.hash='%%'; return false;",
@@ -72,22 +72,22 @@ class DocBookHelper
     /**
      * Build a hierarchical menu
      *
-     * @param object $content \MarkdownExtended\API\ContentInterface
+     * @param object $md_content \MarkdownExtended\API\ContentInterface
      * @param object $formatter \MarkdownExtended\API\OutputFormatInterface
      * @return string
      */
     public function getToc(ContentInterface $md_content, OutputFormatInterface $formatter, array $attributes = null)
     {
-        $cfg_toc_max_level = $this->getConfigOrDefault('toc_max_level');
-        $cfg_toc_title = $this->getConfigOrDefault('toc_title');
-        $cfg_toc_title_level = $this->getConfigOrDefault('toc_title_level');
-        $cfg_toc_id = $this->getConfigOrDefault('toc_id');
-        $cfg_toc_class = $this->getConfigOrDefault('toc_class');
-        $cfg_toc_item_title = $this->getConfigOrDefault('toc_item_title');
+        $cfg_toc_max_level      = $this->getConfigOrDefault('toc_max_level');
+        $cfg_toc_title          = $this->getConfigOrDefault('toc_title');
+        $cfg_toc_title_level    = $this->getConfigOrDefault('toc_title_level');
+        $cfg_toc_id             = $this->getConfigOrDefault('toc_id');
+        $cfg_toc_class          = $this->getConfigOrDefault('toc_class');
+        $cfg_toc_item_title     = $this->getConfigOrDefault('toc_item_title');
 
-        $menu = $md_content->getMenu();
-        $content = $list_content = '';
-        $max_level = isset($attributes['max_level']) ? $attributes['max_level'] : $cfg_toc_max_level;
+        $menu       = $md_content->getMenu();
+        $content    = $list_content = '';
+        $max_level  = isset($attributes['max_level']) ? $attributes['max_level'] : $cfg_toc_max_level;
         if (!empty($menu) && count($menu) > 1) {
             $depth = 0;
             $current_level = null;
@@ -108,8 +108,8 @@ class DocBookHelper
                 }
                 $depth += $diff;
                 $list_content .= $formatter->buildTag('link', $menu_item['text'], array(
-                    'href'=>'#'.$_item_id,
-                    'title'=>isset($attributes['toc_item_title']) ? $attributes['toc_item_title'] : $cfg_toc_item_title,
+                    'href'  => '#'.$_item_id,
+                    'title' => isset($attributes['toc_item_title']) ? $attributes['toc_item_title'] : $cfg_toc_item_title,
                 ));
                 $current_level = $menu_item['level'];
             }
@@ -117,12 +117,12 @@ class DocBookHelper
                 $list_content .= str_repeat('</ul></li>', $depth);
             }
             $content .= $formatter->buildTag('title', $cfg_toc_title, array(
-                'level'=>isset($attributes['toc_title_level']) ? $attributes['toc_title_level'] : $cfg_toc_title_level,
-                'id'=>isset($attributes['toc_id']) ? $attributes['toc_id'] : $cfg_toc_id,
-                'no-addon'=>true
+                'level'     => isset($attributes['toc_title_level']) ? $attributes['toc_title_level'] : $cfg_toc_title_level,
+                'id'        => isset($attributes['toc_id']) ? $attributes['toc_id'] : $cfg_toc_id,
+                'no-addon'  => true
             ));
             $content .= $formatter->buildTag('unordered_list', $list_content, array(
-                'class'=>isset($attributes['class']) ? $attributes['class'] : $cfg_toc_class,
+                'class'     => isset($attributes['class']) ? $attributes['class'] : $cfg_toc_class,
             ));
         }
         return $content;

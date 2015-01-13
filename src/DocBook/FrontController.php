@@ -246,24 +246,26 @@ class FrontController
         }
         $result = null;
         if (!empty($routing)) {
-            $ctrl_cls = $routing['controller_classname'];
-            $ctrl_obj = new $ctrl_cls();
+            $ctrl_cls   = $routing['controller_classname'];
+            $ctrl_obj   = new $ctrl_cls();
             $this->setController($ctrl_obj);
-            $result = Helper::fetchArguments(
+            $result     = Helper::fetchArguments(
                 $this->getController(), $routing['action'], array('path'=>$input_file)
             );
         }
         if (empty($result) || !is_array($result) || (count($result)!=2 && count($result)!=3)) {
-            $str = gettype($result);
-            if (is_array($result)) $str .= ' length '.count($result);
+            $str        = gettype($result);
+            if (is_array($result)) {
+                $str    .= ' length '.count($result);
+            }
             throw new RuntimeException(
                 sprintf('A controller action must return a two or three entries array like [ template file , content (, params) ]! Received %s from class "%s::%s()".',
                 $str, $routing['controller_classname'], $routing['action'])
             );
         } else {
-            $template = $result[0];
-            $content = $result[1];
-            $params = isset($result[2]) ? $result[2] : array();
+            $template   = $result[0];
+            $content    = $result[1];
+            $params     = isset($result[2]) ? $result[2] : array();
         }
 
         // for dev
@@ -438,13 +440,15 @@ class FrontController
     {
         if (empty($this->markdown_parser)) {
             // creating the Markdown parser
-            $emd_config = Kernel::getConfig('markdown', array());
-            $emd_config_strs = Kernel::getConfig('markdown_i18n', array());
+            $emd_config         = Kernel::getConfig('markdown', array());
+            $emd_config_strs    = Kernel::getConfig('markdown_i18n', array());
             if (!empty($emd_config_strs) && is_array($emd_config_strs) && count($emd_config_strs)==1 && isset($emd_config_strs['markdown_i18n'])) {
                 $emd_config_strs = $emd_config_strs['markdown_i18n'];
             }
-            if (empty($emd_config)) $emd_config = array();
-            $translator = I18n::getInstance();
+            if (empty($emd_config)) {
+                $emd_config = array();
+            }
+            $translator         = I18n::getInstance();
             foreach ($emd_config_strs as $_str) {
                 $emd_config[$_str] = $translator->translate($_str);
             }
@@ -467,9 +471,9 @@ class FrontController
      */
     public function getChapters()
     {
-        $www_http = Kernel::getPath('web');
-        $dir = new DocBookRecursiveDirectoryIterator($www_http);
-        $paths = array();
+        $www_http   = Kernel::getPath('web');
+        $dir        = new DocBookRecursiveDirectoryIterator($www_http);
+        $paths      = array();
         foreach($dir as $file) {
             if ($file->isDir()) {
                 $paths[] = array(
@@ -480,18 +484,6 @@ class FrontController
             }
         }
         return $paths;
-    }
-
-// ---------------------
-// Dev
-// ---------------------
-
-    public function debug()
-    {
-        echo '<pre>';
-        var_dump($this);
-        echo '</pre>';
-        exit(0);
     }
 
 }

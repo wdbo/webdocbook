@@ -56,7 +56,7 @@ abstract class AbstractFrontController
     protected $response;
 
     /**
-     * @var \DocBook\Controller\misc
+     * @var \DocBook\Controller\mixed
      */
     protected $controller;
 
