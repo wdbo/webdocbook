@@ -91,19 +91,19 @@ class FrontController
             $this->session->start();
 
             // the actual manifest
-            $manifest_ctt = file_get_contents(Kernel::getPath('app_manifest'));
+            $manifest_ctt = file_get_contents(Kernel::getPath('app_manifest_filepath'));
             if ($manifest_ctt!==false) {
                 $manifest_data = json_decode($manifest_ctt, true);
                 if ($manifest_data) {
                     Kernel::setConfig($manifest_data, 'manifest');
                 } else {
                     throw new \Exception(
-                        sprintf('Can not parse app manifest "%s" JSON content!', Kernel::getPath('app_manifest', true))
+                        sprintf('Can not parse app manifest "%s" JSON content!', Kernel::getPath('app_manifest_filepath', true))
                     );
                 }
             } else {
                 throw new \Exception(
-                    sprintf('App manifest "%s" not found or is empty!', Kernel::getPath('app_manifest', true))
+                    sprintf('App manifest "%s" not found or is empty!', Kernel::getPath('app_manifest_filepath', true))
                 );
             }
 
@@ -136,14 +136,14 @@ class FrontController
 
         // user configuration
         $internal_config    = Kernel::getConfig('userconf', array());
-        $user_config_file   = Kernel::getPath('user_config');
+        $user_config_file   = Kernel::getPath('user_config_filepath');
         if (file_exists($user_config_file)) {
             $user_config = parse_ini_file($user_config_file, true);
             if (!empty($user_config)) {
                 Kernel::setConfig($user_config, 'user_config');
             } else {
                 throw new Exception(
-                    sprintf('Can not read you configuration file "%s"!', $user_config_file)
+                    sprintf('Can not read you configuration file "%s"!', Kernel::getPath('user_config_filepath', true))
                 );
             }
         } else {
@@ -175,10 +175,11 @@ class FrontController
         $i18n_loader_opts = array(
             'language_directory'            => Kernel::getPath('i18n'),
             'language_strings_db_directory' => Kernel::getPath('user_config'),
-            'language_strings_db_filename'  => Kernel::getPath('app_i18n'),
+            'language_strings_db_filename'  => basename(Kernel::getPath('app_i18n')),
             'force_rebuild'                 => true,
             'available_languages'           => array_combine(array_keys($langs), array_keys($langs)),
         );
+
         if (Kernel::isDevMode()) {
             $i18n_loader_opts['show_untranslated'] = true;
         }

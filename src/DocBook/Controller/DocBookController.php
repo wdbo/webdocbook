@@ -144,7 +144,7 @@ class DocBookController
             throw new NotFoundException('Forbidden access!');
         }
 
-        $user_config_file   = Kernel::getPath('user_config', true);
+        $user_config_file   = Kernel::getPath('user_config_filepath', true);
         $user_config        = Kernel::get('user_config');
         $title              = _T('Administration');
         $path               = Kernel::getPath('docbook_assets') . Kernel::getConfig('pages:admin_welcome', '');
@@ -201,7 +201,7 @@ class DocBookController
             $this->docbook->getSession()->set('saveadmin', time());
             $root_dir       = Kernel::getPath('app_base_path');
             $data           = $this->docbook->getRequest()->getData();
-            $config_file    = Kernel::getPath('user_config');
+            $config_file    = Kernel::getPath('user_config_filepath');
 
             $internal_conf = Kernel::getConfig('userconf', array());
             foreach ($internal_conf as $var=>$val) {

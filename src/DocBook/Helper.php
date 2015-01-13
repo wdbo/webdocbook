@@ -394,7 +394,7 @@ class Helper
     {
         $name = basename($file_path);
         return (
-            $name !== Kernel::getPath('docbook_assets')
+            $name !== basename(Kernel::getPath('docbook_assets'))
         );
     }
 

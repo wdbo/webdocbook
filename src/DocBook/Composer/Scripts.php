@@ -36,6 +36,7 @@ class Scripts
         if (!@class_exists('\DocBook\Kernel')) {
             include_once __DIR__.'/../Kernel.php';
         }
+        \DocBook\Kernel::boot(true);
     }
 
     /**
@@ -47,6 +48,7 @@ class Scripts
         $composer   = $event->getComposer();
         $io         = $event->getIO();
 
+        \DocBook\Kernel::installConfig();
     }
 
     /**
@@ -58,6 +60,7 @@ class Scripts
         $composer   = $event->getComposer();
         $io         = $event->getIO();
 
+        \DocBook\Kernel::installConfig();
     }
 
     /**

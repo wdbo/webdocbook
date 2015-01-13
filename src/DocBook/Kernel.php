@@ -65,8 +65,8 @@ class Kernel
         ),
         'filenames' => array(
             'app_manifest'          => 'composer.json',
-            'app_i18n'              => 'docbook_i18n.csv',
-            'app_config'            => 'docbook.ini',
+            'app_i18n'              => 'docbook_i18n.dist.csv',
+            'app_config'            => 'docbook.dist.ini',
             'user_config'           => 'user_config.ini'
         )
     );
@@ -158,6 +158,9 @@ class Kernel
         // user/config/
         self::$_registry['user_config_path'] = self::$_registry['user_path']
             .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
+        if (!is_writable(self::getPath('user_config'))) {
+            throw new \Exception("Directory 'user/config/' must be writable!");
+        }
 
         // user/templates/
         $user_templates_dir = self::$_registry['user_path']
@@ -188,19 +191,19 @@ class Kernel
         }
 
         // app manifest
-        self::$_registry['app_manifest_path'] = self::$_registry['app_base_path']
+        self::$_registry['app_manifest_filepath'] = self::$_registry['app_base_path']
             .self::$_defaults['filenames']['app_manifest'];
 
         // config
-        self::$_registry['app_config_path'] = self::getPath('user_config')
-            .self::$_defaults['filenames']['app_config'];
+        self::$_registry['app_config_filepath'] = self::getPath('user_config')
+            .str_replace('.dist', '', self::$_defaults['filenames']['app_config']);
 
         // i18n
         self::$_registry['app_i18n_path'] = self::getPath('user_config')
-            .self::$_defaults['filenames']['app_i18n'];
+            .str_replace('.dist', '', self::$_defaults['filenames']['app_i18n']);
 
         // user_config
-        self::$_registry['user_config_path'] = self::getPath('user_config')
+        self::$_registry['user_config_filepath'] = self::getPath('user_config')
             .self::$_defaults['filenames']['user_config'];
 
         // stops here for soft boot
@@ -210,7 +213,7 @@ class Kernel
 
         // configuration file
         try {
-            $config = self::parseIniFile(self::getPath('app_config'));
+            $config = self::parseIniFile(self::getPath('app_config_filepath'));
             self::$_registry['docbook'] = $config;
         } catch (\Exception $e) {
             throw $e;
@@ -305,7 +308,7 @@ class Kernel
     public static function getPath($name, $local = false, $base_path = 'app_base_path')
     {
         // absolute path first
-        $_name = str_replace('_dir', '', $name) . '_path';
+        $_name = str_replace(array('_dir', '_path'), '', $name) . '_path';
         if (array_key_exists($_name, self::$_registry)) {
             if ($local) {
                 return str_replace(self::getPath($base_path), '', self::$_registry[$_name]);
@@ -419,6 +422,50 @@ class Kernel
         return null;
     }
 
+    /**
+     * Install DocBook's config files
+     * @return bool
+     * @throws \Exception
+     * @api
+     */
+    public static function installConfig()
+    {
+        $conf_tgt = self::getPath('app_config');
+        $i18n_tgt = self::getPath('app_i18n');
+
+        if (!file_exists($conf_tgt)) {
+            $conf_src = self::getPath('config') . self::$_defaults['filenames']['app_config'];
+            $ok = copy($conf_src, $conf_tgt);
+            if (!$ok) {
+                throw new \Exception(
+                    sprintf('Can not copy distributed configuration file to "%s"!', self::getPath('app_config', true))
+                );
+            }
+        }
+
+        if (!file_exists($i18n_tgt)) {
+            $i18n_src = self::getPath('config') . self::$_defaults['filenames']['app_i18n'];
+            $ok = copy($i18n_src, $i18n_tgt);
+            if (!$ok) {
+                throw new \Exception(
+                    sprintf('Can not copy distributed configuration file to "%s"!', self::getPath('app_i18n', true))
+                );
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Clear DocBook's cache
+     * @return bool
+     * @api
+     */
+    public static function clearCache()
+    {
+        return self::remove(self::getPath('var'));
+    }
+
 // ----------------------------
 // Utilities
 // ----------------------------
@@ -454,17 +501,6 @@ class Kernel
                 sprintf('DocBook configuration file not found but is required (searching "%s")!', $file)
             );
         }
-    }
-
-    /**
-     * Clear DocBook's cache on Composer's event
-     *
-     * @return void
-     */
-    public static function clearCache()
-    {
-        $base_path  = realpath(__DIR__.'/../..') . DIRECTORY_SEPARATOR;
-        return self::remove($base_path.'var');
     }
 
     /**
