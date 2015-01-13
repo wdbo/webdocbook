@@ -126,8 +126,9 @@ class Kernel
             return;
         }
 
-        // a simple error string
-        $error_str = 'Directory "%s" must be writable for your web-server\'s user!';
+        // simple error strings
+        $error_str_creation = 'Directory "%s" can not be created!';
+        $error_str_writable = 'Directory "%s" must be writable for your web-server\'s user!';
 
         // initialize object
         self::init();
@@ -141,14 +142,20 @@ class Kernel
             self::$_registry[$path_name] = self::$_registry['app_base_path'].self::slashDirname($path);
         }
 
-        // var must be writable
-        if (!is_writable(self::getPath('var'))) {
-            throw new \Exception(sprintf($error_str, 'var/'));
+        // var must exist and be writable
+        if (false===@file_exists(self::getPath('var')) && false===@mkdir(self::getPath('var'))) {
+            throw new \Exception(sprintf($error_str_creation, 'var/'));
+        }
+        if (false===@is_writable(self::getPath('var'))) {
+            throw new \Exception(sprintf($error_str_writable, 'var/'));
         }
 
-        // user must be writable
-        if (!is_writable(self::getPath('user'))) {
-            throw new \Exception(sprintf($error_str, 'user/'));
+        // user must exist and be writable
+        if (false===@file_exists(self::getPath('user')) && false===@mkdir(self::getPath('user'))) {
+            throw new \Exception(sprintf($error_str_creation, 'user/'));
+        }
+        if (false===@is_writable(self::getPath('user'))) {
+            throw new \Exception(sprintf($error_str_writable, 'user/'));
         }
 
         // src/config/
@@ -162,36 +169,48 @@ class Kernel
         // user/config/
         self::$_registry['user_config_path'] = self::$_registry['user_path']
             .self::slashDirname(self::$_defaults['dirnames']['config_dir']);
-        if (!is_writable(self::getPath('user_config'))) {
-            throw new \Exception(sprintf($error_str, 'user/config/'));
+        if (false===@file_exists(self::getPath('user_config')) && false===@mkdir(self::getPath('user_config'))) {
+            throw new \Exception(sprintf($error_str_creation, 'user/config/'));
+        }
+        if (false===@is_writable(self::getPath('user_config'))) {
+            throw new \Exception(sprintf($error_str_writable, 'user/config/'));
         }
 
         // user/templates/
         $user_templates_dir = self::$_registry['user_path']
             .self::slashDirname(self::$_defaults['dirnames']['templates_dir']);
-        if (file_exists($user_templates_dir)) {
+        if (false!==@file_exists($user_templates_dir)) {
             self::$_registry['user_templates_path'] = $user_templates_dir;
         }
 
         // var/cache/
         self::$_registry['cache_path'] = self::$_registry['var_path']
             .self::slashDirname(self::$_defaults['dirnames']['cache_dir']);
-        if (!is_writable(self::getPath('cache'))) {
-            throw new \Exception(sprintf($error_str, 'var/cache/'));
+        if (false===@file_exists(self::getPath('cache')) && false===@mkdir(self::getPath('cache'))) {
+            throw new \Exception(sprintf($error_str_creation, 'user/cache/'));
+        }
+        if (false===@is_writable(self::getPath('cache'))) {
+            throw new \Exception(sprintf($error_str_writable, 'var/cache/'));
         }
 
         // var/i18n/
         self::$_registry['i18n_path'] = self::$_registry['var_path']
             .self::slashDirname(self::$_defaults['dirnames']['i18n_dir']);
-        if (!is_writable(self::getPath('i18n'))) {
-            throw new \Exception(sprintf($error_str, 'var/i18n/'));
+        if (false===@file_exists(self::getPath('i18n')) && false===@mkdir(self::getPath('i18n'))) {
+            throw new \Exception(sprintf($error_str_creation, 'user/i18n/'));
+        }
+        if (false===@is_writable(self::getPath('i18n'))) {
+            throw new \Exception(sprintf($error_str_writable, 'var/i18n/'));
         }
 
         // var/log/
         self::$_registry['log_path'] = self::$_registry['var_path']
             .self::slashDirname(self::$_defaults['dirnames']['log_dir']);
-        if (!is_writable(self::getPath('log'))) {
-            throw new \Exception(sprintf($error_str, 'var/log/'));
+        if (false===@file_exists(self::getPath('log')) && false===@mkdir(self::getPath('log'))) {
+            throw new \Exception(sprintf($error_str_creation, 'user/log/'));
+        }
+        if (false===@is_writable(self::getPath('log'))) {
+            throw new \Exception(sprintf($error_str_writable, 'var/log/'));
         }
 
         // app manifest
@@ -343,11 +362,11 @@ class Kernel
      */
     public static function findDocument($path)
     {
-        if (file_exists($path)) {
+        if (true===@file_exists($path)) {
             return $path;
         }
         $file_path = self::getPath('web') . trim($path, '/');
-        if (file_exists($file_path)) {
+        if (true===@file_exists($file_path)) {
             return $file_path;
         }
         return null;
@@ -411,7 +430,7 @@ class Kernel
         $filetype_name      = 'user_'.$filetype;
         $user_path          = self::getPath(str_replace('_dir', '_path', $filetype_name));
         $user_file_path     = $user_path.$filename;
-        if (file_exists($user_file_path)) {
+        if (true===@file_exists($user_file_path)) {
             return $user_file_path;
         }
 
@@ -419,7 +438,7 @@ class Kernel
         $filetype_default   = 'src_'.$filetype;
         $default_path       = self::getPath(str_replace('_dir', '_path', $filetype_default));
         $def_file_path      = $default_path.$filename;
-        if (file_exists($def_file_path)) {
+        if (true===@file_exists($def_file_path)) {
             return $def_file_path;
         }
 
@@ -437,20 +456,18 @@ class Kernel
         $conf_tgt = self::get('app_config_filepath');
         $i18n_tgt = self::get('app_i18n_filepath');
 
-        if (!file_exists($conf_tgt)) {
+        if (false===@file_exists($conf_tgt)) {
             $conf_src = self::getPath('config') . self::$_defaults['filenames']['app_config'];
-            $ok = copy($conf_src, $conf_tgt);
-            if (!$ok) {
+            if (false===@copy($conf_src, $conf_tgt)) {
                 throw new \Exception(
                     sprintf('Can not copy distributed configuration file to "%s"!', self::getPath('app_config', true))
                 );
             }
         }
 
-        if (!file_exists($i18n_tgt)) {
+        if (false===@file_exists($i18n_tgt)) {
             $i18n_src = self::getPath('config') . self::$_defaults['filenames']['app_i18n'];
-            $ok = copy($i18n_src, $i18n_tgt);
-            if (!$ok) {
+            if (false===@copy($i18n_src, $i18n_tgt)) {
                 throw new \Exception(
                     sprintf('Can not copy distributed language file to "%s"!', self::getPath('app_i18n', true))
                 );
@@ -491,7 +508,7 @@ class Kernel
      */
     public static function parseIniFile($file)
     {
-        if (file_exists($file)) {
+        if (true===@file_exists($file)) {
             $config =  parse_ini_file($file, true);
             if ($config) {
                 return $config;
