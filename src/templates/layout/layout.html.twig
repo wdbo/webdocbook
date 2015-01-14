@@ -42,11 +42,11 @@ The source code of this package is available online at
     <link rel="apple-touch-icon-precomposed" href="{{ assets }}{{ user_cfg.app_icon_precomposed }}">
 {% endif %}
     <!-- Bower dependencies -->
-    <link href="{{ vendor_assets }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ vendor_assets }}bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="{{ vendor_assets }}bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ vendor_assets }}bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="{{ vendor_assets }}fontawesome/css/font-awesome.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="{{ vendor_assets }}html5shiv/html5shiv.min.js"></script>
+    <script src="{{ vendor_assets }}html5shiv/dist/html5shiv.min.js"></script>
     <![endif]-->
     <!-- DoBook's styles -->
     <link href="{{ assets }}styles.css" rel="stylesheet">
@@ -80,9 +80,9 @@ The source code of this package is available online at
 </div>
 <a id="bottom"></a>
 <!-- Bower dependencies -->
-<script src="{{ vendor_assets }}jquery/jquery.min.js"></script>
+<script src="{{ vendor_assets }}jquery/dist/jquery.min.js"></script>
 <script>$.uiBackCompat = false;</script>
-<script src="{{ vendor_assets }}bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ vendor_assets }}bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DocBook's scripts -->
 <script src="{{ assets }}scripts.js"></script>
 {% block scripts %}
