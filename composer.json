@@ -1,7 +1,7 @@
 {
     "name": "atelierspierrot/docbook",
     "title": "DocBook",
-    "type": "library",
+    "type": "project",
     "description": "Simple CMS PHP app to build rich HTML5 views from a Markdown contents filesystem.",
     "keywords": [ "cms", "markdown" ],
     "homepage": "http://github.com/atelierspierrot/docbook",
@@ -44,6 +44,8 @@
         "post-create-project-cmd": "DocBook\\Composer\\Scripts::postCreateProject",
         "docbook-clear-cache": "DocBook\\Composer\\Scripts::docbookClearCache",
         "docbook-clearcache": "DocBook\\Composer\\Scripts::docbookClearCache",
+        "docbook-clear-i18n": "DocBook\\Composer\\Scripts::docbookClearI18n",
+        "docbook-flush": "DocBook\\Composer\\Scripts::docbookClearI18n",
         "docbook-init": "DocBook\\Composer\\Scripts::docbookInit"
     },
     "extra": {

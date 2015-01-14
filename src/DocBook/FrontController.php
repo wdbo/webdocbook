@@ -112,7 +112,7 @@ class FrontController
             echo PHP_EOL.'[DocBook startup error] : '.PHP_EOL;
             echo PHP_EOL."\t".$e->getMessage().PHP_EOL;
             echo PHP_EOL.'-------------------------'.PHP_EOL;
-            echo 'For more info, see the "INSTALL.md" file.'.PHP_EOL;
+            echo 'For more info, see the documentation online at <?>.'.PHP_EOL;
             exit(1);
         }
     }

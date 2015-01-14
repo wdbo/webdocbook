@@ -62,23 +62,31 @@ class Scripts
             try {
                 self::$_composer    = $event->getComposer();
                 self::$_io          = $event->getIO();
-                if (!@class_exists('\DocBook\Util\Filesystem')) {
+                if (false===@class_exists('\DocBook\Util\Filesystem')) {
                     include_once    __DIR__.'/../Util/Filesystem.php';
                 }
-                if (!@class_exists('\DocBook\Kernel')) {
+                if (false===@class_exists('\DocBook\Kernel')) {
                     include_once    __DIR__.'/../Kernel.php';
                 }
                 \DocBook\Kernel::boot(true);
             } catch (\Exception $e) {
                 $message = $e->getMessage();
                 throw new \Exception(
-                    "An error occurred while trying to init the app ...".PHP_EOL
-                    .(!is_null($cmd) ? "You should correct the error and try: 'composer run-script $cmd'.".PHP_EOL : '')
+                    "[DocBook] An error occurred while trying to init the app ...".PHP_EOL
+                    .(!is_null($cmd) ? "You should correct the error and try: 'composer $cmd'.".PHP_EOL : '')
                     ."Caught exception: '$message'."
                 );
             }
             self::$_inited = true;
         }
+    }
+
+    /**
+     * @param $str
+     */
+    protected static function info($str)
+    {
+        self::$_io->write('<info>[DocBook] '.$str.'</info>');
     }
 
 // ------------------
@@ -164,7 +172,7 @@ class Scripts
             self::__init($event, 'docbook-init');
             self::docbookClearCache($event);
             if (\DocBook\Kernel::installConfig()) {
-                self::$_io->write( '<info>DocBook configuration has been installed</info>' );
+                self::info('installing configuration: user/config/');
             }
         } catch (\Exception $e) {
             throw $e;
@@ -183,8 +191,47 @@ class Scripts
         try {
             self::__init($event, 'docbook-clear-cache');
             if (\DocBook\Kernel::clearCache()) {
-                self::$_io->write( '<info>DocBook cache has been cleared</info>' );
+                self::info('clearing cache: var/cache/');
             }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clear DocBook cache in `var/cache/`
+     *
+     * @param   \Composer\Script\Event $event
+     * @return  void
+     * @throws  \Exception
+     */
+    public static function docbookClearI18n(\Composer\Script\Event $event)
+    {
+        try {
+            self::__init($event, 'docbook-clear-i18n');
+            if (\DocBook\Kernel::clearI18n()) {
+                self::info('clearing cache: var/i18n/');
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clear DocBook cache in `var/cache/` & `var/i18n/`
+     *
+     * @param   \Composer\Script\Event $event
+     * @return  void
+     * @throws  \Exception
+     * @see     self::docbookClearCache()
+     * @see     self::docbookClearI18n()
+     */
+    public static function docbookFlush(\Composer\Script\Event $event)
+    {
+        try {
+            self::__init($event, 'docbook-flush');
+            self::docbookClearCache($event);
+            self::docbookClearI18n($event);
         } catch (\Exception $e) {
             throw $e;
         }

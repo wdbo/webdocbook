@@ -453,13 +453,23 @@ class Kernel
     }
 
     /**
-     * Clear DocBook's cache
+     * Clear DocBook's cache (var/cache/)
      * @return bool
      * @api
      */
     public static function clearCache()
     {
         return self::remove(self::getPath('cache'));
+    }
+
+    /**
+     * Clear DocBook's language files (var/i18n/)
+     * @return bool
+     * @api
+     */
+    public static function clearI18n()
+    {
+        return self::remove(self::getPath('i18n'));
     }
 
 // ----------------------------
