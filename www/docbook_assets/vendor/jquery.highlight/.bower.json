@@ -1,0 +1,16 @@
+{
+  "name": "jquery.highlight",
+  "homepage": "https://github.com/ematsakov/highlight",
+  "description": "syntax highlighting of source code snippets in an html page (jQuery plugin)",
+  "main": "jquery.highlight.js",
+  "license": "MIT",
+  "_release": "e139602184",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "e13960218470434825e07a8b85ddd828eecfd6fd"
+  },
+  "_source": "git://github.com/ematsakov/highlight.git",
+  "_target": "*",
+  "_originalSource": "jquery.highlight"
+}
