@@ -24,13 +24,12 @@
 namespace DocBook;
 
 use \DocBook\Exception\RuntimeException;
+use \DocBook\Util\Filesystem;
 use \Library\Command;
-use \Library\Helper\Directory as DirectoryHelper;
 use \Library\Helper\Text as TextHelper;
 use \Library\Helper\Url as UrlHelper;
 use \DateTime;
 use \ReflectionMethod;
-use \WebFilesystem\WebFilesystem;
 
 /**
  * Class Helper
@@ -251,7 +250,7 @@ class Helper
 
         $is_dir     = file_exists($path) && is_dir($path);
         if ($is_dir) {
-            $path   = DirectoryHelper::slashDirname($path);
+            $path   = Filesystem::slashDirname($path);
         }
 
         $grep_cmd   = Command::getCommandPath('grep');
@@ -358,7 +357,7 @@ class Helper
             'php_sapi_name'     => php_sapi_name(),
             'apache_version'    => function_exists('apache_get_version') ? apache_get_version() : '?',
             'user_agent'        => $_SERVER['HTTP_USER_AGENT'],
-            'git_clone'         => DirectoryHelper::isGitClone(Kernel::getPath('app_base_path')),
+            'git_clone'         => Filesystem::isGitClone(Kernel::getPath('app_base_path')),
             'request'           => UrlHelper::getRequestUrl(),
         );
     }
@@ -404,13 +403,13 @@ class Helper
      */
     public static function getGitConfig($repo_path)
     {
-        if (DirectoryHelper::isGitClone($repo_path)) {
-            $repo_config_file = DirectoryHelper::slashDirname($repo_path) .
-                DirectoryHelper::slashDirname('.git') .
+        if (Filesystem::isGitClone($repo_path)) {
+            $repo_config_file = Filesystem::slashDirname($repo_path) .
+                Filesystem::slashDirname('.git') .
                 'config';
             if (file_exists($repo_config_file)) {
                 try {
-                    $config = parse_ini_file($repo_config_file, true);
+                    $config = Filesystem::parseIni($repo_config_file);
                     return $config;
                 } catch (\Exception $e) {}
             }

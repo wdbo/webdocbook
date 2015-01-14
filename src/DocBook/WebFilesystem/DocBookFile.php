@@ -28,11 +28,10 @@ use \DocBook\Helper;
 use \DocBook\Kernel;
 use \DocBook\Exception\Exception;
 use \DocBook\Exception\RuntimeException;
+use \DocBook\Util\Filesystem;
 use \WebFilesystem\WebFilesystem;
 use \WebFilesystem\WebFileInfo;
-use \WebFilesystem\WebFilesystemIterator;
 use \WebFilesystem\Finder;
-use \Library\Helper\Directory as DirectoryHelper;
 use \Library\Helper\Text as TextHelper;
 use \FilesystemIterator;
 
@@ -112,6 +111,7 @@ class DocBookFile
             if (is_link($realpath)) {
                 $this->setIsRootLink(true);
             }
+
         } else {
             $this->type = $this->getDocBookTypeByPath($file_name);
             $this->setRootDir(dirname($file_name));
@@ -128,6 +128,7 @@ class DocBookFile
         } else {
             throw new RuntimeException("DocBook file class '$_class_name' not found!");
         }
+
         $this->setFile($_file);
         $this->getFile()->setRootDir($_root);
         $this->getFile()->setWebPath($_root.$this->docbook->getInputPath());
@@ -191,7 +192,7 @@ class DocBookFile
     public function isChildOfLink()
     {
         $_root  = Kernel::getPath('web');
-        $_dir   = DirectoryHelper::slashDirname($this->getRealPath());
+        $_dir   = Filesystem::slashDirname($this->getRealPath());
         return (substr_count($_dir, $_root) === 0);
     }
 
@@ -203,7 +204,7 @@ class DocBookFile
         if (!isset($this->cache['docbook_path'])) {
             $filepath = $this->getRealPath();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath   = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+                $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
             } elseif ($this->isChildOfLink()) {
                 $filepath   = $this->getFile()->getRealWebPath();
             }
@@ -285,7 +286,7 @@ class DocBookFile
                 }
             }
 
-            $dir_is_clone = DirectoryHelper::isGitClone($dir->getPath());
+            $dir_is_clone = Filesystem::isGitClone($dir->getPath());
             $remote = null;
             if ($dir_is_clone) {
                 $git_config = Helper::getGitConfig($dir->getPath());
@@ -381,7 +382,7 @@ class DocBookFile
         if (!isset($this->cache['docbook_translations'])) {
             $filepath = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
             }
             $parts = explode('.', $this->getBasename());
             try {
@@ -421,7 +422,7 @@ class DocBookFile
 
             $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
             }
             $dir_realpath   = dirname(realpath($filepath));
             $dir_targetpath = dirname($filepath);
@@ -435,15 +436,15 @@ class DocBookFile
                 $j = $i+1;
                 while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
                     (is_dir($dir_table[$j]) && !Helper::isDirValid($dir_table[$j])) || 
-                    !Helper::isFileValid($dir_table[$j]) || 
-                    DirectoryHelper::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
+                    !Helper::isFileValid($dir_table[$j]) ||
+                    Filesystem::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
                 )) {
                     $j = $j+1;
                 }
                 if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
                         (is_dir($dir_table[$j]) && Helper::isDirValid($dir_table[$j])) ||
                         (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j])) 
-                    ) && !DirectoryHelper::isDotPath($dir_table[$j])
+                    ) && !Filesystem::isDotPath($dir_table[$j])
                 ) {
                     $next = new DocBookFile($dir_table[$j]);
                     $this->cache['docbook_next'] = $next->getDocBookStack();
@@ -465,7 +466,7 @@ class DocBookFile
 
             $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath   = DirectoryHelper::slashDirname($this->getWebPath()).$this->getFilename();
+                $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
             }
             $dir_realpath   = dirname(realpath($filepath));
             $dir_targetpath = dirname($filepath);
@@ -479,15 +480,15 @@ class DocBookFile
                 $j = $i-1;
                 while ($j>=0 && array_key_exists($j, $dir_table) && (
                     (is_dir($dir_table[$j]) && !Helper::isDirValid($dir_table[$j])) || 
-                    !Helper::isFileValid($dir_table[$j]) || 
-                    DirectoryHelper::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
+                    !Helper::isFileValid($dir_table[$j]) ||
+                    Filesystem::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
                 )) {
                     $j = $j-1;
                 }
                 if ($j>=0 && array_key_exists($j, $dir_table) && (
                         (is_dir($dir_table[$j]) && Helper::isDirValid($dir_table[$j])) ||
                         (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j])) 
-                    ) && !DirectoryHelper::isDotPath($dir_table[$j])
+                    ) && !Filesystem::isDotPath($dir_table[$j])
                 ) {
                     $previous = new DocBookFile($dir_table[$j]);
                     $this->cache['docbook_previous'] = $previous->getDocBookStack();
@@ -505,8 +506,8 @@ class DocBookFile
         if (!isset($this->cache['docbook_human_readable_filename'])) {
             $docbook = FrontController::getInstance();
             if (
-                DirectoryHelper::slashDirname($this->getRealPath())===Kernel::getPath('web') ||
-                DirectoryHelper::slashDirname($this->getRealPath())==='/'
+                Filesystem::slashDirname($this->getRealPath())===Kernel::getPath('web') ||
+                Filesystem::slashDirname($this->getRealPath())==='/'
             ) {
                 $this->cache['docbook_human_readable_filename'] = _T('Home');
             } else {
@@ -522,7 +523,7 @@ class DocBookFile
     public function findReadme()
     {
         if (!isset($this->cache['docbook_readme'])) {
-            $readme = DirectoryHelper::slashDirname($this->getRealPath()).
+            $readme = Filesystem::slashDirname($this->getRealPath()).
                 Kernel::getConfig('user_config:readme_filename', 'README.md');
             $this->cache['docbook_readme'] = file_exists($readme) ? $readme : null;
         }
@@ -535,7 +536,7 @@ class DocBookFile
     public function findIndex()
     {
         if (!isset($this->cache['docbook_index'])) {
-            $index = DirectoryHelper::slashDirname($this->getRealPath()).
+            $index = Filesystem::slashDirname($this->getRealPath()).
                 Kernel::getConfig('user_config:index_filename', 'INDEX.md');
             $this->cache['docbook_index'] = file_exists($index) ? $index : null;
         }

@@ -42,7 +42,7 @@ class DBImage
      */
     public function viewFileInfos(array $params = array())
     {
-        $img    = new WebImage($this->getRealPath());
+//        $img    = new WebImage($this->getRealPath()); // useful ?
         $params = array_merge($params, array(
             'height'    => $this->getHeight(),
             'width'     => $this->getWidth(),

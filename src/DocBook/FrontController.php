@@ -27,11 +27,11 @@ use \DocBook\Abstracts\AbstractFrontController;
 use \DocBook\WebFilesystem\DocBookRecursiveDirectoryIterator;
 use \DocBook\Exception\Exception;
 use \DocBook\Exception\RuntimeException;
+use \DocBook\Util\Filesystem;
 use \MarkdownExtended\MarkdownExtended;
 use \I18n\I18n;
 use \I18n\Loader as I18n_Loader;
 use \I18n\Twig\I18nExtension as I18n_Twig_Extension;
-use \Library\Helper\Directory as DirectoryHelper;
 use \Library\Logger;
 
 /**
@@ -91,9 +91,8 @@ class FrontController
             $this->session->start();
 
             // the actual manifest
-            $manifest_ctt = file_get_contents(Kernel::getPath('app_manifest_filepath'));
-            if ($manifest_ctt!==false) {
-                $manifest_data = json_decode($manifest_ctt, true);
+            if (true===file_exists(Kernel::getPath('app_manifest_filepath'))) {
+                $manifest_data = Filesystem::parseJson(Kernel::getPath('app_manifest_filepath'));
                 if ($manifest_data) {
                     Kernel::setConfig($manifest_data, 'manifest');
                 } else {
@@ -137,8 +136,8 @@ class FrontController
         // user configuration
         $internal_config    = Kernel::getConfig('userconf', array());
         $user_config_file   = Kernel::getPath('user_config_filepath');
-        if (file_exists($user_config_file)) {
-            $user_config = parse_ini_file($user_config_file, true);
+        if (true===file_exists($user_config_file)) {
+            $user_config = Filesystem::parseIni($user_config_file);
             if (!empty($user_config)) {
                 Kernel::setConfig($user_config, 'user_config');
             } else {

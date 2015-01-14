@@ -46,6 +46,9 @@ class Scripts
     public static function init()
     {
         if (!self::$_inited) {
+            if (!@class_exists('\DocBook\Util\Filesystem')) {
+                include_once __DIR__.'/../Util/Filesystem.php';
+            }
             if (!@class_exists('\DocBook\Kernel')) {
                 include_once __DIR__.'/../Kernel.php';
             }

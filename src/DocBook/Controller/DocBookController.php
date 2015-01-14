@@ -27,7 +27,6 @@ use \DocBook\Helper;
 use \DocBook\Kernel;
 use \DocBook\Abstracts\AbstractController;
 use \DocBook\Exception\NotFoundException;
-use \Library\Helper\Directory as DirectoryHelper;
 use \Library\Converter\Array2INI;
 
 /**

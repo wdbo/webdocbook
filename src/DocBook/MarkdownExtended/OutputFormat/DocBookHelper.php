@@ -46,16 +46,16 @@ class DocBookHelper
      * @var array
      */
     protected static $_defaults = array(
-        'toc_max_level'         => '6',
-        'toc_title'             => 'Table of contents',
-        'toc_title_level'       => '4',
-        'toc_id'                => 'toc',
-        'toc_class'             => 'toc-menu',
-        'toc_item_title'        => 'Reach this section',
-        'permalink_mask_title'  => 'Copy this link URL to get this title permanent link: #%%',
+        'toc_max_level'             => '6',
+        'toc_title'                 => 'Table of contents',
+        'toc_title_level'           => '4',
+        'toc_id'                    => 'toc',
+        'toc_class'                 => 'toc-menu',
+        'toc_item_title'            => 'Reach this section',
+        'permalink_mask_title'      => 'Copy this link URL to get this title permanent link: #%%',
         'permalink_title_separator' => ' - ',
-        'toc_backlink_title'    => 'Click to go back to table of contents',
-        'backlink_onclick_mask' => "document.location.hash='%%'; return false;",
+        'toc_backlink_title'        => 'Click to go back to table of contents',
+        'backlink_onclick_mask'     => "document.location.hash='%%'; return false;",
     );
 
     /**
@@ -65,7 +65,9 @@ class DocBookHelper
     public static function getConfigOrDefault($var)
     {
         $cfg_val = MarkdownExtended::getConfig($var);
-        if (empty($cfg_val)) $cfg_val = self::$_defaults[$var];
+        if (empty($cfg_val)) {
+            $cfg_val = self::$_defaults[$var];
+        }
         return $cfg_val;
     }
 
@@ -85,17 +87,21 @@ class DocBookHelper
         $cfg_toc_class          = $this->getConfigOrDefault('toc_class');
         $cfg_toc_item_title     = $this->getConfigOrDefault('toc_item_title');
 
-        $menu       = $md_content->getMenu();
-        $content    = $list_content = '';
-        $max_level  = isset($attributes['max_level']) ? $attributes['max_level'] : $cfg_toc_max_level;
+        $menu                   = $md_content->getMenu();
+        $content                = $list_content = '';
+        $max_level              = isset($attributes['max_level']) ? $attributes['max_level'] : $cfg_toc_max_level;
+
         if (!empty($menu) && count($menu) > 1) {
             $depth = 0;
             $current_level = null;
+
             foreach ($menu as $item_id=>$menu_item) {
                 $_item_id = Helper::getSafeIdString($item_id);
+
                 if (isset($max_level) && $menu_item['level']>$max_level) {
                     continue;
                 }
+
                 $diff = $menu_item['level']-(is_null($current_level) ? $menu_item['level'] : $current_level);
                 if ($diff > 0) {
                     $list_content .= str_repeat('<ul><li>', $diff);
@@ -106,6 +112,7 @@ class DocBookHelper
                     if (!is_null($current_level)) $list_content .= '</li>';
                     $list_content .= '<li>';
                 }
+
                 $depth += $diff;
                 $list_content .= $formatter->buildTag('link', $menu_item['text'], array(
                     'href'  => '#'.$_item_id,
@@ -113,17 +120,21 @@ class DocBookHelper
                 ));
                 $current_level = $menu_item['level'];
             }
+
             if ($depth!=0) {
                 $list_content .= str_repeat('</ul></li>', $depth);
             }
+
             $content .= $formatter->buildTag('title', $cfg_toc_title, array(
                 'level'     => isset($attributes['toc_title_level']) ? $attributes['toc_title_level'] : $cfg_toc_title_level,
                 'id'        => isset($attributes['toc_id']) ? $attributes['toc_id'] : $cfg_toc_id,
                 'no-addon'  => true
             ));
+
             $content .= $formatter->buildTag('unordered_list', $list_content, array(
                 'class'     => isset($attributes['class']) ? $attributes['class'] : $cfg_toc_class,
             ));
+
         }
         return $content;
     }

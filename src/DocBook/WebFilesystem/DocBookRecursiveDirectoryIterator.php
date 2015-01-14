@@ -25,7 +25,7 @@ namespace DocBook\WebFilesystem;
 
 use \DocBook\FrontController;
 use \DocBook\Helper;
-use \Library\Helper\Directory as DirectoryHelper;
+use \DocBook\Util\Filesystem;
 use \WebFilesystem\FilesystemIterator;
 use \WebFilesystem\WebRecursiveDirectoryIterator;
 
@@ -84,7 +84,7 @@ class DocBookRecursiveDirectoryIterator
     {
         if ($this->getFlags() & self::CURRENT_AS_DOCBOOKFILE) {
             return new DocBookFile(
-                DirectoryHelper::slashDirname($this->original_path).$this->getFilename()
+                Filesystem::slashDirname($this->original_path).$this->getFilename()
             );
         }
         return parent::current();

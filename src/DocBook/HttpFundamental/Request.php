@@ -26,7 +26,6 @@ namespace DocBook\HttpFundamental;
 use \DocBook\FrontController;
 use \DocBook\Kernel;
 use \DocBook\Exception\NotFoundException;
-use \Library\Helper\Directory as DirectoryHelper;
 use \Library\HttpFundamental\Request as BaseRequest;
 
 /**
@@ -105,7 +104,8 @@ class Request
                 $parts      = array_filter($parts);
                 $int_index  = array_search(
                     basename(Kernel::getPath('app_interface')),
-                    $parts);
+                    $parts
+                );
                 if (!empty($int_index)) {
                     unset($parts[$int_index]);
                 }

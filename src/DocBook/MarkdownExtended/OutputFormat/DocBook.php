@@ -63,6 +63,7 @@ class DocBook
         } else {
             $attributes['id'] = Helper::getSafeIdString($attributes['id']);
         }
+
         if (!isset($attributes['name']) || empty($attributes['name'])) {
             $attributes['name'] = $attributes['id'];
         }
@@ -78,9 +79,11 @@ class DocBook
         if (($level > 1) && (!isset($attributes['no-addon']) || $attributes['no-addon']!==true)) {
             $text = $this->addTitleAddon($text, $attributes);
         }
+
         if (isset($attributes['no-addon'])) {
             unset($attributes['no-addon']);
         }
+
         $_ttl = $this->getTagString($text, $tag, $attributes);
         return $_ttl;
     }
@@ -147,41 +150,49 @@ class DocBook
         $cfg_permalink_title            = $this->_getConfigOrDefault('permalink_mask_title');
         if (isset($attributes['id'])) {
             $backlink_attributes['href'] = '#'.$attributes['id'];
+
             if (isset($attributes['permalink_title'])) {
                 $backlink_attributes['title'] .= $attributes['permalink_title'];
                 unset($attributes['permalink_title']);
+
             } elseif (isset($attributes['permalink_mask_title'])) {
                 $backlink_attributes['title'] .= str_replace('%%', '#'.$attributes['id'], $attributes['permalink_mask_title']);
                 unset($attributes['permalink_mask_title']);
+
             } else {
                 $backlink_attributes['title'] .= str_replace('%%', '#'.$attributes['id'], $cfg_permalink_title);
             }
         }
 
         // toc backlink id
-        $cfg_toc_id                 = $this->_getConfigOrDefault('toc_id');
-        $cfg_toc_title              = $this->_getConfigOrDefault('toc_backlink_title');
-        $cfg_backlink_onclick_mask  = $this->_getConfigOrDefault('backlink_onclick_mask');
-        $cfg_permalink_title_separator = $this->_getConfigOrDefault('permalink_title_separator');        
+        $cfg_toc_id                     = $this->_getConfigOrDefault('toc_id');
+        $cfg_toc_title                  = $this->_getConfigOrDefault('toc_backlink_title');
+        $cfg_backlink_onclick_mask      = $this->_getConfigOrDefault('backlink_onclick_mask');
+        $cfg_permalink_title_separator  = $this->_getConfigOrDefault('permalink_title_separator');
+
         if (isset($attributes['permalink_title_separator'])) {
             $permalink_title_separator = $attributes['permalink_title_separator'];
             unset($attributes['permalink_title_separator']);
         } else {
             $permalink_title_separator = $cfg_permalink_title_separator;
         }
+
         if (isset($attributes['toc_id'])) {
             $toc_id = $attributes['toc_id'];
             unset($attributes['toc_id']);
+
             if (isset($attributes['toc_backlink_title'])) {
                 $backlink_attributes['title'] .= $permalink_title_separator.$attributes['toc_backlink_title'];
                 unset($attributes['toc_back_title']);
             } else {
                 $backlink_attributes['title'] .= $permalink_title_separator.$cfg_toc_title;
             }
+
         } elseif (!empty($cfg_toc_id) && !empty($cfg_toc_title)) {
             $toc_id = $cfg_toc_id;
             $backlink_attributes['title'] .= $permalink_title_separator.$cfg_toc_title;
         }
+
         if (isset($attributes['backlink_onclick_mask'])) {
             $backlink_onclick_mask = $attributes['backlink_onclick_mask'];
             unset($attributes['backlink_onclick_mask']);
@@ -194,6 +205,7 @@ class DocBook
         if (!empty($backlink_text) && !empty($backlink_attributes['title'])) {
             $text .= $this->buildTag('link', $backlink_text, $backlink_attributes);
         }
+
         return $text;
     }
     

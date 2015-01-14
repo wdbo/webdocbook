@@ -45,8 +45,8 @@ class DBMarkdown
         $md_parser  = $docbook->getMarkdownParser();
         $md_content = $md_parser->transformSource($this->getRealPath());
         $output_bag = $md_parser->get('OutputFormatBag');
-
         $page_notes = $md_content->getNotesToString();
+
         $params['page_notes'] = $page_notes;
 
         $page_footnotes = $md_content->getFootnotes();
@@ -57,6 +57,7 @@ class DBMarkdown
             $params['page_glossary']    = $page_glossary;
             $params['page_citations']   = $page_citations;
         }
+
         $params['toc'] = $output_bag->getHelper()
             ->getToc($md_content, $output_bag->getFormatter());
 
