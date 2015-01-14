@@ -10,6 +10,7 @@ dev/*
 phpdoc/*
 src/vendor/*
 composer.lock
+composer.phar
 #build/*
 
 # Web
