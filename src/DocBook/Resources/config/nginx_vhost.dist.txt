@@ -1,0 +1,62 @@
+########################################################################
+# This file is part of the DocBook package.
+#
+# Copyleft (ↄ) 2008-2015 Pierre Cassat <me@e-piwi.fr> and contributors
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# The source code of this package is available online at
+# <http://github.com/atelierspierrot/docbook>.
+########################################################################
+
+# new virtual-host entry on port 80
+server {
+    listen          80;
+
+    server_name     {DOMAIN_NAME};
+    root            {SERVER_PATH_TO}/docbook/www;
+
+    # setting the error pages
+    error_page      500     /index.php?error;
+    error_page      404     /index.php?not_found;
+    error_page      403     /index.php?forbidden;
+
+    # no indexing
+    autoindex       off;
+
+    # no access to anything beginning with a dot
+    location ~ ^/(.*/)?\.(.*)/ {
+        return 403;
+    }
+
+    # the rewrite URLs rules
+    location / {
+
+        # special rule for `sitemap.xml` (one per dir)
+        rewrite ^/(.*)sitemap.xml /index.php?$1/sitemap;
+
+        # skip all this for internal assets
+        if ($uri ~ "^(.*)docbook_assets/(.*)"){
+            break;
+        }
+
+        # if the dir exists, handle it by index.php anyway
+        if (-d $request_filename){
+            rewrite ^/(.*) /index.php?$1;
+        }
+
+        # `index.php` will handle all requests
+        rewrite ^/(.*) /index.php?$1;
+    }
+}
