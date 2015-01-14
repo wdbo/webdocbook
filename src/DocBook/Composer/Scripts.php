@@ -36,123 +36,157 @@ class Scripts
     /**
      * @var bool
      */
-    protected static $_inited = false;
+    protected static $_inited   = false;
+
+    /**
+     * @var null
+     */
+    protected static $_composer = null;
+
+    /**
+     * @var null
+     */
+    protected static $_io       = null;
 
     /**
      * Initialize DocBook environment
-     * @throws \Exception
-     * @see \DocBook\Kernel::boot()
+     *
+     * @param   \Composer\Script\Event $event
+     * @param   string $cmd
+     * @throws  \Exception
+     * @see     \DocBook\Kernel::boot()
      */
-    public static function init()
+    protected static function __init(\Composer\Script\Event $event, $cmd = null)
     {
         if (!self::$_inited) {
-            if (!@class_exists('\DocBook\Util\Filesystem')) {
-                include_once __DIR__.'/../Util/Filesystem.php';
+            try {
+                self::$_composer    = $event->getComposer();
+                self::$_io          = $event->getIO();
+                if (!@class_exists('\DocBook\Util\Filesystem')) {
+                    include_once    __DIR__.'/../Util/Filesystem.php';
+                }
+                if (!@class_exists('\DocBook\Kernel')) {
+                    include_once    __DIR__.'/../Kernel.php';
+                }
+                \DocBook\Kernel::boot(true);
+            } catch (\Exception $e) {
+                $message = $e->getMessage();
+                throw new \Exception(
+                    "An error occurred while trying to init the app ...".PHP_EOL
+                    .(!is_null($cmd) ? "You should correct the error and try: 'composer run-script $cmd'.".PHP_EOL : '')
+                    ."Caught exception: '$message'."
+                );
             }
-            if (!@class_exists('\DocBook\Kernel')) {
-                include_once __DIR__.'/../Kernel.php';
-            }
-            \DocBook\Kernel::boot(true);
             self::$_inited = true;
         }
     }
 
+// ------------------
+// Composer events
+// ------------------
+
     /**
-     * @param \Composer\Script\Event $event
-     * @return void
-     * @throws \Exception
+     * @param   \Composer\Script\Event $event
+     * @return  void
+     * @throws  \Exception
+     * @see     self::docbookInit()
      */
     public static function postCreateProject(\Composer\Script\Event $event)
     {
-        $composer   = $event->getComposer();
-        $io         = $event->getIO();
-
         try {
-            self::init();
+            self::docbookInit($event);
         } catch (\Exception $e) {
-            $message = $e->getMessage();
-            throw new \Exception(
-                "An error occurred while trying to init the app ...".PHP_EOL
-                ."You should correct the error and try: 'composer run-script post-create-project-cmd'.".PHP_EOL
-                ."Caught exception: '$message'."
-            );
+            throw $e;
         }
-
-        \DocBook\Kernel::installConfig();
     }
 
     /**
-     * @param \Composer\Script\Event $event
-     * @return void
-     * @throws \Exception
+     * @param   \Composer\Script\Event $event
+     * @return  void
+     * @throws  \Exception
+     * @see     self::docbookClearCache()
      */
     public static function postAutoloadDump(\Composer\Script\Event $event)
     {
-        $composer   = $event->getComposer();
-        $io         = $event->getIO();
-
         try {
-            self::init();
+            self::docbookClearCache($event);
         } catch (\Exception $e) {
-            $message = $e->getMessage();
-            throw new \Exception(
-                "An error occurred while trying to init the app ...".PHP_EOL
-                ."You should correct the error and try: 'composer run-script post-autoload-dump'.".PHP_EOL
-                ."Caught exception: '$message'."
-            );
+            throw $e;
         }
-
-    }
+   }
 
     /**
-     * @param \Composer\Script\Event $event
-     * @return void
-     * @throws \Exception
+     * @param   \Composer\Script\Event $event
+     * @return  void
+     * @throws  \Exception
+     * @see     self::docbookClearCache()
      */
     public static function postUpdate(\Composer\Script\Event $event)
     {
-        $composer   = $event->getComposer();
-        $io         = $event->getIO();
-
         try {
-            self::init();
+            self::docbookClearCache($event);
         } catch (\Exception $e) {
-            $message = $e->getMessage();
-            throw new \Exception(
-                "An error occurred while trying to init the app ...".PHP_EOL
-                ."You should correct the error and try: 'composer run-script post-update-cmd'.".PHP_EOL
-                ."Caught exception: '$message'."
-            );
+            throw $e;
         }
 
-        if (\DocBook\Kernel::clearCache()) {
-            $io->write( '<info>Docbook cache has been cleared</info>' );
+    }
+
+    /**
+     * @param   \Composer\Script\Event $event
+     * @return  void
+     * @throws  \Exception
+     * @see     self::docbookInit()
+     */
+    public static function postInstall(\Composer\Script\Event $event)
+    {
+        try {
+            self::docbookInit($event);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+// ------------------
+// Custom commands
+// ------------------
+
+    /**
+     * Initialize DocBook: flush cache and install configuration files
+     *
+     * @param   \Composer\Script\Event $event
+     * @return  void
+     * @throws  \Exception
+     * @see     self::docbookClearCache()
+     */
+    public static function docbookInit(\Composer\Script\Event $event)
+    {
+        try {
+            self::__init($event, 'docbook-init');
+            self::docbookClearCache($event);
+            if (\DocBook\Kernel::installConfig()) {
+                self::$_io->write( '<info>DocBook configuration has been installed</info>' );
+            }
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 
     /**
-     * @param \Composer\Script\Event $event
-     * @return void
-     * @throws \Exception
+     * Clear DocBook cache in `var/cache/`
+     *
+     * @param   \Composer\Script\Event $event
+     * @return  void
+     * @throws  \Exception
      */
-    public static function postInstall(\Composer\Script\Event $event)
+    public static function docbookClearCache(\Composer\Script\Event $event)
     {
-        $composer   = $event->getComposer();
-        $io         = $event->getIO();
-
         try {
-            self::init();
+            self::__init($event, 'docbook-clear-cache');
+            if (\DocBook\Kernel::clearCache()) {
+                self::$_io->write( '<info>DocBook cache has been cleared</info>' );
+            }
         } catch (\Exception $e) {
-            $message = $e->getMessage();
-            throw new \Exception(
-                "An error occurred while trying to init the app ...".PHP_EOL
-                ."You should correct the error and try: 'composer run-script post-install-cmd'.".PHP_EOL
-                ."Caught exception: '$message'."
-            );
-        }
-
-        if (\DocBook\Kernel::clearCache()) {
-            $io->write( '<info>Docbook cache has been cleared</info>' );
+            throw $e;
         }
     }
 

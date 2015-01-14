@@ -459,7 +459,7 @@ class Kernel
      */
     public static function clearCache()
     {
-        return self::remove(self::getPath('var'));
+        return self::remove(self::getPath('cache'));
     }
 
 // ----------------------------
@@ -468,6 +468,7 @@ class Kernel
 
     /**
      * @param $path_name
+     * @return bool
      * @throws \Exception
      */
     public static function ensurePathExists($path_name)
@@ -477,10 +478,12 @@ class Kernel
                 sprintf('Directory "%s" can not be created!', self::getPath($path_name, true))
             );
         }
+        return true;
     }
 
     /**
      * @param $path_name
+     * @return bool
      * @throws \Exception
      */
     public static function ensurePathIsWritable($path_name)
@@ -490,6 +493,7 @@ class Kernel
                 sprintf('Directory "%s" must be writable for your web-server\'s user!', self::getPath($path_name, true))
             );
         }
+        return true;
     }
 
     /**
@@ -505,27 +509,29 @@ class Kernel
                 return $config;
             } else {
                 throw new \Exception(
-                    sprintf('Configuration file "%s" seems malformed!', $file)
+                    sprintf('Configuration file "%s" seems malformed!', str_replace(self::getPath('app_base'), '', $file))
                 );
             }
         } else {
             throw new \Exception(
-                sprintf('Configuration file "%s" not found!', $file)
+                sprintf('Configuration file "%s" not found!', str_replace(self::getPath('app_base'), '', $file))
             );
         }
     }
 
     /**
      * @param string $path
+     * @return bool
      * @throws \Exception
      */
     public static function remove($path)
     {
-        if (true!==Filesystem::remove($path)) {
+        if (true!==Filesystem::remove($path, false)) {
             throw new \Exception(
                 sprintf('Can not remove path "%s"!', $path)
             );
         }
+        return true;
     }
 
 }

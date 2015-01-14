@@ -41,7 +41,10 @@
         "post-update-cmd": "DocBook\\Composer\\Scripts::postUpdate",
         "post-install-cmd": "DocBook\\Composer\\Scripts::postInstall",
         "post-autoload-dump": "DocBook\\Composer\\Scripts::postAutoloadDump",
-        "post-create-project-cmd": "DocBook\\Composer\\Scripts::postCreateProject"
+        "post-create-project-cmd": "DocBook\\Composer\\Scripts::postCreateProject",
+        "docbook-clear-cache": "DocBook\\Composer\\Scripts::docbookClearCache",
+        "docbook-clearcache": "DocBook\\Composer\\Scripts::docbookClearCache",
+        "docbook-init": "DocBook\\Composer\\Scripts::docbookInit"
     },
     "extra": {
         "license_url": "http://github.com/atelierspierrot/docbook/blob/master/LICENSE",

@@ -99,10 +99,11 @@ class Filesystem
     /**
      * Try to remove a path
      *
-     * @param string $path
-     * @return bool
+     * @param   string $path
+     * @param   bool $parent
+     * @return  bool
      */
-    public static function remove($path)
+    public static function remove($path, $parent = true)
     {
         $ok = true;
         if (true===self::ensureExists($path)) {
@@ -123,7 +124,7 @@ class Filesystem
                     $ok = @unlink($item);
                 }
             }
-            if ($ok) {
+            if ($ok && $parent) {
                 @rmdir($path);
             }
             @clearstatcache();
