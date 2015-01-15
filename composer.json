@@ -38,15 +38,36 @@
         "vendor-dir": "src/vendor"
     },
     "scripts": {
-        "post-update-cmd": "DocBook\\Composer\\Scripts::postUpdate",
-        "post-install-cmd": "DocBook\\Composer\\Scripts::postInstall",
-        "post-autoload-dump": "DocBook\\Composer\\Scripts::postAutoloadDump",
-        "post-create-project-cmd": "DocBook\\Composer\\Scripts::postCreateProject",
-        "docbook-clear-cache": "DocBook\\Composer\\Scripts::docbookClearCache",
-        "docbook-clearcache": "DocBook\\Composer\\Scripts::docbookClearCache",
-        "docbook-clear-i18n": "DocBook\\Composer\\Scripts::docbookClearI18n",
-        "docbook-flush": "DocBook\\Composer\\Scripts::docbookClearI18n",
-        "docbook-init": "DocBook\\Composer\\Scripts::docbookInit"
+        "post-update-cmd": [
+            "DocBook\\Composer\\Script\\ClearCache::run",
+            "DocBook\\Composer\\Script\\ClearI18n::run"
+        ],
+        "post-install-cmd": [
+            "DocBook\\Composer\\Script\\Initialize::run"
+        ],
+        "post-autoload-dump": [
+            "DocBook\\Composer\\Script\\ClearCache::run",
+            "DocBook\\Composer\\Script\\ClearI18n::run"
+        ],
+        "post-create-project-cmd": [
+            "DocBook\\Composer\\Script\\Initialize::run"
+        ],
+        "docbook-clear-cache": [
+            "DocBook\\Composer\\Script\\ClearCache::run"
+        ],
+        "docbook-clearcache": [
+            "DocBook\\Composer\\Script\\ClearCache::run"
+        ],
+        "docbook-clear-i18n": [
+            "DocBook\\Composer\\Script\\ClearI18n::run"
+        ],
+        "docbook-flush": [
+            "DocBook\\Composer\\Script\\ClearCache::run",
+            "DocBook\\Composer\\Script\\ClearI18n::run"
+        ],
+        "docbook-init": [
+            "DocBook\\Composer\\Script\\Initialize::run"
+        ]
     },
     "extra": {
         "license_url": "http://github.com/atelierspierrot/docbook/blob/master/LICENSE",
