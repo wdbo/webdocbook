@@ -51,9 +51,11 @@ class Kernel
             'default_controller'    => 'default',
             'default_action'        => 'index'
         ),
-        'paths' => array(
+        'package_paths' => array(
             'src_dir'               => 'src',
             'resources_dir'         => 'src/WebDocBook/Resources',
+        ),
+        'paths' => array(
             'user_dir'              => 'user',
             'var_dir'               => 'var',
             'web_dir'               => 'www',
@@ -134,7 +136,24 @@ class Kernel
         try {
 
             // installation base path
-            self::$_registry['app_base_path'] = Filesystem::slashDirname(dirname(dirname(__DIR__)));
+            self::$_registry['package_base_path'] = Filesystem::slashDirname(dirname(dirname(__DIR__)));
+            if (defined('WEBDOCBOOK_BASEDIR')) {
+                if (true===@file_exists(WEBDOCBOOK_BASEDIR)) {
+                    self::$_registry['app_base_path'] = Filesystem::slashDirname(WEBDOCBOOK_BASEDIR);
+                } else {
+                    throw new \Exception(
+                        sprintf('Base directory "%s" not found!', WEBDOCBOOK_BASEDIR)
+                    );
+                }
+            } else {
+                self::$_registry['app_base_path'] = Filesystem::slashDirname(dirname(dirname(__DIR__)));
+            }
+
+            // 1st level package paths
+            foreach (self::$_defaults['package_paths'] as $name=>$path) {
+                $path_name = str_replace('_dir', '_path', $name);
+                self::$_registry[$path_name] = self::$_registry['package_base_path'].Filesystem::slashDirname($path);
+            }
 
             // 1st level paths
             foreach (self::$_defaults['paths'] as $name=>$path) {
@@ -190,7 +209,7 @@ class Kernel
             self::ensurePathIsWritable('log');
 
             // app manifest
-            self::$_registry['app_manifest_filepath'] = self::$_registry['app_base_path']
+            self::$_registry['app_manifest_filepath'] = self::$_registry['package_base_path']
                 .self::$_defaults['filenames']['app_manifest'];
 
             // config
