@@ -16,9 +16,7 @@ composer.phar
 # Web
 www/*
 !www/docbook_assets
-!www/.htaccess
 !www/index.php
-!www/INDEX.md
 
 # assets dependencies
 www/docbook_assets/vendor/bootstrap/*
@@ -33,7 +31,6 @@ www/docbook_assets/vendor/jquery.tablesorter/*
 www/docbook_assets/vendor/jquery.highlight/*
 !www/docbook_assets/vendor/jquery.highlight/*.css
 !www/docbook_assets/vendor/jquery.highlight/*.js
-
 !www/docbook_assets/vendor/*/dist/
 !www/docbook_assets/vendor/*/.bower.json
 
