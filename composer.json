@@ -5,7 +5,7 @@
     "description": "A web book builds from a Markdown contents file system",
     "keywords": [ "wiki", "cms", "markdown" ],
     "homepage": "http://github.com/wdbo/webdocbook",
-    "version": "1.4.0-alpha",
+    "version": "1.0.0-alpha",
     "license": "GPL-3.0",
     "authors": [{
         "name": "Pierre Cassat & contributors",
@@ -22,13 +22,16 @@
         "atelierspierrot/patterns": "1.0.8",
         "atelierspierrot/library": "1.1.7",
         "atelierspierrot/webfilesystem": "1.0.2",
-        "piwi/markdown-extended": "dev-master",
         "atelierspierrot/internationalization": "1.0.3",
+        "piwi/markdown-extended": "dev-master",
         "twig/twig": "1.*"
     },
     "require-dev": {
         "sami/sami": "dev-master",
         "dropbox/dropbox-sdk": "1.1.*"
+    },
+    "replace": {
+        "atelierspierrot/docbook": "*"
     },
     "autoload": { "psr-0": { 
         "WebDocBook": "src",
