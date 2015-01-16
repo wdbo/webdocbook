@@ -1,11 +1,11 @@
 Docbook : a simple Markdown CMS
 ===============================
 
-**DocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
+**WebDocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
 filesystem architecture. It embeds some classic CMS' website features like a search in contents,
 some RSS feeds generation or translations switching.
 
-**DocBook** builds a "like-a-book" interactive website from simple Markdown files.
+**WebDocBook** builds a "like-a-book" interactive website from simple Markdown files.
 
 
 Key features
@@ -24,12 +24,12 @@ Key features
 Quick install
 -------------
 
-1.  To install *DocBook*, you will first need [Composer](http://getcomposer.org/) which is
+1.  To install *WebDocBook*, you will first need [Composer](http://getcomposer.org/) which is
     required to install all dependencies.
 
 2.  Once Composer is installed, you just have to run:
 
-        $ composer create-project atelierspierrot/docbook your/path/to/docbook 2.* --no-dev
+        $ composer create-project wdbo/webdocbook your/path/to/docbook 2.* --no-dev
 
 3.  Configure a virtual-host on your web-server to point to the `www/` directory of your
     DocBook installation.
@@ -41,7 +41,7 @@ That's it! Your DocBook is ready!
 To begin, you can copy or link some of your contents in the `www/` directory of your
 installation.
 
-To get help, you can have a look at the documentation in `src/DocBook/Resources/docs/`.
+To get help, you can have a look at the documentation in `src/WebDocBook/Resources/docs/`.
 
 
 Organization overview
@@ -84,12 +84,12 @@ for quick access.
 License / Dependencies
 ----------------------
 
-**DocBook** is an open-source application released under a
-[GNU General Public License version 3](http://github.com/atelierspierrot/docbook/blob/master/LICENSE). 
+**WebDocBook** is an open-source application released under a
+[GNU General Public License version 3](http://github.com/wdbo/webdocbook/blob/master/LICENSE). 
 You can freely download it, use it or distribute it as long as you stay in the license 
 conditions. See the `LICENSE` file for more info.
 
-**DocBook** is developed with the help of the following third-parties:
+**WebDocBook** is developed with the help of the following third-parties:
 
 -   [Bootstrap](http://twitter.github.io/bootstrap/), a responsive front-end framework, 
     released under [Apache license v2](http://www.apache.org/licenses/LICENSE-2.0),
@@ -111,10 +111,10 @@ conditions. See the `LICENSE` file for more info.
     released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
     written by [Evgeny Matsakov](http://webcodingstudio.com/).
 
-The default icon of **DocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
+The default icon of **WebDocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
 under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
 
-**DocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
+**WebDocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
 
 -   [PHP Patterns](http://github.com/atelierspierrot/patterns),
 -   [PHP Library](http://github.com/atelierspierrot/library),

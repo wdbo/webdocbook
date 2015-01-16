@@ -1,3 +1,3 @@
-The Composer scripts to administrate *DocBook*
+The Composer scripts to administrate *WebDocBook*
 ==============================================
 

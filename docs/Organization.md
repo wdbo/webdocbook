@@ -1,4 +1,4 @@
-Organizing your *DocBook* files
+Organizing your *WebDocBook* files
 ===============================
 
 Architecture
@@ -35,12 +35,12 @@ The default global architecture of your DocBook is:
     this directory is not used in HTML pages) ; it must follow an architecture like:
 
         | www/
-        | ---- docbook_assets/
+        | ---- webdocbook_assets/
         | ---- .htaccess
         | ---- index.php
 
 **NOTE** - A `vendor/` sub-directory will be created by the application in both `src/` and 
-`www/docbook_assets/` directories to store the vendor external packages used by DocBook ;
+`www/webdocbook_assets/` directories to store the vendor external packages used by DocBook ;
 do not modify them.
 
 Data files organization

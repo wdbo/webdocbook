@@ -1,4 +1,4 @@
-Configuring of *DocBook*
+Configuring of *WebDocBook*
 ========================
 
 

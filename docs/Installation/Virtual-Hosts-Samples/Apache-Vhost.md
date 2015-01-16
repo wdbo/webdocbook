@@ -29,7 +29,7 @@ A default `.htaccess` file could be:
         RewriteRule ^(.*)sitemap.xml index.php?$1/sitemap
     
         # skip all this for internal assets
-        RewriteCond %{REQUEST_URI} ^(.*)docbook_assets/(.*)
+        RewriteCond %{REQUEST_URI} ^(.*)webdocbook_assets/(.*)
         RewriteRule "." - [skip=100]
     
         # if the dir exists, handle it by index.php anyway

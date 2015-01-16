@@ -2,7 +2,7 @@ Vendor assets used by DocBook
 =============================
 
 This directory stores all the third-parties *assets* packages that
-are used by *DocBook*. You will find here some links to these packages
+are used by *WebDocBook*. You will find here some links to these packages
 and their actual version numbers.
 
 To rebuild them, you can use the `bower.json` configuration file of
@@ -22,7 +22,7 @@ Basic rules for dependencies assets
 -----------------------------------
 
 We have to keep in mind that any dependency MUST be light-weight in
-*DocBook* (we usually only need some few files from each dependency).
+*WebDocBook* (we usually only need some few files from each dependency).
 
 -   try to use only minified versions of JS and CSS
 -   only include one "package" file (bower.json, package.json ...)

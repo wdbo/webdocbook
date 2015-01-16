@@ -1,2 +1,2 @@
-*DocBook* documentation
+*WebDocBook* documentation
 =======================

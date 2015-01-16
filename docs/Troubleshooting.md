@@ -27,7 +27,7 @@ Once you have enabled all required modules, restart Apache running:
 
 ### How-to: make a custom configuration
 
-The configuration of *DocBook* is stored by default in the `src/config/docbook.ini` file
+The configuration of *WebDocBook* is stored by default in the `src/config/docbook.ini` file
 that is initially a symbolic link to `src/config/dist/docbook.dist.ini`. If you want to
 manually build a custom configuration file, you can replace the symbolic link by a hard
 copy of the distributed configuration file and edit it:
@@ -58,7 +58,7 @@ virtual host's domain name, try the following:
     chapter above
 
 -   if you still have an error, come to ask us explaining your system & configuration at
-    <http://github.com/atelierspierrot/docbook/issues>.
+    <http://github.com/wdbo/webdocbook/issues>.
 
 ### Error: "An error occurred while trying to create directory 'XXX'!"
 

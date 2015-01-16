@@ -1,5 +1,5 @@
 {#
-This file is part of the DocBook package.
+This file is part of the WebDocBook package.
 
 Copyleft (ↄ) 2008-2015 Pierre Cassat <me@e-piwi.fr> and contributors
 
@@ -17,10 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 The source code of this package is available online at 
-<http://github.com/atelierspierrot/docbook>.
+<http://github.com/wdbo/webdocbook>.
 #}
 
-{% extends DB.getTemplate('page_layout') %}
+{% extends WDB.getTemplate('page_layout') %}
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -35,11 +35,11 @@ The source code of this package is available online at
 {% block body_attributes %}data-spy="scroll" data-target="#inpage_menu" data-offset="80"{% endblock %}
 
 {% block body %}
-{% include DB.getTemplate('navbar') %}
+{% include WDB.getTemplate('navbar') %}
     <div class="container">
         <div class="row">
-{% include DB.getTemplate('ltie7_warning') %}
-{% include DB.getTemplate('breadcrumbs') %}
+{% include WDB.getTemplate('ltie7_warning') %}
+{% include WDB.getTemplate('breadcrumbs') %}
 {{ content|raw }}
         </div>
     </div>

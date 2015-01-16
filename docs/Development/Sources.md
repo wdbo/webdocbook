@@ -1,4 +1,4 @@
-The sources of *DocBook*
+The sources of *WebDocBook*
 ========================
 
 
@@ -31,7 +31,7 @@ The structure described below MUST be fixed and not over-writable:
     |
     | www/
     | ----- index.php                   : this can be renamed in user/config/docbook.ini
-    | ----- docbook_assets/             : this can be renamed in user/config/docbook.ini
+    | ----- webdocbook_assets/             : this can be renamed in user/config/docbook.ini
     | -------------------- vendor/
 
 

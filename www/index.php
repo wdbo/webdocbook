@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the DocBook package.
+ * This file is part of the WebDocBook package.
  *
  * Copyleft (ↄ) 2008-2015 Pierre Cassat <me@e-piwi.fr> and contributors
  * 
@@ -18,13 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * The source code of this package is available online at 
- * <http://github.com/atelierspierrot/docbook>.
+ * <http://github.com/wdbo/webdocbook>.
  */
 
 /**
  * Application mode: 'dev' or anything else (as prod)
  */
-define('DOCBOOK_MODE', 'dev');
+define('WEBDOCBOOK_MODE', 'dev');
 
 /**
  * Show errors at least initially in dev mode
@@ -51,12 +51,12 @@ if (@file_exists($composerAutoLoader)) {
 }
 
 // silent errors in production mode
-if (!defined('DOCBOOK_MODE') || DOCBOOK_MODE!=='dev') {
+if (!defined('WEBDOCBOOK_MODE') || WEBDOCBOOK_MODE!=='dev') {
     @ini_set('display_errors',0);
 }
 
 // the application
-\DocBook\FrontController::getInstance()
+\WebDocBook\FrontController::getInstance()
     ->distribute();
 
 // Endfile

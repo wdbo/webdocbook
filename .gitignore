@@ -3,7 +3,7 @@
 
 # Specifics
 user/*
-www/docbook_assets/user/*
+www/webwebdocbook_assets/user/*
 var/*
 tmp/*
 dev/*
@@ -15,24 +15,24 @@ composer.phar
 
 # Web
 www/*
-!www/docbook_assets
+!www/webdocbook_assets
 !www/index.php
 
 # assets dependencies
-www/docbook_assets/vendor/bootstrap/*
-www/docbook_assets/vendor/fontawesome/*
-!www/docbook_assets/vendor/fontawesome/css
-!www/docbook_assets/vendor/fontawesome/fonts
-www/docbook_assets/vendor/html5shiv/*
-www/docbook_assets/vendor/jquery/*
-www/docbook_assets/vendor/jquery.tablesorter/*
-!www/docbook_assets/vendor/jquery.tablesorter/js
-!www/docbook_assets/vendor/jquery.tablesorter/css
-www/docbook_assets/vendor/jquery.highlight/*
-!www/docbook_assets/vendor/jquery.highlight/*.css
-!www/docbook_assets/vendor/jquery.highlight/*.js
-!www/docbook_assets/vendor/*/dist/
-!www/docbook_assets/vendor/*/.bower.json
+www/webdocbook_assets/vendor/bootstrap/*
+www/webdocbook_assets/vendor/fontawesome/*
+!www/webdocbook_assets/vendor/fontawesome/css
+!www/webdocbook_assets/vendor/fontawesome/fonts
+www/webdocbook_assets/vendor/html5shiv/*
+www/webdocbook_assets/vendor/jquery/*
+www/webdocbook_assets/vendor/jquery.tablesorter/*
+!www/webdocbook_assets/vendor/jquery.tablesorter/js
+!www/webdocbook_assets/vendor/jquery.tablesorter/css
+www/webdocbook_assets/vendor/jquery.highlight/*
+!www/webdocbook_assets/vendor/jquery.highlight/*.css
+!www/webdocbook_assets/vendor/jquery.highlight/*.js
+!www/webdocbook_assets/vendor/*/dist/
+!www/webdocbook_assets/vendor/*/.bower.json
 
 # Hack
 !.gitkeep

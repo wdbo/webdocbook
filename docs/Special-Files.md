@@ -1,4 +1,4 @@
-Special files in *DocBook*
+Special files in *WebDocBook*
 ==========================
 
 Any file named `INDEX.md` in a directory will be considered as its index and be delivered if 

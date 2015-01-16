@@ -1,4 +1,4 @@
-Routing in *DocBook*
+Routing in *WebDocBook*
 ====================
 
 Globally or for each of your DocBook directories, the following routes are available:

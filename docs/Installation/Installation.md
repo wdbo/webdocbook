@@ -1,7 +1,7 @@
-Installing of *DocBook*
+Installing of *WebDocBook*
 =======================
 
-**DocBook** is quite simple to install as long as you can use Apache's `.htaccess` files.
+**WebDocBook** is quite simple to install as long as you can use Apache's `.htaccess` files.
 
 
 Requirements
@@ -37,17 +37,17 @@ You have four ways to get a copy of the sources:
 
 -   create a project via Composer:
 
-        ~$ php path/to/composer.phar create-project atelierspierrot/docbook your/path/to/docbook dev-master --no-dev
+        ~$ php path/to/composer.phar create-project wdbo/webdocbook your/path/to/docbook dev-master --no-dev
 
     you can select a specific version replacing `dev-master` by the version number 
 
--   make a clone of the [GitHub repository](http://github.com/atelierspierrot/docbook):
+-   make a clone of the [GitHub repository](http://github.com/wdbo/webdocbook):
 
-        ~$ git clone git://github.com/atelierspierrot/docbook.git your/path/to/docbook
+        ~$ git clone git://github.com/wdbo/webdocbook.git your/path/to/docbook
 
 -   get an archive from GitHub, *untar* it in your target directory
 
--   download a tag version of the sources, see <http://github.com/atelierspierrot/docbook/tags>.
+-   download a tag version of the sources, see <http://github.com/wdbo/webdocbook/tags>.
 
 For each stable version of DocBook, a new tag may exist named **vX.Y.Z**, if you prefer to
 use a download version rather than a Git clone, use a tag preferably.

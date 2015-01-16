@@ -1,11 +1,11 @@
 Docbook : a simple Markdown CMS
 ===============================
 
-**DocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
+**WebDocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
 filesystem architecture. It embeds some classic CMS' website features like a search in contents,
 some RSS feeds generation or translations switching.
 
-**DocBook** builds a "like-a-book" interactive website from simple Markdown files.
+**WebDocBook** builds a "like-a-book" interactive website from simple Markdown files.
 
 
 ## Features
@@ -143,12 +143,12 @@ The default global architecture of your DocBook is:
     this directory is not used in HTML pages) ; it must follow an architecture like:
 
         | www/
-        | ---- docbook_assets/
+        | ---- webdocbook_assets/
         | ---- .htaccess
         | ---- index.php
 
 **NOTE** - A `vendor/` sub-directory will be created by the application in both `src/` and 
-`www/docbook_assets/` directories to store the vendor external packages used by DocBook ;
+`www/webdocbook_assets/` directories to store the vendor external packages used by DocBook ;
 do not modify them.
 
 ### Fallback system
@@ -172,12 +172,12 @@ want to write your own templates you may follow [Twig's documentation](http://tw
 
 ## License / Dependencies
 
-**DocBook** is an open-source application released under a
+**WebDocBook** is an open-source application released under a
 [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html). You can freely
 download it, use it or distribute it as long as you stay in the license conditions. See the
 `License` file for more info.
 
-**DocBook** is developed with the help of the following third-parties:
+**WebDocBook** is developed with the help of the following third-parties:
 
 -   [Bootstrap](http://twitter.github.io/bootstrap/), a responsive front-end framework, 
     released under [Apache license v2](http://www.apache.org/licenses/LICENSE-2.0),
@@ -193,10 +193,10 @@ download it, use it or distribute it as long as you stay in the license conditio
     written by [Albert Farkas](http://twitter.com/afarkas), [John David Dalton](http://twitter.com/jdalton), 
     [Jonathan Neal](http://twitter.com/jon_neal) & [Remy Sharp](http://twitter.com/rem).
 
-The default icon of **DocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
+The default icon of **WebDocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
 under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
 
-**DocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
+**WebDocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
 
 -   [PHP Patterns](http://github.com/atelierspierrot/patterns)
 -   [PHP Library](http://github.com/atelierspierrot/library)

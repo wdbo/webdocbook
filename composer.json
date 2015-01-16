@@ -1,20 +1,20 @@
 {
-    "name": "atelierspierrot/docbook",
-    "title": "DocBook",
+    "name": "wdbo/webdocbook",
+    "title": "WebDocBook",
     "type": "project",
-    "description": "Simple CMS PHP app to build rich HTML5 views from a Markdown contents filesystem.",
-    "keywords": [ "cms", "markdown" ],
-    "homepage": "http://github.com/atelierspierrot/docbook",
+    "description": "A web book builds from a Markdown contents file system",
+    "keywords": [ "wiki", "cms", "markdown" ],
+    "homepage": "http://github.com/wdbo/webdocbook",
     "version": "1.4.0-alpha",
     "license": "GPL-3.0",
     "authors": [{
-        "name": "Les Ateliers Pierrot & contributors",
-        "email": "contact@ateliers-pierrot.fr",
-        "homepage": "http://www.ateliers-pierrot.fr/"
+        "name": "Pierre Cassat & contributors",
+        "email": "contact@webdocbook.com",
+        "homepage": "http://webdocbook.com/"
     }],
     "support": {
-        "issues": "http://github.com/atelierspierrot/docbook/issues",
-        "source": "http://github.com/atelierspierrot/docbook/tags"
+        "issues": "http://github.com/wdbo/webdocbook/issues",
+        "source": "http://github.com/wdbo/webdocbook/tags"
     },
     "require": {
         "php": ">=5.3.0",
@@ -31,46 +31,46 @@
         "dropbox/dropbox-sdk": "1.1.*"
     },
     "autoload": { "psr-0": { 
-        "DocBook": "src",
-        "DocBook_": "src"
+        "WebDocBook": "src",
+        "WebDocBook_": "src"
     } },
     "config": {
         "vendor-dir": "src/vendor"
     },
     "scripts": {
         "post-update-cmd": [
-            "DocBook\\Composer\\Script\\ClearCache::run",
-            "DocBook\\Composer\\Script\\ClearI18n::run"
+            "WebDocBook\\Composer\\Script\\ClearCache::run",
+            "WebDocBook\\Composer\\Script\\ClearI18n::run"
         ],
         "post-install-cmd": [
-            "DocBook\\Composer\\Script\\Initialize::run"
+            "WebDocBook\\Composer\\Script\\Initialize::run"
         ],
         "post-autoload-dump": [
-            "DocBook\\Composer\\Script\\ClearCache::run",
-            "DocBook\\Composer\\Script\\ClearI18n::run"
+            "WebDocBook\\Composer\\Script\\ClearCache::run",
+            "WebDocBook\\Composer\\Script\\ClearI18n::run"
         ],
         "post-create-project-cmd": [
-            "DocBook\\Composer\\Script\\Initialize::run"
+            "WebDocBook\\Composer\\Script\\Initialize::run"
         ],
-        "docbook-clear-cache": [
-            "DocBook\\Composer\\Script\\ClearCache::run"
+        "wdb-clear-cache": [
+            "WebDocBook\\Composer\\Script\\ClearCache::run"
         ],
-        "docbook-clearcache": [
-            "DocBook\\Composer\\Script\\ClearCache::run"
+        "wdb-clearcache": [
+            "WebDocBook\\Composer\\Script\\ClearCache::run"
         ],
-        "docbook-clear-i18n": [
-            "DocBook\\Composer\\Script\\ClearI18n::run"
+        "wdb-clear-i18n": [
+            "WebDocBook\\Composer\\Script\\ClearI18n::run"
         ],
-        "docbook-flush": [
-            "DocBook\\Composer\\Script\\ClearCache::run",
-            "DocBook\\Composer\\Script\\ClearI18n::run"
+        "wdb-flush": [
+            "WebDocBook\\Composer\\Script\\ClearCache::run",
+            "WebDocBook\\Composer\\Script\\ClearI18n::run"
         ],
-        "docbook-init": [
-            "DocBook\\Composer\\Script\\Initialize::run"
+        "wdb-init": [
+            "WebDocBook\\Composer\\Script\\Initialize::run"
         ]
     },
     "extra": {
-        "license_url": "http://github.com/atelierspierrot/docbook/blob/master/LICENSE",
+        "license_url": "http://github.com/wdbo/webdocbook/blob/master/LICENSE",
         "license_name": "General Public Licence version 3.0",
         "branch-alias": {
             "dev-master": "1.4.*-dev"

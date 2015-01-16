@@ -13,8 +13,8 @@ http://www.pngfactory.net/gallery/15297/Silmasoron
     que cela puisse nuire à ton travail. En prévision, j'ai inscrit une mention sur le README de l'appli et dans le
     répertoire des icônes ... que je peux modifier bien entendu.
 
-    Voici l'URL des sources: <https://github.com/atelierspierrot/docbook/tree/wip> (attention, c'est bien sur la branche "wip")
-    et pour le répertoire des icônes: <https://github.com/atelierspierrot/docbook/tree/wip/www/docbook_assets/icons>.
+    Voici l'URL des sources: <https://github.com/wdbo/webdocbook/tree/wip> (attention, c'est bien sur la branche "wip")
+    et pour le répertoire des icônes: <https://github.com/wdbo/webdocbook/tree/wip/www/webdocbook_assets/icons>.
 
     Serais-tu d'accord pour j'inclus définitivement ton icône à l'appli ? Est-ce que les mentions te concernant te conviennent ?
 

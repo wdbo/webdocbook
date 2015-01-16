@@ -1,0 +1,102 @@
+{#
+This file is part of the WebDocBook package.
+
+Copyleft (ↄ) 2008-2015 Pierre Cassat <me@e-piwi.fr> and contributors
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+The source code of this package is available online at 
+<http://github.com/wdbo/webdocbook>.
+#}
+
+<div class="jumbotron">
+
+    <h1 class="text-center">{{ manifest.title }}</h1>
+
+    <p class="text-center">
+        <br />{{ manifest.description }}
+    </p>
+</div>
+
+<h4>Information</h4>
+
+<dl class="dl-horizontal">
+
+    <dt>version</dt>
+    <dd><a href="{{ manifest.support.source }}" title="Check for updates">{{ manifest.version }}</a></dd>
+
+    <dt>package</dt>
+    <dd><a href="{{ manifest.homepage }}" title="See package sources">{{ manifest.name }}</a></dd>
+
+    <dt>author</dt>
+    <dd>
+{% for author in manifest.authors %}
+    {% set author_url='' %}
+    {% set url_title='View its webpage online' %}
+    {% if author.url is not empty %}
+        {% set author_url=author.url %}
+    {% elseif author.homepage is not empty %}
+        {% set author_url=author.homepage %}
+    {% elseif author.email is not empty %}
+        {% set author_url='mailto:' ~ author.email %}
+        {% set url_title='Contact this author' %}
+    {% endif %}
+    {%- if author_url is not empty -%}
+        <a href="{{ author_url }}" title="{{ url_title }}">
+    {%- endif -%}
+        {{- author.name -}}
+    {%- if author_url is not empty -%}
+        </a>
+    {%- endif -%}
+    {% if loop.length > 1 %} (<em>{{- author.role -}}</em>){%- endif -%}
+    {%- if loop.index < (loop.length-1) %}, {% endif %}
+{% endfor %}
+    </dd>
+
+    <dt>license</dt>
+    <dd><a href="{{ manifest.extra.license_url }}" title="Read this license text online">{{ manifest.extra.license_name }}</a></dd>
+
+    <dt>sources & updates</dt>
+    <dd><a href="{{ manifest.homepage }}" title="See online">{{ manifest.homepage }}</a></dd>
+
+    <dt>bug tracking</dt>
+    <dd><a href="{{ manifest.support.issues }}" title="See online">{{ manifest.support.issues }}</a></dd>
+
+    <dt>user doc</dt>
+    <dd><a href="{{ 'docbookdoc'|route }}" title="See online">{{ 'docbookdoc'|route }}</a></dd>
+
+</dl>
+
+<h4>Credits</h4>
+
+<p>DocBook is made with the following external tools, libraries and packages:</p>
+
+<ul>
+    <li><strong><a href="http://jquery.com/" title="See online: http://jquery.com/">jQuery</a></strong>, an open source javascript library licensed under the <a href="http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt" title="See online: http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt">MIT license</a>,</li>
+    <li><strong><a href="http://getbootstrap.com/" title="See online: http://getbootstrap.com/">Bootstrap</a></strong>, a <a href="http://en.wikipedia.org/wiki/Twitter_Bootstrap" title="See online: http://en.wikipedia.org/wiki/Twitter_Bootstrap">Twitter theme and tools for jQuery</a> licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" title="See online: http://www.apache.org/licenses/LICENSE-2.0">Apache license v2.0</a>,</li>
+    <li><strong><a href="http://code.google.com/p/html5shiv/" title="See online: http://code.google.com/p/html5shiv/">HTML5shiv</a></strong>, allowing HTML5 understanding for old browsers, licensed under <a href="http://www.opensource.org/licenses/mit-license.php" title="See online: http://www.opensource.org/licenses/mit-license.php">MIT license</a>,</li>
+    <li><strong><a href="http://fortawesome.github.io/Font-Awesome/" title="See online: http://fortawesome.github.io/Font-Awesome/">Font Awesome</a></strong>, licensed under <a href="http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL" title="See online: http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL">SIL OFL 1.1 license</a>.</li>
+</ul>
+
+<p>Please see the <em>README.md</em> file of the package for a full list.</p>
+
+<h4>Bug reports</h4>
+
+<p>To transmit a bug about a DocBook installation, please first click on the "Profiler" link at the bottom of the error page and write its information in your bug ticket. Bug tickets can be created at <a href="{{ manifest.support.issues }}" title="Create a bug ticket">{{ manifest.support.issues }}</a>.</p>
+
+<hr />
+
+<p class="small"><em>Ce programme est un logiciel libre distribué sous licence GNU/GPL et fabriqué par <strong>Les Ateliers Pierrot</strong>, Paris, France.</em></p>
+
+<br />
