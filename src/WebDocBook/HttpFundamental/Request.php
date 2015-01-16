@@ -169,7 +169,7 @@ class Request
         }
 
         // if GET args from diff( uri-query )
-        if (0<substr_count($server_uri, $server_query)) {
+        if (!empty($server_uri) && !empty($server_query) && 0<substr_count($server_uri, $server_query)) {
             $uri_diff = trim(str_replace($server_query, '', $server_uri), '/');
             if (!empty($uri_diff)) {
                 if (substr($uri_diff, 0, 1)==='?') {
