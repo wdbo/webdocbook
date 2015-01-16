@@ -122,7 +122,7 @@ class FrontController
      */
     protected function init()
     {
-        // DocBook booting
+        // WebDocBook booting
         $this->boot();
 
         // the logger
@@ -158,8 +158,8 @@ class FrontController
         $this->response->addHeader('Content-type', $content_type.'; charset: '.$charset);
 
         // expose app ?
-        $expose_docbook = Kernel::getConfig('app:expose_docbook', true);
-        if (true===$expose_docbook || 'true'===$expose_docbook || '1'===$expose_docbook) {
+        $expose_wdb = Kernel::getConfig('app:expose_webdocbook', true);
+        if (true===$expose_wdb || 'true'===$expose_wdb || '1'===$expose_wdb) {
             $this->response->addHeader('Composed-by', $app_name.' '.$app_version.' ('.$app_website.')');
         }
 
@@ -228,8 +228,8 @@ class FrontController
 
         try {
             $routing = $this->request
-                ->parseDocBookRequest()
-                ->getDocBookRouting();
+                ->parseWDBRequest()
+                ->getWDBRouting();
         } catch (NotFoundException $e) {
             throw $e;
         }
@@ -477,7 +477,7 @@ class FrontController
             if ($file->isDir()) {
                 $paths[] = array(
                     'path'      => Helper::getSecuredRealpath($file->getRealPath()),
-                    'route'     => Helper::getRoute($file->getDocBookPath()),
+                    'route'     => Helper::getRoute($file->getWDBPath()),
                     'name'      => $file->getHumanReadableFilename(),
                 );
             }

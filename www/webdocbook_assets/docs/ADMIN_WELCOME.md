@@ -1,5 +1,5 @@
-Docbook : admin
+WebDocbook : admin
 ===============
 
-Administration panel of DocBook.
+Administration panel of WebDocBook.
 

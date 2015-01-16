@@ -29,7 +29,7 @@ use \WebDocBook\Kernel;
 /**
  * Class RuntimeException
  *
- * DocBook components should use this in place of classic `\RuntimeException`
+ * WebDocBook components should use this in place of classic `\RuntimeException`
  */
 class RuntimeException
     extends \RuntimeException

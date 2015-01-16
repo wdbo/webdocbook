@@ -30,7 +30,7 @@ ln_version_of_this_content;version %ln% de ce contenu;%ln% version of this conte
 ;Télécharger la version Markdown de ce contenu;Download the Markdown version of this content
 ;Voir la version HTML seule de ce contenu;"View plain &amp; isolated HTML version of this content"
 ;Voir la version brute de ce contenu;View plain text version of this content
-;Voir les sources de DocBook en ligne :;Follow sources of DocBook online:
+;Voir les sources de WebDocBook en ligne :;Follow sources of WebDocBook online:
 back_to_homepage;Retour à l'accueil;Back to homepage
 ;Navigation de page;Inpage navigation
 ;Aller en haut de page;Reach the top ot this page
@@ -93,11 +93,11 @@ toc_title;Table des matières;Table of contents
 permalink_mask_title;Copier l'URL comme un lien permanent vers ce titre: %%;Copy this link as a permanent link to this title: %%
 toc_item_title;Voir ce chapitre;Reach this section
 toc_backlink_title;Cliquez pour revenir au sommaire;Click to go back to table of contents
-sources_update_block;"Voir les sources de DocBook en ligne : <a href=""%url%"">%url%</a>";"Follow sources of DocBook online: <a href=""%url%"">%url%</a>"
+sources_update_block;"Voir les sources de WebDocBook en ligne : <a href=""%url%"">%url%</a>";"Follow sources of WebDocBook online: <a href=""%url%"">%url%</a>"
 ;S'abonner au fli RSS de ce chapitre;Subscribe to RSS feed of this chapter
 ;S'abonner au fli RSS de ce chapitre - %url%;Subscribe to RSS feed of this chapter - %url%
-;S'abonner au fli RSS de ce DocBook;Subscribe to RSS feed of this DocBook
-;S'abonner au fli RSS de ce DocBook - %url%;Subscribe to RSS feed of this DocBook - %url%
+;S'abonner au fli RSS de ce WebDocBook;Subscribe to RSS feed of this WebDocBook
+;S'abonner au fli RSS de ce WebDocBook - %url%;Subscribe to RSS feed of this WebDocBook - %url%
 ;S'abonner au fli RSS de ce contenu;Subscribe to RSS feed of this content
 ;S'abonner au fli RSS de ce contenu - %url%;Subscribe to RSS feed of this content - %url%
 ;Télécharger ce fichier;Download this file

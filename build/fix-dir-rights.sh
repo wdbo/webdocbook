@@ -5,7 +5,7 @@ ORIGINALDIR=`pwd`
 # help ( exit_code = 0 )
 help () {
     echo
-    echo "## Fix directories rights for DocBook"
+    echo "## Fix directories rights for WebDocBook"
     echo
     usage
     echo
@@ -41,10 +41,10 @@ if [ -d $ORIGINALDIR ]; then
         MYROOT=$PRODROOT
         MYTYPE='PROD'
     else
-        error "unknown root directory ; you may run this script from DocBook root directory"
+        error "unknown root directory ; you may run this script from WebDocBook root directory"
     fi;
 else
-    error "unknown root directory ; you may run this script from DocBook root directory"
+    error "unknown root directory ; you may run this script from WebDocBook root directory"
 fi;
 
 

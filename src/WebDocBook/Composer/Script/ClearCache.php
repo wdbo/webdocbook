@@ -30,7 +30,7 @@ use \Composer\Script\Event;
 /**
  * Class ClearCache
  *
- * Clear DocBook cache in `var/cache/`
+ * Clear WebDocBook cache in `var/cache/`
  */
 class ClearCache
     implements ScriptInterface
@@ -41,7 +41,7 @@ class ClearCache
      */
     public static function getName()
     {
-        return 'docbook-clear-cache';
+        return 'wdb-clear-cache';
     }
 
     /**

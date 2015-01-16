@@ -38,7 +38,7 @@ use \FilesystemIterator;
 /**
  * Class WDBFile
  *
- * Default File class of DocBook
+ * Default File class of WebDocBook
  */
 class WDBFile
     extends WebFileInfo
@@ -105,7 +105,7 @@ class WDBFile
         $_root = Kernel::getPath('web');
         if (substr_count($file_name, $_root)>0) {
             $realpath   = $_root.str_replace($_root, '', $file_name);
-            $this->type = $this->getDocBookTypeByPath($realpath);
+            $this->type = $this->getWDBTypeByPath($realpath);
             $this->setRootDir($_root);
             $this->setWebPath(dirname($file_name));
             if (is_link($realpath)) {
@@ -113,7 +113,7 @@ class WDBFile
             }
 
         } else {
-            $this->type = $this->getDocBookTypeByPath($file_name);
+            $this->type = $this->getWDBTypeByPath($file_name);
             $this->setRootDir(dirname($file_name));
             $this->setWebPath($_root.$this->wdb->getInputPath());
         }
@@ -199,27 +199,27 @@ class WDBFile
     /**
      * @return array
      */
-    public function getDocBookPath()
+    public function getWDBPath()
     {
-        if (!isset($this->cache['docbook_path'])) {
+        if (!isset($this->cache['wdb_path'])) {
             $filepath = $this->getRealPath();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
             } elseif ($this->isChildOfLink()) {
                 $filepath   = $this->getFile()->getRealWebPath();
             }
-            $this->cache['docbook_path'] = $filepath;
+            $this->cache['wdb_path'] = $filepath;
         }
-        return $this->cache['docbook_path'];
+        return $this->cache['wdb_path'];
     }
 
     /**
      * @param bool $recursive
      * @return array
      */
-    public function getDocBookScanStack($recursive = false)
+    public function getWDBScanStack($recursive = false)
     {
-        if (!isset($this->cache['docbook_scan_stack'])) {
+        if (!isset($this->cache['wdb_scan_stack'])) {
             $dir    = new WDBRecursiveDirectoryIterator($this->getRealPath());
             $hasWip = false;
             $paths  = $known_filenames = array();
@@ -259,10 +259,10 @@ class WDBFile
                     } elseif (array_key_exists($filename, $paths)) {
                         $original                   = $paths[$filename];
                         $dbfile                     = new WDBFile($file);
-                        $paths[$filename]           = $dbfile->getDocBookStack();
+                        $paths[$filename]           = $dbfile->getWDBStack();
                         $paths[$filename]['trads']  = isset($original['trads']) ? $original['trads'] : array();
                         if ($file->isDir() && $recursive) {
-                            $dirscan                = $dbfile->getDocBookScanStack(true);
+                            $dirscan                = $dbfile->getWDBScanStack(true);
                             $paths[$filename]       = array_merge(
                                                         $paths[$filename], $dirscan
                                                     );
@@ -272,9 +272,9 @@ class WDBFile
                         if ($this->isDir() && $this->isLink()) {
                             $dbfile->setIsRootLink(true);
                         }
-                        $paths[$filename] = $dbfile->getDocBookStack();
+                        $paths[$filename] = $dbfile->getWDBStack();
                         if ($file->isDir() && $recursive) {
-                            $dirscan            = $dbfile->getDocBookScanStack(true);
+                            $dirscan            = $dbfile->getWDBScanStack(true);
                             $paths[$filename]   = array_merge(
                                                     $paths[$filename], $dirscan
                                                 );
@@ -299,9 +299,9 @@ class WDBFile
                 }
             }
 
-            $this->cache['docbook_scan_stack'] = array(
+            $this->cache['wdb_scan_stack'] = array(
                 'dirname'       => $this->getHumanReadableFilename(),
-                'dirpath'       => $this->getDocBookPath(),
+                'dirpath'       => $this->getWDBPath(),
                 'dir_has_wip'   => $hasWip,
                 'dir_is_clone'  => $dir_is_clone,
                 'clone_remote'  => $remote,
@@ -309,15 +309,15 @@ class WDBFile
             );
 
         }
-        return $this->cache['docbook_scan_stack'];
+        return $this->cache['wdb_scan_stack'];
     }
 
     /**
      * @return array
      */
-    public function getDocBookStack()
+    public function getWDBStack()
     {
-        if (!isset($this->cache['docbook_stack'])) {
+        if (!isset($this->cache['wdb_stack'])) {
             $truefile = $this;
             $filepath = $truefile->getRealPath();
             if ($this->isLink() || $this->isRootLink()) {
@@ -340,8 +340,8 @@ class WDBFile
                 }
             }
             $_size = $truefile->isDir() ? Helper::getDirectorySize($truefile->getPathname()) : $truefile->getSize();
-            $this->cache['docbook_stack'] = array(
-                'path'      => $this->getDocBookPath(),
+            $this->cache['wdb_stack'] = array(
+                'path'      => $this->getWDBPath(),
                 'type'      => $this->getType(),
                 'route'     => Helper::getRoute($this->getRealPath()),
                 'name'      => $this->getHumanReadableFilename(),
@@ -355,22 +355,22 @@ class WDBFile
                 'extension' => $this->getExtension(),
             );
         }
-        return $this->cache['docbook_stack'];
+        return $this->cache['wdb_stack'];
     }
 
     /**
      * @return array
      */
-    public function getDocBookFullStack()
+    public function getWDBFullStack()
     {
-        if (!isset($this->cache['docbook_full_stack'])) {
-            $data = $this->getDocBookStack();
-            $this->cache['docbook_full_stack'] = array_merge($data, array(
+        if (!isset($this->cache['wdb_full_stack'])) {
+            $data = $this->getWDBStack();
+            $this->cache['wdb_full_stack'] = array_merge($data, array(
                 'next'      => $this->findNext(),
                 'previous'  => $this->findPrevious(),
             ));
         }
-        return $this->cache['docbook_full_stack'];
+        return $this->cache['wdb_full_stack'];
     }
 
     /**
@@ -379,7 +379,7 @@ class WDBFile
      */
     public function findTranslations()
     {
-        if (!isset($this->cache['docbook_translations'])) {
+        if (!isset($this->cache['wdb_translations'])) {
             $filepath = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
@@ -405,9 +405,9 @@ class WDBFile
                     $trads['en']            = $_file->getRealPath();
                 }
             }
-            $this->cache['docbook_translations'] = $trads;
+            $this->cache['wdb_translations'] = $trads;
         }
-        return $this->cache['docbook_translations'];
+        return $this->cache['wdb_translations'];
     }
 
     /**
@@ -417,8 +417,8 @@ class WDBFile
      */
     public function findNext()
     {
-        if (!isset($this->cache['docbook_next'])) {
-            $this->cache['docbook_next'] = null;
+        if (!isset($this->cache['wdb_next'])) {
+            $this->cache['wdb_next'] = null;
 
             $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
@@ -447,11 +447,11 @@ class WDBFile
                     ) && !Filesystem::isDotPath($dir_table[$j])
                 ) {
                     $next = new WDBFile($dir_table[$j]);
-                    $this->cache['docbook_next'] = $next->getDocBookStack();
+                    $this->cache['wdb_next'] = $next->getWDBStack();
                 }
             }
         }
-        return $this->cache['docbook_next'];
+        return $this->cache['wdb_next'];
     }
     
     /**
@@ -461,8 +461,8 @@ class WDBFile
      */
     public function findPrevious()
     {
-        if (!isset($this->cache['docbook_previous'])) {
-            $this->cache['docbook_previous'] = null;
+        if (!isset($this->cache['wdb_previous'])) {
+            $this->cache['wdb_previous'] = null;
 
             $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
@@ -491,11 +491,11 @@ class WDBFile
                     ) && !Filesystem::isDotPath($dir_table[$j])
                 ) {
                     $previous = new WDBFile($dir_table[$j]);
-                    $this->cache['docbook_previous'] = $previous->getDocBookStack();
+                    $this->cache['wdb_previous'] = $previous->getWDBStack();
                 }
             }
         }
-        return $this->cache['docbook_previous'];
+        return $this->cache['wdb_previous'];
     }
 
     /**
@@ -503,17 +503,17 @@ class WDBFile
      */
     public function getHumanReadableFilename()
     {
-        if (!isset($this->cache['docbook_human_readable_filename'])) {
+        if (!isset($this->cache['wdb_human_readable_filename'])) {
             if (
                 Filesystem::slashDirname($this->getRealPath())===Kernel::getPath('web') ||
                 Filesystem::slashDirname($this->getRealPath())==='/'
             ) {
-                $this->cache['docbook_human_readable_filename'] = _T('Home');
+                $this->cache['wdb_human_readable_filename'] = _T('Home');
             } else {
-                $this->cache['docbook_human_readable_filename'] = parent::getHumanReadableFilename();
+                $this->cache['wdb_human_readable_filename'] = parent::getHumanReadableFilename();
             }
         }
-        return $this->cache['docbook_human_readable_filename'];
+        return $this->cache['wdb_human_readable_filename'];
     }
 
     /**
@@ -521,12 +521,12 @@ class WDBFile
      */
     public function findReadme()
     {
-        if (!isset($this->cache['docbook_readme'])) {
+        if (!isset($this->cache['wdb_readme'])) {
             $readme = Filesystem::slashDirname($this->getRealPath()).
                 Kernel::getConfig('user_config:readme_filename', 'README.md');
-            $this->cache['docbook_readme'] = file_exists($readme) ? $readme : null;
+            $this->cache['wdb_readme'] = file_exists($readme) ? $readme : null;
         }
-        return $this->cache['docbook_readme'];
+        return $this->cache['wdb_readme'];
     }
 
     /**
@@ -534,12 +534,12 @@ class WDBFile
      */
     public function findIndex()
     {
-        if (!isset($this->cache['docbook_index'])) {
+        if (!isset($this->cache['wdb_index'])) {
             $index = Filesystem::slashDirname($this->getRealPath()).
                 Kernel::getConfig('user_config:index_filename', 'INDEX.md');
-            $this->cache['docbook_index'] = file_exists($index) ? $index : null;
+            $this->cache['wdb_index'] = file_exists($index) ? $index : null;
         }
-        return $this->cache['docbook_index'];
+        return $this->cache['wdb_index'];
     }
 
     /**
@@ -547,7 +547,7 @@ class WDBFile
      */
     public function getDescription()
     {
-        if (!isset($this->cache['docbook_description'])) {
+        if (!isset($this->cache['wdb_description'])) {
 
             $name = strtolower($this->getBasename());
             $cfg_esc = Kernel::getConfig('descriptions', array());
@@ -558,12 +558,12 @@ class WDBFile
             $extension = strtolower($this->getExtension());
             $cfg_ext = Kernel::getConfig('descriptions_extensions', array());
             if (!empty($cfg_ext) && is_array($cfg_ext) && array_key_exists($extension, $cfg_ext)) {
-                $this->cache['docbook_description'] = _T($cfg_ext[$extension]);
+                $this->cache['wdb_description'] = _T($cfg_ext[$extension]);
             } else {
-                $this->cache['docbook_description'] = '';
+                $this->cache['wdb_description'] = '';
             }
         }
-        return $this->cache['docbook_description'];
+        return $this->cache['wdb_description'];
     }
 
     /**
@@ -573,15 +573,15 @@ class WDBFile
      */
     public function viewIntroduction($str_len = 600, $strip_tags = true , $end_str = '')
     {
-        if (!isset($this->cache['docbook_introduction'])) {
+        if (!isset($this->cache['wdb_introduction'])) {
             $intro = $this->getFile()->getIntroduction();
-            $this->cache['docbook_introduction'] = TextHelper::cut(
+            $this->cache['wdb_introduction'] = TextHelper::cut(
                 ($strip_tags ? strip_tags($intro) : $intro),
                 $str_len,
                 $end_str
             );
         }
-        return $this->cache['docbook_introduction'];
+        return $this->cache['wdb_introduction'];
     }
 
     /**
@@ -589,21 +589,21 @@ class WDBFile
      */
     public function viewFileInfos()
     {
-        if (!isset($this->cache['docbook_file_infos'])) {
-            $this->cache['docbook_file_infos'] = $this->getFile()->viewFileInfos(array(
-                'page'      => $this->getDocBookStack(),
-                'contents'  => $this->getDocBookFullStack(),
-                'dirscan'   => $this->isDir() ? $this->getDocBookScanStack() : null,
+        if (!isset($this->cache['wdb_file_infos'])) {
+            $this->cache['wdb_file_infos'] = $this->getFile()->viewFileInfos(array(
+                'page'      => $this->getWDBStack(),
+                'contents'  => $this->getWDBFullStack(),
+                'dirscan'   => $this->isDir() ? $this->getWDBScanStack() : null,
             ));
         }
-        return $this->cache['docbook_file_infos'];
+        return $this->cache['wdb_file_infos'];
     }
 
     /**
      * @param null $path
      * @return int|string
      */
-    public function getDocBookTypeByPath($path = null)
+    public function getWDBTypeByPath($path = null)
     {
         $_file = new WebFileInfo($path);
         if ($_file->isDir()) {

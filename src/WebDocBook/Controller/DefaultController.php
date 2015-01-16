@@ -31,7 +31,7 @@ use \WebDocBook\WebFilesystem\WDBFile;
 /**
  * Class DefaultController
  *
- * This is the default controller of DocBook, which may
+ * This is the default controller of WebDocBook, which may
  * handle most of the requests.
  */
 class DefaultController
@@ -81,8 +81,8 @@ class DefaultController
         }
 
         $tpl_params = array(
-            'page'          => $dbfile->getDocBookFullStack(),
-            'dirscan'       => $dbfile->getDocBookScanStack(),
+            'page'          => $dbfile->getWDBFullStack(),
+            'dirscan'       => $dbfile->getWDBScanStack(),
             'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
             'title'         => Helper::buildPageTitle($this->getPath()),
         );
@@ -129,7 +129,7 @@ class DefaultController
         }
 
         $tpl_params = array(
-            'page'          => $dbfile->getDocBookFullStack(),
+            'page'          => $dbfile->getWDBFullStack(),
             'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
             'title'         => Helper::buildPageTitle($this->getPath()),
         );
@@ -165,7 +165,7 @@ class DefaultController
         $dbfile     = new WDBFile($this->getpath());
         $contents   = array();
         $tpl_params = array(
-            'page'          => $dbfile->getDocBookFullStack(),
+            'page'          => $dbfile->getWDBFullStack(),
             'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
             'title'         => Helper::buildPageTitle($this->getPath()),
         );
@@ -179,9 +179,9 @@ class DefaultController
 
         $this->wdb->getResponse()->setContentType('xml');
 
-        $page = $dbfile->getDocBookStack();
+        $page = $dbfile->getWDBStack();
         if ($dbfile->isDir()) {
-            $contents = Helper::getFlatDirscans($dbfile->getDocBookScanStack(true), true);
+            $contents = Helper::getFlatDirscans($dbfile->getWDBScanStack(true), true);
             foreach ($contents['dirscan'] as $i=>$item) {
                 if ($item['type']!=='dir' && file_exists($item['path'])) {
                     $dbfile = new WDBFile($item['path']);
@@ -219,15 +219,15 @@ class DefaultController
         if (!$dbfile->isDir()) {
             throw new NotFoundException(
                 'Can not build a sitemap from a single file!',
-                0, null, Helper::getRoute($dbfile->getDocBookPath())
+                0, null, Helper::getRoute($dbfile->getWDBPath())
             );
         }
 
         $this->wdb->getResponse()->setContentType('xml');
 
-        $contents       = Helper::getFlatDirscans($dbfile->getDocBookScanStack(true));
+        $contents       = Helper::getFlatDirscans($dbfile->getWDBScanStack(true));
         $rss_content    = $this->wdb->display('', 'sitemap', array(
-            'page'          => $dbfile->getDocBookStack(),
+            'page'          => $dbfile->getWDBStack(),
             'contents'      => $contents
         ));
         return array('layout_empty_xml', $rss_content);
@@ -252,7 +252,7 @@ class DefaultController
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
                 'Can not send raw content of a directory!',
-                0, null, Helper::getRoute($dbfile->getDocBookPath())
+                0, null, Helper::getRoute($dbfile->getWDBPath())
             );
         }
 
@@ -283,7 +283,7 @@ class DefaultController
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
                 'Can not send raw content of a directory!',
-                0, null, Helper::getRoute($dbfile->getDocBookPath())
+                0, null, Helper::getRoute($dbfile->getWDBPath())
             );
         }
 
@@ -310,7 +310,7 @@ class DefaultController
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
                 'Can not send raw content of a directory!',
-                0, null, Helper::getRoute($dbfile->getDocBookPath())
+                0, null, Helper::getRoute($dbfile->getWDBPath())
             );
         }
 
@@ -339,13 +339,13 @@ class DefaultController
             return $this->indexAction($path);
         }
 
-        $_s = Helper::processDocBookSearch($search, $this->getPath());
+        $_s = Helper::makeSearch($search, $this->getPath());
 
         $title          = _T('Search for "%search_str%"', array('search_str'=>$search));
         $breadcrumbs    = Helper::getBreadcrumbs($this->getPath());
         $breadcrumbs[]  = $title;
         $dbfile         = new WDBFile($this->getpath());
-        $page           = $dbfile->getDocBookStack();
+        $page           = $dbfile->getWDBStack();
         $page['type']   = 'search';
         $tpl_params     = array(
             'page'          => $page,

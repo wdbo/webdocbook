@@ -33,7 +33,7 @@ use \WebDocBook\Helper;
 /**
  * All '$_defaults' entries can be overwritten in config.
  */
-class DocBook
+class WebDocBook
     extends HTML
     implements OutputFormatInterface
 {
@@ -44,7 +44,7 @@ class DocBook
      */
     protected function _getConfigOrDefault($var)
     {
-        return DocBookHelper::getConfigOrDefault($var);
+        return WebDocBookHelper::getConfigOrDefault($var);
     }
 
 // -------------------
@@ -118,7 +118,7 @@ class DocBook
     }
 
 // -------------------
-// DocBook specifics
+// WebDocBook specifics
 // -------------------
 
     /**

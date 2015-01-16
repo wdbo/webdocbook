@@ -30,7 +30,7 @@ use \Composer\Script\Event;
 /**
  * Class ClearI18n
  *
- * Clear DocBook cache in `var/i18n/`
+ * Clear WebDocBook cache in `var/i18n/`
  */
 class ClearI18n
     implements ScriptInterface
@@ -41,7 +41,7 @@ class ClearI18n
      */
     public static function getName()
     {
-        return 'docbook-clear-i18n';
+        return 'wdb-clear-i18n';
     }
 
     /**

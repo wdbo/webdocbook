@@ -77,8 +77,8 @@ The source code of this package is available online at
 {% if user_cfg.show_rss == 1 %}
         <li>
     {% if page.route is empty or page.route == '/' %}
-            <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this DocBook - %url%', {'url': route(page.path, 'rss')}) }}">
-                {{ icon('bookmark')|raw }}&nbsp;<small><em>{{ 'Subscribe to RSS feed of this DocBook'|translate }}</em></small>
+            <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this WebDocBook - %url%', {'url': route(page.path, 'rss')}) }}">
+                {{ icon('bookmark')|raw }}&nbsp;<small><em>{{ 'Subscribe to RSS feed of this WebDocBook'|translate }}</em></small>
             </a>
     {% else %}
             <a href="{{ route(page.path, 'rss') }}" title="{{ translate('Subscribe to RSS feed of this chapter - %url%', {'url': route(page.path, 'rss')}) }}">

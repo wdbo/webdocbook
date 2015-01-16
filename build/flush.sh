@@ -5,7 +5,7 @@ ORIGINALDIR=`pwd`
 # help ( exit_code = 0 )
 help () {
     echo
-    echo "## Flush temporary files of DocBook"
+    echo "## Flush temporary files of WebDocBook"
     echo
     usage
     echo
@@ -42,10 +42,10 @@ if [ -d $ORIGINALDIR ]; then
         MYROOT=$PRODROOT
         MYTYPE='PROD'
     else
-        error "unknown root directory ; you may run this script from DocBook root directory"
+        error "unknown root directory ; you may run this script from WebDocBook root directory"
     fi;
 else
-    error "unknown root directory ; you may run this script from DocBook root directory"
+    error "unknown root directory ; you may run this script from WebDocBook root directory"
 fi;
 
 if [ $# -gt 0 ] && [ "$1" = 'cache' ]; then
@@ -64,7 +64,7 @@ else
     FLUSH_I18N=true
 fi
 
-echo "> flushing DocBook temporary files in '$ORIGINALDIR'"
+echo "> flushing WebDocBook temporary files in '$ORIGINALDIR'"
 
 if $FLUSH_CACHE; then
     echo "var/cache/* ..."

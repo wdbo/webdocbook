@@ -30,7 +30,7 @@ use \Composer\Script\Event;
 /**
  * Class Initialize
  *
- * Initialize DocBook: install configuration files
+ * Initialize WebDocBook: install configuration files
  */
 class Initialize
     implements ScriptInterface
@@ -41,7 +41,7 @@ class Initialize
      */
     public static function getName()
     {
-        return 'docbook-init';
+        return 'wdb-init';
     }
 
     /**

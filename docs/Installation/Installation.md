@@ -7,14 +7,14 @@ Installing of *WebDocBook*
 Requirements
 ------------
 
-To allow DocBook to work on your web-server, you need the following environment:
+To allow *WebDocBook* to work on your web-server, you need the following environment:
 
 -   a web-server running a Linux/UNIX operating system,
 -   your requests must be handled by [Apache 2](http://httpd.apache.org/)
     (or, at least, `.htaccess` files must be activated)
 -   [PHP 5.3.0](http://php.net/) or higher.
 
-If you had not downloaded an "**out-of-the-box**" version of DocBook, you will need to manually
+If you had not downloaded an "**out-of-the-box**" version of *WebDocBook*, you will need to manually
 build your installation. To do so, you need to install [Composer](http://getcomposer.org/)
 on your system.
 
@@ -49,7 +49,7 @@ You have four ways to get a copy of the sources:
 
 -   download a tag version of the sources, see <http://github.com/wdbo/webdocbook/tags>.
 
-For each stable version of DocBook, a new tag may exist named **vX.Y.Z**, if you prefer to
+For each stable version of *WebDocBook*, a new tag may exist named **vX.Y.Z**, if you prefer to
 use a download version rather than a Git clone, use a tag preferably.
 
 When available, any tag named like **vX.Y.Z-outofthebox** is a full and already installed 
@@ -59,10 +59,10 @@ but it is the best practice to use them as they are already full and ready-to-us
 
 ### Setting up the virtual host
 
-See the [Virtual Host](DocBook-Virtual-Host.md) page for an "how-to".
+See the [Virtual Host](Setup-Virtual-Host.md) page for an "how-to".
 
 
-### Test your new DocBook in a browser
+### Test your new WebDocBook in a browser
 
 Load the domain name you defined in your virtual host in a browser and check if the 
 application works.
@@ -72,7 +72,7 @@ If you have an error like:
 >    You need to run Composer on the project to build dependencies and auto-loading
 >    (see: http://getcomposer.org/doc/00-intro.md#using-composer)!
 
-it means that your DocBook is not yet installed (*some required dependencies are missing*).
+it means that your *WebDocBook* is not yet installed (*some required dependencies are missing*).
 To finish the installation, just run:
 
     ~$ php path/to/composer.phar install
@@ -83,13 +83,13 @@ or, if you installed Composer globally in your environment:
 
 Once the installation has finished, reload the page in your browser.
 
-At the beginning, your DocBook contains three symbolic links to the Markdown files of the
+At the beginning, your *WebDocBook* contains three symbolic links to the Markdown files of the
 package for demonstration. You can delete them as you like and begin to write and organize
 your own contents.
 
 
 ----
-**Copyleft (c) 2008-2015 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 

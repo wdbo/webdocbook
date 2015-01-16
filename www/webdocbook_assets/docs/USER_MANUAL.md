@@ -1,14 +1,14 @@
-Docbook : user manual
-=====================
+WebDocbook : user manual
+========================
 
 An every day manual on how to use **WebDocBook** and **Markdown**.
 
 
-## About DocBook
+## About WebDocBook
 
 ### Organization
 
-A classic DocBook directory organization should be:
+A classic *WebDocBook* directory organization should be:
 
     | chapter-name/
     | ------------- README.md           // the first file shown loading the directory
@@ -28,9 +28,9 @@ A classic DocBook directory organization should be:
     | ------------------ WorkInProgress-page.md
     | ------------------ ...  
 
-### DocBook pages structure
+### WebDocBook pages structure
 
-Each page of DocBook has a top menu that, in most cases depending on your device, will stay
+Each page of *WebDocBook* has a top menu that, in most cases depending on your device, will stay
 static at the top of your window. It contains the global menu of your first hierarchy chapters
 and some tools to go to the top and bottom of the page, and a menu of your current contents.
 

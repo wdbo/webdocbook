@@ -31,7 +31,7 @@ conditions. See the `LICENSE` file for more info.
 The default icon of **WebDocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
 under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
 
-**WebDocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
+**WebDocBook** is based on some of [Les Ateliers Pierrot's](http://www.ateliers-pierrot.fr/) packages:
 
 -   [PHP Patterns](http://github.com/atelierspierrot/patterns),
 -   [PHP Library](http://github.com/atelierspierrot/library),
@@ -40,7 +40,7 @@ under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
 -   [PHP Internationalization](http://github.com/atelierspierrot/internationalization).
 
 ----
-**Copyleft (c) 2008-2015 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 

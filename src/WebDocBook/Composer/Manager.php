@@ -53,7 +53,7 @@ class Manager
     protected static $_event    = null;
 
     /**
-     * Initialize DocBook environment
+     * Initialize WebDocBook environment
      *
      * @param   \Composer\Script\Event $event
      * @param   \WebDocBook\Composer\ScriptInterface $cmd

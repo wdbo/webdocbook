@@ -78,7 +78,7 @@ class Request
     /**
      * @return $this
      */
-    public function parseDocBookRequest()
+    public function parseWDBRequest()
     {
         $server_pathtrans   = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;
         $server_uri         = $_SERVER['REQUEST_URI'];
@@ -195,7 +195,7 @@ class Request
      * @return array
      * @throws \WebDocBook\Exception\NotFoundException
      */
-    public function getDocBookRouting()
+    public function getWDBRouting()
     {
         $wdb                = FrontController::getInstance();
         $original_page_type = $wdb->getAction();

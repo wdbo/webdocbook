@@ -33,11 +33,11 @@ use \MarkdownExtended\OutputFormat\HTMLHelper;
 use \WebDocBook\Helper;
 
 /**
- * DocBook output Helper
+ * WebDocBook output Helper
  *
  * All '$_defaults' entries can be overwritten in config.
  */
-class DocBookHelper
+class WebDocBookHelper
     extends HTMLHelper
     implements OutputFormatHelperInterface
 {

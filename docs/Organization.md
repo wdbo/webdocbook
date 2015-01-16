@@ -4,7 +4,7 @@ Organizing your *WebDocBook* files
 Architecture
 ------------
 
-The default global architecture of your DocBook is:
+The default global architecture of your *WebDocBook* is:
 
     | src/
     | var/
@@ -15,8 +15,7 @@ The default global architecture of your DocBook is:
     follows an architecture like:
 
         | src/
-        | ---- config/
-        | ---- DocBook/
+        | ---- WebDocBook/
         | ---- templates/
 
 -   `var/` is a sub-directory to store some configurations and cached files ; the best 
@@ -28,7 +27,7 @@ The default global architecture of your DocBook is:
     doesn't exist in the distribution ; it may follow an architecture like:
 
         | user/
-        | ---- docbook.config
+        | ---- webdocbook.config
         | ---- templates/
 
 -   `www/` sub-directory must be the `DOCUMENT_ROOT` of your virtual host (anything outside 
@@ -40,7 +39,7 @@ The default global architecture of your DocBook is:
         | ---- index.php
 
 **NOTE** - A `vendor/` sub-directory will be created by the application in both `src/` and 
-`www/webdocbook_assets/` directories to store the vendor external packages used by DocBook ;
+`www/webdocbook_assets/` directories to store the vendor external packages used by *WebDocBook* ;
 do not modify them.
 
 Data files organization
@@ -58,7 +57,7 @@ and will not be referenced in the sitemap neither in the index ; to view it, you
 to manually write its URL (see the [Routing](#url-routing) section of this document to 
 learn more about the application URLs' construction). 
 
-Knowing that, a classic DocBook directory organization should be:
+Knowing that, a classic *WebDocBook* directory organization should be:
 
     | chapter-name/
     | ------------- README.md           // the first file shown loading the directory
@@ -70,9 +69,9 @@ Knowing that, a classic DocBook directory organization should be:
     | ------------- sub-chapter1/       // a sub-directory containing a sub-chapter
     | ------------- sub-chapter2/       // a sub-directory containing another sub-chapter
 
-### The DocBook chapters
+### The WebDocBook chapters
 
-All your first depth directories (directories contained directly in your DocBook `www/` root)
+All your first depth directories (directories contained directly in your *WebDocBook* `www/` root)
 are considered as your chapters and are listed in the header navigation bar of each page
 for quick access.
 
@@ -85,7 +84,7 @@ Each document can be translated, naming the translation file like:
     ...
 
 ----
-**Copyleft (c) 2008-2015 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 

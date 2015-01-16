@@ -27,15 +27,14 @@ Once you have enabled all required modules, restart Apache running:
 
 ### How-to: make a custom configuration
 
-The configuration of *WebDocBook* is stored by default in the `src/config/docbook.ini` file
-that is initially a symbolic link to `src/config/dist/docbook.dist.ini`. If you want to
-manually build a custom configuration file, you can replace the symbolic link by a hard
-copy of the distributed configuration file and edit it:
+The configuration of *WebDocBook* is stored by default in the `src/config/webdocbook.ini` file
+that is initially a symbolic link to `src/WebSocBook/Resources/config/dist/webdocbook.dist.ini`. 
+If you want to manually build a custom configuration file, you can replace the symbolic link by 
+a hard copy of the distributed configuration file and edit it:
 
-    $ cd src/config/
-    $ unlink docbook.ini
-    $ cp dist/docbook.dist.ini ./docbook.ini
-    $ vi docbook.ini
+    $ unlink user/config/webdocbook.ini
+    $ cp src/WebDocBook/Resources/config/webdocbook.dist.ini user/config/webdocbook.ini
+    $ vi webdocbook.ini
 
 ### Error: nothing seems to work but I got no error message
 
@@ -62,7 +61,7 @@ virtual host's domain name, try the following:
 
 ### Error: "An error occurred while trying to create directory 'XXX'!"
 
-This message means that DocBook tries to create a new directory but has not enough rights to
+This message means that *WebDocBook* tries to create a new directory but has not enough rights to
 do so in your system. To correct this error, just create the `XXX` directory mentioned in
 the error message manually and set it writable rights running:
 
@@ -74,7 +73,7 @@ recommended as it is a security failure*):
     ~$ chmod 777 XXX
 
 ----
-**Copyleft (c) 2008-2015 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 

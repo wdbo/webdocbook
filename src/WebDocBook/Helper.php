@@ -240,7 +240,7 @@ class Helper
      * @param null $path
      * @return array|null
      */
-    public static function processDocBookSearch($regexp, $path = null)
+    public static function makeSearch($regexp, $path = null)
     {
         $wdb        = FrontController::getInstance();
         if (is_null($path)) {

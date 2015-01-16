@@ -28,7 +28,7 @@ use \WebDocBook\Util\Filesystem;
 /**
  * Class Kernel
  *
- * This is the central kernel of DocBook, fully static.
+ * This is the central kernel of WebDocBook, fully static.
  *
  * It only throws "classic" `\Exception` as it is used by Composer's
  * commands scripts (when the namespace is not yet loaded).
@@ -218,7 +218,7 @@ class Kernel
             self::$_registry['app_interface_path'] = self::getPath('web')
                 .(isset($config['app']['app_interface']) ? $config['app']['app_interface'] : 'index.php');
 
-            // web docbook assets
+            // web webdocbook assets
             self::$_registry['webdocbook_assets_path'] = self::getPath('web')
                 .Filesystem::slashDirname(
                     isset($config['app']['internal_assets_dir']) ? $config['app']['internal_assets_dir'] : 'webdocbook_assets'
@@ -421,7 +421,7 @@ class Kernel
     }
 
     /**
-     * Install DocBook's config files
+     * Install WebDocBook's config files
      * @return bool
      * @throws \Exception
      * @api
@@ -453,7 +453,7 @@ class Kernel
     }
 
     /**
-     * Clear DocBook's cache (var/cache/)
+     * Clear WebDocBook's cache (var/cache/)
      * @return bool
      * @api
      */
@@ -463,7 +463,7 @@ class Kernel
     }
 
     /**
-     * Clear DocBook's language files (var/i18n/)
+     * Clear WebDocBook's language files (var/i18n/)
      * @return bool
      * @api
      */

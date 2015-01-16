@@ -80,7 +80,7 @@ class WebDocBookController
      */
     public function creditsAction()
     {
-        return array('credits', '', array('title'=>'About DocBook'));
+        return array('credits', '', array('title'=>'About WebDocBook'));
     }
 
     /**

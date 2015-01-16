@@ -1,4 +1,4 @@
-# Docbook : ROADMAP
+# WebDocbook : ROADMAP
 
 This file is the "ROADMAP" of the application : it lists all features wanted. Each line 
 begining by "DONE" is a feature already developed. Other lines are still TO BE developed.

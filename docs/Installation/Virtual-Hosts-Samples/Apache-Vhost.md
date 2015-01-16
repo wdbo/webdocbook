@@ -11,7 +11,7 @@ A default `.htaccess` file could be:
     ErrorDocument 403 /index.php?forbidden
     ErrorDocument 500 /index.php?error
     
-    # setting the default DocBook markdown handler for each `.md` files
+    # setting the default WebDocBook markdown handler for each `.md` files
     # and the INCLUDES functionality
     <IfModule mod_mime.c>
         AddType text/html .md

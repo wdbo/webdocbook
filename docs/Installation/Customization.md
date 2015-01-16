@@ -9,7 +9,7 @@ the templates used to build the pages. This feature is quite simple:
 
 -   by default, some configurations and templates are embedded with the application in 
     the `src/config/` and `src/templates/` directories ;
--   if a `user/docbook.config` file is found, it will override default configuration ;
+-   if a `user/webdocbook.config` file is found, it will override default configuration ;
 -   any file found in the `user/templates/` will be taken primary to the default templates.
 
 The templates follows a specific rule as the application can use a collection of templates
@@ -23,7 +23,7 @@ want to write your own templates you may follow [Twig's documentation](http://tw
 
 
 ----
-**Copyleft (c) 2008-2015 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 

@@ -41,14 +41,14 @@ class WDBRecursiveDirectoryIterator
      *
      * It is part of the default object's flags
      */
-    const CURRENT_AS_DOCBOOKFILE    = 0x00000040;
+    const CURRENT_AS_WDBFILE    = 0x00000040;
 
     /**
      * Constructor
      *
      * Default flags are :
      *
-     *      WebFilesystemIterator::KEY_AS_PATHNAME | self::CURRENT_AS_DOCBOOKFILE | WebFilesystemIterator::SKIP_DOTTED
+     *      WebFilesystemIterator::KEY_AS_PATHNAME | self::CURRENT_AS_WDBFILE | WebFilesystemIterator::SKIP_DOTTED
      *
      */
     public function __construct(
@@ -82,7 +82,7 @@ class WDBRecursiveDirectoryIterator
     */
     public function current()
     {
-        if ($this->getFlags() & self::CURRENT_AS_DOCBOOKFILE) {
+        if ($this->getFlags() & self::CURRENT_AS_WDBFILE) {
             return new WDBFile(
                 Filesystem::slashDirname($this->original_path).$this->getFilename()
             );

@@ -1,4 +1,4 @@
-Docbook : a simple Markdown CMS
+WebDocbook : a simple Markdown CMS
 ===============================
 
 **WebDocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
@@ -206,7 +206,7 @@ under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
 
 
 ----
-**Copyleft (c) 2008-2015 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 

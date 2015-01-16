@@ -11,17 +11,17 @@ The structure described below MUST be fixed and not over-writable:
     |
     | composer.json
     |
-    | src/                              : docbook internals: this can NOT be edited, moved or removed
+    | src/                              : WebDocBook internals: this can NOT be edited, moved or removed
     | ----- config/
-    | ----- DocBook/
+    | ----- WebDocBook/
     | ----- templates/
     | ----- vendor/
     |
     | user/
     | ----- config/
-    | ------------- docbook.ini         : this can be edited
-    | ------------- docbook_i18n.csv    : this can be edited
-    | ------------- user_config.ini     : this is handled by the '/admin' page of DocBook
+    | ------------- webdocbook.ini      : this can be edited
+    | ------------- webdocbook_i18n.csv : this can be edited
+    | ------------- user_config.ini     : this is handled by the '/admin' page of WebDocBook
     | ----- templates/                  : this is optional
     |
     | var/
@@ -30,15 +30,15 @@ The structure described below MUST be fixed and not over-writable:
     | ----- i18n/
     |
     | www/
-    | ----- index.php                   : this can be renamed in user/config/docbook.ini
-    | ----- webdocbook_assets/             : this can be renamed in user/config/docbook.ini
+    | ----- index.php                   : this can be renamed in user/config/webdocbook.ini
+    | ----- webdocbook_assets/          : this can be renamed in user/config/webdocbook.ini
     | -------------------- vendor/
 
 
 Namespace
 ---------
 
-The whole app is embedded in the `DocBook` PHP namespace. As it uses [Composer](http://getcomposer.com/),
+The whole app is embedded in the `WebDocBook` PHP namespace. As it uses [Composer](http://getcomposer.com/),
 the package's classes are all named following their class name (in camel-case-underscored) 
 and all included in the namespace.
 
@@ -48,7 +48,7 @@ Kernel
 
 
 ----
-**Copyleft (c) 2008-2015 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 

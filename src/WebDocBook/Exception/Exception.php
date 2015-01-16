@@ -29,7 +29,7 @@ use \WebDocBook\Kernel;
 /**
  * Class Exception
  *
- * DocBook components should use this in place of classic `\Exception`
+ * WebDocBook components should use this in place of classic `\Exception`
  */
 class Exception
     extends \Exception

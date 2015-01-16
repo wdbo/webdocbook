@@ -1,4 +1,4 @@
-Docbook : a simple Markdown CMS
+WebDocbook : a simple Markdown CMS
 ===============================
 
 **WebDocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
@@ -11,14 +11,14 @@ some RSS feeds generation or translations switching.
 Key features
 ------------
 
--   DocBook is a simple application organized beyond a filesystem architecture of Markdown files.
+-   WebDocBook is a simple application organized beyond a filesystem architecture of Markdown files.
     Each file is a "page" and each sub-directory is a "section" of pages. The title of the files 
     or directories is used to be the title of the page or section;
--   DocBook views' are **HTML5 valid** with the help of [Bootstrap](http://twitter.github.io/bootstrap/);
--   DocBook is highly **configurable** and **customizable**;
--   DocBook uses the [**Markdown Extended**](http://aboutmde.org/) advanced syntax;
--   DocBook generates sitemaps and RSS feeds easily;
--   DocBook DOES NOT use a database.
+-   WebDocBook views' are **HTML5 valid** with the help of [Bootstrap](http://twitter.github.io/bootstrap/);
+-   WebDocBook is highly **configurable** and **customizable**;
+-   WebDocBook uses the [**Markdown Extended**](http://aboutmde.org/) advanced syntax;
+-   WebDocBook generates sitemaps and RSS feeds easily;
+-   WebDocBook DOES NOT use a database.
 
 
 Quick install
@@ -32,11 +32,11 @@ Quick install
         $ composer create-project wdbo/webdocbook your/path/to/docbook 2.* --no-dev
 
 3.  Configure a virtual-host on your web-server to point to the `www/` directory of your
-    DocBook installation.
+    WebDocBook installation.
 
 4.  Browse to your new virtual-host and fix the boot errors if there are any.
 
-That's it! Your DocBook is ready!
+That's it! Your WebDocBook is ready!
 
 To begin, you can copy or link some of your contents in the `www/` directory of your
 installation.
@@ -64,7 +64,7 @@ By default, any file contained in a directory named `wip/` will not be displayed
 and will not be referenced in the *sitemap* neither in the index ; to view it, you will have 
 to manually write its URL. 
 
-Knowing that, a classic DocBook directory organization should be:
+Knowing that, a classic WebDocBook directory organization should be:
 
     | chapter-name/
     | ------------- README.md           // the first file shown loading the directory
@@ -76,7 +76,7 @@ Knowing that, a classic DocBook directory organization should be:
     | ------------- sub-chapter1/       // a sub-directory containing a sub-chapter
     | ------------- sub-chapter2/       // a sub-directory containing another sub-chapter
 
-All your first depth directories (directories contained directly in your DocBook `www/` root)
+All your first depth directories (directories contained directly in your WebDocBook `www/` root)
 are considered as your chapters and are listed in the header navigation bar of each page
 for quick access.
 
@@ -114,7 +114,7 @@ conditions. See the `LICENSE` file for more info.
 The default icon of **WebDocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
 under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
 
-**WebDocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
+**WebDocBook** is based on some of [Les Ateliers Pierrot's](http://www.ateliers-pierrot.fr/) packages:
 
 -   [PHP Patterns](http://github.com/atelierspierrot/patterns),
 -   [PHP Library](http://github.com/atelierspierrot/library),

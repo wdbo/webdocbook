@@ -1,4 +1,4 @@
-Contribute to DocBook
+Contribute to WebDocBook
 =====================
 
 
@@ -80,8 +80,8 @@ comment the request with your vision of the thing or your experience.
 To prepare a development version of *WebDocBook*, clone your fork of the repository and
 put it on the "wip" branch:
 
-    git clone http://github.com/<your-username>/docbook.git
-    cd docbook
+    git clone http://github.com/<your-username>/webdocbook.git
+    cd webdocbook
     git checkout wip
 
 Then you can create your own branch with the name of your feature:
@@ -117,9 +117,9 @@ using some third-parties hosted (after installation by Composer) in `src/vendor/
 of the app is constructed like a simple [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
 concept.
 
-Many configuration entries are defined in `src/config/docbook.ini`.
+Many configuration entries are defined in `src/config/webdocbook.ini`.
 
-All the language strings are defined in `src/config/docbook_i18n.csv`.
+All the language strings are defined in `src/config/webdocbook_i18n.csv`.
 
 The views are constructed from `*.html.twig` templates parsed by [Twig](http://twig.sensiolabs.org/)
 and hosted in `src/templates/`.
@@ -128,7 +128,7 @@ and hosted in `src/templates/`.
 ### Documentation links
 
 -   [the Twig documentation](http://twig.sensiolabs.org/documentation)
--   the documentations of our packages can be found at <http://docs.ateliers-pierrot.fr/>:
+-   the documentations of Les Ateliers Pierrot's packages can be found at <http://docs.ateliers-pierrot.fr/>:
     - [the Patterns](http://docs.ateliers-pierrot.fr/patterns)
     - [the Library](http://docs.ateliers-pierrot.fr/library)
     - [the I18N](http://docs.ateliers-pierrot.fr/internationalization)

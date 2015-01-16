@@ -24,9 +24,9 @@ $iterator = Finder::create()
 ;
 
 $options = array(
-    'title'                => 'DocBook (vendor included)',
+    'title'                => 'WebDocBook (vendor included)',
     'build_dir'            => __DIR__.'/phpdoc',
-    'cache_dir'            => __DIR__.'/../tmp/cache/docbook_with_vendor',
+    'cache_dir'            => __DIR__.'/../tmp/cache/webdocbook_with_vendor',
     'default_opened_level' => 1,
 );
 

@@ -28,7 +28,7 @@ use \Twig_SimpleFunction;
 /**
  * Class WebDocBook_Twig_Extension
  *
- * The Twig functions and filters for DocBook's templates
+ * The Twig functions and filters for WebDocBook's templates
  *
  * @see http://twig.sensiolabs.org/api/master/index.html
  */
@@ -41,7 +41,7 @@ class WebDocBook_Twig_Extension
      */
     public function getName()
     {
-        return 'DocBook';
+        return 'WebDocBook';
     }
 
     /**

@@ -1,16 +1,16 @@
 {
     "name": "wdbo/webdocbook",
-    "title": "DocBook",
+    "title": "WebDocBook",
     "type": "project",
-    "description": "Simple CMS PHP app to build rich HTML5 views from a Markdown contents filesystem.",
-    "keywords": [ "cms", "markdown" ],
+    "description": "A web book builds from a Markdown contents file system",
+    "keywords": [ "wiki", "cms", "markdown" ],
     "homepage": "http://github.com/wdbo/webdocbook",
-    "version": "1.4.0-alpha",
+    "version": "1.0.0-alpha",
     "license": "GPL-3.0",
     "authors": [{
         "name": "Pierre Cassat & contributors",
         "email": "contact@webdocbook.com",
-        "homepage": "http://www.ateliers-pierrot.fr/"
+        "homepage": "http://webdocbook.com/"
     }],
     "support": {
         "issues": "http://github.com/wdbo/webdocbook/issues",
@@ -22,8 +22,8 @@
         "atelierspierrot/patterns": "1.0.8",
         "atelierspierrot/library": "1.1.7",
         "atelierspierrot/webfilesystem": "1.0.2",
-        "piwi/markdown-extended": "dev-master",
         "atelierspierrot/internationalization": "1.0.3",
+        "piwi/markdown-extended": "dev-master",
         "twig/twig": "1.*",
         "fxp/composer-asset-plugin":"~1.0",
         "bower-asset/jquery": "1.11.*",
@@ -37,23 +37,47 @@
         "sami/sami": "dev-master",
         "dropbox/dropbox-sdk": "1.1.*"
     },
+    "replace": {
+        "atelierspierrot/docbook": "*"
+    },
     "autoload": { "psr-0": { 
-        "DocBook": "src",
-        "DocBook_": "src"
+        "WebDocBook": "src",
+        "WebDocBook_": "src"
     } },
     "config": {
         "vendor-dir": "src/vendor"
     },
     "scripts": {
-        "post-update-cmd": "WebDocBook\\Composer\\Scripts::postUpdate",
-        "post-install-cmd": "WebDocBook\\Composer\\Scripts::postInstall",
-        "post-autoload-dump": "WebDocBook\\Composer\\Scripts::postAutoloadDump",
-        "post-create-project-cmd": "WebDocBook\\Composer\\Scripts::postCreateProject",
-        "docbook-clear-cache": "WebDocBook\\Composer\\Scripts::docbookClearCache",
-        "docbook-clearcache": "WebDocBook\\Composer\\Scripts::docbookClearCache",
-        "docbook-clear-i18n": "WebDocBook\\Composer\\Scripts::docbookClearI18n",
-        "docbook-flush": "WebDocBook\\Composer\\Scripts::docbookClearI18n",
-        "docbook-init": "WebDocBook\\Composer\\Scripts::docbookInit"
+        "post-update-cmd": [
+            "WebDocBook\\Composer\\Script\\ClearCache::run",
+            "WebDocBook\\Composer\\Script\\ClearI18n::run"
+        ],
+        "post-install-cmd": [
+            "WebDocBook\\Composer\\Script\\Initialize::run"
+        ],
+        "post-autoload-dump": [
+            "WebDocBook\\Composer\\Script\\ClearCache::run",
+            "WebDocBook\\Composer\\Script\\ClearI18n::run"
+        ],
+        "post-create-project-cmd": [
+            "WebDocBook\\Composer\\Script\\Initialize::run"
+        ],
+        "wdb-clear-cache": [
+            "WebDocBook\\Composer\\Script\\ClearCache::run"
+        ],
+        "wdb-clearcache": [
+            "WebDocBook\\Composer\\Script\\ClearCache::run"
+        ],
+        "wdb-clear-i18n": [
+            "WebDocBook\\Composer\\Script\\ClearI18n::run"
+        ],
+        "wdb-flush": [
+            "WebDocBook\\Composer\\Script\\ClearCache::run",
+            "WebDocBook\\Composer\\Script\\ClearI18n::run"
+        ],
+        "wdb-init": [
+            "WebDocBook\\Composer\\Script\\Initialize::run"
+        ]
     },
     "minimum-stability": "dev",
     "extra": {

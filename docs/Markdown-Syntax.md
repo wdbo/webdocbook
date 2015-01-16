@@ -1,7 +1,7 @@
 Markdown syntax
 ===============
 
-The Markdown syntax used by DocBook follows the [Markdown Extended](http://github.com/piwi/markdown-extended)
+The Markdown syntax used by *WebDocBook* follows the [Markdown Extended](http://github.com/piwi/markdown-extended)
 rules. They are inherited from:
 
 -   the original [John Gruber's syntax](http://daringfireball.net/projects/markdown/syntax),
@@ -9,7 +9,7 @@ rules. They are inherited from:
 -   some features are also included from the [Fletcher Penny's MultiMarkdown](http://fletcher.github.com/peg-multimarkdown/).
 
 ----
-**Copyleft (c) 2008-2015 [Les Ateliers Pierrot](http://www.ateliers-pierrot.fr/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 
