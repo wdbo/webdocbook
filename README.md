@@ -1,4 +1,4 @@
-WebDocbook : the web like a book
+WebDocBook : the web like a book
 ===============================
 
 **WebDocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
