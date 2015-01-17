@@ -7,6 +7,7 @@ some RSS feeds generation or translations switching.
 
 **WebDocBook** builds a "like-a-book" interactive website from simple Markdown files.
 
+To begin, watch the <http://webdocbook.com/> website.
 
 Key features
 ------------
