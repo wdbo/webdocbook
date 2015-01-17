@@ -1,4 +1,4 @@
-WebDocbook : a simple Markdown CMS
+WebDocbook : the web like a book
 ===============================
 
 **WebDocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
@@ -24,19 +24,19 @@ Key features
 Quick install
 -------------
 
-1.  To install *WebDocBook*, you will first need [Composer](http://getcomposer.org/) which is
+1.  To install **WebDocBook**, you will first need [Composer](http://getcomposer.org/) which is
     required to install all dependencies.
 
 2.  Once Composer is installed, you just have to run:
 
-        $ composer create-project wdbo/webdocbook your/path/to/docbook 2.* --no-dev
+        $ composer create-project wdbo/webdocbook your/path/to/webdocbook 1.* --no-dev
 
 3.  Configure a virtual-host on your web-server to point to the `www/` directory of your
-    WebDocBook installation.
+    installation.
 
 4.  Browse to your new virtual-host and fix the boot errors if there are any.
 
-That's it! Your WebDocBook is ready!
+That's it! Your *WebDocBook* is ready!
 
 To begin, you can copy or link some of your contents in the `www/` directory of your
 installation.
@@ -64,7 +64,7 @@ By default, any file contained in a directory named `wip/` will not be displayed
 and will not be referenced in the *sitemap* neither in the index ; to view it, you will have 
 to manually write its URL. 
 
-Knowing that, a classic WebDocBook directory organization should be:
+Knowing that, a classic *WebDocBook* directory organization should be:
 
     | chapter-name/
     | ------------- README.md           // the first file shown loading the directory
@@ -76,7 +76,7 @@ Knowing that, a classic WebDocBook directory organization should be:
     | ------------- sub-chapter1/       // a sub-directory containing a sub-chapter
     | ------------- sub-chapter2/       // a sub-directory containing another sub-chapter
 
-All your first depth directories (directories contained directly in your WebDocBook `www/` root)
+All your first depth directories (directories contained directly in your *WebDocBook* `www/` root)
 are considered as your chapters and are listed in the header navigation bar of each page
 for quick access.
 
@@ -84,12 +84,12 @@ for quick access.
 License / Dependencies
 ----------------------
 
-**WebDocBook** is an open-source application released under a
+**WebDocBook** is an open-source software released under a
 [GNU General Public License version 3](http://github.com/wdbo/webdocbook/blob/master/LICENSE). 
 You can freely download it, use it or distribute it as long as you stay in the license 
 conditions. See the `LICENSE` file for more info.
 
-**WebDocBook** is developed with the help of the following third-parties:
+*WebDocBook* is developed with the help of the following third-parties:
 
 -   [Bootstrap](http://twitter.github.io/bootstrap/), a responsive front-end framework, 
     released under [Apache license v2](http://www.apache.org/licenses/LICENSE-2.0),
@@ -111,10 +111,10 @@ conditions. See the `LICENSE` file for more info.
     released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
     written by [Evgeny Matsakov](http://webcodingstudio.com/).
 
-The default icon of **WebDocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
+The default icon of *WebDocBook* is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
 under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
 
-**WebDocBook** is based on some of [Les Ateliers Pierrot's](http://www.ateliers-pierrot.fr/) packages:
+*WebDocBook* is also based on the following [Les Ateliers Pierrot's](http://www.ateliers-pierrot.fr/) packages:
 
 -   [PHP Patterns](http://github.com/atelierspierrot/patterns),
 -   [PHP Library](http://github.com/atelierspierrot/library),
