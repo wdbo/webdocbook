@@ -27,6 +27,7 @@ use \WebDocBook\Abstracts\AbstractFrontController;
 use \WebDocBook\WebFilesystem\WDBRecursiveDirectoryIterator;
 use \WebDocBook\Exception\Exception;
 use \WebDocBook\Exception\RuntimeException;
+use \WebDocBook\Exception\NotFoundException;
 use \WebDocBook\Util\Filesystem;
 use \MarkdownExtended\MarkdownExtended;
 use \I18n\I18n;
