@@ -397,6 +397,11 @@ class Kernel
                     'controller_classname' => $_cls,
                     'action' => $action
                 );
+            } elseif (class_exists($ctrl)) {
+                return array(
+                    'controller_classname' => $ctrl,
+                    'action' => $action
+                );
             }
         }
         return null;
