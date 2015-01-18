@@ -48,15 +48,14 @@ class TemplateBuilder
     public function __construct()
     {
         // template engine
-        $templates_dirs = array(
-            Kernel::getPath('templates')
-        );
+        $templates_dirs = array();
         try {
             $user_templates = Kernel::getPath('user_templates');
         } catch (\Exception $e) {}
         if (!empty($user_templates) && file_exists($user_templates)) {
             $templates_dirs[] = $user_templates;
         }
+        $templates_dirs[]   = Kernel::getPath('templates');
         $loader             = new \Twig_Loader_Filesystem($templates_dirs);
         $this->twig         = new \Twig_Environment($loader, array(
             'cache'             => Kernel::getPath('cache'),
