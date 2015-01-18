@@ -193,8 +193,8 @@ download it, use it or distribute it as long as you stay in the license conditio
     written by [Albert Farkas](http://twitter.com/afarkas), [John David Dalton](http://twitter.com/jdalton), 
     [Jonathan Neal](http://twitter.com/jon_neal) & [Remy Sharp](http://twitter.com/rem).
 
-The default icon of **WebDocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
-under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
+The default icon of *WebDocBook* is *yin-yang* made by [Silmathoron](http://silmathoron.deviantart.com/)
+under a [CC-BY-NC-SA license](https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode).
 
 **WebDocBook** is based on some of [our](http://www.ateliers-pierrot.fr/) other packages:
 

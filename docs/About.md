@@ -28,8 +28,8 @@ conditions. See the `LICENSE` file for more info.
     released under [MIT license](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt),
     written by [Evgeny Matsakov](http://webcodingstudio.com/).
 
-The default icon of **WebDocBook** is [*yin-yang* made by Silmasoron](http://www.pngfactory.net/png/5154/yin-yang)
-under a [PNG Factory license](http://www.pngfactory.net/licence/PngFactory/).
+The default icon of *WebDocBook* is *yin-yang* made by [Silmathoron](http://silmathoron.deviantart.com/)
+under a [CC-BY-NC-SA license](https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode).
 
 **WebDocBook** is based on some of [Les Ateliers Pierrot's](http://www.ateliers-pierrot.fr/) packages:
 
