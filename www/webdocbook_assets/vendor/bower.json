@@ -6,6 +6,7 @@
     "html5shiv": "~3.7.2",
     "fontawesome": "~4.2.0",
     "jquery.tablesorter": "~2.18.4",
-    "jquery.highlight": "*"
+    "jquery.highlight": "*",
+    "MathJax": "~2.4.0"
   }
 }
