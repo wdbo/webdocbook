@@ -111,8 +111,11 @@ $(function() {
         $('button#form-search-submit').trigger('click');
     });
     // all links have tooltips except class=notooltip
-    $('a,.tooltip').not('.notooltip').tooltip();
-    $('input[data-toggle=tooltip],button[data-toggle=tooltip]').tooltip();
+    var tooltip_options = {
+        container: 'body'
+    };
+    $('a,.tooltip').not('.notooltip').tooltip(tooltip_options);
+    $('input[data-toggle=tooltip],button[data-toggle=tooltip]').tooltip(tooltip_options);
     // popover tool
     $('.popover-link').tooltip('destroy').popover();
 });
