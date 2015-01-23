@@ -74,3 +74,13 @@ jQuery syntax highlight
 
 -   <http://github.com/ematsakov/highlight>
 -   actual version: 1.2
+
+
+MathJax
+-------
+
+- <http://www.mathjax.org/>
+- actual version: 2.3.0
+
+See <https://github.com/mathjax/MathJax-docs/wiki/Guide%3A-reducing-size-of-a-mathjax-installation>
+to learn what files need to be kept.
