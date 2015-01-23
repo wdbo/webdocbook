@@ -47,6 +47,29 @@ class WebDocBook
         return WebDocBookHelper::getConfigOrDefault($var);
     }
 
+    /**
+     * Builder of HTML tags :
+     *     <TAG ATTR1="ATTR_VAL1" ... > TEXT </TAG>
+     *
+     * @param string $text The content of the tag
+     * @param string $tag The tag name
+     * @param array $attributes An array of attributes constructed by "variable=>value" pairs
+     * @param bool $close Is it a closed tag ? (FALSE by default)
+     *
+     * @return string The built tag string
+     */
+    public function getTagString($text, $tag, array $attributes = array(), $close = false)
+    {
+        $tag_classes = $this->_getConfigOrDefault('tag_class');
+        if (!empty($tag_classes) && is_array($tag_classes) && array_key_exists($tag, $tag_classes)) {
+            if (!array_key_exists('class', $attributes)) {
+                $attributes['class'] = '';
+            }
+            $attributes['class'] .= $tag_classes[$tag];
+        }
+        return parent::getTagString($text, $tag, $attributes, $close);
+    }
+
 // -------------------
 // Tag specific builder
 // -------------------
