@@ -51,7 +51,9 @@
  */
 (function($) {
     $.fn.juizScrollTo = function( speed ) {
-        if ( !speed ) var speed = 'slow';
+        if ( !speed ) {
+            var speed = 'slow';
+        }
 
         return this.each( function() {
             $(this).on('click', function() {
@@ -94,7 +96,9 @@
 
     function trigger_click_for_slide() {
         var the_hash = document.location.hash;
-        if (the_hash) $('a[href~="'+the_hash+'"]').trigger('click');
+        if (the_hash) {
+            $('a[href~="'+the_hash+'"]').trigger('click');
+        }
     }
     trigger_click_for_slide();
 
