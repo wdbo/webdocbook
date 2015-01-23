@@ -31,6 +31,15 @@ www/webdocbook_assets/vendor/jquery.tablesorter/*
 www/webdocbook_assets/vendor/jquery.highlight/*
 !www/webdocbook_assets/vendor/jquery.highlight/*.css
 !www/webdocbook_assets/vendor/jquery.highlight/*.js
+www/webdocbook_assets/vendor/MathJax/*
+!www/webdocbook_assets/vendor/MathJax/*.js
+!www/webdocbook_assets/vendor/MathJax/config
+!www/webdocbook_assets/vendor/MathJax/extensions
+!www/webdocbook_assets/vendor/MathJax/fonts/HTML-CSS/FONTNAME/woff
+!www/webdocbook_assets/vendor/MathJax/images
+!www/webdocbook_assets/vendor/MathJax/jax
+!www/webdocbook_assets/vendor/MathJax/localization/en
+!www/webdocbook_assets/vendor/MathJax/localization/fr
 !www/webdocbook_assets/vendor/*/dist/
 !www/webdocbook_assets/vendor/*/.bower.json
 
