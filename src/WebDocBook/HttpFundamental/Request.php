@@ -96,6 +96,16 @@ class Request
                 $req = $server_uri;
             }
 
+            // strip query string
+            if (false!==strpos($req, '?')) {
+                $tmp_action = substr($req, strpos($req, '?')+1);
+                parse_str($tmp_action, $action_str_args);
+                if (!empty($action_str_args)) {
+                    $args = array_merge($args, $action_str_args);
+                }
+                $req = substr($req, 0, strpos($req, '?'));
+            }
+
             // if '/action'
             if ($ctrl = Kernel::findController(trim($req, '/'))) {
                 $action = trim($req, '/');
@@ -181,6 +191,19 @@ class Request
                 }
             }
         }
+
+/*//
+header('Content-Type: text/plain');
+echo '$server_pathtrans=    '.var_export($server_pathtrans,1).PHP_EOL;
+echo '$server_uri=          '.var_export($server_uri,1).PHP_EOL;
+echo '$server_query=        '.var_export($server_query,1).PHP_EOL;
+echo '$server_argv=         '.var_export($server_argv,1).PHP_EOL;
+echo '$file=                '.var_export($file,1).PHP_EOL;
+echo '$path=                '.var_export($path,1).PHP_EOL;
+echo '$action=              '.var_export($action,1).PHP_EOL;
+echo '$args=                '.var_export($args,1).PHP_EOL;
+exit('end');
+//*/
 
         if (!empty($args)) {
             $wdb->setQuery($args);
