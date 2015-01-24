@@ -132,8 +132,8 @@ class WebDocBookController
     public function adminAction()
     {
         $allowed    = Kernel::getConfig('expose_admin', false, 'user_config');
-        $saveadmin  = $this->wdb->getSession()->get('saveadmin');
-        $this->wdb->getSession()->remove('saveadmin');
+        $saveadmin  = $this->wdb->getUser()->getSession()->get('saveadmin');
+        $this->wdb->getUser()->getSession()->remove('saveadmin');
         if (
             (!$allowed || ('true' !== $allowed && '1' !== $allowed)) &&
             (is_null($saveadmin) || $saveadmin != time())
@@ -195,7 +195,7 @@ class WebDocBookController
 
         if ($this->wdb->getRequest()->isPost()) {
 
-            $this->wdb->getSession()->set('saveadmin', time());
+            $this->wdb->getUser()->getSession()->set('saveadmin', time());
             $root_dir       = Kernel::getPath('app_base_path');
             $data           = $this->wdb->getRequest()->getData();
             $config_file    = Kernel::getPath('user_config_filepath');
@@ -211,12 +211,12 @@ class WebDocBookController
                     Array2INI::convert($data),
                     LOCK_EX
             )) {
-                $this->wdb->getSession()
+                $this->wdb->getUser()->getSession()
                     ->setFlash(
                         _T('OK - Your configuration has been updated'), 'message_ok'
                     );
             } else {
-                $this->wdb->getSession()
+                $this->wdb->getUser()->getSession()
                     ->setFlash(
                         _T("Can't write configuration file!"), 'message_error'
                     );

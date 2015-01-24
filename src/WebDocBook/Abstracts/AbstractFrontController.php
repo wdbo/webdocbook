@@ -26,8 +26,8 @@ namespace WebDocBook\Abstracts;
 use \WebDocBook\HttpFundamental\Response;
 use \WebDocBook\HttpFundamental\Request;
 use \WebDocBook\TemplateBuilder;
+use \WebDocBook\Model\User;
 use \Library\Command;
-use \Library\Session\FlashSession;
 use \MarkdownExtended\MarkdownExtended;
 use \Patterns\Abstracts\AbstractSingleton;
 
@@ -76,9 +76,9 @@ abstract class AbstractFrontController
     protected $markdown_parser;
 
     /**
-     * @var \Library\Session\FlashSession
+     * @var \WebDocBook\Model\User
      */
-    protected $session;
+    protected $user;
 
     /**
      * Construction: init dependencies
@@ -89,7 +89,7 @@ abstract class AbstractFrontController
             ->setResponse(new Response)
             ->setRequest(new Request)
             ->setTerminal(new Command)
-            ->setSession(new FlashSession)
+            ->setUser(new User)
         ;
     }
 
@@ -205,22 +205,22 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @param \Library\Session\FlashSession $session
+     * @param \WebDocBook\Model\User $user
      * @return $this
      * @access private
      */
-    private function setSession(FlashSession $session)
+    private function setUser(User $user)
     {
-        $this->session = $session;
+        $this->user = $user;
         return $this;
     }
 
     /**
-     * @return \Library\Session\FlashSession
+     * @return \WebDocBook\Model\User
      */
-    public function getSession()
+    public function getUser()
     {
-        return $this->session;
+        return $this->user;
     }
 
 // ------------------

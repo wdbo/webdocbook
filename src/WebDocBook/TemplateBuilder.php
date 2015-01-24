@@ -119,7 +119,7 @@ class TemplateBuilder
     public function getDefaultViewParams()
     {
         $wdb        = FrontController::getInstance();
-        $session    = $wdb->getSession();
+        $session    = $wdb->getUser()->getSession();
         return array(
             'WDB'               => $wdb,
             'user_cfg'          => Kernel::get('user_config'),

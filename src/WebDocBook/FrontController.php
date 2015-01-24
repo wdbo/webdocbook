@@ -89,8 +89,6 @@ class FrontController
             Kernel::boot();
 //            Kernel::debug();
 
-            $this->session->start();
-
             // the actual manifest
             if (true===file_exists(Kernel::getPath('app_manifest_filepath'))) {
                 $manifest_data = Filesystem::parseJson(Kernel::getPath('app_manifest_filepath'));
@@ -325,8 +323,9 @@ class FrontController
      */
     protected function processSessionValues()
     {
-        if (!empty($_SESSION)) {
-            $this->parseUserSettings($_SESSION);
+        $session = $this->getUser()->getSessionData();
+        if (!empty($session)) {
+            $this->parseUserSettings($session);
         }
         return $this;
     }
@@ -345,9 +344,7 @@ class FrontController
                     if (array_key_exists($value, $langs)) {
                         i18n::getInstance()->setLanguage($value);
                         $true_language = i18n::getInstance()->getLanguage();
-                        if (!isset($_SESSION['lang']) || $_SESSION['lang']!==$true_language) {
-                            $_SESSION['lang'] = $true_language;
-                        }
+                        $this->getUser()->getSession()->set('lang', $true_language);
                     }
                 }
                 
