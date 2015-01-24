@@ -104,7 +104,7 @@ section.section .content pre {
 }
 section.section .content img { margin: 1em; }
 section.section .content p > img:only-of-type:first-child,
-section.section .content p > a:first-child > img:only-child
+section.section .content p > a:only-of-type:first-child > img:only-child
     { float: left; }
 section.section .content p > img:only-of-type:last-child,
 section.section .content p > a:last-child > img:only-child
