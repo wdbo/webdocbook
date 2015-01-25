@@ -48,13 +48,6 @@
         "post-install-cmd": [
             "WebDocBook\\Composer\\Script\\Initialize::run"
         ],
-        "post-autoload-dump": [
-            "WebDocBook\\Composer\\Script\\ClearCache::run",
-            "WebDocBook\\Composer\\Script\\ClearI18n::run"
-        ],
-        "post-create-project-cmd": [
-            "WebDocBook\\Composer\\Script\\Initialize::run"
-        ],
         "wdb-clear-cache": [
             "WebDocBook\\Composer\\Script\\ClearCache::run"
         ],
