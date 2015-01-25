@@ -90,34 +90,57 @@ class WebDocBookController
     public function docbookdocAction()
     {
         $title          = _T('User manual');
+
+        // user manual
         $path           = Kernel::getPath('webdocbook_assets') . Kernel::getConfig('pages:user_manual', '');
-        $page_infos     = array(
-            'name'          => $title,
-            'path'          => 'docbookdoc',
-            'update'        => Helper::getDateTimeFromTimestamp(filemtime($path))
-        );
-        $tpl_params     = array(
-            'breadcrumbs'   => array($title),
-            'title'         => $title,
-            'page'          => $page_infos,
-            'page_tools'    => 'false'
-        );
+        $update         = Helper::getDateTimeFromTimestamp(filemtime($path));
         $file_content   = file_get_contents($path);
         $md_parser      = $this->wdb->getMarkdownParser();
         $md_content     = $md_parser->transformString($file_content);
         $output_bag     = $md_parser->get('OutputFormatBag');
         $menu           = $output_bag->getHelper()
                             ->getToc($md_content, $output_bag->getFormatter());
-        $content        = $this->wdb->display(
-            $md_content->getBody(),
-            'content',
+        $user_manual_content = $md_content->getBody();
+
+        // MD manual
+        $path_md        = Kernel::getPath('webdocbook_assets') . Kernel::getConfig('pages:md_manual', '');
+        $update_md      = Helper::getDateTimeFromTimestamp(filemtime($path_md));
+        $file_content   = file_get_contents($path_md);
+        $md_parser      = $this->wdb->getMarkdownParser();
+        $md_content     = $md_parser->transformString($file_content);
+        $output_bag     = $md_parser->get('OutputFormatBag');
+        $menu           = $output_bag->getHelper()
+            ->getToc($md_content, $output_bag->getFormatter());
+        $md_manual_content = $md_content->getBody();
+
+        // about content
+        $about_content            = $this->wdb->display(
+            '', 'credits', array('page_tools'=>'false')
+        );
+
+        // global page
+        $page_infos     = array(
+            'name'          => $title,
+            'path'          => 'docbookdoc',
+            'update'        => $update_md > $update ? $update_md : $update
+        );
+        $tpl_params     = array(
+            'breadcrumbs'   => array($title),
+            'title'         => $title,
+            'page'          => array(),
+            'page_tools'    => 'false'
+        );
+        $content            = $this->wdb->display(
+            '',
+            'user_manual',
             array(
-                'page'          => $page_infos,
-                'page_tools'    => 'false',
-                'page_title'    => 'true',
-                'page_notes'    => $md_content->getNotesToString(),
-                'title'         => $title,
-                'toc'           => $menu,
+                'user_manual_content'   => $user_manual_content,
+                'md_manual_content'     => $md_manual_content,
+                'about_content'         => $about_content,
+                'page'                  => $page_infos,
+                'page_tools'            => 'false',
+                'page_title'            => 'true',
+                'title'                 => $title,
             )
         );
 
