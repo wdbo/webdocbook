@@ -20,7 +20,9 @@ The source code of this package is available online at
 <http://github.com/wdbo/webdocbook>.
 #}
 
-<script type="text/javascript" src="{{ vendor_assets }}MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+{% if wdb_meta.maths is not empty and wdb_meta.maths == 1 %}
+    <script type="text/javascript" src="{{ vendor_assets }}MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+{% endif %}
 
 {% if page_title|default('false') != 'false' %}
 <div class="page-header">
