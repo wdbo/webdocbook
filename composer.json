@@ -4,7 +4,7 @@
     "type": "project",
     "description": "A web book builds from a Markdown contents file system",
     "keywords": [ "wiki", "cms", "markdown" ],
-    "homepage": "http://github.com/wdbo/webdocbook",
+    "homepage": "http://webdocbook.com",
     "version": "1.0.0@dev",
     "license": "GPL-3.0",
     "authors": [{
@@ -75,6 +75,7 @@
     "extra": {
         "license_url": "http://github.com/wdbo/webdocbook/blob/master/LICENSE",
         "license_name": "General Public Licence version 3.0",
+        "package_sources": "http://github.com/wdbo/webdocbook",
         "branch-alias": {
             "dev-master": "1.4.*-dev"
         }
