@@ -146,6 +146,8 @@ but perhaps you meant;Mais peut-être vouliez-vous dire;But perhaps you meant
 ;Merger les assets;Merge assets
 ;Impossible d'écrire le fichier de configuration !;Can't write configuration file!
 ;OK – Votre configuration a été mise à jour;OK - Your configuration has been updated
-;Manuel WebDocBook;WebDocBook manual
+;Manuel de WebDocBook;WebDocBook manual
 ;Manuel de la syntaxe Markdown;Markdown syntax manual
 ;À propos de WebDocBook;About WDB
+user_configuration_path_is;La configuration utilisateur est stockée dans le fichier <var>%path%</var> (format INI).;User configuration is stored in file <var>%path%</var> (INI format).
+;Un manuel d'utilisation au quotidien de <strong>WebDocBook</strong> et <strong>Markdown</strong>.;An every day manual on how to use <strong>WebDocBook</strong> and <strong>Markdown</strong>.

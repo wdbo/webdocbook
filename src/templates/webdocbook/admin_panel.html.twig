@@ -38,7 +38,9 @@ The source code of this package is available online at
 
         {{ content|raw }}
 
-        <p>User configuration is stored in file <var>{{ user_config_file }}</var> (INI format).</p>
+        <p>
+            {{ translate('user_configuration_path_is', {'path': user_config_file})|raw }}
+        </p>
     </div>
     </section>
     </div>
