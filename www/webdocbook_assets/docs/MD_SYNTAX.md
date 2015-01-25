@@ -1,4 +1,8 @@
-## Markdown syntax manual
+Markdown syntax manual
+======================
+
+Blocks rules
+------------
 
 ### Titles
 
@@ -26,52 +30,6 @@ Begin lines by '>'
 3 or more hyphens, asterisks or underscores on a line
 
     ----
-
-### Bold emphasis
-
-    **bolded content**
-        or
-    __bolded content__
-
-### Italic emphasis
-
-    *italic content*
-        or
-    _italic content_
-
-### Code spans
-
-    `function()`
-
-### Links
-
-Automatic links:
-
-    <http://example.com/>
-        and
-    <address@email.com>
-
-An hypertext link:
-
-    [link text](http://example.com/ "Optional link title")
-
-A referenced hypertext link:
-
-    [link text] [myid]
-        and after the paragraph, anywhere in the document
-    [myid]: http://example.com/ "Optional link title"
-
-### Images
-
-An embedded image:
-
-    ![Alt text](http://upload.wikimedia.org/wikipedia/commons/7/70/Example.png "Optional image title")
-
-A referrenced embedded image:
-
-    ![Alt text][myimageid]
-        and after the paragraph, anywhere in the document
-    [myimageid]: http://upload.wikimedia.org/wikipedia/commons/7/70/Example.png "Optional image title"
 
 ### Lists
 
@@ -126,6 +84,56 @@ or (not constant spaces) :
 
     :   Second definition for term 1, also wrapped in a paragraph
         because of the blank line preceding it.
+
+
+Span rules
+----------
+
+### Bold emphasis
+
+    **bolded content**
+        or
+    __bolded content__
+
+### Italic emphasis
+
+    *italic content*
+        or
+    _italic content_
+
+### Code spans
+
+    `function()`
+
+### Links
+
+Automatic links:
+
+    <http://example.com/>
+        and
+    <address@email.com>
+
+An hypertext link:
+
+    [link text](http://example.com/ "Optional link title")
+
+A referenced hypertext link:
+
+    [link text] [myid]
+        and after the paragraph, anywhere in the document
+    [myid]: http://example.com/ "Optional link title"
+
+### Images
+
+An embedded image:
+
+    ![Alt text](http://upload.wikimedia.org/wikipedia/commons/7/70/Example.png "Optional image title")
+
+A referrenced embedded image:
+
+    ![Alt text][myimageid]
+        and after the paragraph, anywhere in the document
+    [myimageid]: http://upload.wikimedia.org/wikipedia/commons/7/70/Example.png "Optional image title"
 
 ### Abbreviations
 
