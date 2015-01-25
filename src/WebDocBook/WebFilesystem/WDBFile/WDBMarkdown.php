@@ -24,6 +24,8 @@
 namespace WebDocBook\WebFilesystem\WDBFile;
 
 use \WebDocBook\FrontController;
+use \WebDocBook\Helper;
+use \WebDocBook\WebFilesystem\WDBMetaFile;
 use \WebFilesystem\WebFileInfo;
 use \WebDocBook\WebFilesystem\WDBFileInterface;
 
@@ -36,30 +38,50 @@ class WDBMarkdown
 {
 
     /**
+     * @var string
+     */
+    protected $content;
+
+    /**
+     * @var array
+     */
+    protected $wdb_meta_data = array();
+
+    /**
      * @param array $params
      * @return string
      */
     public function viewFileInfos(array $params = array())
     {
-        $wdb        = FrontController::getInstance();
-        $md_parser  = $wdb->getMarkdownParser();
-        $md_content = $md_parser->transformSource($this->getRealPath());
-        $output_bag = $md_parser->get('OutputFormatBag');
-        $page_notes = $md_content->getNotesToString();
+        $this
+            ->setContent(file_get_contents($this->getRealPath()))
+            ->parseMetaFiles(dirname($this->getRealPath()));
 
-        $params['page_notes'] = $page_notes;
-
+        $wdb            = FrontController::getInstance();
+        $md_parser      = $wdb->getMarkdownParser();
+        $md_content     = $md_parser->transformString($this->getContent());
+        $page_notes     = $md_content->getNotesToString();
+        $page_meta      = $md_content->getMetadata();
         $page_footnotes = $md_content->getFootnotes();
         $page_glossary  = $md_content->getGlossaries();
         $page_citations = $md_content->getCitations();
+
+        $this->setMetaData(
+            !empty($page_meta) && array_key_exists('wdb', $page_meta) ? $page_meta['wdb'] : null
+        );
+        $params['meta']       = $page_meta;
+        $params['page_notes'] = $page_notes;
         if (!empty($page_citations) || !empty($page_glossary)) {
             $params['page_footnotes']   = $page_footnotes;
             $params['page_glossary']    = $page_glossary;
             $params['page_citations']   = $page_citations;
         }
 
-        $params['toc'] = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormatter());
+        if ( ! $this->hasMetaData('notoc')) {
+            $output_bag    = $md_parser->get('OutputFormatBag');
+            $params['toc'] = $output_bag->getHelper()
+                ->getToc($md_content, $output_bag->getFormatter());
+        }
 
         return $wdb->display($md_content->getBody(), 'content', $params);
     }
@@ -74,6 +96,96 @@ class WDBMarkdown
         $md_parser  = $wdb->getMarkdownParser();
         $md_content = $md_parser->transformSource($this->getRealPath());
         return $md_content->getBody();
+    }
+
+    /**
+     * @param $str
+     * @return $this
+     */
+    public function setContent($str)
+    {
+        $this->content = $str;
+        return $this;
+    }
+
+    /**
+     * @param $str
+     * @return $this
+     */
+    public function appendContent($str)
+    {
+        $this->content .= PHP_EOL.$str;
+        return $this;
+    }
+
+    /**
+     * @param $str
+     * @return $this
+     */
+    public function prependContent($str)
+    {
+        $this->content = $str.PHP_EOL.$this->content;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param array|string $meta
+     * @return $this
+     */
+    public function setMetaData($meta)
+    {
+        $this->wdb_meta_data = is_array($meta) ? $meta : explode(',', $meta);
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function hasMetaData($name)
+    {
+        return (bool) (!empty($this->wdb_meta_data) && in_array($name, $this->wdb_meta_data));
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    public function parseMetaFiles($path)
+    {
+        $meta_files = Helper::getDirectoryMetaFiles($path);
+        if (!empty($meta_files)) {
+            foreach ($meta_files as $type=>$fp) {
+                if (is_null($fp)) {
+                    continue;
+                }
+                switch($type) {
+                    case 'meta_data':
+                        $wdb_meta_file = new WDBMetaFile($fp);
+                        $this->prependContent($wdb_meta_file->getWDBContent());
+                        break;
+                    case 'references':
+                        $wdb_meta_file = new WDBMetaFile($fp);
+                        $this->appendContent($wdb_meta_file->getWDBContent());
+                        break;
+                    case 'header':
+                        $this->prependContent(file_get_contents($fp));
+                        break;
+                    case 'footer':
+                        $this->appendContent(file_get_contents($fp));
+                        break;
+                }
+            }
+        }
+        return $this;
     }
 
 }

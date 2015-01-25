@@ -28,6 +28,7 @@ use \WebDocBook\Util\Filesystem;
 use \Library\Command;
 use \Library\Helper\Text as TextHelper;
 use \Library\Helper\Url as UrlHelper;
+use \Library\Helper\Directory as DirectoryHelper;
 use \DateTime;
 use \ReflectionMethod;
 
@@ -497,6 +498,25 @@ class Helper
                 .'"></span>';
         }
         return '';
+    }
+
+    /**
+     * @param string $path
+     * @return array
+     */
+    public static function getDirectoryMetaFiles($path)
+    {
+        $data = array();
+        if (file_exists($path) && is_dir($path)) {
+            $meta_files_cfg = Kernel::getConfig('meta_files');
+            if (!empty($meta_files_cfg)) {
+                foreach ($meta_files_cfg as $name=>$fn) {
+                    $p = DirectoryHelper::slashDirname($path).$fn;
+                    $data[$name] = file_exists($p) ? $p : null;
+                }
+            }
+        }
+        return $data;
     }
 
 }
