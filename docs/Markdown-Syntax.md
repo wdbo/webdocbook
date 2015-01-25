@@ -8,6 +8,9 @@ rules. They are inherited from:
 -   the ["extra" version from Michel Fortin](http://michelf.ca/projects/php-markdown/concepts/),
 -   some features are also included from the [Fletcher Penny's MultiMarkdown](http://fletcher.github.com/peg-multimarkdown/).
 
+The mathematical notations follow the [LaTeX syntax](https://en.wikibooks.org/wiki/LaTeX).
+
+
 ----
 **Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 

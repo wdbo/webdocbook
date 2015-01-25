@@ -1,0 +1,8 @@
+#
+# this a a WebDocBook meta file
+# see <http://webdocbook.com/>
+# comments begin with a sharp
+#
+
+wdb: book_pager
+

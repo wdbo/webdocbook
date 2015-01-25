@@ -12,7 +12,6 @@ The structure described below MUST be fixed and not over-writable:
     | composer.json
     |
     | src/                              : WebDocBook internals: this can NOT be edited, moved or removed
-    | ----- config/
     | ----- WebDocBook/
     | ----- templates/
     | ----- vendor/

@@ -1,5 +1,5 @@
 About *WebDocBook*
-===============
+==================
 
 **WebDocBook** is an open-source application released under a
 [GNU General Public License version 3](http://github.com/wdbo/webdocbook/blob/master/LICENSE). 
