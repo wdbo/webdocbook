@@ -1,14 +1,14 @@
 Vendor assets used by WebDocBook
 ================================
 
-This directory stores all the third-parties *assets* packages that
-are used by *WebDocBook*. You will find here some links to these packages
-and their actual version numbers.
+The `www/webdocbook_assets/vendor/` directory stores all the third-parties 
+*assets* packages that are used by *WebDocBook*. You will find here some 
+links to these packages and their actual version numbers.
 
 To rebuild them, you can use the `bower.json` configuration file of
-this directory and make a  `bower install`. Then you will need to 
-manually move each new versions files to replace existing one in
-each subdirectories.
+the `www/webdocbook_assets/vendor/` directory and make a  `bower install`. 
+Then you will need to manually move each new versions files to 
+replace existing one in each subdirectories.
 
 Special note for *Bootstrap* : as WebDocBook does not use the *Glyphicons*
 any more, the package MUST be downloaded manually using the configuration

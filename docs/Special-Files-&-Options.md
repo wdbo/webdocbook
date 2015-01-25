@@ -12,6 +12,14 @@ no other file is requested in the URL.
 Any file named `README.md` in a directory will be displayed at the bottom of the directory 
 contents indexing, just like the default behavior of Apache.
 
+Any asset, image or other media file, that you want to include or use in a Markdown
+content must be stored in an `assets/` sub-directory in the current directory. If you do
+not follow this rule, your file will not be accessible by the web-server.
+
+By default, any file contained in a directory named `wip/` will not be displayed publicly 
+and will not be referenced in the *sitemap* neither in the index ; to view it, you will have 
+to manually write its URL. 
+
 ### Meta-files
 
 *WebDocBook* is designed to use some special *meta-files* for each chapter. A *meta-file* is

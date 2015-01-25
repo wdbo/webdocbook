@@ -1,2 +1,1 @@
-*WebDocBook* documentation
-=======================
+../README.md
