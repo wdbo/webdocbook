@@ -72,11 +72,37 @@ class Manager
                 if (false===@class_exists('\WebDocBook\Kernel')) {
                     include_once    __DIR__.'/../Kernel.php';
                 }
+                self::parseArguments();
                 \WebDocBook\Kernel::boot(true);
             } catch (\Exception $e) {
                 self::error(null, $e);
             }
             self::$_inited = true;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function parseArguments()
+    {
+        $args = self::$_event->getArguments();
+        if (!empty($args)) {
+            if (strpos($args[0], 'basedir')===false || strpos($args[0], '=')===false) {
+                throw new \Exception('Un-understood argument! You must use "--basedir=PATH".');
+            }
+            list(, $path) = explode('=', $args[0]);
+            if ( ! file_exists($path)) {
+                throw new \Exception(
+                    sprintf('Base directory "%s" not found!', $path)
+                );
+            }
+            if ( ! is_dir($path)) {
+                throw new \Exception(
+                    sprintf('Base directory "%s" is not a directory!', $path)
+                );
+            }
+            define('WEBDOCBOOK_BASEDIR', $path);
         }
     }
 
