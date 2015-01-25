@@ -109,6 +109,10 @@ The source code of this package is available online at
 {% endif %}
 </ul>
 
+{% if wdb_meta.book_pager is not empty and wdb_meta.book_pager == 1 %}
+    {% include WDB.getTemplate('book_pager') %}
+{% endif %}
+
 <div class="panel-group accordion-group footnotes" id="notes_accordion">
 {% if page_notes is not empty %}
     <div class="panel panel-default">
