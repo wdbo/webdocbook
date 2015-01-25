@@ -140,7 +140,7 @@ class DefaultController
                 $tpl_params['title'] = _T('Home');
             }
         }
-        $content = $dbfile->viewFileInfos();
+        $content = $dbfile->viewFileInfos($tpl_params);
 
         return array('default',
             $content,

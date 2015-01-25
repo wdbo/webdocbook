@@ -70,6 +70,7 @@ class WDBMarkdown
             !empty($page_meta) && array_key_exists('wdb', $page_meta) ? $page_meta['wdb'] : null
         );
         $params['meta']       = $page_meta;
+        $params['wdb_meta']   = $this->getMetaData();
         $params['page_notes'] = $page_notes;
         if (!empty($page_citations) || !empty($page_glossary)) {
             $params['page_footnotes']   = $page_footnotes;
@@ -142,8 +143,35 @@ class WDBMarkdown
      */
     public function setMetaData($meta)
     {
-        $this->wdb_meta_data = is_array($meta) ? $meta : explode(',', $meta);
+        if (empty($meta)) {
+            return;
+        }
+        if (is_string($meta)) {
+            $meta_data = explode(',', $meta);
+        } else {
+            $meta_data = $meta;
+        }
+        foreach ($meta_data as $var=>$val) {
+            if (!is_string($var)) {
+                $meta_data[$val] = 1;
+                unset($meta_data[$var]);
+            }
+        }
+        $this->wdb_meta_data = $meta_data;
         return $this;
+    }
+
+    /**
+     * @param string|null $name
+     * @return array|int|null
+     */
+    public function getMetaData($name = null)
+    {
+        if (!empty($name)) {
+            return ($this->hasMetaData($name) ? $this->wdb_meta_data[$name] : null);
+        } else {
+            return $this->wdb_meta_data;
+        }
     }
 
     /**
@@ -152,7 +180,7 @@ class WDBMarkdown
      */
     public function hasMetaData($name)
     {
-        return (bool) (!empty($this->wdb_meta_data) && in_array($name, $this->wdb_meta_data));
+        return (bool) (!empty($this->wdb_meta_data) && array_key_exists($name, $this->wdb_meta_data));
     }
 
     /**
