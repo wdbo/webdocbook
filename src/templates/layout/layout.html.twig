@@ -118,6 +118,18 @@ $(function() {
     $('input[data-toggle=tooltip],button[data-toggle=tooltip]').tooltip(tooltip_options);
     // popover tool
     $('.popover-link').tooltip('destroy').popover();
+    // user manual if so
+    var user_manual_page = $('#user_manual_page');
+    console.debug(user_manual_page);
+    if (user_manual_page.size()>0) {
+        var hash = window.location.hash;
+        console.debug(hash);
+        if (hash && hash!='') {
+            $(user_manual_page).find('.active').removeClass('in active');
+            $(user_manual_page).find(hash).addClass('in active');
+            $(user_manual_page).find(hash  + '_handler').addClass('active');
+        }
+    }
 });
 </script>
 {% endblock %}

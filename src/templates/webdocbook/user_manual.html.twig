@@ -20,45 +20,72 @@ The source code of this package is available online at
 <http://github.com/wdbo/webdocbook>.
 #}
 
-<div class="page-header">
-    <h1>
-        {{ title|default(manifest.title) }}
-        <small>{{ manifest.name }} {{ manifest.version }}{% if profiler.git_clone %} - clone{% endif %}</small>
-    </h1>
-    <p>An every day manual on how to use <strong>WebDocBook</strong> and <strong>Markdown</strong>.</p>
+{% include WDB.getTemplate('internal_pages_header') %}
+
+<div class="row">
+    <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
+    <div class="col-xs-12 col-sm-10 col-md-10  col-lg-10">
+        <section>
+            <div class="content">
+                <p>
+                    {{ 'An every day manual on how to use <strong>WebDocBook</strong> and <strong>Markdown</strong>.'|translate }}
+                </p>
+            </div>
+        </section>
+    </div>
+    <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>
 </div>
+<hr />
 
-{% include 'webdocbook/session_messages.html.twig' %}
-
-<div role="tabpanel">
+<div role="tabpanel" id="user_manual_page">
 
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active">
+        <li role="presentation" class="active" id="user_manual_handler">
             <a href="#user_manual" aria-controls="user_manual" role="tab" data-toggle="tab" class="noscrollto">
-                WebDocBook manual
+                {{ 'WebDocBook manual'|translate }}
             </a>
         </li>
-        <li role="presentation">
+        <li role="presentation" id="md_manual_handler">
             <a href="#md_manual" aria-controls="md_manual" role="tab" data-toggle="tab" class="noscrollto">
-                Markdown syntax manual
+                {{ 'Markdown syntax manual'|translate }}
             </a>
         </li>
-        <li role="presentation">
+        <li role="presentation" id="about_handler">
             <a href="#about" aria-controls="about" role="tab" data-toggle="tab" class="noscrollto">
-                About WDB
+                {{ 'About WDB'|translate }}
             </a>
         </li>
     </ul>
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="user_manual">
-            {{ user_manual_content|raw }}
+            <div class="content">
+                {% if user_manual_menu is not empty %}
+                    <aside id="user_manual_menu">
+                        <div class="bs-sidebar hidden-print pull-left navbar-section" role="complementary">
+                            {{ user_manual_menu|raw }}
+                        </div>
+                    </aside>
+                {% endif %}
+                {{ user_manual_content|raw }}
+            </div>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="md_manual">
-            {{ md_manual_content|raw }}
+            <div class="content">
+                {% if md_manual_menu is not empty %}
+                    <aside id="md_manual_menu">
+                        <div class="bs-sidebar hidden-print pull-left navbar-section" role="complementary">
+                            {{ md_manual_menu|raw }}
+                        </div>
+                    </aside>
+                {% endif %}
+                {{ md_manual_content|raw }}
+            </div>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="about">
-            {{ about_content|raw }}
+            <div class="content">
+                {{ about_content|raw }}
+            </div>
         </div>
     </div>
 

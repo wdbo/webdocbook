@@ -20,14 +20,7 @@ The source code of this package is available online at
 <http://github.com/wdbo/webdocbook>.
 #}
 
-<div class="page-header">
-    <h1>
-        {{ title|default(manifest.title) }}
-        <small>{{ manifest.name }} {{ manifest.version }}{% if profiler.git_clone %} - clone{% endif %}</small>
-    </h1>
-</div>
-
-{% include 'webdocbook/session_messages.html.twig' %}
+{% include WDB.getTemplate('internal_pages_header') %}
 
 <div class="row">
     <div class="hidden-xs col-sm-1 col-md-1 col-lg-1"></div>

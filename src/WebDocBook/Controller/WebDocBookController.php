@@ -90,28 +90,27 @@ class WebDocBookController
     public function docbookdocAction()
     {
         $title          = _T('User manual');
+        $md_parser      = $this->wdb->getMarkdownParser();
 
         // user manual
-        $path           = Kernel::getPath('webdocbook_assets') . Kernel::getConfig('pages:user_manual', '');
-        $update         = Helper::getDateTimeFromTimestamp(filemtime($path));
-        $file_content   = file_get_contents($path);
-        $md_parser      = $this->wdb->getMarkdownParser();
-        $md_content     = $md_parser->transformString($file_content);
-        $output_bag     = $md_parser->get('OutputFormatBag');
-        $menu           = $output_bag->getHelper()
-                            ->getToc($md_content, $output_bag->getFormatter());
-        $user_manual_content = $md_content->getBody();
+        $path               = Kernel::getPath('webdocbook_assets') . Kernel::getConfig('pages:user_manual', '');
+        $update             = Helper::getDateTimeFromTimestamp(filemtime($path));
+        $file_content       = file_get_contents($path);
+        $md_content         = $md_parser->transformString($file_content);
+        $output_bag         = $md_parser->get('OutputFormatBag');
+        $user_manual_menu   = $output_bag->getHelper()
+                                ->getToc($md_content, $output_bag->getFormatter());
+        $user_manual_content= $md_content->getBody();
 
         // MD manual
-        $path_md        = Kernel::getPath('webdocbook_assets') . Kernel::getConfig('pages:md_manual', '');
-        $update_md      = Helper::getDateTimeFromTimestamp(filemtime($path_md));
-        $file_content   = file_get_contents($path_md);
-        $md_parser      = $this->wdb->getMarkdownParser();
-        $md_content     = $md_parser->transformString($file_content);
-        $output_bag     = $md_parser->get('OutputFormatBag');
-        $menu           = $output_bag->getHelper()
-            ->getToc($md_content, $output_bag->getFormatter());
-        $md_manual_content = $md_content->getBody();
+        $path_md            = Kernel::getPath('webdocbook_assets') . Kernel::getConfig('pages:md_manual', '');
+        $update_md          = Helper::getDateTimeFromTimestamp(filemtime($path_md));
+        $file_content       = file_get_contents($path_md);
+        $md_content         = $md_parser->transformString($file_content);
+        $output_bag         = $md_parser->get('OutputFormatBag');
+        $md_manual_menu     = $output_bag->getHelper()
+                                ->getToc($md_content, $output_bag->getFormatter());
+        $md_manual_content  = $md_content->getBody();
 
         // about content
         $about_content            = $this->wdb->display(
@@ -136,6 +135,8 @@ class WebDocBookController
             array(
                 'user_manual_content'   => $user_manual_content,
                 'md_manual_content'     => $md_manual_content,
+                'user_manual_menu'      => $user_manual_menu,
+                'md_manual_menu'        => $md_manual_menu,
                 'about_content'         => $about_content,
                 'page'                  => $page_infos,
                 'page_tools'            => 'false',
