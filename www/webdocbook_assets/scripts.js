@@ -320,16 +320,24 @@ function initTablesorter( sel, opts )
 function initInpageNavigation()
 {
     var base_obj = 'section :not(#page_menu)',
-        h_sel = base_obj+' h2,'+base_obj+' h3,'+base_obj+' h4,'+base_obj+' h5,'+base_obj+' h6';
-    if ($(base_obj+' h1').length>1) h_sel = base_obj+' h1,'+h_sel;
-    $(h_sel).each(function(i,el){
+        h_sel = base_obj+' h2,'+base_obj+' h3,'+base_obj+' h4,'+base_obj+' h5,'+base_obj+' h6',
+        inpage_menu = $('ul#inpage_menu'),
+        inpage_menu_toggler = $('#inpage_menu_toggler');
+    if ($(base_obj+' h1').length>1) {
+        h_sel = base_obj+' h1,'+h_sel;
+    }
+    var elements = $(h_sel);
+    if (elements.length==0) {
+        inpage_menu_toggler.hide();
+        return;
+    }
+    elements.each(function(i,el){
         var _id = $(this).attr('id');
         if (!_id) {
             _id = uniqid();
             $(this).attr('id', _id);
         }
-        var inpage_menu = $('ul#inpage_menu'),
-            a_ctt = $(this).text(),
+        var a_ctt = $(this).text(),
             _li = $('<li>'),
             _a = $('<a>', {'href':'#'+_id});
         switch ($(this)[0].tagName) {
