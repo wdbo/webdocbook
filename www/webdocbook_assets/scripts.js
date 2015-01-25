@@ -94,6 +94,8 @@
         }
     };
 
+/*
+// this was braking a hash on-load
     function trigger_click_for_slide() {
         var the_hash = document.location.hash;
         if (the_hash) {
@@ -101,6 +103,7 @@
         }
     }
     trigger_click_for_slide();
+*/
 
 })(jQuery);
 
