@@ -1,5 +1,5 @@
-Organizing your *WebDocBook* files
-===============================
+Organization of *WebDocBook*
+============================
 
 Architecture
 ------------
@@ -27,7 +27,9 @@ The default global architecture of your *WebDocBook* is:
     doesn't exist in the distribution ; it may follow an architecture like:
 
         | user/
-        | ---- webdocbook.config
+        | ---- config/
+        | ----------- webdocbook.ini
+        | ----------- webdocbook_i18n.csv
         | ---- templates/
 
 -   `www/` sub-directory must be the `DOCUMENT_ROOT` of your virtual host (anything outside 

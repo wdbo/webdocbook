@@ -43,7 +43,7 @@ some of the *WebDocBook* rendering features.
 
 -   `book_pager` enables a pager at the bottom of the content (basically the same pager as the
     one of the breadcrumbs bar)
--   `maths` enables the loading of the [MathJax library](), which is **disabled** by default
+-   `maths` enables the loading of the [MathJax library](http://www.mathjax.org/), which is **disabled** by default
     (it is quite heavy so the default behavior is to NOT load its files for a page)
 -   `notoc` disables the automatic table of contents
 

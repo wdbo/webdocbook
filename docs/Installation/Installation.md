@@ -1,7 +1,8 @@
-Installing of *WebDocBook*
+Installing *WebDocBook*
 =======================
 
-**WebDocBook** is quite simple to install as long as you can use Apache's `.htaccess` files.
+**WebDocBook** is quite simple to install as long as you can define a virtual-host
+on your server and use *URL rewriting*.
 
 
 Requirements
@@ -10,22 +11,15 @@ Requirements
 To allow *WebDocBook* to work on your web-server, you need the following environment:
 
 -   a web-server running a Linux/UNIX operating system,
--   your requests must be handled by [Apache 2](http://httpd.apache.org/)
-    (or, at least, `.htaccess` files must be activated)
--   [PHP 5.3.0](http://php.net/) or higher.
+-   you must be able to edit your server software configuration or at least one of its virtual hosts,
+-   your server must allow URL rewriting,
+-   you must be able to render some directories writable for your web-server user,
+-   your server must run [PHP 5.3.0](http://php.net/) or higher,
+-   your server must have a working [Composer](http://getcomposer.org/) command.
 
-If you had not downloaded an "**out-of-the-box**" version of *WebDocBook*, you will need to manually
-build your installation. To do so, you need to install [Composer](http://getcomposer.org/)
-on your system.
+See the [FAQ](../Troubleshooting.md) page to get help about these requirements and configurations.
 
-As the package uses some internal Apache's features, you will need to:
-
--   create a new directory in your web-server HTTP accessible part,
--   set up the rights of the apache-user of your system upon directories,
--   define a new virtual-host in your system using the sample configuration below,
--   define an `.htaccess` file in your directory root using the sample file below,
--   enables the [mod_rewrite](http://httpd.apache.org/docs/2.2/en/mod/mod_rewrite.html) 
-    Apache module (*see the [FAQ](#faq) section below for an "how-to"*)
+Additionally, you will need [Bower](http://bower.io/) to update *WebDocBook*'s assets if needed.
 
 
 Installation step-by-step
@@ -53,11 +47,13 @@ For each stable version of *WebDocBook*, a new tag may exist named **vX.Y.Z**, i
 use a download version rather than a Git clone, use a tag preferably.
 
 When available, any tag named like **vX.Y.Z-outofthebox** is a full and already installed 
-copy of the concerned version. Note that this kind of package may not work on every systems
+copy of concerned version. Note that this kind of package may not work on every systems
 but it is the best practice to use them as they are already full and ready-to-use.
 
 
 ### Setting up the virtual host
+
+Your server (or virtual host) must point to the `www/` directory of your installation.
 
 See the [Virtual Host](Setup-Virtual-Host.md) page for an "how-to".
 
@@ -84,8 +80,8 @@ or, if you installed Composer globally in your environment:
 Once the installation has finished, reload the page in your browser.
 
 At the beginning, your *WebDocBook* contains three symbolic links to the Markdown files of the
-package for demonstration. You can delete them as you like and begin to write and organize
-your own contents.
+package for demonstration. You can delete them as you like and [begin to write and organize
+your own contents](../Organization.md).
 
 
 ----

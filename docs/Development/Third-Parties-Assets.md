@@ -1,4 +1,4 @@
-Vendor assets used by WebDocBook
+Vendor assets used by *WebDocBook*
 ================================
 
 The `www/webdocbook_assets/vendor/` directory stores all the third-parties 
@@ -6,9 +6,8 @@ The `www/webdocbook_assets/vendor/` directory stores all the third-parties
 links to these packages and their actual version numbers.
 
 To rebuild them, you can use the `bower.json` configuration file of
-the `www/webdocbook_assets/vendor/` directory and make a  `bower install`. 
-Then you will need to manually move each new versions files to 
-replace existing one in each subdirectories.
+the `www/webdocbook_assets/vendor/` directory and make a `bower install`
+or `bower update`.
 
 Special note for *Bootstrap* : as WebDocBook does not use the *Glyphicons*
 any more, the package MUST be downloaded manually using the configuration
@@ -82,5 +81,12 @@ MathJax
 - <http://www.mathjax.org/>
 - actual version: 2.3.0
 
-See <https://github.com/mathjax/MathJax-docs/wiki/Guide%3A-reducing-size-of-a-mathjax-installation>
+See <http://github.com/mathjax/MathJax-docs/wiki/Guide%3A-reducing-size-of-a-mathjax-installation>
 to learn what files need to be kept.
+
+----
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
+
+Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
+
+Contents are licensed under the [Creative Commons - Attribution - Share Alike - Unported - version 3.0](http://creativecommons.org/licenses/by-sa/3.0/) license.

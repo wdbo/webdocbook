@@ -1,4 +1,4 @@
-PHP packages used by WebDocBook
+PHP packages used by *WebDocBook*
 ===============================
 
 The `src/vendor/` directory stores all the third-parties PHP packages that
@@ -60,3 +60,10 @@ atelierspierrot/webfilesystem
 -   <http://github.com/atelierspierrot/webfilesystem>
 -   actual version: 1.0.2
 
+
+----
+**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
+
+Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
+
+Contents are licensed under the [Creative Commons - Attribution - Share Alike - Unported - version 3.0](http://creativecommons.org/licenses/by-sa/3.0/) license.
