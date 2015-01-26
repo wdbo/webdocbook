@@ -167,12 +167,10 @@ class WebDocBookController
 
         $user_config_file   = Kernel::getPath('user_config_filepath', true);
         $user_config        = Kernel::get('user_config');
-        $title              = _T('Administration');
-        $path               = Kernel::getPath('webdocbook_assets') . Kernel::getConfig('pages:admin_welcome', '');
+        $title              = _T('Administration panel');
         $page_infos         = array(
             'name'              => $title,
             'path'              => 'admin',
-            'update'            => Helper::getDateTimeFromTimestamp(filemtime($path))
         );
         $tpl_params         = array(
             'breadcrumbs'       => array($title),
@@ -180,22 +178,15 @@ class WebDocBookController
             'page'              => $page_infos,
             'page_tools'        => 'false'
         );
-        $file_content       = file_get_contents($path);
-        $md_parser          = $this->wdb->getMarkdownParser();
-        $md_content         = $md_parser->transformString($file_content);
-        $output_bag         = $md_parser->get('OutputFormatBag');
-        $menu               = $output_bag->getHelper()->getToc($md_content, $output_bag->getFormatter());
 
         $content            = $this->wdb->display(
-            $md_content->getBody(),
+            '',
             'admin_panel',
             array(
                 'page'          => $page_infos,
                 'page_tools'    => 'false',
                 'page_title'    => 'true',
-                'page_notes'    => $md_content->getNotesToString(),
                 'title'         => $title,
-                'toc'           => $menu,
                 'user_config_file'=> $user_config_file,
                 'user_config'   => $user_config,
                 'config'        => Kernel::getConfig(),
