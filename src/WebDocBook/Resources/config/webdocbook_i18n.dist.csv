@@ -64,8 +64,10 @@ file_type;fichier « %type% »;« %type% » file
 see_this_content_in_ln;Voir ce contenu en %ln%;See this content in %ln%
 ;Voir le dépôt distant :;See distant repository:
 ;Notes du document;Document notes
+;Notes du document (toutes les notes);Document notes (all notes)
 ;Citations du document;Document citations
 ;Glossaire du document;Document glossary
+;Notes bibliographiques;Document bibliography
 ;Autres notes du document;Other footnotes
 ;URL originale de cette page sur l'Internet;Original URL of this page on the internet
 link_mask_title;Voir en ligne %%;See online %%
