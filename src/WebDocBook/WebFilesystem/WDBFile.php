@@ -223,7 +223,14 @@ class WDBFile
             $dir    = new WDBRecursiveDirectoryIterator($this->getRealPath());
             $hasWip = false;
             $paths  = $known_filenames = array();
+
+            $stack = new \ArrayObject();
             foreach ($dir as $file) {
+                $stack->offsetSet($file->getFilename(), $file);
+            }
+            $stack->uksort(function($a, $b) { return strcmp($a, $b); });
+
+            foreach ($stack as $file) {
                 /* @var \WebDocBook\\WebFilesystem\\WDBFile $file */
                 $filename = $lang = null;
                 if (
