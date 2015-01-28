@@ -116,12 +116,7 @@ section.section .content pre {
 }
 
 section.section .content img { margin: 1em; }
-section.section .content p > img:only-of-type:first-child,
-section.section .content p > a:only-of-type:first-child > img:only-child
-    { float: left; }
-section.section .content p > img:only-of-type:last-child,
-section.section .content p > a:last-child > img:only-child
-    { float: right; }
+/*
 section.section .content p > img:only-child,
 section.section .content p > img:only-child:first-child,
 section.section .content p > img:only-child:last-child,
@@ -132,18 +127,38 @@ section.section .content p > a:only-child:hover > img:only-child,
 section.section .content p > a:only-child:first-child:hover > img:only-child,
 section.section .content p > a:only-child:last-child:hover > img:only-child,
 section.section .content a > img.center,
+*/
+section.section .content p > img:only-child,
+section.section .content p > a:only-child > img:only-child,
+section.section .content p > a:only-child:hover > img:only-child,
+section.section .content a.center > img,
 section.section .content img.center {
     clear: both; float: none; display: block; text-align: center;
     margin-left: auto;
     margin-right: auto;
 }
+/*
+section.section .content p > img:only-of-type:first-child,
+section.section .content p > a:only-of-type:first-child > img:only-child
+    { float: left; }
+section.section .content p > img:only-of-type:last-child,
+section.section .content p > a:last-child > img:only-child
+    { float: right; }
+*/
+section.section .content p > img:not(:only-child):first-child,
+section.section .content p > a:not(:only-child):first-child > img:only-child
+{ float: left; }
+section.section .content p > img:not(:only-child):last-child,
+section.section .content p > a:not(:only-child):last-child > img:only-child
+{ float: right; }
+/*
 section.section .content p + h1,
 section.section .content p + h2,
 section.section .content p + h3,
 section.section .content p + h4,
 section.section .content p + h5,
 section.section .content p + h6 { clear: both; }
-
+*/
 section.section .content.content-raw,
 section.section .content.content-embed { padding: 0; height: auto; min-height: 400px; }
 
