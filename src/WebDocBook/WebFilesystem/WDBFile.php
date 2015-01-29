@@ -205,6 +205,7 @@ class WDBFile
             $filepath = $this->getRealPath();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
+//                $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getPathname();
             } elseif ($this->isChildOfLink()) {
                 $filepath   = $this->getFile()->getRealWebPath();
             }
@@ -390,6 +391,7 @@ class WDBFile
             $filepath = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
+//                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getPathname();
             }
             $parts = explode('.', $this->getBasename());
             try {
@@ -430,6 +432,7 @@ class WDBFile
             $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
+//                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getPathname();
             }
             $dir_realpath   = dirname(realpath($filepath));
             $dir_targetpath = dirname($filepath);
@@ -474,6 +477,7 @@ class WDBFile
             $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
                 $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
+//                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getPathname();
             }
             $dir_realpath   = dirname(realpath($filepath));
             $dir_targetpath = dirname($filepath);
