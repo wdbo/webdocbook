@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "sami/sami": "dev-master",
+        "composer/composer": "dev-master",
         "dropbox/dropbox-sdk": "1.1.*"
     },
     "replace": {
