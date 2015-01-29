@@ -287,8 +287,18 @@ class DefaultController
             );
         }
 
-        $ctt = $this->wdb->getResponse()
-            ->flush(file_get_contents($this->getPath()));
+        $response = $this->wdb->getResponse();
+
+        // mime header
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $this->getPath());
+        if ( ! in_array($mime, $response::$content_types)) {
+            $mime = 'text/plain';
+        }
+        finfo_close($finfo);
+
+        // content
+        $ctt = $response->flush(file_get_contents($this->getPath()), $mime);
         return array('layout_empty_txt', $ctt);
     }
 
