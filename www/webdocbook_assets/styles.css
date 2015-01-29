@@ -54,10 +54,12 @@ body        {padding: 0;padding-top:0;line-height: 24px;}
     body { font-size: 13px; }
     #wrapper {margin: 0 0 -60px 0;padding: 10px 20px 80px 20px;}
     .navbar-default.pull-right {float: none;padding-left: 5px;padding-right: 5px;}
+    #header-navigation { padding: 0 10px; }
+    #header-navigation .navbar-toggle { margin-right: 0; }
     #footer {padding-left: 20px; padding-right: 20px;}
     .container {
-        padding-left: 2px;
-        padding-right: 2px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
  
@@ -86,6 +88,8 @@ h3:before   {content: "## ";}
 h2,h3       {line-height: 1.4em;}
 h2 + h3     {padding-top: 0;}
 var         {text-indent: 0; background-color: #f9f9f9; border: 1px solid #D0D0D0;padding:0 .6em;}
+img         { max-width: 100%; }
+blockquote  { font-size: 15px; }
 
 section.section {padding: 0 20px; background: none repeat scroll 0 0 #EEEEEE;border-radius: 3px 3px 3px 3px;padding: 3px;}
 section.section footer .navbar {margin-bottom: 3px;}
@@ -159,6 +163,12 @@ section.section .content p + h4,
 section.section .content p + h5,
 section.section .content p + h6 { clear: both; }
 */
+@media (max-width: 768px) {
+    section.section .content > h1:first-of-type {
+        text-align: center;
+    }
+}
+
 section.section .content.content-raw,
 section.section .content.content-embed { padding: 0; height: auto; min-height: 400px; }
 
@@ -243,6 +253,9 @@ h3 a.permalink:hover, h4 a.permalink:hover, h5 a.permalink:hover {
 /* profiler */
 .profiler-wrapper {clear:right; float:right; font-size: .8em; max-width: 65%;}
 .profiler {background-color:#FFF; border: 1px dotted #404040;padding: 8px;}
+@media (max-width: 768px) {
+    .profiler-wrapper {max-width: 100%;}
+}
 
 /* navbar buttons */
 @media (min-width: 768px) {
