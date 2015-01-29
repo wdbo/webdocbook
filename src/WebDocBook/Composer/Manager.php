@@ -73,11 +73,26 @@ class Manager
                     include_once    __DIR__.'/../Kernel.php';
                 }
                 self::parseArguments();
+                if (!defined(\WebDocBook\Kernel::BASEDIR_CONSTNAME)) {
+                    self::parseExtra();
+                }
                 \WebDocBook\Kernel::boot(true);
             } catch (\Exception $e) {
                 self::error(null, $e);
             }
             self::$_inited = true;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function parseExtra()
+    {
+        $extra = self::$_event->getComposer()->getPackage()->getExtra();
+        if (!empty($extra) && array_key_exists('wdb-basedir', $extra)) {
+            $path = $extra['wdb-basedir'];
+            self::setBaseDir($path);
         }
     }
 
@@ -92,18 +107,31 @@ class Manager
                 throw new \Exception('Un-understood argument! You must use "--basedir=PATH".');
             }
             list(, $path) = explode('=', $args[0]);
-            if ( ! file_exists($path)) {
-                throw new \Exception(
-                    sprintf('Base directory "%s" not found!', $path)
-                );
-            }
-            if ( ! is_dir($path)) {
-                throw new \Exception(
-                    sprintf('Base directory "%s" is not a directory!', $path)
-                );
-            }
-            define('WEBDOCBOOK_BASEDIR', $path);
+            self::setBaseDir($path);
         }
+    }
+
+    /**
+     * @param $path
+     * @throws \Exception
+     */
+    public static function setBaseDir($path)
+    {
+        $realpath = realpath($path);
+        if (!empty($realpath)) {
+            $path = $realpath;
+        }
+        if ( ! file_exists($path)) {
+            throw new \Exception(
+                sprintf('Base directory "%s" not found!', $path)
+            );
+        }
+        if ( ! is_dir($path)) {
+            throw new \Exception(
+                sprintf('Base directory "%s" is not a directory!', $path)
+            );
+        }
+        define(\WebDocBook\Kernel::BASEDIR_CONSTNAME, $path);
     }
 
     /**

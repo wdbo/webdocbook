@@ -39,9 +39,14 @@ class Kernel
 {
 
     /**
+     * Name of the constant to set a base directory of WebDocBook
+     */
+    const BASEDIR_CONSTNAME     = 'WEBDOCBOOK_BASEDIR';
+
+    /**
      * @var bool Flag to initiate the Kernel object at each run
      */
-    private static $_booted = false;
+    private static $_booted     = false;
 
     /**
      * @var array Table of defaults paths and variables (not over-writable)
@@ -137,12 +142,13 @@ class Kernel
 
             // installation base path
             self::$_registry['package_base_path'] = Filesystem::slashDirname(dirname(dirname(__DIR__)));
-            if (defined('WEBDOCBOOK_BASEDIR')) {
-                if (true===@file_exists(WEBDOCBOOK_BASEDIR)) {
-                    self::$_registry['app_base_path'] = Filesystem::slashDirname(WEBDOCBOOK_BASEDIR);
+            if (defined(self::BASEDIR_CONSTNAME)) {
+                $basedir = constant(self::BASEDIR_CONSTNAME);
+                if (true===@file_exists($basedir)) {
+                    self::$_registry['app_base_path'] = Filesystem::slashDirname($basedir);
                 } else {
                     throw new \Exception(
-                        sprintf('Base directory "%s" not found!', WEBDOCBOOK_BASEDIR)
+                        sprintf('Base directory "%s" not found!', $basedir)
                     );
                 }
             } else {
