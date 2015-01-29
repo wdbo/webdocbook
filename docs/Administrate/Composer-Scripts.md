@@ -37,6 +37,13 @@ directory of a project:
 
     $ composer SCRIPT_NAME -- --basedir=.
 
+You can also define this value globally in your `composer.json` configuration
+file adding a "extra > wdb-basedir" entry:
+
+    "extra": {
+        "wdb-basedir": "."
+    }
+
 
 Available scripts
 -----------------
