@@ -4,7 +4,7 @@ About *WebDocBook*
 **WebDocBook** is an open-source software released under a
 [GNU General Public License version 3](http://github.com/wdbo/webdocbook/blob/master/LICENSE). 
 You can freely download it, use it or distribute it as long as you stay in the license 
-conditions. See the `LICENSE` file for more info.
+conditions. See [the `LICENSE` file](LICENSE) for more info.
 
 The frontend of *WebDocBook* is developed with the help of the following third-parties:
 

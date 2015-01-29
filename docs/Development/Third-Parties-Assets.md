@@ -9,10 +9,6 @@ To rebuild them, you can use the `bower.json` configuration file of
 the `www/webdocbook_assets/vendor/` directory and make a `bower install`
 or `bower update`.
 
-Special note for *Bootstrap* : as WebDocBook does not use the *Glyphicons*
-any more, the package MUST be downloaded manually using the configuration
-described below.
-
 @TODO - the best would be to find "portable" replacements for the jQuery
 plugins `jquery.highlights` and `jquery.juizScrollTo`.
 
@@ -40,6 +36,9 @@ Bootstrap
 
 -   <http://getbootstrap.com/customize/>
 -   actual version 3.3.1
+
+As WebDocBook does not use the *Glyphicons* any more, the package 
+MUST be downloaded manually using a specific configuration.
 
 The package configuration (basically all but the Glyphicons) is stored
 at <http://gist.github.com/19ee64a16ea9662a97d2>.

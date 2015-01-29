@@ -28,6 +28,9 @@ identify the error (and what caused it). A good bug report MUST follow these gui
     -   try to isolate the problem as much as possible
     -   what did you expect?
 
+*WebDocBook* embeds a *profiler* at the bottom of each page (clicking on the *profiler* button).
+It is a good practice to include its content to your bug tickets.
+
 
 ### Feature requests
 
@@ -49,7 +52,7 @@ Actually change the code
 First of all, you may do the following two things:
 
 -   read the *How to contribute* section below to learn about forking, working and pulling,
--   from your fork of the repository, switch to the `wip` branch: this is where the dev things are done.
+-   from your fork of the repository, switch to the `dev` branch: this is where the dev things are done.
 
 
 ### How to contribute ?
@@ -78,11 +81,11 @@ comment the request with your vision of the thing or your experience.
 ### Full installation of a fork
 
 To prepare a development version of *WebDocBook*, clone your fork of the repository and
-put it on the "wip" branch:
+put it on the "dev" branch:
 
     git clone http://github.com/<your-username>/webdocbook.git
     cd webdocbook
-    git checkout wip
+    git checkout dev
 
 Then you can create your own branch with the name of your feature:
 
