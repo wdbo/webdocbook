@@ -20,7 +20,7 @@
         "php": ">=5.3.0",
         "psr/log": "1.0.0",
         "atelierspierrot/patterns": "1.0.8",
-        "atelierspierrot/library": "1.1.7",
+        "atelierspierrot/library": "1.1.8",
         "atelierspierrot/webfilesystem": "1.0.2",
         "atelierspierrot/internationalization": "1.0.3",
         "piwi/markdown-extended": "dev-master",
