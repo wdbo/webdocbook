@@ -24,7 +24,7 @@
 namespace WebDocBook\WebFilesystem\WDBFile;
 
 use \WebDocBook\FrontController;
-use \WebDocBook\Helper;
+use \WebDocBook\Util\WDBHelper;
 use \WebDocBook\WebFilesystem\WDBMetaFile;
 use \WebFilesystem\WebFileInfo;
 use \WebDocBook\WebFilesystem\WDBFileInterface;
@@ -189,7 +189,7 @@ class WDBMarkdown
      */
     public function parseMetaFiles($path)
     {
-        $meta_files = Helper::getDirectoryMetaFiles($path);
+        $meta_files = WDBHelper::getDirectoryMetaFiles($path);
         if (!empty($meta_files)) {
             foreach ($meta_files as $type=>$fp) {
                 if (is_null($fp)) {

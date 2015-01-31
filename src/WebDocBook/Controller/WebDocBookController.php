@@ -23,8 +23,9 @@
 
 namespace WebDocBook\Controller;
 
-use \WebDocBook\Helper;
 use \WebDocBook\Kernel;
+use \WebDocBook\Util\Helper;
+use \WebDocBook\Util\TemplateHelper;
 use \WebDocBook\Abstracts\AbstractController;
 use \WebDocBook\Exception\NotFoundException;
 use \Library\Converter\Array2INI;
@@ -239,7 +240,7 @@ class WebDocBookController
         }
 
         $this->wdb->getResponse()->redirect(
-            Helper::getRoute('admin')
+            TemplateHelper::getRoute('admin')
         );
         exit();
     }

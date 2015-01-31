@@ -24,11 +24,13 @@
 namespace WebDocBook\WebFilesystem;
 
 use \WebDocBook\FrontController;
-use \WebDocBook\Helper;
 use \WebDocBook\Kernel;
 use \WebDocBook\Exception\Exception;
 use \WebDocBook\Exception\RuntimeException;
-use \WebDocBook\Util\Filesystem;
+use \WebDocBook\Util\Helper;
+use \WebDocBook\Util\WDBHelper;
+use \WebDocBook\Util\FilesystemHelper;
+use \WebDocBook\Util\TemplateHelper;
 use \WebFilesystem\WebFilesystem;
 use \WebFilesystem\WebFileInfo;
 use \WebFilesystem\Finder;
@@ -76,7 +78,7 @@ class WDBFile
     public function __construct($file_name)
     {
         $this->wdb  = FrontController::getInstance();
-        $_root          = Kernel::getPath('web');
+        $_root      = Kernel::getPath('web');
 
         if (substr_count($file_name, $_root)>0) {
             $realpath = $_root.str_replace($_root, '', $file_name);
@@ -192,7 +194,7 @@ class WDBFile
     public function isChildOfLink()
     {
         $_root  = Kernel::getPath('web');
-        $_dir   = Filesystem::slashDirname($this->getRealPath());
+        $_dir   = FilesystemHelper::slashDirname($this->getRealPath());
         return (substr_count($_dir, $_root) === 0);
     }
 
@@ -204,8 +206,8 @@ class WDBFile
         if (!isset($this->cache['wdb_path'])) {
             $filepath = $this->getRealPath();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
-//                $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getPathname();
+                $filepath   = FilesystemHelper::slashDirname($this->getWebPath()).$this->getFilename();
+//                $filepath   = FilesystemHelper::slashDirname($this->getWebPath()).$this->getPathname();
             } elseif ($this->isChildOfLink()) {
                 $filepath   = $this->getFile()->getRealWebPath();
             }
@@ -263,7 +265,7 @@ class WDBFile
                     }
 
                     if (array_key_exists($filename, $paths) && !empty($lang)) {
-                        $paths[$filename]['trads'][$lang] = Helper::getRoute($file->getRealPath());
+                        $paths[$filename]['trads'][$lang] = TemplateHelper::getRoute($file->getRealPath());
                     } elseif (array_key_exists($filename, $paths)) {
                         $original                   = $paths[$filename];
                         $dbfile                     = new WDBFile($file);
@@ -288,13 +290,13 @@ class WDBFile
                                                 );
                         }
                         if (!empty($lang)) {
-                            $paths[$filename]['trads'][$lang] = Helper::getRoute($file->getRealPath());
+                            $paths[$filename]['trads'][$lang] = TemplateHelper::getRoute($file->getRealPath());
                         }
                     }
                 }
             }
 
-            $dir_is_clone = Filesystem::isGitClone($dir->getPath());
+            $dir_is_clone = FilesystemHelper::isGitClone($dir->getPath());
             $remote = null;
             if ($dir_is_clone) {
                 $git_config = Helper::getGitConfig($dir->getPath());
@@ -351,7 +353,7 @@ class WDBFile
             $this->cache['wdb_stack'] = array(
                 'path'      => $this->getWDBPath(),
                 'type'      => $this->getType(),
-                'route'     => Helper::getRoute($this->getRealPath()),
+                'route'     => TemplateHelper::getRoute($this->getRealPath()),
                 'name'      => $this->getHumanReadableFilename(),
                 'size'      => WebFilesystem::getTransformedFilesize($_size),
                 'plainsize' => $_size,
@@ -390,8 +392,8 @@ class WDBFile
         if (!isset($this->cache['wdb_translations'])) {
             $filepath = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
-//                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getPathname();
+                $filepath = FilesystemHelper::slashDirname($this->getWebPath()).$this->getFilename();
+//                $filepath = FilesystemHelper::slashDirname($this->getWebPath()).$this->getPathname();
             }
             $parts = explode('.', $this->getBasename());
             try {
@@ -431,8 +433,8 @@ class WDBFile
 
             $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
-//                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getPathname();
+                $filepath = FilesystemHelper::slashDirname($this->getWebPath()).$this->getFilename();
+//                $filepath = FilesystemHelper::slashDirname($this->getWebPath()).$this->getPathname();
             }
             $dir_realpath   = dirname(realpath($filepath));
             $dir_targetpath = dirname($filepath);
@@ -445,16 +447,16 @@ class WDBFile
             if (false!==$i) {
                 $j = $i+1;
                 while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
-                    (is_dir($dir_table[$j]) && !Helper::isDirValid($dir_table[$j])) || 
-                    !Helper::isFileValid($dir_table[$j]) ||
-                    Filesystem::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
+                    (is_dir($dir_table[$j]) && !WDBHelper::isDirValid($dir_table[$j])) ||
+                    !WDBHelper::isFileValid($dir_table[$j]) ||
+                    FilesystemHelper::isDotPath($dir_table[$j]) || WDBHelper::isTranslationFile($dir_table[$j])
                 )) {
                     $j = $j+1;
                 }
                 if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
-                        (is_dir($dir_table[$j]) && Helper::isDirValid($dir_table[$j])) ||
-                        (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j])) 
-                    ) && !Filesystem::isDotPath($dir_table[$j])
+                        (is_dir($dir_table[$j]) && WDBHelper::isDirValid($dir_table[$j])) ||
+                        (!is_dir($dir_table[$j]) && WDBHelper::isFileValid($dir_table[$j]) && !WDBHelper::isTranslationFile($dir_table[$j]))
+                    ) && !FilesystemHelper::isDotPath($dir_table[$j])
                 ) {
                     $next = new WDBFile($dir_table[$j]);
                     $this->cache['wdb_next'] = $next->getWDBStack();
@@ -476,8 +478,8 @@ class WDBFile
 
             $filepath       = $this->getPathname();
             if ($this->isLink() || $this->isRootLink()) {
-                $filepath   = Filesystem::slashDirname($this->getWebPath()).$this->getFilename();
-//                $filepath = Filesystem::slashDirname($this->getWebPath()).$this->getPathname();
+                $filepath   = FilesystemHelper::slashDirname($this->getWebPath()).$this->getFilename();
+//                $filepath = FilesystemHelper::slashDirname($this->getWebPath()).$this->getPathname();
             }
             $dir_realpath   = dirname(realpath($filepath));
             $dir_targetpath = dirname($filepath);
@@ -490,16 +492,16 @@ class WDBFile
             if (false!==$i) {
                 $j = $i-1;
                 while ($j>=0 && array_key_exists($j, $dir_table) && (
-                    (is_dir($dir_table[$j]) && !Helper::isDirValid($dir_table[$j])) || 
-                    !Helper::isFileValid($dir_table[$j]) ||
-                    Filesystem::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
+                    (is_dir($dir_table[$j]) && !WDBHelper::isDirValid($dir_table[$j])) ||
+                    !WDBHelper::isFileValid($dir_table[$j]) ||
+                    FilesystemHelper::isDotPath($dir_table[$j]) || WDBHelper::isTranslationFile($dir_table[$j])
                 )) {
                     $j = $j-1;
                 }
                 if ($j>=0 && array_key_exists($j, $dir_table) && (
-                        (is_dir($dir_table[$j]) && Helper::isDirValid($dir_table[$j])) ||
-                        (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j])) 
-                    ) && !Filesystem::isDotPath($dir_table[$j])
+                        (is_dir($dir_table[$j]) && WDBHelper::isDirValid($dir_table[$j])) ||
+                        (!is_dir($dir_table[$j]) && WDBHelper::isFileValid($dir_table[$j]) && !WDBHelper::isTranslationFile($dir_table[$j]))
+                    ) && !FilesystemHelper::isDotPath($dir_table[$j])
                 ) {
                     $previous = new WDBFile($dir_table[$j]);
                     $this->cache['wdb_previous'] = $previous->getWDBStack();
@@ -516,8 +518,8 @@ class WDBFile
     {
         if (!isset($this->cache['wdb_human_readable_filename'])) {
             if (
-                Filesystem::slashDirname($this->getRealPath())===Kernel::getPath('web') ||
-                Filesystem::slashDirname($this->getRealPath())==='/'
+                FilesystemHelper::slashDirname($this->getRealPath())===Kernel::getPath('web') ||
+                FilesystemHelper::slashDirname($this->getRealPath())==='/'
             ) {
                 $this->cache['wdb_human_readable_filename'] = _T('Home');
             } else {
@@ -533,7 +535,7 @@ class WDBFile
     public function findReadme()
     {
         if (!isset($this->cache['wdb_readme'])) {
-            $readme = Filesystem::slashDirname($this->getRealPath()).
+            $readme = FilesystemHelper::slashDirname($this->getRealPath()).
                 Kernel::getConfig('user_config:readme_filename', 'README.md');
             $this->cache['wdb_readme'] = file_exists($readme) ? $readme : null;
         }
@@ -546,7 +548,7 @@ class WDBFile
     public function findIndex()
     {
         if (!isset($this->cache['wdb_index'])) {
-            $index = Filesystem::slashDirname($this->getRealPath()).
+            $index = FilesystemHelper::slashDirname($this->getRealPath()).
                 Kernel::getConfig('user_config:index_filename', 'INDEX.md');
             $this->cache['wdb_index'] = file_exists($index) ? $index : null;
         }

@@ -23,8 +23,6 @@
 
 namespace WebDocBook\Composer;
 
-use \WebDocBook\Composer\ScriptInterface;
-
 /**
  * Class Exception
  */

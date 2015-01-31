@@ -23,9 +23,8 @@
 
 namespace WebDocBook\WebFilesystem;
 
-use \WebDocBook\FrontController;
-use \WebDocBook\Helper;
-use \WebDocBook\Util\Filesystem;
+use \WebDocBook\Util\WDBHelper;
+use \WebDocBook\Util\FilesystemHelper;
 use \WebFilesystem\FilesystemIterator;
 use \WebFilesystem\WebRecursiveDirectoryIterator;
 
@@ -65,7 +64,7 @@ class WDBRecursiveDirectoryIterator
      */
     public static function fileValidation($file_path)
     {
-        return Helper::isFileValid($file_path);
+        return WDBHelper::isFileValid($file_path);
     }
 
     /**
@@ -74,7 +73,7 @@ class WDBRecursiveDirectoryIterator
      */
     public static function dirValidation($file_path)
     {
-        return Helper::isDirValid($file_path);
+        return WDBHelper::isDirValid($file_path);
     }
 
     /**
@@ -84,7 +83,7 @@ class WDBRecursiveDirectoryIterator
     {
         if ($this->getFlags() & self::CURRENT_AS_WDBFILE) {
             return new WDBFile(
-                Filesystem::slashDirname($this->original_path).$this->getFilename()
+                FilesystemHelper::slashDirname($this->original_path).$this->getFilename()
             );
         }
         return parent::current();

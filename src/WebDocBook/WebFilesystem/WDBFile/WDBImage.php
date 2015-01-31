@@ -24,7 +24,6 @@
 namespace WebDocBook\WebFilesystem\WDBFile;
 
 use \WebDocBook\FrontController;
-use \WebFilesystem\WebFileInfo;
 use \WebDocBook\WebFilesystem\WDBFileInterface;
 use \WebFilesystem\FileType\WebImage;
 

@@ -23,7 +23,7 @@
 
 namespace WebDocBook;
 
-use \WebDocBook\Util\Filesystem;
+use \WebDocBook\Util\FilesystemHelper;
 
 /**
  * Class Kernel
@@ -141,30 +141,30 @@ class Kernel
         try {
 
             // installation base path
-            self::$_registry['package_base_path'] = Filesystem::slashDirname(dirname(dirname(__DIR__)));
+            self::$_registry['package_base_path'] = FilesystemHelper::slashDirname(dirname(dirname(__DIR__)));
             if (defined(self::BASEDIR_CONSTNAME)) {
                 $basedir = constant(self::BASEDIR_CONSTNAME);
                 if (true===@file_exists($basedir)) {
-                    self::$_registry['app_base_path'] = Filesystem::slashDirname($basedir);
+                    self::$_registry['app_base_path'] = FilesystemHelper::slashDirname($basedir);
                 } else {
                     throw new \Exception(
                         sprintf('Base directory "%s" not found!', $basedir)
                     );
                 }
             } else {
-                self::$_registry['app_base_path'] = Filesystem::slashDirname(dirname(dirname(__DIR__)));
+                self::$_registry['app_base_path'] = FilesystemHelper::slashDirname(dirname(dirname(__DIR__)));
             }
 
             // 1st level package paths
             foreach (self::$_defaults['package_paths'] as $name=>$path) {
                 $path_name = str_replace('_dir', '_path', $name);
-                self::$_registry[$path_name] = self::$_registry['package_base_path'].Filesystem::slashDirname($path);
+                self::$_registry[$path_name] = self::$_registry['package_base_path'].FilesystemHelper::slashDirname($path);
             }
 
             // 1st level paths
             foreach (self::$_defaults['paths'] as $name=>$path) {
                 $path_name = str_replace('_dir', '_path', $name);
-                self::$_registry[$path_name] = self::$_registry['app_base_path'].Filesystem::slashDirname($path);
+                self::$_registry[$path_name] = self::$_registry['app_base_path'].FilesystemHelper::slashDirname($path);
             }
 
             // var must exist and be writable
@@ -177,40 +177,40 @@ class Kernel
 
             // src/config/
             self::$_registry['config_path'] = self::$_registry['resources_path']
-                .Filesystem::slashDirname(self::$_defaults['dirnames']['config_dir']);
+                .FilesystemHelper::slashDirname(self::$_defaults['dirnames']['config_dir']);
 
             // src/templates/
             self::$_registry['templates_path'] = self::$_registry['src_path']
-                .Filesystem::slashDirname(self::$_defaults['dirnames']['templates_dir']);
+                .FilesystemHelper::slashDirname(self::$_defaults['dirnames']['templates_dir']);
 
             // user/config/
             self::$_registry['user_config_path'] = self::$_registry['user_path']
-                .Filesystem::slashDirname(self::$_defaults['dirnames']['config_dir']);
+                .FilesystemHelper::slashDirname(self::$_defaults['dirnames']['config_dir']);
             self::ensurePathExists('user_config');
             self::ensurePathIsWritable('user_config');
 
             // user/templates/
             $user_templates_dir = self::$_registry['user_path']
-                .Filesystem::slashDirname(self::$_defaults['dirnames']['templates_dir']);
+                .FilesystemHelper::slashDirname(self::$_defaults['dirnames']['templates_dir']);
             if (false!==@file_exists($user_templates_dir)) {
                 self::$_registry['user_templates_path'] = $user_templates_dir;
             }
 
             // var/cache/
             self::$_registry['cache_path'] = self::$_registry['var_path']
-                .Filesystem::slashDirname(self::$_defaults['dirnames']['cache_dir']);
+                .FilesystemHelper::slashDirname(self::$_defaults['dirnames']['cache_dir']);
             self::ensurePathExists('cache');
             self::ensurePathIsWritable('cache');
 
             // var/i18n/
             self::$_registry['i18n_path'] = self::$_registry['var_path']
-                .Filesystem::slashDirname(self::$_defaults['dirnames']['i18n_dir']);
+                .FilesystemHelper::slashDirname(self::$_defaults['dirnames']['i18n_dir']);
             self::ensurePathExists('i18n');
             self::ensurePathIsWritable('i18n');
 
             // var/log/
             self::$_registry['log_path'] = self::$_registry['var_path']
-                .Filesystem::slashDirname(self::$_defaults['dirnames']['log_dir']);
+                .FilesystemHelper::slashDirname(self::$_defaults['dirnames']['log_dir']);
             self::ensurePathExists('log');
             self::ensurePathIsWritable('log');
 
@@ -245,13 +245,13 @@ class Kernel
 
             // web webdocbook assets
             self::$_registry['webdocbook_assets_path'] = self::getPath('web')
-                .Filesystem::slashDirname(
+                .FilesystemHelper::slashDirname(
                     isset($config['app']['internal_assets_dir']) ? $config['app']['internal_assets_dir'] : 'webdocbook_assets'
                 );
 
             // web vendor assets
             self::$_registry['vendor_assets_path'] = self::getPath('webdocbook_assets')
-                .Filesystem::slashDirname(self::$_defaults['dirnames']['vendor_dir']);
+                .FilesystemHelper::slashDirname(self::$_defaults['dirnames']['vendor_dir']);
 
         } catch (\Exception $e) {
             throw $e;
@@ -513,7 +513,7 @@ class Kernel
      */
     public static function ensurePathExists($path_name)
     {
-        if (true!==Filesystem::ensureExists(self::getPath($path_name))) {
+        if (true!==FilesystemHelper::ensureExists(self::getPath($path_name))) {
             throw new \Exception(
                 sprintf('Directory "%s" can not be created!', self::getPath($path_name, true))
             );
@@ -528,7 +528,7 @@ class Kernel
      */
     public static function ensurePathIsWritable($path_name)
     {
-        if (true!==Filesystem::ensureIsWritable(self::getPath($path_name))) {
+        if (true!==FilesystemHelper::ensureIsWritable(self::getPath($path_name))) {
             throw new \Exception(
                 sprintf('Directory "%s" must be writable for your web-server\'s user!', self::getPath($path_name, true))
             );
@@ -544,7 +544,7 @@ class Kernel
     public static function parseIniFile($file)
     {
         if (true===@file_exists($file)) {
-            $config =  Filesystem::parseIni($file);
+            $config =  FilesystemHelper::parseIni($file);
             if ($config) {
                 return $config;
             } else {
@@ -566,7 +566,7 @@ class Kernel
      */
     public static function remove($path)
     {
-        if (true!==Filesystem::remove($path, false)) {
+        if (true!==FilesystemHelper::remove($path, false)) {
             throw new \Exception(
                 sprintf('Can not remove path "%s"!', $path)
             );

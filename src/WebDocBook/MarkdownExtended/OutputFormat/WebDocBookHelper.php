@@ -30,7 +30,7 @@ use \MarkdownExtended\API\OutputFormatHelperInterface;
 use \MarkdownExtended\Helper as MDE_Helper;
 use \MarkdownExtended\Exception as MDE_Exception;
 use \MarkdownExtended\OutputFormat\HTMLHelper;
-use \WebDocBook\Helper;
+use \WebDocBook\Util\TemplateHelper;
 
 /**
  * WebDocBook output Helper
@@ -96,7 +96,7 @@ class WebDocBookHelper
             $current_level = null;
 
             foreach ($menu as $item_id=>$menu_item) {
-                $_item_id = Helper::getSafeIdString($item_id);
+                $_item_id = TemplateHelper::getSafeIdString($item_id);
 
                 if (isset($max_level) && $menu_item['level']>$max_level) {
                     continue;

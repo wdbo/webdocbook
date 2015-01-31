@@ -23,7 +23,9 @@
 
 namespace WebDocBook\Controller;
 
-use \WebDocBook\Helper;
+use \WebDocBook\Util\Helper;
+use \WebDocBook\Util\WDBHelper;
+use \WebDocBook\Util\TemplateHelper;
 use \WebDocBook\Abstracts\AbstractController;
 use \WebDocBook\Exception\NotFoundException;
 use \WebDocBook\WebFilesystem\WDBFile;
@@ -83,12 +85,12 @@ class DefaultController
         $tpl_params = array(
             'page'          => $dbfile->getWDBFullStack(),
             'dirscan'       => $dbfile->getWDBScanStack(),
-            'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
-            'title'         => Helper::buildPageTitle($this->getPath()),
+            'breadcrumbs'   => TemplateHelper::getBreadcrumbs($this->getPath()),
+            'title'         => TemplateHelper::buildPageTitle($this->getPath()),
         );
         if (empty($tpl_params['title'])) {
             if (!empty($tpl_params['breadcrumbs'])) {
-                $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
+                $tpl_params['title'] = TemplateHelper::buildPageTitle(end($tpl_params['breadcrumbs']));
             } else {
                 $tpl_params['title'] = _T('Home');
             }
@@ -130,12 +132,12 @@ class DefaultController
 
         $tpl_params = array(
             'page'          => $dbfile->getWDBFullStack(),
-            'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
-            'title'         => Helper::buildPageTitle($this->getPath()),
+            'breadcrumbs'   => TemplateHelper::getBreadcrumbs($this->getPath()),
+            'title'         => TemplateHelper::buildPageTitle($this->getPath()),
         );
         if (empty($tpl_params['title'])) {
             if (!empty($tpl_params['breadcrumbs'])) {
-                $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
+                $tpl_params['title'] = TemplateHelper::buildPageTitle(end($tpl_params['breadcrumbs']));
             } else {
                 $tpl_params['title'] = _T('Home');
             }
@@ -166,12 +168,12 @@ class DefaultController
         $contents   = array();
         $tpl_params = array(
             'page'          => $dbfile->getWDBFullStack(),
-            'breadcrumbs'   => Helper::getBreadcrumbs($this->getPath()),
-            'title'         => Helper::buildPageTitle($this->getPath()),
+            'breadcrumbs'   => TemplateHelper::getBreadcrumbs($this->getPath()),
+            'title'         => TemplateHelper::buildPageTitle($this->getPath()),
         );
         if (empty($tpl_params['title'])) {
             if (!empty($tpl_params['breadcrumbs'])) {
-                $tpl_params['title'] = Helper::buildPageTitle(end($tpl_params['breadcrumbs']));
+                $tpl_params['title'] = TemplateHelper::buildPageTitle(end($tpl_params['breadcrumbs']));
             } else {
                 $tpl_params['title'] = _T('Home');
             }
@@ -219,7 +221,7 @@ class DefaultController
         if (!$dbfile->isDir()) {
             throw new NotFoundException(
                 'Can not build a sitemap from a single file!',
-                0, null, Helper::getRoute($dbfile->getWDBPath())
+                0, null, TemplateHelper::getRoute($dbfile->getWDBPath())
             );
         }
 
@@ -252,7 +254,7 @@ class DefaultController
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
                 'Can not send raw content of a directory!',
-                0, null, Helper::getRoute($dbfile->getWDBPath())
+                0, null, TemplateHelper::getRoute($dbfile->getWDBPath())
             );
         }
 
@@ -283,7 +285,7 @@ class DefaultController
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
                 'Can not send raw content of a directory!',
-                0, null, Helper::getRoute($dbfile->getWDBPath())
+                0, null, TemplateHelper::getRoute($dbfile->getWDBPath())
             );
         }
 
@@ -320,7 +322,7 @@ class DefaultController
         if (!$dbfile->isFile()) {
             throw new NotFoundException(
                 'Can not send raw content of a directory!',
-                0, null, Helper::getRoute($dbfile->getWDBPath())
+                0, null, TemplateHelper::getRoute($dbfile->getWDBPath())
             );
         }
 
@@ -349,10 +351,10 @@ class DefaultController
             return $this->indexAction($path);
         }
 
-        $_s = Helper::makeSearch($search, $this->getPath());
+        $_s = WDBHelper::makeSearch($search, $this->getPath());
 
         $title          = _T('Search for "%search_str%"', array('search_str'=>$search));
-        $breadcrumbs    = Helper::getBreadcrumbs($this->getPath());
+        $breadcrumbs    = TemplateHelper::getBreadcrumbs($this->getPath());
         $breadcrumbs[]  = $title;
         $dbfile         = new WDBFile($this->getpath());
         $page           = $dbfile->getWDBStack();
@@ -365,7 +367,7 @@ class DefaultController
 
         $search_content = $this->wdb->display($_s, 'search', array(
             'search_str'    => $search,
-            'path'          => Helper::buildPageTitle($this->getPath()),
+            'path'          => TemplateHelper::buildPageTitle($this->getPath()),
         ));
         return array('default', $search_content, $tpl_params);
     }

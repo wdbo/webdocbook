@@ -50,14 +50,13 @@ class WebDocBook_Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('route',         '\WebDocBook\Helper::getRoute'),
-            new \Twig_SimpleFilter('absoluteRoute', '\WebDocBook\Helper::getAbsoluteRoute'),
-            new \Twig_SimpleFilter('relpath',       '\WebDocBook\Helper::getRealPath'),
-            new \Twig_SimpleFilter('relativePath',  '\WebDocBook\Helper::getRelativePath'),
-            new \Twig_SimpleFilter('securedPath',   '\WebDocBook\Helper::getSecuredRealpath'),
-            new \Twig_SimpleFilter('readableName',  '\WebDocBook\Helper::buildPageTitle'),
-            new \Twig_SimpleFilter('rssEncode',     '\WebDocBook\Helper::rssEncode'),
-            new \Twig_SimpleFilter('icon',          '\WebDocBook\Helper::getIcon'),
+            new \Twig_SimpleFilter('route',         '\WebDocBook\Util\TemplateHelper::getRoute'),
+            new \Twig_SimpleFilter('absoluteRoute', '\WebDocBook\Util\TemplateHelper::getAbsoluteRoute'),
+            new \Twig_SimpleFilter('relativePath',  '\WebDocBook\Util\TemplateHelper::getRelativePath'),
+            new \Twig_SimpleFilter('securedPath',   '\WebDocBook\Util\TemplateHelper::getSecuredRealpath'),
+            new \Twig_SimpleFilter('readableName',  '\WebDocBook\Util\TemplateHelper::buildPageTitle'),
+            new \Twig_SimpleFilter('rssEncode',     '\WebDocBook\Util\TemplateHelper::rssEncode'),
+            new \Twig_SimpleFilter('icon',          '\WebDocBook\Util\TemplateHelper::getIcon'),
         );
     }
 
@@ -67,14 +66,13 @@ class WebDocBook_Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('route',           '\WebDocBook\Helper::getRoute'),
-            new \Twig_SimpleFunction('absoluteRoute',   '\WebDocBook\Helper::getAbsoluteRoute'),
-            new \Twig_SimpleFunction('relpath',         '\WebDocBook\Helper::getRealPath'),
-            new \Twig_SimpleFunction('relativePath',    '\WebDocBook\Helper::getRelativePath'),
-            new \Twig_SimpleFunction('securedPath',     '\WebDocBook\Helper::getSecuredRealpath'),
-            new \Twig_SimpleFunction('readableName',    '\WebDocBook\Helper::buildPageTitle'),
-            new \Twig_SimpleFunction('rssEncode',       '\WebDocBook\Helper::rssEncode'),
-            new \Twig_SimpleFunction('icon',            '\WebDocBook\Helper::getIcon'),
+            new \Twig_SimpleFunction('route',           '\WebDocBook\Util\TemplateHelper::getRoute'),
+            new \Twig_SimpleFunction('absoluteRoute',   '\WebDocBook\Util\TemplateHelper::getAbsoluteRoute'),
+            new \Twig_SimpleFunction('relativePath',    '\WebDocBook\Util\TemplateHelper::getRelativePath'),
+            new \Twig_SimpleFunction('securedPath',     '\WebDocBook\Util\TemplateHelper::getSecuredRealpath'),
+            new \Twig_SimpleFunction('readableName',    '\WebDocBook\Util\TemplateHelper::buildPageTitle'),
+            new \Twig_SimpleFunction('rssEncode',       '\WebDocBook\Util\TemplateHelper::rssEncode'),
+            new \Twig_SimpleFunction('icon',            '\WebDocBook\Util\TemplateHelper::getIcon'),
         );
     }
 

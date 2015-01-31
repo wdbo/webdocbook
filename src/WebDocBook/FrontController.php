@@ -28,7 +28,9 @@ use \WebDocBook\WebFilesystem\WDBRecursiveDirectoryIterator;
 use \WebDocBook\Exception\Exception;
 use \WebDocBook\Exception\RuntimeException;
 use \WebDocBook\Exception\NotFoundException;
-use \WebDocBook\Util\Filesystem;
+use \WebDocBook\Util\Helper;
+use \WebDocBook\Util\FilesystemHelper;
+use \WebDocBook\Util\TemplateHelper;
 use \MarkdownExtended\MarkdownExtended;
 use \I18n\I18n;
 use \I18n\Loader as I18n_Loader;
@@ -91,7 +93,7 @@ class FrontController
 
             // the actual manifest
             if (true===file_exists(Kernel::getPath('app_manifest_filepath'))) {
-                $manifest_data = Filesystem::parseJson(Kernel::getPath('app_manifest_filepath'));
+                $manifest_data = FilesystemHelper::parseJson(Kernel::getPath('app_manifest_filepath'));
                 if ($manifest_data) {
                     Kernel::setConfig($manifest_data, 'manifest');
                 } else {
@@ -136,7 +138,7 @@ class FrontController
         $internal_config    = Kernel::getConfig('userconf', array());
         $user_config_file   = Kernel::getPath('user_config_filepath');
         if (true===file_exists($user_config_file)) {
-            $user_config = Filesystem::parseIni($user_config_file);
+            $user_config = FilesystemHelper::parseIni($user_config_file);
             if (!empty($user_config)) {
                 Kernel::setConfig($user_config, 'user_config');
             } else {
@@ -288,7 +290,7 @@ class FrontController
             'content' => $content,
         ));
         if (in_array($template_name, array('default', 'not_found', 'forbidden'))) {
-            $full_params['profiler'] = Helper::getProfiler();
+            $full_params['profiler'] = TemplateHelper::getProfiler();
         }
         $full_content = $this->getTemplateBuilder()->render($template, $full_params);
         if ($this->getRequest()->isAjax()) {
@@ -474,8 +476,8 @@ class FrontController
         foreach($dir as $file) {
             if ($file->isDir()) {
                 $paths[] = array(
-                    'path'      => Helper::getSecuredRealpath($file->getRealPath()),
-                    'route'     => Helper::getRoute($file->getWDBPath()),
+                    'path'      => TemplateHelper::getSecuredRealpath($file->getRealPath()),
+                    'route'     => TemplateHelper::getRoute($file->getWDBPath()),
                     'name'      => $file->getHumanReadableFilename(),
                 );
             }

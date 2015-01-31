@@ -28,7 +28,7 @@ use \MarkdownExtended\API\OutputFormatInterface;
 use \MarkdownExtended\OutputFormat\HTML;
 use \MarkdownExtended\Helper as MDE_Helper;
 use \MarkdownExtended\Exception as MDE_Exception;
-use \WebDocBook\Helper;
+use \WebDocBook\Util\TemplateHelper;
 
 /**
  * All '$_defaults' entries can be overwritten in config.
@@ -84,7 +84,7 @@ class WebDocBook
         if (!isset($attributes['id']) || empty($attributes['id'])) {
             $attributes['id'] = uniqid();
         } else {
-            $attributes['id'] = Helper::getSafeIdString($attributes['id']);
+            $attributes['id'] = TemplateHelper::getSafeIdString($attributes['id']);
         }
 
         if (!isset($attributes['name']) || empty($attributes['name'])) {

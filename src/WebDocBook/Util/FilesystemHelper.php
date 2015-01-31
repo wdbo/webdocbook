@@ -25,8 +25,13 @@ namespace WebDocBook\Util;
 
 /**
  * Class Filesystem
+ *
+ * This class MUST NOT depend on any other as it is used
+ * by the `\WebDocBook\Composer\Manager` object to load
+ * the system on Composer's action (the autoloader may not
+ * be loaded).
  */
-class Filesystem
+class FilesystemHelper
 {
 
     /**
@@ -37,7 +42,9 @@ class Filesystem
      */
     public static function slashDirname($dirname = null)
     {
-        if (is_null($dirname) || empty($dirname)) return '';
+        if (is_null($dirname) || empty($dirname)) {
+            return '';
+        }
         return rtrim($dirname, '/ '.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
     }
 
@@ -49,9 +56,11 @@ class Filesystem
      */
     public static function isGitClone($path = null)
     {
-        if (is_null($path) || empty($path)) return false;
+        if (is_null($path) || empty($path)) {
+            return false;
+        }
         $dir_path = self::slashDirname($path).'.git';
-        return file_exists($dir_path) && is_dir($dir_path);
+        return (bool) (file_exists($dir_path) && is_dir($dir_path));
     }
 
     /**
@@ -62,8 +71,10 @@ class Filesystem
      */
     public static function isDotPath($path = null)
     {
-        if (is_null($path) || empty($path)) return false;
-        return '.'===substr(basename($path), 0, 1);
+        if (is_null($path) || empty($path)) {
+            return false;
+        }
+        return (bool) ('.'===substr(basename($path), 0, 1));
     }
 
     /**
