@@ -281,11 +281,6 @@ class FrontController
             $params     = isset($result[2]) ? $result[2] : array();
         }
 
-        // for dev
-        if (!empty($_GET) && isset($_GET['dbg'])) {
-            $this->debug();
-        }
-
         $this->display($content, $template, $params, true);
     }
 
