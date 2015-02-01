@@ -119,7 +119,6 @@ class Helper
      */
     public static function getRoute($path, $type = null, $with_interface = false)
     {
-        $route          = $path;
         $rel_path       = str_replace(Kernel::getPath('web'), '', $path);
         $add_last_slash = (!empty($rel_path) && file_exists($path) && is_dir($path));
         return (true===$with_interface ?

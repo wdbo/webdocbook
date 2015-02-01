@@ -81,9 +81,9 @@ class Request
     public function parseWDBRequest()
     {
         $server_pathtrans   = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;
+        $server_argv        = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
         $server_uri         = $_SERVER['REQUEST_URI'];
         $server_query       = $_SERVER['QUERY_STRING'];
-        $server_argv        = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
         $wdb                = FrontController::getInstance();
 
         $file = $path = $action = null;

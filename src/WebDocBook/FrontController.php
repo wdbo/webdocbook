@@ -83,7 +83,13 @@ class FrontController
     }
 
     /**
+     * This must boot the system
+     *
+     * If an error occurred, a message is written "as is" on screen
+     * and the run stops here.
+     *
      * @return void
+     * @see \WebDocBook\Kernel::boot()
      */
     protected function boot()
     {
@@ -113,12 +119,16 @@ class FrontController
             echo PHP_EOL.'[WebDocBook startup error] : '.PHP_EOL;
             echo PHP_EOL."\t".$e->getMessage().PHP_EOL;
             echo PHP_EOL.'-------------------------'.PHP_EOL;
-            echo 'For more info, see the documentation online at <?>.'.PHP_EOL;
+            echo 'For more info, see the documentation online at <http://webdocbook.com/>.'.PHP_EOL;
             exit(1);
         }
     }
 
     /**
+     * Initialize environment
+     *
+     * If an error occurred here, an error page may be displayable
+     *
      * @throws \WebDocBook\Exception\Exception
      */
     protected function init()
@@ -218,6 +228,8 @@ class FrontController
     }
 
     /**
+     * This will distribute the request and return the response
+     *
      * @param bool $return
      * @throws \WebDocBook\Exception\NotFoundException
      * @throws \WebDocBook\Exception\RuntimeException if the controller action does not return a valid array
@@ -247,6 +259,7 @@ class FrontController
         $result = null;
         if (!empty($routing)) {
             $ctrl_cls   = $routing['controller_classname'];
+            /* @var \WebDocBook\Abstracts\AbstractController $ctrl_obj */
             $ctrl_obj   = new $ctrl_cls();
             $this->setController($ctrl_obj);
             $result     = Helper::fetchArguments(
@@ -299,6 +312,7 @@ class FrontController
         }
         if ($send) {
             $this->response->send(!empty($full_content) ? $full_content : $content);
+            return null;
         } else {
             return !empty($full_content) ? $full_content : $content;
         }
@@ -463,26 +477,6 @@ class FrontController
     public function getTemplate($name)
     {
         return Kernel::getConfig('templates:'.$name, null);
-    }
-
-    /**
-     * @return array
-     */
-    public function getChapters()
-    {
-        $www_http   = Kernel::getPath('web');
-        $dir        = new WDBRecursiveDirectoryIterator($www_http);
-        $paths      = array();
-        foreach($dir as $file) {
-            if ($file->isDir()) {
-                $paths[] = array(
-                    'path'      => TemplateHelper::getSecuredRealpath($file->getRealPath()),
-                    'route'     => TemplateHelper::getRoute($file->getWDBPath()),
-                    'name'      => $file->getHumanReadableFilename(),
-                );
-            }
-        }
-        return $paths;
     }
 
 }

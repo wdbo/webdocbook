@@ -73,6 +73,11 @@ class File
     protected $cache        = array();
 
     /**
+     * @var \WebDocBook\Filesystem\WDBFileInterface
+     */
+    protected $_file;
+
+    /**
      * @param string $file_name
      * @throws \WebDocBook\Exception\RuntimeException
      */
@@ -583,6 +588,7 @@ class File
     /**
      * @param int $str_len
      * @param bool $strip_tags
+     * @param string $end_str
      * @return string
      */
     public function viewIntroduction($str_len = 600, $strip_tags = true , $end_str = '')

@@ -28,7 +28,7 @@ use \WebDocBook\Filesystem\WDBFileInterface;
 use \WebFilesystem\WebFileInfo;
 
 /**
- * Class Directory
+ * Class WDBDirectory
  */
 class WDBDirectory
     extends WebFileInfo

@@ -132,7 +132,7 @@ class TemplateBuilder
             'langs'             => Kernel::getConfig('languages', array()),
             'assets'            => '/'.Kernel::getPath('webdocbook_assets', true, 'web'),
             'vendor_assets'     => '/'.Kernel::getPath('vendor_assets', true, 'web'),
-            'chapters'          => $wdb->getChapters(),
+            'chapters'          => WDBHelper::getChapters(),
             'search_str'        => $wdb->getRequest()->getGet('s'),
             'session'           => $session->hasFlash() ? $session->allFlashes() : array(),
         );

@@ -212,7 +212,6 @@ class WebDocBookController
         if ($this->wdb->getRequest()->isPost()) {
 
             $this->wdb->getUser()->getSession()->set('saveadmin', time());
-            $root_dir       = Kernel::getPath('app_base_path');
             $data           = $this->wdb->getRequest()->getData();
             $config_file    = Kernel::getPath('user_config_filepath');
             $internal_conf  = Kernel::getConfig('userconf', array());
