@@ -38,10 +38,12 @@ class Exception
      */
     public function __construct($message = '', $code = 0, \Exception $previous = null, ScriptInterface $cmd = null)
     {
+        $current_message = $message;
         $previous_msg = !is_null($previous) ? $previous->getMessage() : null;
         $composer_msg = !is_null($cmd) ? $cmd->getName() : null;
         $message =
-            "[WebDocBook] An error occurred while trying to execute a script ...".PHP_EOL
+            "An error occurred while trying to execute a script ...".PHP_EOL
+            .(!is_null($current_message) ? "Error message: '$current_message'.".PHP_EOL : '')
             .(!is_null($composer_msg) ? "You should correct the error and try: 'composer $composer_msg'.".PHP_EOL : '')
             .(!is_null($previous_msg) ? "Caught exception: '$previous_msg'." : '')
         ;

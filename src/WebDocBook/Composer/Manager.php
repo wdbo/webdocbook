@@ -76,7 +76,7 @@ class Manager
                 }
                 \WebDocBook\Kernel::boot(true);
             } catch (\Exception $e) {
-                self::error(null, $e);
+                self::error($e);
             }
             self::$_inited = true;
         }
@@ -133,17 +133,17 @@ class Manager
     }
 
     /**
-     * @param string $str
-     * @param \Exception $e
+     * @param string|\Exception $e
      * @throws \WebDocBook\Composer\Exception
      */
-    public static function error($str, \Exception $e = null)
+    public static function error($e = null)
     {
-        if (is_null($e)) {
-            $e = new Exception($str, 0, null, self::$_cmd);
+        if (is_string($e)) {
+            $tmp = new Exception($e, 0, null, self::$_cmd);
+            $e = $tmp;
         } elseif (!($e instanceof \WebDocBook\Composer\Exception)) {
             $tmp = new Exception(
-                (is_null($str) ? (is_null($e) ? '' : $e->getMessage()) : $str),
+                (is_null($e) ? '' : $e->getMessage()),
                 0, null, self::$_cmd
             );
             $e = $tmp;
