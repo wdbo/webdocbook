@@ -143,21 +143,20 @@ class Markdown
      */
     public function setMetaData($meta)
     {
-        if (empty($meta)) {
-            return;
-        }
-        if (is_string($meta)) {
-            $meta_data = explode(',', $meta);
-        } else {
-            $meta_data = $meta;
-        }
-        foreach ($meta_data as $var=>$val) {
-            if (!is_string($var)) {
-                $meta_data[$val] = 1;
-                unset($meta_data[$var]);
+        if (!empty($meta)) {
+            if (is_string($meta)) {
+                $meta_data = explode(',', $meta);
+            } else {
+                $meta_data = $meta;
             }
+            foreach ($meta_data as $var=>$val) {
+                if (!is_string($var)) {
+                    $meta_data[$val] = 1;
+                    unset($meta_data[$var]);
+                }
+            }
+            $this->wdb_meta_data = $meta_data;
         }
-        $this->wdb_meta_data = $meta_data;
         return $this;
     }
 
