@@ -25,7 +25,7 @@ namespace WebDocBook\Abstracts;
 
 use \WebDocBook\HttpFundamental\Response;
 use \WebDocBook\HttpFundamental\Request;
-use \WebDocBook\TemplateBuilder;
+use \WebDocBook\Templating\TemplateBuilder;
 use \WebDocBook\Model\User;
 use \Library\Command;
 use \MarkdownExtended\MarkdownExtended;
@@ -61,7 +61,7 @@ abstract class AbstractFrontController
     protected $controller;
 
     /**
-     * @var \WebDocBook\TemplateBuilder
+     * @var \WebDocBook\Templating\TemplateBuilder
      */
     protected $template_builder;
 
@@ -169,7 +169,7 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @param \WebDocBook\TemplateBuilder $builder
+     * @param \WebDocBook\Templating\TemplateBuilder $builder
      * @return $this
      */
     public function setTemplateBuilder(TemplateBuilder $builder)
@@ -179,7 +179,7 @@ abstract class AbstractFrontController
     }
 
     /**
-     * @return \WebDocBook\TemplateBuilder
+     * @return \WebDocBook\Templating\TemplateBuilder
      */
     public function getTemplateBuilder()
     {

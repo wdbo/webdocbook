@@ -21,17 +21,17 @@
  * <http://github.com/wdbo/webdocbook>.
  */
 
-namespace WebDocBook\WebFilesystem;
+namespace WebDocBook\Filesystem;
 
-use \WebDocBook\Util\WDBHelper;
-use \WebDocBook\Util\FilesystemHelper;
-use \WebFilesystem\FilesystemIterator;
+use \WebDocBook\Helper as WDBHelper;
+use \WebDocBook\Filesystem\Helper as FilesystemHelper;
+use \WebDocBook\Model\File;
 use \WebFilesystem\WebRecursiveDirectoryIterator;
 
 /**
- * Class WDBRecursiveDirectoryIterator
+ * Class RecursiveDirectoryIterator
  */
-class WDBRecursiveDirectoryIterator
+class RecursiveDirectoryIterator
     extends WebRecursiveDirectoryIterator
 {
 
@@ -49,11 +49,15 @@ class WDBRecursiveDirectoryIterator
      *
      *      WebFilesystemIterator::KEY_AS_PATHNAME | self::CURRENT_AS_WDBFILE | WebFilesystemIterator::SKIP_DOTTED
      *
+     * @param string $path
+     * @param int $flags
+     * @param string $file_validation_callback
+     * @param string $directory_validation_callback
      */
     public function __construct(
         $path, $flags = 16448,
-        $file_validation_callback = 'WebDocBook\WebFilesystem\WDBRecursiveDirectoryIterator::fileValidation',
-        $directory_validation_callback = 'WebDocBook\WebFilesystem\WDBRecursiveDirectoryIterator::dirValidation'
+        $file_validation_callback = 'WebDocBook\Filesystem\RecursiveDirectoryIterator::fileValidation',
+        $directory_validation_callback = 'WebDocBook\Filesystem\RecursiveDirectoryIterator::dirValidation'
     ) {
         parent::__construct($path, $flags, $file_validation_callback, $directory_validation_callback);
     }
@@ -82,7 +86,7 @@ class WDBRecursiveDirectoryIterator
     public function current()
     {
         if ($this->getFlags() & self::CURRENT_AS_WDBFILE) {
-            return new WDBFile(
+            return new File(
                 FilesystemHelper::slashDirname($this->original_path).$this->getFilename()
             );
         }

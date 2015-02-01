@@ -23,12 +23,11 @@
 
 namespace WebDocBook\Controller;
 
-use \WebDocBook\Util\Helper;
-use \WebDocBook\Util\WDBHelper;
-use \WebDocBook\Util\TemplateHelper;
+use \WebDocBook\Helper;
+use \WebDocBook\Templating\Helper as TemplateHelper;
 use \WebDocBook\Abstracts\AbstractController;
 use \WebDocBook\Exception\NotFoundException;
-use \WebDocBook\WebFilesystem\WDBFile;
+use \WebDocBook\Model\File as WDBFile;
 
 /**
  * Class DefaultController
@@ -351,7 +350,7 @@ class DefaultController
             return $this->indexAction($path);
         }
 
-        $_s = WDBHelper::makeSearch($search, $this->getPath());
+        $_s = Helper::makeSearch($search, $this->getPath());
 
         $title          = _T('Search for "%search_str%"', array('search_str'=>$search));
         $breadcrumbs    = TemplateHelper::getBreadcrumbs($this->getPath());

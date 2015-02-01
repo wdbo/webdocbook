@@ -21,8 +21,11 @@
  * <http://github.com/wdbo/webdocbook>.
  */
 
-namespace WebDocBook;
+namespace WebDocBook\Templating;
 
+use \WebDocBook\Kernel;
+use \WebDocBook\Helper as WDBHelper;
+use \WebDocBook\FrontController;
 use \WebDocBook\Exception\RuntimeException;
 use \Patterns\Abstracts\AbstractView;
 
@@ -63,7 +66,7 @@ class TemplateBuilder
             'debug'             => true,
         ));
         $this->twig->addExtension(new \Twig_Extension_Debug());
-        $this->twig->addExtension(new \WebDocBook_Twig_Extension());
+        $this->twig->addExtension(new \WebDocBook_Templating_Twig_Extension());
     }
     
 // ------------------

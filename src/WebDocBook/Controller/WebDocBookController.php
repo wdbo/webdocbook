@@ -24,8 +24,8 @@
 namespace WebDocBook\Controller;
 
 use \WebDocBook\Kernel;
-use \WebDocBook\Util\Helper;
-use \WebDocBook\Util\TemplateHelper;
+use \WebDocBook\Helper;
+use \WebDocBook\Templating\Helper as TemplateHelper;
 use \WebDocBook\Abstracts\AbstractController;
 use \WebDocBook\Exception\NotFoundException;
 use \Library\Converter\Array2INI;
@@ -90,8 +90,8 @@ class WebDocBookController
      */
     public function docbookdocAction()
     {
-        $title          = _T('User manual');
-        $md_parser      = $this->wdb->getMarkdownParser();
+        $title              = _T('User manual');
+        $md_parser          = $this->wdb->getMarkdownParser();
 
         // user manual
         $path               = Kernel::getPath('webdocbook_assets') . Kernel::getConfig('pages:user_manual', '');

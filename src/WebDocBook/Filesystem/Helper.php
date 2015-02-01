@@ -21,17 +21,17 @@
  * <http://github.com/wdbo/webdocbook>.
  */
 
-namespace WebDocBook\Util;
+namespace WebDocBook\Filesystem;
 
 /**
- * Class Filesystem
+ * Class Helper
  *
  * This class MUST NOT depend on any other as it is used
  * by the `\WebDocBook\Composer\Manager` object to load
  * the system on Composer's action (the autoloader may not
  * be loaded).
  */
-class FilesystemHelper
+class Helper
 {
 
     /**

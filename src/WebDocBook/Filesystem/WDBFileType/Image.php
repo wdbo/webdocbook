@@ -21,17 +21,17 @@
  * <http://github.com/wdbo/webdocbook>.
  */
 
-namespace WebDocBook\WebFilesystem\WDBFile;
+namespace WebDocBook\Filesystem\WDBFileType;
 
 use \WebDocBook\FrontController;
-use \WebFilesystem\WebFileInfo;
-use \WebDocBook\WebFilesystem\WDBFileInterface;
+use \WebDocBook\Filesystem\WDBFileInterface;
+use \WebFilesystem\FileType\WebImage;
 
 /**
- * Class WDBDirectory
+ * Class Image
  */
-class WDBDirectory
-    extends WebFileInfo
+class Image
+    extends WebImage
     implements WDBFileInterface
 {
 
@@ -41,8 +41,13 @@ class WDBDirectory
      */
     public function viewFileInfos(array $params = array())
     {
+//        $img    = new WebImage($this->getRealPath()); // useful ?
+        $params = array_merge($params, array(
+            'height'    => $this->getHeight(),
+            'width'     => $this->getWidth(),
+        ));
         return FrontController::getInstance()
-            ->display('', 'default_content', $params);
+            ->display( $this->getBase64Content(true), 'embed_content', $params);
     }
 
     /**

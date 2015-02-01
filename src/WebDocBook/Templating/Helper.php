@@ -21,19 +21,20 @@
  * <http://github.com/wdbo/webdocbook>.
  */
 
-namespace WebDocBook\Util;
+namespace WebDocBook\Templating;
 
 use \WebDocBook\Kernel;
+use \WebDocBook\Filesystem\Helper as FilesystemHelper;
 use \Library\Helper\Text as TextHelper;
 use \Library\Helper\Url as UrlHelper;
 use \DateTime;
 
 /**
- * Class TemplateHelper
+ * Class Helper
  *
  * This is the global templating helper class
  */
-class TemplateHelper
+class Helper
 {
 
     /**

@@ -35,7 +35,7 @@ abstract class AbstractController
 {
 
     /**
-     * @var string
+     * @var string Path of the document to treat
      */
     protected $path;
 

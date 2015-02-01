@@ -21,16 +21,17 @@
  * <http://github.com/wdbo/webdocbook>.
  */
 
-namespace WebDocBook\WebFilesystem;
+namespace WebDocBook\Model;
 
 use \WebDocBook\FrontController;
 use \WebDocBook\Kernel;
 use \WebDocBook\Exception\Exception;
 use \WebDocBook\Exception\RuntimeException;
-use \WebDocBook\Util\Helper;
-use \WebDocBook\Util\WDBHelper;
-use \WebDocBook\Util\FilesystemHelper;
-use \WebDocBook\Util\TemplateHelper;
+use \WebDocBook\Helper;
+use \WebDocBook\Filesystem\Helper as FilesystemHelper;
+use \WebDocBook\Templating\Helper as TemplateHelper;
+use \WebDocBook\Filesystem\WDBFileInterface;
+use \WebDocBook\Filesystem\RecursiveDirectoryIterator;
 use \WebFilesystem\WebFilesystem;
 use \WebFilesystem\WebFileInfo;
 use \WebFilesystem\Finder;
@@ -38,11 +39,11 @@ use \Library\Helper\Text as TextHelper;
 use \FilesystemIterator;
 
 /**
- * Class WDBFile
+ * Class File
  *
  * Default File class of WebDocBook
  */
-class WDBFile
+class File
     extends WebFileInfo
 {
 
@@ -122,7 +123,7 @@ class WDBFile
 
         $_class_name = isset(self::$config[$this->type]['class']) ? self::$config[$this->type]['class'] : null;
         if (is_null($_class_name) || !class_exists($_class_name)) {
-            $_class_name = '\WebDocBook\WebFilesystem\WDBFile\\'
+            $_class_name = '\WebDocBook\Filesystem\WDBFileType\\'
                 .(isset(self::$config[$this->type]['class']) ? self::$config[$this->type]['class'] : 'WDBDefault');
         }
         if (class_exists($_class_name)) {
@@ -137,7 +138,7 @@ class WDBFile
     }
 
     /**
-     * @param \WebDocBook\WebFileSystem\WDBFileInterface $file
+     * @param \WebDocBook\Filesystem\WDBFileInterface $file
      * @return $this
      */
     public function setFile(WDBFileInterface $file)
@@ -223,7 +224,7 @@ class WDBFile
     public function getWDBScanStack($recursive = false)
     {
         if (!isset($this->cache['wdb_scan_stack'])) {
-            $dir    = new WDBRecursiveDirectoryIterator($this->getRealPath());
+            $dir    = new RecursiveDirectoryIterator($this->getRealPath());
             $hasWip = false;
             $paths  = $known_filenames = array();
 
@@ -234,7 +235,7 @@ class WDBFile
             $stack->uksort(function($a, $b) { return strcmp($a, $b); });
 
             foreach ($stack as $file) {
-                /* @var \WebDocBook\\WebFilesystem\\WDBFile $file */
+                /* @var \WebDocBook\Model\File $file */
                 $filename = $lang = null;
                 if (
                     $file->isDir() &&
@@ -268,7 +269,7 @@ class WDBFile
                         $paths[$filename]['trads'][$lang] = TemplateHelper::getRoute($file->getRealPath());
                     } elseif (array_key_exists($filename, $paths)) {
                         $original                   = $paths[$filename];
-                        $dbfile                     = new WDBFile($file);
+                        $dbfile                     = new File($file);
                         $paths[$filename]           = $dbfile->getWDBStack();
                         $paths[$filename]['trads']  = isset($original['trads']) ? $original['trads'] : array();
                         if ($file->isDir() && $recursive) {
@@ -278,7 +279,7 @@ class WDBFile
                                                     );
                         }
                     } else {
-                        $dbfile = new WDBFile($file);
+                        $dbfile = new File($file);
                         if ($this->isDir() && $this->isLink()) {
                             $dbfile->setIsRootLink(true);
                         }
@@ -447,18 +448,18 @@ class WDBFile
             if (false!==$i) {
                 $j = $i+1;
                 while ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
-                    (is_dir($dir_table[$j]) && !WDBHelper::isDirValid($dir_table[$j])) ||
-                    !WDBHelper::isFileValid($dir_table[$j]) ||
-                    FilesystemHelper::isDotPath($dir_table[$j]) || WDBHelper::isTranslationFile($dir_table[$j])
+                    (is_dir($dir_table[$j]) && !Helper::isDirValid($dir_table[$j])) ||
+                    !Helper::isFileValid($dir_table[$j]) ||
+                    FilesystemHelper::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
                 )) {
                     $j = $j+1;
                 }
                 if ($j<=count($dir_table) && array_key_exists($j, $dir_table) && (
-                        (is_dir($dir_table[$j]) && WDBHelper::isDirValid($dir_table[$j])) ||
-                        (!is_dir($dir_table[$j]) && WDBHelper::isFileValid($dir_table[$j]) && !WDBHelper::isTranslationFile($dir_table[$j]))
+                        (is_dir($dir_table[$j]) && Helper::isDirValid($dir_table[$j])) ||
+                        (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j]))
                     ) && !FilesystemHelper::isDotPath($dir_table[$j])
                 ) {
-                    $next = new WDBFile($dir_table[$j]);
+                    $next = new File($dir_table[$j]);
                     $this->cache['wdb_next'] = $next->getWDBStack();
                 }
             }
@@ -492,18 +493,18 @@ class WDBFile
             if (false!==$i) {
                 $j = $i-1;
                 while ($j>=0 && array_key_exists($j, $dir_table) && (
-                    (is_dir($dir_table[$j]) && !WDBHelper::isDirValid($dir_table[$j])) ||
-                    !WDBHelper::isFileValid($dir_table[$j]) ||
-                    FilesystemHelper::isDotPath($dir_table[$j]) || WDBHelper::isTranslationFile($dir_table[$j])
+                    (is_dir($dir_table[$j]) && !Helper::isDirValid($dir_table[$j])) ||
+                    !Helper::isFileValid($dir_table[$j]) ||
+                    FilesystemHelper::isDotPath($dir_table[$j]) || Helper::isTranslationFile($dir_table[$j])
                 )) {
                     $j = $j-1;
                 }
                 if ($j>=0 && array_key_exists($j, $dir_table) && (
-                        (is_dir($dir_table[$j]) && WDBHelper::isDirValid($dir_table[$j])) ||
-                        (!is_dir($dir_table[$j]) && WDBHelper::isFileValid($dir_table[$j]) && !WDBHelper::isTranslationFile($dir_table[$j]))
+                        (is_dir($dir_table[$j]) && Helper::isDirValid($dir_table[$j])) ||
+                        (!is_dir($dir_table[$j]) && Helper::isFileValid($dir_table[$j]) && !Helper::isTranslationFile($dir_table[$j]))
                     ) && !FilesystemHelper::isDotPath($dir_table[$j])
                 ) {
-                    $previous = new WDBFile($dir_table[$j]);
+                    $previous = new File($dir_table[$j]);
                     $this->cache['wdb_previous'] = $previous->getWDBStack();
                 }
             }

@@ -30,7 +30,7 @@ use \MarkdownExtended\API\OutputFormatHelperInterface;
 use \MarkdownExtended\Helper as MDE_Helper;
 use \MarkdownExtended\Exception as MDE_Exception;
 use \MarkdownExtended\OutputFormat\HTMLHelper;
-use \WebDocBook\Util\TemplateHelper;
+use \WebDocBook\Templating\Helper as TemplateHelper;
 
 /**
  * WebDocBook output Helper
@@ -74,8 +74,9 @@ class WebDocBookHelper
     /**
      * Build a hierarchical menu
      *
-     * @param object $md_content \MarkdownExtended\API\ContentInterface
-     * @param object $formatter \MarkdownExtended\API\OutputFormatInterface
+     * @param \MarkdownExtended\API\ContentInterface $md_content
+     * @param \MarkdownExtended\API\OutputFormatInterface $formatter
+     * @param array $attributes
      * @return string
      */
     public function getToc(ContentInterface $md_content, OutputFormatInterface $formatter, array $attributes = null)

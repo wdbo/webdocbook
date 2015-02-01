@@ -23,7 +23,7 @@
 
 namespace WebDocBook;
 
-use \WebDocBook\Util\FilesystemHelper;
+use \WebDocBook\Filesystem\Helper as FilesystemHelper;
 
 /**
  * Class Kernel
@@ -449,6 +449,10 @@ class Kernel
 
         return null;
     }
+
+// ----------------------------
+// Kernel actions
+// ----------------------------
 
     /**
      * Install WebDocBook's config files

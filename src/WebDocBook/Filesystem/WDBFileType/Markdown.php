@@ -21,18 +21,18 @@
  * <http://github.com/wdbo/webdocbook>.
  */
 
-namespace WebDocBook\WebFilesystem\WDBFile;
+namespace WebDocBook\Filesystem\WDBFileType;
 
 use \WebDocBook\FrontController;
-use \WebDocBook\Util\WDBHelper;
-use \WebDocBook\WebFilesystem\WDBMetaFile;
+use \WebDocBook\Helper;
+use \WebDocBook\Model\MetaFile;
+use \WebDocBook\Filesystem\WDBFileInterface;
 use \WebFilesystem\WebFileInfo;
-use \WebDocBook\WebFilesystem\WDBFileInterface;
 
 /**
- * Class WDBMarkdown
+ * Class Markdown
  */
-class WDBMarkdown
+class Markdown
     extends WebFileInfo
     implements WDBFileInterface
 {
@@ -189,7 +189,7 @@ class WDBMarkdown
      */
     public function parseMetaFiles($path)
     {
-        $meta_files = WDBHelper::getDirectoryMetaFiles($path);
+        $meta_files = Helper::getDirectoryMetaFiles($path);
         if (!empty($meta_files)) {
             foreach ($meta_files as $type=>$fp) {
                 if (is_null($fp)) {
@@ -197,11 +197,11 @@ class WDBMarkdown
                 }
                 switch($type) {
                     case 'meta_data':
-                        $wdb_meta_file = new WDBMetaFile($fp);
+                        $wdb_meta_file = new MetaFile($fp);
                         $this->prependContent($wdb_meta_file->getWDBContent());
                         break;
                     case 'references':
-                        $wdb_meta_file = new WDBMetaFile($fp);
+                        $wdb_meta_file = new MetaFile($fp);
                         $this->appendContent($wdb_meta_file->getWDBContent());
                         break;
                     case 'header':

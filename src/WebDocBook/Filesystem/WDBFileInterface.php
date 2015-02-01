@@ -21,10 +21,10 @@
  * <http://github.com/wdbo/webdocbook>.
  */
 
-namespace WebDocBook\WebFilesystem;
+namespace WebDocBook\Filesystem;
 
 /**
- * Interface WDBFileInterface
+ * Interface FileInterface
  */
 interface WDBFileInterface
 {

@@ -24,13 +24,13 @@
 namespace WebDocBook;
 
 use \WebDocBook\Abstracts\AbstractFrontController;
-use \WebDocBook\WebFilesystem\WDBRecursiveDirectoryIterator;
+use \WebDocBook\Filesystem\RecursiveDirectoryIterator;
 use \WebDocBook\Exception\Exception;
 use \WebDocBook\Exception\RuntimeException;
 use \WebDocBook\Exception\NotFoundException;
-use \WebDocBook\Util\Helper;
-use \WebDocBook\Util\FilesystemHelper;
-use \WebDocBook\Util\TemplateHelper;
+use \WebDocBook\Filesystem\Helper as FilesystemHelper;
+use \WebDocBook\Templating\TemplateBuilder;
+use \WebDocBook\Templating\Helper as TemplateHelper;
 use \MarkdownExtended\MarkdownExtended;
 use \I18n\I18n;
 use \I18n\Loader as I18n_Loader;

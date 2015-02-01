@@ -64,8 +64,8 @@ class Manager
             try {
                 self::$_event   = $event;
                 self::$_cmd     = $cmd;
-                if (false===@class_exists('\WebDocBook\Util\FilesystemHelper')) {
-                    include_once    __DIR__.'/../Util/FilesystemHelper.php';
+                if (false===@class_exists('\WebDocBook\Filesystem\Helper')) {
+                    include_once    __DIR__.'/../Filesystem/Helper.php';
                 }
                 if (false===@class_exists('\WebDocBook\Kernel')) {
                     include_once    __DIR__.'/../Kernel.php';

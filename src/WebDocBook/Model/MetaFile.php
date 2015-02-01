@@ -6,14 +6,14 @@
  * Time: 00:29
  */
 
-namespace WebDocBook\WebFilesystem;
+namespace WebDocBook\Model;
 
 use \SplFileObject;
 
 /**
- * Class WDBMetaFile
+ * Class MetaFile
  */
-class WDBMetaFile
+class MetaFile
     extends SplFileObject
 {
 
