@@ -1,6 +1,7 @@
 Administration of *WebDocBook*
 ==============================
 
+
 Administration panel
 --------------------
 

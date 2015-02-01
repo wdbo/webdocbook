@@ -44,7 +44,7 @@ atelierspierrot/library
 -----------------------
 
 -   <http://github.com/atelierspierrot/library>
--   actual version: 1.1.7
+-   actual version: 1.1.8
 
 
 atelierspierrot/internationalization
