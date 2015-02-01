@@ -1,2 +1,0 @@
-This is a temporary file to keep an empty directory under version-control.
-You can safely delete it once your application is installed.
