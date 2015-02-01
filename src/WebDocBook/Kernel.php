@@ -388,13 +388,13 @@ class Kernel
         if (array_key_exists($route, $routes)) {
             $route_info = $routes[$route];
             if (false === strpos($route_info, ':')) {
-                $ctrl   = $def_ctrl;
-                $action = str_replace('Action', '', $route_info).'Action';
+                $ctrl           = $def_ctrl;
+                $action_name    = $route_info;
             } else {
-                list($ctrl, $action) = explode(':', $route_info);
-                $action = str_replace('Action', '', $action).'Action';
+                list($ctrl, $action_name) = explode(':', $route_info);
             }
         }
+        $action = str_replace('Action', '', (isset($action_name) ? $action_name : $def_act)).'Action';
 
         if (!empty($ctrl)) {
             $_cls = 'WebDocBook\\Controller\\'.ucfirst($ctrl).'Controller';
