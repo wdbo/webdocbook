@@ -28,6 +28,8 @@
     },
     "require-dev": {
         "sami/sami": "dev-master",
+        "phpunit/phpunit": "3.7.*",
+        "phpmd/phpmd" : "1.4.*",
         "composer/composer": "dev-master",
         "dropbox/dropbox-sdk": "1.1.*"
     },
