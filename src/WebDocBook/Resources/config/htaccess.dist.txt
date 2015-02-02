@@ -43,7 +43,7 @@ ErrorDocument 500 /index.php?error
     RewriteRule ^(.*/)?\.(.*)/ - [F]
 
     # special rule for `sitemap.xml` (one per dir)
-    RewriteRule ^(.*)sitemap.xml index.php?$1/sitemap
+    RewriteRule ^(.*)sitemap.xml index.php?$1/sitemap [QSA,L]
 
     # skip all this for internal assets
     RewriteCond %{REQUEST_URI} ^(.*)webdocbook_assets/(.*)
@@ -55,8 +55,8 @@ ErrorDocument 500 /index.php?error
 
     # if the dir exists, handle it by index.php anyway
     RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^(.*) index.php?$1
+    RewriteRule ^(.*) index.php?$1 [QSA,L]
 
     # `index.php` will handle all requests
-    RewriteRule ^(.*) index.php?$1
+    RewriteRule ^(.*) index.php?$1 [QSA,L]
 </IfModule>
