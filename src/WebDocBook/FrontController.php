@@ -281,6 +281,11 @@ class FrontController
             $params     = isset($result[2]) ? $result[2] : array();
         }
 
+        // debug if so
+        if (!empty($_GET) && isset($_GET['debug'])) {
+            Kernel::debug($this);
+        }
+
         $this->display($content, $template, $params, true);
     }
 

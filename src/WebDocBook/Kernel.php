@@ -86,31 +86,54 @@ class Kernel
      */
     protected static $_registry = array();
 
-//*/
 // ----------------------------
 // use this for hard debug: Kernel::debug()
 // ----------------------------
 
-
+    /**
+     * @var array
+     */
     public $debug_vars = array();
 
-    public static function debug()
+    /**
+     * Hard debug: dump of an object (the Kernel itself by default)
+     * @param $what
+     */
+    public static function debug($what = null)
     {
-        $a = new Kernel;
-        eval('$b = ' . var_export($a, true) . ';');
-        header('Content-TYpe: text/plain');
-        var_export($b);
-        echo PHP_EOL;
-        exit('-- Kernel DEBUG --');
+        if (self::isDevMode()) {
+            @ini_set('html_errors', 0);
+            if (is_null($what)) {
+                $what = new Kernel;
+            }
+            $name = is_object($what) ? get_class($what) : gettype($what);
+            $dump = print_r($what, true);
+            if (strpos($dump, '*RECURSION*') !== false) {
+                ob_start();
+                var_dump($what);
+                $dump = ob_get_clean();
+            } else {
+                eval('$dump = ' . var_export($what, true) . ';');
+                $dump = var_export($dump, true);
+            }
+            header('Content-Type: text/plain');
+            echo $dump . PHP_EOL;
+            exit("-- $name DEBUG --");
+        }
     }
 
+    /**
+     * Magic method used while running `var_export(Kernel)`
+     *
+     * @param array $vars
+     * @return Kernel
+     */
     public static function __set_state(array $vars)
     {
         $a = new self;
         $a->debug_vars = self::$_registry;
         return $a;
     }
-//*/
 
 // ----------------------------
 // Booting system
@@ -255,6 +278,11 @@ class Kernel
 
         } catch (\Exception $e) {
             throw $e;
+        }
+
+        // hard debug if so
+        if (!empty($_GET) && isset($_GET['harddebug'])) {
+            Kernel::debug();
         }
     }
 
