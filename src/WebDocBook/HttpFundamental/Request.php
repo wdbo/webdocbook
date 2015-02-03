@@ -81,9 +81,9 @@ class Request
     public function parseWDBRequest()
     {
         $server_pathtrans   = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;
-        $server_argv        = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
         $server_uri         = $_SERVER['REQUEST_URI'];
         $server_query       = $_SERVER['QUERY_STRING'];
+        $server_argv        = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
         $wdb                = FrontController::getInstance();
 
         $file = $path = $action = null;
@@ -97,13 +97,15 @@ class Request
             }
 
             // strip query string
-            if (false!==strpos($req, '?')) {
-                $tmp_action = substr($req, strpos($req, '?')+1);
-                parse_str($tmp_action, $action_str_args);
-                if (!empty($action_str_args)) {
-                    $args = array_merge($args, $action_str_args);
+            foreach (array('?','&') as $char) {
+                if (false!==strpos($req, $char)) {
+                    $tmp_action = substr($req, strpos($req, $char)+1);
+                    parse_str($tmp_action, $action_str_args);
+                    if (!empty($action_str_args)) {
+                        $args = array_merge($args, $action_str_args);
+                    }
+                    $req = substr($req, 0, strpos($req, $char));
                 }
-                $req = substr($req, 0, strpos($req, '?'));
             }
 
             // if '/action'

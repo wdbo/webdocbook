@@ -29,17 +29,13 @@ define('WEBDOCBOOK_MODE', 'prod');
 /**
  * Show errors at least initially in dev mode
  *
- * `E_ALL` => for hard dev
+ * `E_ALL` (-1) => for hard dev
  * `E_ALL & ~E_STRICT` => for hard dev in PHP5.4 avoiding strict warnings
  * `E_ALL & ~E_NOTICE & ~E_STRICT` => classic setting
  */
-//@ini_set('display_errors',1); @error_reporting(E_ALL);
+//@ini_set('display_errors',1); @error_reporting(-1);
 //@ini_set('display_errors',1); @error_reporting(E_ALL & ~E_STRICT);
 @ini_set('display_errors',1); @error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-
-// Set a default timezone to avoid PHP5 warnings
-$dtmz = @date_default_timezone_get();
-@date_default_timezone_set($dtmz?:'Europe/London');
 
 // Get Composer autoloader
 $composerAutoLoader = __DIR__.'/../src/vendor/autoload.php';
