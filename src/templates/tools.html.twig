@@ -24,14 +24,14 @@ The source code of this package is available online at
 {% if page.route is not empty and page.route != '/' %}
     {% if page.previous is not empty %}
         <li>
-            <a href="{{ page.previous.path|route }}" title="{{ 'See the previous page in this chapter'|translate }}">
+            <a href="{{ page.previous.path|route }}" title="{{ 'See the previous page in this chapter'|translate }}" data-placement="bottom">
                 {{ icon('chevron-left')|raw }}&nbsp;{{ page.previous.name|readableName }}&nbsp;{{ icon(page.previous.type)|raw }}
             </a>
         </li>
     {% endif %}
     {% if page.next is not empty %}
         <li>
-            <a href="{{ page.next.path|route }}" title="{{ 'See the next page in this chapter'|translate }}">
+            <a href="{{ page.next.path|route }}" title="{{ 'See the next page in this chapter'|translate }}" data-placement="bottom">
                 {{ icon(page.next.type)|raw }}&nbsp;{{ page.next.name|readableName }}&nbsp;{{ icon('chevron-right')|raw }}
             </a>
         </li>

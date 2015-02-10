@@ -219,6 +219,17 @@ function getNewDefinitionItem( str, title, href )
 // Page tools
 // ---------------------------
 
+/**
+ * Get the tooltip placement of an element based on its `data-placement` attribute ('top' by default)
+ * @param {jQuery|string} el
+ * @returns string
+ */
+function getTooltipPlacement(el)
+{
+    var posdata = $(el).data('placement');
+    return (posdata || 'top');
+}
+
 function initNavbar()
 {
     var elt_navbar = $('#header-navigation'),

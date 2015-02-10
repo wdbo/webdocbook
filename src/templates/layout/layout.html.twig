@@ -113,7 +113,8 @@ $(function() {
     // all links have tooltips except class=notooltip & mobile
     if (findBootstrapEnvironment()=='md' || findBootstrapEnvironment()=='lg') {
         var tooltip_options = {
-            container: 'body'
+            container: 'body',
+            placement: function(ttl, el){ return getTooltipPlacement(el); }
         };
         $('a,.tooltip').not('.notooltip').tooltip(tooltip_options);
         $('input[data-toggle=tooltip],button[data-toggle=tooltip]').tooltip(tooltip_options);
