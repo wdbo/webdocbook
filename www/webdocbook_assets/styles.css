@@ -347,7 +347,7 @@ h3 a.permalink:hover, h4 a.permalink:hover, h5 a.permalink:hover {
     font-size: 16px;
     display: block;
     width: 22px;
-    height: 22px;
+    height: auto;
     border-radius: 1px;
 }
 
