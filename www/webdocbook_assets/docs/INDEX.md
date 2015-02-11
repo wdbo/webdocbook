@@ -11,5 +11,5 @@ or have a look at the [installation page](documentation/Installation/Installatio
 of the application.
 
 To get more help, follow sources updates and opened issues, go to
-[WebDocBook's repository](http://github.com/wdbo/webdocbook).
+[WebDocBook's website](http://webdocbook.com/).
 
