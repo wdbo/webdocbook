@@ -1,5 +1,5 @@
 {
-  "name": "docbook-dependencies",
+  "name": "webdocbook-dependencies",
   "dependencies": {
     "jquery": "1.11.*",
     "bootstrap": "~3.3.1",
