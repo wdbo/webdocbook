@@ -26,11 +26,12 @@ namespace WebDocBook\MarkdownExtended\OutputFormat;
 use \MarkdownExtended\MarkdownExtended;
 use \MarkdownExtended\API\ContentInterface;
 use \MarkdownExtended\API\OutputFormatInterface;
-use \MarkdownExtended\API\OutputFormatHelperInterface;
+//use \MarkdownExtended\API\OutputFormatHelperInterface;
 use \MarkdownExtended\Helper as MDE_Helper;
 use \MarkdownExtended\Exception as MDE_Exception;
-use \MarkdownExtended\OutputFormat\HTMLHelper;
+//use \MarkdownExtended\OutputFormat\HTMLHelper;
 use \WebDocBook\Templating\Helper as TemplateHelper;
+use \MarkdownExtended\API\Kernel;
 
 /**
  * WebDocBook output Helper
@@ -38,8 +39,8 @@ use \WebDocBook\Templating\Helper as TemplateHelper;
  * All '$_defaults' entries can be overwritten in config.
  */
 class WebDocBookHelper
-    extends HTMLHelper
-    implements OutputFormatHelperInterface
+//    extends HTMLHelper
+//    implements OutputFormatHelperInterface
 {
 
     /**
@@ -64,7 +65,7 @@ class WebDocBookHelper
      */
     public static function getConfigOrDefault($var)
     {
-        $cfg_val = MarkdownExtended::getConfig($var);
+        $cfg_val = Kernel::getConfig($var);
         if (empty($cfg_val)) {
             $cfg_val = self::$_defaults[$var];
         }

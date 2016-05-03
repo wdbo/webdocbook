@@ -28,6 +28,7 @@ use \WebDocBook\Helper;
 use \WebDocBook\Model\MetaFile;
 use \WebDocBook\Filesystem\WDBFileInterface;
 use \WebFilesystem\WebFileInfo;
+use \MarkdownExtended\API\Kernel;
 
 /**
  * Class Markdown
@@ -60,11 +61,11 @@ class Markdown
         $wdb            = FrontController::getInstance();
         $md_parser      = $wdb->getMarkdownParser();
         $md_content     = $md_parser->transformString($this->getContent());
-        $page_notes     = $md_content->getNotesToString();
+        $page_notes     = $md_content->getNotesFormatted();
         $page_meta      = $md_content->getMetadata();
-        $page_footnotes = $md_content->getFootnotes();
-        $page_glossary  = $md_content->getGlossaries();
-        $page_citations = $md_content->getCitations();
+        $page_footnotes = $md_content->getNotes();
+//        $page_glossary  = $md_content->getGlossaries();
+//        $page_citations = $md_content->getCitations();
 
         $this->setMetaData(
             !empty($page_meta) && array_key_exists('wdb', $page_meta) ? $page_meta['wdb'] : null
@@ -74,12 +75,12 @@ class Markdown
         $params['page_notes'] = $page_notes;
         if (!empty($page_citations) || !empty($page_glossary)) {
             $params['page_footnotes']   = $page_footnotes;
-            $params['page_glossary']    = $page_glossary;
-            $params['page_citations']   = $page_citations;
+//            $params['page_glossary']    = $page_glossary;
+//            $params['page_citations']   = $page_citations;
         }
 
         if ( ! $this->hasMetaData('notoc')) {
-            $output_bag    = $md_parser->get('OutputFormatBag');
+            $output_bag    = Kernel::get('OutputFormatBag');
             $params['toc'] = $output_bag->getHelper()
                 ->getToc($md_content, $output_bag->getFormatter());
         }

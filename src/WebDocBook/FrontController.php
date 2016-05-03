@@ -465,7 +465,7 @@ class FrontController
             foreach ($emd_config_strs as $_str) {
                 $emd_config[$_str] = $translator->translate($_str);
             }
-            $this->setMarkdownParser(MarkdownExtended::create($emd_config));
+            $this->setMarkdownParser(new MarkdownExtended($emd_config));
         }
         return $this->markdown_parser;
     }

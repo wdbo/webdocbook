@@ -25,8 +25,8 @@ namespace WebDocBook\MarkdownExtended\OutputFormat;
 
 use \MarkdownExtended\MarkdownExtended;
 use \MarkdownExtended\API\OutputFormatInterface;
-use \MarkdownExtended\OutputFormat\HTML;
-use \MarkdownExtended\Helper as MDE_Helper;
+use \MarkdownExtended\OutputFormat\Html;
+//use \MarkdownExtended\Helper as MDE_Helper;
 use \MarkdownExtended\Exception as MDE_Exception;
 use \WebDocBook\Templating\Helper as TemplateHelper;
 
@@ -34,7 +34,7 @@ use \WebDocBook\Templating\Helper as TemplateHelper;
  * All '$_defaults' entries can be overwritten in config.
  */
 class WebDocBook
-    extends HTML
+    extends Html
     implements OutputFormatInterface
 {
 
