@@ -27,7 +27,7 @@
         "twig/twig": "1.*"
     },
     "require-dev": {
-        "sami/sami": "dev-master",
+        "sami/sami": "3.*",
         "phpunit/phpunit": "3.7.*",
         "phpmd/phpmd" : "1.4.*",
         "composer/composer": "dev-master",
