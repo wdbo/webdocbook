@@ -40,6 +40,7 @@
         "WebDocBook": "src",
         "WebDocBook_": "src"
     } },
+    "minimum-stability": "dev",
     "config": {
         "vendor-dir": "src/vendor"
     },

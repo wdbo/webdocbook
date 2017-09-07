@@ -81,7 +81,7 @@ class Markdown
         if ( ! $this->hasMetaData('notoc')) {
             $output_bag    = $md_parser->get('OutputFormatBag');
             $params['toc'] = $output_bag->getHelper()
-                ->getToc($md_content, $output_bag->getFormatter());
+                ->getToc($md_content, $output_bag->getFormater());
         }
 
         return $wdb->display($md_content->getBody(), 'content', $params);
