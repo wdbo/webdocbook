@@ -23,7 +23,7 @@
         "atelierspierrot/library": "1.1.8",
         "atelierspierrot/webfilesystem": "1.0.2",
         "atelierspierrot/internationalization": "1.0.3",
-        "piwi/markdown-extended": "dev-master",
+        "picas/markdown-extended": "dev-master",
         "twig/twig": "1.*"
     },
     "require-dev": {
