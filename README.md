@@ -1,7 +1,7 @@
 WebDocBook : the web like a book
 ===============================
 
-**WebDocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a 
+**WebDocBook** is a simple PHP app to build rich HTML5 views from Markdown files following a
 filesystem architecture. It embeds some classic CMS' website features like a search in contents,
 some RSS feeds generation or translations switching.
 
@@ -13,7 +13,7 @@ Key features
 ------------
 
 -   WebDocBook is a simple application organized beyond a filesystem architecture of Markdown files.
-    Each file is a "page" and each sub-directory is a "section" of pages. The title of the files 
+    Each file is a "page" and each sub-directory is a "section" of pages. The title of the files
     or directories is used to be the title of the page or section;
 -   WebDocBook views' are **HTML5 valid** with the help of [Bootstrap](http://twitter.github.io/bootstrap/);
 -   WebDocBook is highly **configurable** and **customizable**;
@@ -48,22 +48,22 @@ To get help, you can have a look at the documentation in `docs/`.
 Organization overview
 ---------------------
 
-All the Markdown files, the real pages of the website, have to be stored in the `www/` 
+All the Markdown files, the real pages of the website, have to be stored in the `www/`
 directory or its sub-directories.
 
-Any file named `INDEX.md` in a directory will be considered as its index and be delivered if 
+Any file named `INDEX.md` in a directory will be considered as its index and be delivered if
 no other file is requested in the URL.
 
-Any file named `README.md` in a directory will be displayed at the bottom of the directory 
+Any file named `README.md` in a directory will be displayed at the bottom of the directory
 contents indexing, just like the default behavior of Apache.
 
 Any asset, image or other media file, that you want to include or use in a Markdown
 content must be stored in an `assets/` sub-directory in the current directory. If you do
 not follow this rule, your file will not be accessible by the web-server.
 
-By default, any file contained in a directory named `wip/` will not be displayed publicly 
-and will not be referenced in the *sitemap* neither in the index ; to view it, you will have 
-to manually write its URL. 
+By default, any file contained in a directory named `wip/` will not be displayed publicly
+and will not be referenced in the *sitemap* neither in the index ; to view it, you will have
+to manually write its URL.
 
 Knowing that, a classic *WebDocBook* directory organization should be:
 
@@ -81,11 +81,60 @@ All your first depth directories (directories contained directly in your *WebDoc
 are considered as your chapters and are listed in the header navigation bar of each page
 for quick access.
 
+Docker container
+----------------
+
+A [Dockerfile](https://docs.docker.com/engine/reference/builder/) is designed
+to build a container with the full sources of WebDocBook. The file will create
+a local docker image with your local sources, install the application in the
+container and expose your WebDocBook app with both HTTP and HTTPS protocols.
+You can configure some special ports mapping at runtime and mount in your
+container some local volumes of Markdown files to use.
+
+Below are the steps to build your container:
+
+1.  prepare a Docker image with an installed application
+
+        docker build -t wdbo_server .
+
+2.  create a new container based on that image (in the example
+    below, the default 80 and 443 ports of the container are mapped
+    to custom ones on the host and a special local volume is mounted
+    instead of default WebDocBook data):
+
+        docker run -d \
+            --name wdbo_server_c \
+            -p 8080:80 \
+            -p 8443:443 \
+            -v /path/to/your/md/files:/var/www/webdocbook/www \
+                wdbo_server
+
+3.  optionnaly, you can connect into your container with the "www-data" user:
+
+        docker exec -ti -u www-data wdbo_server_c bash
+
+For development, you can mount the whole local sources as a volume of
+the container to keep your work on it:
+
+    docker run -d \
+        --name wdbo_server_c \
+        -p 8080:80 \
+        -p 8443:443 \
+        -v $(pwd):/var/www/webdocbook \
+            wdbo_server
+
+In this case, you will probably need to change the owner of the file-system
+to match the server user of the container ("www-data" with UID/GID 1000).
 
 License
 -------
 
 **WebDocBook** is an open-source software released under a
-[GNU General Public License version 3](http://github.com/wdbo/webdocbook/blob/master/LICENSE). 
-You can freely download it, use it or distribute it as long as you stay in the license 
+[GNU General Public License version 3](http://github.com/wdbo/webdocbook/blob/master/LICENSE).
+You can freely download it, use it or distribute it as long as you stay in the license
 conditions. See the `LICENSE` file for more info.
+
+
+
+
+        "picas/markdown-extended": "0.1.0-beta",
