@@ -12,7 +12,7 @@ test_args;J'ai eu les arguments : « %arg1% » et « %arg2% »;I received a
 search_info;"Recherche de ""<em>%search_str%</em>"" sur le chemin ""<em>%path%</em>""";"Searching ""<em>%search_str%</em>"" in path ""<em>%path%</em>"""
 ;"Recherche de ""%search_str%""";"Search for ""%search_str%"""
 ;Votre recherche n'a retourné aucun résultat …;Your search sent no result ...
-results_found;Résultats trouvés dans %nb% fichiers.;Results found in %fnb% files.
+results_found;Résultats trouvés dans %nb% fichiers.;Results found in %nb% files.
 one_result_found;Résultats trouvés dans 1 fichier.;Results found in 1 file.
 ;Voir la page;See this page
 ;Interdit;Forbidden
