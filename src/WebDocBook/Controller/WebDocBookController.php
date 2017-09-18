@@ -100,7 +100,7 @@ class WebDocBookController
         $md_content         = $md_parser->transformString($file_content);
         $output_bag         = $md_parser->get('OutputFormatBag');
         $user_manual_menu   = $output_bag->getHelper()
-                                ->getToc($md_content, $output_bag->getFormatter());
+                                ->getToc($md_content, $output_bag->getFormater());
         $user_manual_content= $md_content->getBody();
 
         // MD manual
@@ -110,7 +110,7 @@ class WebDocBookController
         $md_content         = $md_parser->transformString($file_content);
         $output_bag         = $md_parser->get('OutputFormatBag');
         $md_manual_menu     = $output_bag->getHelper()
-                                ->getToc($md_content, $output_bag->getFormatter());
+                                ->getToc($md_content, $output_bag->getFormater());
         $md_manual_content  = $md_content->getBody();
 
         // about content
