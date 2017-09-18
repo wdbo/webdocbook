@@ -97,6 +97,10 @@ Below are the steps to build your container:
 
         docker build -t wdbo_server .
 
+    when building the image, you can customize environment variables using
+    the `--build-arg <var>=<val>` argument ; a full list of available variables
+    is present at the top of the `Dockerfile`
+
 2.  create a new container based on that image (in the example
     below, the default 80 and 443 ports of the container are mapped
     to custom ones on the host and a special local volume is mounted
@@ -112,6 +116,10 @@ Below are the steps to build your container:
 3.  optionnaly, you can connect into your container with the "www-data" user:
 
         docker exec -ti -u www-data wdbo_server_c bash
+
+4.  optionnaly, you can view the Apache and PHP logs with:
+
+        docker logs -f wdbo_server_c
 
 For development, you can mount the whole local sources as a volume of
 the container to keep your work on it:
@@ -133,8 +141,3 @@ License
 [GNU General Public License version 3](http://github.com/wdbo/webdocbook/blob/master/LICENSE).
 You can freely download it, use it or distribute it as long as you stay in the license
 conditions. See the `LICENSE` file for more info.
-
-
-
-
-        "picas/markdown-extended": "0.1.0-beta",
