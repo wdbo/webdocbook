@@ -84,7 +84,7 @@ See <http://github.com/mathjax/MathJax-docs/wiki/Guide%3A-reducing-size-of-a-mat
 to learn what files need to be kept.
 
 ----
-**Copyleft (ↄ) 2008-2015 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
+**Copyleft (ↄ) 2008-2017 [Pierre Cassat & contributors](http://webdocbook.com/)** - Paris, France - Some rights reserved.
 
 Scripts are licensed under the [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html).
 
